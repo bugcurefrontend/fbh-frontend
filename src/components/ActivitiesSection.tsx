@@ -104,7 +104,7 @@ const ProgressIndicators = styled(Stack)({
 const ProgressBar = styled(Box, {
   shouldForwardProp: (prop) => prop !== "active",
 })<{ active?: boolean }>(({ active, theme }) => ({
-  width: "538px",
+  width: "500px",
   height: "4px",
   backgroundColor: active ? theme.palette.primary.main : "#d1d1d1",
   borderRadius: "2px",
@@ -147,7 +147,7 @@ const ActivitiesSection: React.FC = () => {
 
   return (
     <ActivitiesContainer>
-      <SectionHeader direction="row">
+      <SectionHeader direction="row" position="relative">
         <SectionTitle
           sx={{
             mx: { xs: 0, sm: "auto" },
@@ -155,7 +155,7 @@ const ActivitiesSection: React.FC = () => {
         >
           FBG Activities
         </SectionTitle>
-        <ViewAllButton sx={{ position: "absolute", right: 34 }}>
+        <ViewAllButton sx={{ position: "absolute", right: 0 }}>
           View All
         </ViewAllButton>
       </SectionHeader>

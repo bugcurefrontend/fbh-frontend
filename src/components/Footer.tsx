@@ -154,55 +154,57 @@ const Footer: React.FC = () => {
 
   return (
     <FooterContainer>
-      <FooterMain direction="row">
-        <FooterLogo>
-          <LogoImage
-            src="/images/logo2.png"
-            alt="Forests by Heartfulness"
-            width={120}
-            height={40}
-          />
-          <AppDownloadButtons direction="row">
-            <Image
-              src="/images/google-play.png"
-              alt="Get it on Google Play"
-              width={150}
-              height={45}
-              style={{ cursor: "pointer" }}
+      <Box maxWidth="1200px" mx="auto">
+        <FooterMain direction="row">
+          <FooterLogo>
+            <LogoImage
+              src="/images/logo2.png"
+              alt="Forests by Heartfulness"
+              width={120}
+              height={40}
             />
-            <Image
-              src="/images/app-store.png"
-              alt="Get it on Google Play"
-              width={150}
-              height={45}
-              style={{ cursor: "pointer" }}
-            />
-          </AppDownloadButtons>
-        </FooterLogo>
+            <AppDownloadButtons direction="row">
+              <Image
+                src="/images/google-play.png"
+                alt="Get it on Google Play"
+                width={150}
+                height={45}
+                style={{ cursor: "pointer" }}
+              />
+              <Image
+                src="/images/app-store.png"
+                alt="Get it on Google Play"
+                width={150}
+                height={45}
+                style={{ cursor: "pointer" }}
+              />
+            </AppDownloadButtons>
+          </FooterLogo>
 
-        <FooterLinks direction="row">
-          <LinkColumn>
-            <ColumnTitle>Useful Links</ColumnTitle>
-            <LinkList>
-              {usefulLinks.map((link, index) => (
-                <FooterLink key={index}>{link}</FooterLink>
-              ))}
-            </LinkList>
-          </LinkColumn>
+          <FooterLinks direction="row">
+            <LinkColumn>
+              <ColumnTitle>Useful Links</ColumnTitle>
+              <LinkList>
+                {usefulLinks.map((link, index) => (
+                  <FooterLink key={index}>{link}</FooterLink>
+                ))}
+              </LinkList>
+            </LinkColumn>
 
-          <LinkColumn>
-            <ColumnTitle>Social</ColumnTitle>
-            <LinkList>
-              {socialLinks.map((social, index) => (
-                <SocialLink key={index} direction="row">
-                  <SocialIcon size="small">{social.icon}</SocialIcon>
-                  <FooterLink>{social.name}</FooterLink>
-                </SocialLink>
-              ))}
-            </LinkList>
-          </LinkColumn>
-        </FooterLinks>
-      </FooterMain>
+            <LinkColumn>
+              <ColumnTitle>Social</ColumnTitle>
+              <LinkList>
+                {socialLinks.map((social, index) => (
+                  <SocialLink key={index} direction="row">
+                    <SocialIcon size="small">{social.icon}</SocialIcon>
+                    <FooterLink>{social.name}</FooterLink>
+                  </SocialLink>
+                ))}
+              </LinkList>
+            </LinkColumn>
+          </FooterLinks>
+        </FooterMain>
+      </Box>
 
       <FooterBottom direction="row">
         <Copyright>© 2025 Heartfulness - All rights reserved</Copyright>

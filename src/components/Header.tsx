@@ -2,7 +2,6 @@
 import React from "react";
 import {
   AppBar,
-  Toolbar,
   Box,
   Button,
   Stack,
@@ -176,11 +175,22 @@ const Header: React.FC = () => {
   return (
     <>
       <StyledAppBar position="fixed">
-        <Toolbar sx={{ justifyContent: "space-between", px: 4 }}>
+        <Box
+          sx={{
+            maxWidth: "1200px",
+            width: "100%",
+            mx: "auto",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+          height={{ xs: "62px", sm: "80px" }}
+          padding={{ xs: "8px 16px", sm: "0 32px" }}
+        >
           {/* Logo */}
           <Image
-            src="/images/logo.png"
-            alt="Forests by Heartfulness"
+            src="/images/logo3.png"
+            alt="logo"
             width={57}
             height={46}
             priority
@@ -336,7 +346,7 @@ const Header: React.FC = () => {
               </MenuItem>
             </Menu>
           </Stack>
-        </Toolbar>
+        </Box>
       </StyledAppBar>
 
       {/* Mobile Drawer Menu */}

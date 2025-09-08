@@ -16,14 +16,16 @@ export default function Home() {
     <Box sx={{ minHeight: "100vh" }}>
       <Header />
       <HeroSection />
-      <StatisticsSection />
-      <AboutSection />
-      <PartnersSection />
-      <SpeciesSection />
-      <ProjectsSection />
-      <ActivitiesSection />
-      <TestimonialsSection />
-      <CaseStudiesSection />
+      <Box sx={{ maxWidth: "1200px", mx: "auto" }}>
+        <StatisticsSection />
+        <AboutSection />
+        <PartnersSection />
+        <SpeciesSection />
+        <ProjectsSection />
+        <ActivitiesSection />
+        <TestimonialsSection />
+        <CaseStudiesSection />
+      </Box>
       <Footer />
     </Box>
   );

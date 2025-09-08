@@ -7,6 +7,7 @@ import {
   KeyboardArrowLeft,
   KeyboardArrowRight,
 } from "@mui/icons-material";
+import Image from "next/image";
 
 const HeroContainer = styled(Box)(({ theme }) => ({
   height: "604px",
@@ -21,18 +22,15 @@ const HeroContainer = styled(Box)(({ theme }) => ({
   paddingTop: "80px",
 
   [theme.breakpoints.down("sm")]: {
-    height: "420px",
+    height: "403px",
     paddingTop: "60px",
   },
 }));
 
 const HeroContent = styled(Box)(({ theme }) => ({
-  marginLeft: "59px",
   maxWidth: "582px",
 
-  [theme.breakpoints.down("sm")]: {
-    marginLeft: "20px",
-  },
+  [theme.breakpoints.down("sm")]: { maxWidth: "276px" },
 }));
 
 const HeroTitle = styled(Typography)(({ theme }) => ({
@@ -64,13 +62,14 @@ const PlantButton = styled(Button)(({ theme }) => ({
   [theme.breakpoints.down("sm")]: {
     width: "100%",
     fontSize: "14px",
+    padding: "6px 16px",
   },
 }));
 
 const NavigationControls = styled(Box)(({ theme }) => ({
   position: "absolute",
   right: "32px",
-  bottom: "80px",
+  bottom: "0",
   display: "flex",
   gap: "12px",
 
@@ -100,19 +99,31 @@ const NavButton = styled(IconButton)<{ variant?: "filled" | "outlined" }>(
 const HeroSection: React.FC = () => {
   return (
     <HeroContainer>
-      <HeroContent>
-        <HeroTitle>Putting heart back into the Earth</HeroTitle>
-        <PlantButton variant="contained">PLANT A TREE</PlantButton>
-      </HeroContent>
+      <Box
+        maxWidth={1200}
+        mx="auto"
+        width="100%"
+        position="relative"
+        padding={{ xs: "8px 16px", sm: "0 32px" }}
+      >
+        <HeroContent>
+          <HeroTitle>Putting heart back into the Earth</HeroTitle>
+          <PlantButton variant="contained">PLANT A TREE</PlantButton>
+        </HeroContent>
 
-      <NavigationControls>
-        <NavButton variant="outlined">
-          <KeyboardArrowLeft />
-        </NavButton>
-        <NavButton variant="filled">
-          <KeyboardArrowRight />
-        </NavButton>
-      </NavigationControls>
+        <Box display="flex" justifyContent="center" mt={6}>
+          <Image src="/images/dots.png" alt="dots" width={48} height={8} />
+        </Box>
+
+        <NavigationControls>
+          <NavButton variant="outlined">
+            <KeyboardArrowLeft />
+          </NavButton>
+          <NavButton variant="filled">
+            <KeyboardArrowRight />
+          </NavButton>
+        </NavigationControls>
+      </Box>
     </HeroContainer>
   );
 };

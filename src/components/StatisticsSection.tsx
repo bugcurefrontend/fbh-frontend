@@ -10,12 +10,12 @@ import StatesProjectsIcon from "./icons/StatesProjectsIcon";
 import LakesRestoredIcon from "./icons/LakesRestoredIcon";
 
 const StatsContainer = styled(Box)(({ theme }) => ({
-  width: "92%",
-  margin: "0 auto",
+  margin: "0 32px",
+  height: "424px",
   borderRadius: 16,
   boxShadow: "0px 8px 32px rgba(133, 133, 133, 0.10)",
   background: "#fff",
-  padding: "32px",
+  padding: "32px 24px",
   position: "relative",
   top: -48,
   zIndex: 2,
@@ -26,6 +26,8 @@ const StatsContainer = styled(Box)(({ theme }) => ({
   [theme.breakpoints.down("sm")]: {
     padding: "20px",
     gap: "32px",
+    top: "-16px",
+    borderRadius: 8,
   },
 }));
 

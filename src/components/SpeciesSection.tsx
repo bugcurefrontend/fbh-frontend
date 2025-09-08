@@ -64,11 +64,14 @@ const MobileCarouselInner = styled(Stack)(({ theme }) => ({
 const SpeciesGrid = styled(Stack)(({ theme }) => ({
   gap: "32px",
   marginBottom: "48px",
+  flexDirection: "row",
   [theme.breakpoints.down("sm")]: { display: "none" },
 }));
 
 const SpeciesCard = styled(Card)(({ theme }) => ({
-  width: "384px",
+  flex: "1 1 0",
+  minWidth: 0,
+  // width: "350px",
   borderRadius: "16px",
   border: "1px solid #e4e4e4",
   flexShrink: 0,
@@ -114,7 +117,7 @@ const ProgressIndicators = styled(Stack)({
 const ProgressBar = styled(Box, {
   shouldForwardProp: (prop) => prop !== "active",
 })<{ active?: boolean }>(({ active, theme }) => ({
-  width: "538px",
+  width: "500px",
   height: "4px",
   backgroundColor: active ? theme.palette.primary.main : "#d1d1d1",
   borderRadius: "2px",
@@ -149,9 +152,9 @@ const SpeciesSection: React.FC = () => {
 
   return (
     <SectionContainer>
-      <SectionHeader direction="row">
+      <SectionHeader direction="row" position="relative">
         <SectionTitle sx={{ mx: { xs: 0, sm: "auto" } }}>Species</SectionTitle>
-        <ViewAllButton sx={{ position: "absolute", right: 34 }}>
+        <ViewAllButton sx={{ position: "absolute", right: 0 }}>
           View All
         </ViewAllButton>
       </SectionHeader>

@@ -191,9 +191,9 @@ const ProjectsSection: React.FC = () => {
 
   return (
     <SectionContainer>
-      <SectionHeader direction="row">
+      <SectionHeader direction="row" position="relative">
         <SectionTitle sx={{ mx: { xs: 0, sm: "auto" } }}>Projects</SectionTitle>
-        <ViewAllButton sx={{ position: "absolute", right: 34 }}>
+        <ViewAllButton sx={{ position: "absolute", right: 0 }}>
           View All
         </ViewAllButton>
       </SectionHeader>
