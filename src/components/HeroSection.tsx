@@ -111,7 +111,11 @@ const HeroSection: React.FC = () => {
           <PlantButton variant="contained">PLANT A TREE</PlantButton>
         </HeroContent>
 
-        <Box display="flex" justifyContent="center" mt={6}>
+        <Box
+          display={{ sm: "none", xs: "flex" }}
+          justifyContent="center"
+          mt={6}
+        >
           <Image src="/images/dots.png" alt="dots" width={48} height={8} />
         </Box>
 
