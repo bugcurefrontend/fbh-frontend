@@ -1,57 +1,7 @@
 "use client";
 import React from "react";
-import { Box, Typography, Stack } from "@mui/material";
-import { styled } from "@mui/material/styles";
 import Image from "next/image";
-
-const PartnersContainer = styled(Box)(({ theme }) => ({
-  backgroundColor: "#ffffff",
-  padding: "64px 32px",
-  borderRadius: "16px",
-  border: "1px solid #e4e4e4",
-  boxShadow: "0px 12px 24px rgba(133, 133, 133, 0.12)",
-  margin: "0 32px",
-  textAlign: "center",
-
-  [theme.breakpoints.down("sm")]: {
-    margin: "0 16px",
-    padding: "32px 16px",
-  },
-}));
-
-const PartnersTitle = styled(Typography)(({ theme }) => ({
-  fontSize: "32px",
-  fontWeight: 600,
-  color: theme.palette.text.primary,
-  fontFamily: '"Playfair Display", serif',
-  marginBottom: "32px",
-
-  [theme.breakpoints.down("sm")]: {
-    fontSize: "22px",
-  },
-}));
-
-const PartnersGrid = styled(Stack)(({ theme }) => ({
-  alignItems: "center",
-  justifyContent: "center",
-
-  [theme.breakpoints.down("sm")]: {
-    display: "grid",
-    gridTemplateColumns: "repeat(3, 1fr)",
-    justifyContent: "center",
-  },
-}));
-
-const PartnerLogo = styled(Image)(({ theme }) => ({
-  maxHeight: "120px",
-  maxWidth: "226px",
-  objectFit: "contain",
-
-  [theme.breakpoints.down("sm")]: {
-    maxWidth: "140px",
-    maxHeight: "80px",
-  },
-}));
+import { InfiniteMovingCards } from "./ui/infinite-moving-cards";
 
 const PartnersSection: React.FC = () => {
   const partners = [
@@ -63,22 +13,38 @@ const PartnersSection: React.FC = () => {
     { name: "Zscaler", logo: "/images/partners/zscaler.png" },
   ];
 
-  return (
-    <PartnersContainer>
-      <PartnersTitle>Our Supporting Partners</PartnersTitle>
+  // Map partners to the expected format
+  const items = partners.map((partner) => ({
+    id: partner.name,
+    quote: (
+      <div className="flex items-center justify-center w-[160px] md:h-[100px]">
+        <Image
+          src={partner.logo}
+          alt={partner.name}
+          width={160}
+          height={100}
+          className="object-contain max-h-[100px] max-w-[160px]"
+        />
+      </div>
+    ),
+    name: partner.name,
+    title: "",
+  }));
 
-      <PartnersGrid direction="row">
-        {partners.map((partner, index) => (
-          <PartnerLogo
-            key={index}
-            src={partner.logo}
-            alt={partner.name}
-            width={200}
-            height={60}
-          />
-        ))}
-      </PartnersGrid>
-    </PartnersContainer>
+  return (
+    <section className="bg-white rounded-xl border border-gray-200 shadow-[0_12px_24px_rgba(133,133,133,0.12)] py-4 sm:py-8 text-center space-y-5">
+      <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold text-black">
+        Our Supporting Partners
+      </h2>
+
+      <InfiniteMovingCards
+        items={items}
+        direction="left"
+        speed="fast"
+        pauseOnHover={true}
+        className="bg-transparent"
+      />
+    </section>
   );
 };
 

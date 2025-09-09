@@ -1,105 +1,11 @@
 "use client";
 import React from "react";
-import { Box, Typography, Stack, Divider } from "@mui/material";
-import { styled } from "@mui/material/styles";
 import LandscapeIcon from "./icons/LandscapeIcon";
 import TreeSpeciesIcon from "./icons/TreeSpeciesIcon";
 import EndangeredSpeciesIcon from "./icons/EndangeredSpeciesIcon";
 import Co2OffsetIcon from "./icons/Co2OffsetIcon";
 import StatesProjectsIcon from "./icons/StatesProjectsIcon";
 import LakesRestoredIcon from "./icons/LakesRestoredIcon";
-
-const StatsContainer = styled(Box)(({ theme }) => ({
-  margin: "0 32px",
-  height: "424px",
-  borderRadius: 16,
-  boxShadow: "0px 8px 32px rgba(133, 133, 133, 0.10)",
-  background: "#fff",
-  padding: "32px 24px",
-  position: "relative",
-  top: -48,
-  zIndex: 2,
-  gap: "64px",
-  display: "flex",
-  flexDirection: "column",
-
-  [theme.breakpoints.down("sm")]: {
-    padding: "20px",
-    gap: "32px",
-    top: "-16px",
-    borderRadius: 8,
-  },
-}));
-
-const StatsRow = styled(Stack)(({ theme }) => ({
-  justifyContent: "space-around",
-  alignItems: "center",
-  gap: "32px",
-
-  [theme.breakpoints.down("sm")]: {
-    // Keep row direction for 2-column layout
-    flexDirection: "row",
-    gap: "16px",
-    justifyContent: "space-between",
-  },
-}));
-
-const StatItem = styled(Stack)(({ theme }) => ({
-  alignItems: "center",
-  textAlign: "center",
-  gap: "16px",
-  flex: 1,
-
-  [theme.breakpoints.down("sm")]: {
-    gap: "8px",
-    flex: 1,
-  },
-}));
-
-const StatNumber = styled(Typography)(({ theme }) => ({
-  fontSize: "40px",
-  fontWeight: 600,
-  lineHeight: "36px",
-  color: theme.palette.text.primary,
-
-  [theme.breakpoints.down("sm")]: {
-    fontSize: "24px",
-    lineHeight: "28px",
-  },
-}));
-
-const StatLabel = styled(Typography)(({ theme }) => ({
-  fontSize: "16px",
-  fontWeight: 400,
-  color: theme.palette.text.secondary,
-
-  [theme.breakpoints.down("sm")]: {
-    fontSize: "12px",
-    lineHeight: "16px",
-  },
-}));
-
-const VerticalDivider = styled(Divider)(({ theme }) => ({
-  height: "97px",
-  backgroundColor: "#d1d5db",
-
-  [theme.breakpoints.down("sm")]: {
-    height: "80px",
-  },
-}));
-
-const StatIcon = styled(Box)(({ theme }) => ({
-  width: "40px",
-  height: "40px",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-
-  [theme.breakpoints.down("sm")]: {
-    width: "32px",
-    height: "32px",
-  },
-}));
 
 const StatisticsSection: React.FC = () => {
   const topRowStats = [
@@ -146,100 +52,109 @@ const StatisticsSection: React.FC = () => {
     },
   ];
 
-  // For mobile, we'll create a different layout structure
-  const MobileLayout = () => (
-    <>
-      {/* Row 1: First 2 items */}
-      <StatsRow direction="row" margin="0 0 40px 0">
-        <StatItem>
-          <StatIcon>{topRowStats[0].mobileIcon}</StatIcon>
-          <StatNumber>{topRowStats[0].number}</StatNumber>
-          <StatLabel>{topRowStats[0].label}</StatLabel>
-        </StatItem>
-        <VerticalDivider orientation="vertical" />
-        <StatItem>
-          <StatIcon>{topRowStats[1].mobileIcon}</StatIcon>
-          <StatNumber>{topRowStats[1].number}</StatNumber>
-          <StatLabel>{topRowStats[1].label}</StatLabel>
-        </StatItem>
-      </StatsRow>
-
-      {/* Row 2: Items 3 and 4 */}
-      <StatsRow direction="row" margin="0 0 40px 0">
-        <StatItem>
-          <StatIcon>{topRowStats[2].mobileIcon}</StatIcon>
-          <StatNumber>{topRowStats[2].number}</StatNumber>
-          <StatLabel>{topRowStats[2].label}</StatLabel>
-        </StatItem>
-        <VerticalDivider orientation="vertical" />
-        <StatItem>
-          <StatIcon>{bottomRowStats[0].mobileIcon}</StatIcon>
-          <StatNumber>{bottomRowStats[0].number}</StatNumber>
-          <StatLabel>{bottomRowStats[0].label}</StatLabel>
-        </StatItem>
-      </StatsRow>
-
-      {/* Row 3: Last 2 items */}
-      <StatsRow direction="row">
-        <StatItem>
-          <StatIcon>{bottomRowStats[1].mobileIcon}</StatIcon>
-          <StatNumber>{bottomRowStats[1].number}</StatNumber>
-          <StatLabel>{bottomRowStats[1].label}</StatLabel>
-        </StatItem>
-        <VerticalDivider orientation="vertical" />
-        <StatItem>
-          <StatIcon>{bottomRowStats[2].mobileIcon}</StatIcon>
-          <StatNumber>{bottomRowStats[2].number}</StatNumber>
-          <StatLabel>{bottomRowStats[2].label}</StatLabel>
-        </StatItem>
-      </StatsRow>
-    </>
-  );
-
-  // Desktop layout (original)
-  const DesktopLayout = () => (
-    <>
-      <StatsRow direction="row" margin="0 0 56px 0">
-        {topRowStats.map((stat, index) => (
-          <React.Fragment key={index}>
-            <StatItem>
-              <StatIcon>{stat.icon}</StatIcon>
-              <StatNumber>{stat.number}</StatNumber>
-              <StatLabel>{stat.label}</StatLabel>
-            </StatItem>
-            {index < topRowStats.length - 1 && (
-              <VerticalDivider orientation="vertical" />
-            )}
-          </React.Fragment>
-        ))}
-      </StatsRow>
-
-      <StatsRow direction="row">
-        {bottomRowStats.map((stat, index) => (
-          <React.Fragment key={index}>
-            <StatItem>
-              <StatIcon>{stat.icon}</StatIcon>
-              <StatNumber>{stat.number}</StatNumber>
-              <StatLabel>{stat.label}</StatLabel>
-            </StatItem>
-            {index < bottomRowStats.length - 1 && (
-              <VerticalDivider orientation="vertical" />
-            )}
-          </React.Fragment>
-        ))}
-      </StatsRow>
-    </>
-  );
-
   return (
-    <StatsContainer>
-      <Box sx={{ display: { xs: "none", sm: "block" } }}>
-        <DesktopLayout />
-      </Box>
-      <Box sx={{ display: { xs: "block", sm: "none" } }}>
-        <MobileLayout />
-      </Box>
-    </StatsContainer>
+    <div className="relative -top-12 sm:top-[-48px] z-10 bg-white rounded-xl sm:rounded-[16px] shadow-[0_8px_32px_rgba(133,133,133,0.1)] p-5 sm:p-8 flex flex-col gap-8 sm:gap-16">
+      {/* Desktop Layout */}
+      <div className="hidden sm:flex flex-col gap-14">
+        <div className="flex justify-around items-center gap-8">
+          {topRowStats.map((stat, idx) => (
+            <React.Fragment key={idx}>
+              <div className="flex flex-col items-center text-center gap-4">
+                <div className="w-10 h-10 sm:w-10 sm:h-10 flex items-center justify-center">
+                  {stat.icon}
+                </div>
+                <p className="text-4xl font-semibold text-black sm:text-[40px]">
+                  {stat.number}
+                </p>
+                <p className="text-base text-gray-500">{stat.label}</p>
+              </div>
+              {idx < topRowStats.length - 1 && (
+                <div className="h-[97px] w-[1px] bg-gray-300"></div>
+              )}
+            </React.Fragment>
+          ))}
+        </div>
+
+        <div className="flex justify-around items-center gap-8">
+          {bottomRowStats.map((stat, idx) => (
+            <React.Fragment key={idx}>
+              <div className="flex flex-col items-center text-center gap-4">
+                <div className="w-10 h-10 flex items-center justify-center">
+                  {stat.icon}
+                </div>
+                <p className="text-4xl font-semibold text-black sm:text-[40px]">
+                  {stat.number}
+                </p>
+                <p className="text-base text-gray-500">{stat.label}</p>
+              </div>
+              {idx < bottomRowStats.length - 1 && (
+                <div className="h-[97px] w-[1px] bg-gray-300"></div>
+              )}
+            </React.Fragment>
+          ))}
+        </div>
+      </div>
+
+      {/* Mobile Layout */}
+      <div className="flex flex-col sm:hidden gap-8">
+        {/* Row 1 */}
+        <div className="flex justify-between items-center gap-4">
+          <div className="flex flex-col items-center gap-2 text-center flex-1">
+            <div className="w-8 h-8 flex items-center justify-center">
+              {topRowStats[0].mobileIcon}
+            </div>
+            <p className="text-2xl font-semibold">{topRowStats[0].number}</p>
+            <p className="text-xs text-gray-500">{topRowStats[0].label}</p>
+          </div>
+          <div className="h-[80px] w-[1px] bg-gray-300"></div>
+          <div className="flex flex-col items-center gap-2 text-center flex-1">
+            <div className="w-7 h-7 flex items-center justify-center">
+              {topRowStats[1].mobileIcon}
+            </div>
+            <p className="text-2xl font-semibold">{topRowStats[1].number}</p>
+            <p className="text-xs text-gray-500">{topRowStats[1].label}</p>
+          </div>
+        </div>
+
+        {/* Row 2 */}
+        <div className="flex justify-between items-center gap-4">
+          <div className="flex flex-col items-center gap-2 text-center flex-1">
+            <div className="w-7 h-7 flex items-center justify-center">
+              {topRowStats[2].mobileIcon}
+            </div>
+            <p className="text-2xl font-semibold">{topRowStats[2].number}</p>
+            <p className="text-xs text-gray-500">{topRowStats[2].label}</p>
+          </div>
+          <div className="h-[80px] w-[1px] bg-gray-300"></div>
+          <div className="flex flex-col items-center gap-2 text-center flex-1">
+            <div className="w-8 h-8 flex items-center justify-center">
+              {bottomRowStats[0].mobileIcon}
+            </div>
+            <p className="text-2xl font-semibold">{bottomRowStats[0].number}</p>
+            <p className="text-xs text-gray-500">{bottomRowStats[0].label}</p>
+          </div>
+        </div>
+
+        {/* Row 3 */}
+        <div className="flex justify-between items-center gap-4">
+          <div className="flex flex-col items-center gap-2 text-center flex-1">
+            <div className="w-7 h-8 flex items-center justify-center">
+              {bottomRowStats[1].mobileIcon}
+            </div>
+            <p className="text-2xl font-semibold">{bottomRowStats[1].number}</p>
+            <p className="text-xs text-gray-500">{bottomRowStats[1].label}</p>
+          </div>
+          <div className="h-[80px] w-[1px] bg-gray-300"></div>
+          <div className="flex flex-col items-center gap-2 text-center flex-1">
+            <div className="w-8 h-8 flex items-center justify-center">
+              {bottomRowStats[2].mobileIcon}
+            </div>
+            <p className="text-2xl font-semibold">{bottomRowStats[2].number}</p>
+            <p className="text-xs text-gray-500">{bottomRowStats[2].label}</p>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

@@ -1,124 +1,7 @@
 "use client";
 import React from "react";
-import {
-  Box,
-  Typography,
-  Button,
-  Stack,
-  Card,
-  CardContent,
-  CardMedia,
-  IconButton,
-  Chip,
-} from "@mui/material";
-import { styled } from "@mui/material/styles";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
-
-const ActivitiesContainer = styled(Box)({
-  padding: "64px 32px",
-});
-
-const SectionHeader = styled(Stack)({
-  justifyContent: "space-between",
-  alignItems: "center",
-  marginBottom: "32px",
-});
-
-const SectionTitle = styled(Typography)(({ theme }) => ({
-  fontSize: "32px",
-  fontWeight: 600,
-  color: theme.palette.text.primary,
-  fontFamily: '"Playfair Display", serif',
-}));
-
-const ViewAllButton = styled(Button)(({ theme }) => ({
-  color: theme.palette.primary.main,
-  fontSize: "12px",
-  fontWeight: 700,
-  textTransform: "uppercase",
-}));
-
-const ActivitiesGrid = styled(Stack)({
-  gap: "32px",
-  marginBottom: "48px",
-});
-
-const ActivityCard = styled(Card)({
-  width: "384px",
-  borderRadius: "16px",
-  border: "1px solid #e4e4e4",
-});
-
-const ActivityImage = styled(CardMedia)({
-  height: "192px",
-});
-
-const ActivityContent = styled(CardContent)({
-  padding: "24px",
-  display: "flex",
-  flexDirection: "column",
-  gap: "16px",
-});
-
-const DateContainer = styled(Stack)({
-  alignItems: "center",
-  gap: "8px",
-});
-
-const DateIcon = styled(CalendarTodayIcon)(({ theme }) => ({
-  width: "20px",
-  height: "20px",
-  color: theme.palette.primary.main,
-}));
-
-const DateText = styled(Typography)(({ theme }) => ({
-  fontSize: "14px",
-  fontWeight: 700,
-  color: theme.palette.text.primary,
-}));
-
-const ActivityTitle = styled(Typography)(({ theme }) => ({
-  fontSize: "18px",
-  fontWeight: 700,
-  color: "#333333",
-}));
-
-const ActivityDescription = styled(Typography)(({ theme }) => ({
-  fontSize: "14px",
-  fontWeight: 400,
-  lineHeight: "21px",
-  color: "#595959",
-}));
-
-const NavigationControls = styled(Stack)({
-  justifyContent: "space-between",
-  alignItems: "center",
-});
-
-const ProgressIndicators = styled(Stack)({
-  gap: "8px",
-});
-
-const ProgressBar = styled(Box, {
-  shouldForwardProp: (prop) => prop !== "active",
-})<{ active?: boolean }>(({ active, theme }) => ({
-  width: "500px",
-  height: "4px",
-  backgroundColor: active ? theme.palette.primary.main : "#d1d1d1",
-  borderRadius: "2px",
-}));
-
-const NavButton = styled(IconButton)(({ theme }) => ({
-  backgroundColor: "rgba(0, 51, 153, 0.1)",
-  color: theme.palette.primary.main,
-  width: "42px",
-  height: "42px",
-  "&:hover": {
-    backgroundColor: "rgba(0, 51, 153, 0.2)",
-  },
-}));
+import Image from "next/image";
+import { Calendar, ChevronLeft, ChevronRight } from "lucide-react";
 
 const ActivitiesSection: React.FC = () => {
   const activities = [
@@ -146,54 +29,65 @@ const ActivitiesSection: React.FC = () => {
   ];
 
   return (
-    <ActivitiesContainer>
-      <SectionHeader direction="row" position="relative">
-        <SectionTitle
-          sx={{
-            mx: { xs: 0, sm: "auto" },
-          }}
-        >
+    <section className="relative">
+      {/* Header */}
+      <div className="w-full md:text-center mb-8 relative">
+        <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold mx-auto sm:mx-0 text-black">
           FBG Activities
-        </SectionTitle>
-        <ViewAllButton sx={{ position: "absolute", right: 0 }}>
+        </h2>
+        <button className="absolute right-0 top-4 text-[#003399] font-bold text-xs uppercase">
           View All
-        </ViewAllButton>
-      </SectionHeader>
+        </button>
+      </div>
 
-      <ActivitiesGrid direction={{ xs: "column", sm: "row" }}>
-        {activities.map((activity, index) => (
-          <ActivityCard key={index}>
-            <ActivityImage image={activity.image} title={activity.title} />
-            <ActivityContent>
-              <DateContainer direction="row">
-                <DateIcon />
-                <DateText>{activity.date}</DateText>
-              </DateContainer>
-
-              <ActivityTitle>{activity.title}</ActivityTitle>
-
-              <ActivityDescription>{activity.description}</ActivityDescription>
-            </ActivityContent>
-          </ActivityCard>
+      {/* Activities Grid */}
+      <div className="flex justify-center gap-5 flex-col md:flex-row mb-4">
+        {activities.map((activity, idx) => (
+          <div
+            key={idx}
+            className="flex-1 min-w-0 border border-gray-200 rounded-xl flex-shrink-0 overflow-hidden"
+          >
+            <Image
+              src={activity.image}
+              alt={activity.title}
+              width={350}
+              height={194}
+              className="w-full"
+            />
+            <div className="p-6 flex flex-col gap-4">
+              <div className="flex items-center gap-2">
+                <Calendar className="w-5 h-5" />
+                <span className="text-sm font-bold text-black">
+                  {activity.date}
+                </span>
+              </div>
+              <h3 className="text-lg font-bold text-[#333333]">
+                {activity.title}
+              </h3>
+              <p className="text-sm font-normal text-gray-600">
+                {activity.description}
+              </p>
+            </div>
+          </div>
         ))}
-      </ActivitiesGrid>
+      </div>
 
-      <NavigationControls direction="row" display={{ xs: "none", sm: "flex" }}>
-        <ProgressIndicators direction="row">
-          <ProgressBar active />
-          <ProgressBar />
-        </ProgressIndicators>
+      <div className="md:flex hidden justify-between items-center md:flex-row flex-col">
+        <div className="flex w-full">
+          <div className="w-full max-w-[48%] h-1 md:h-[4px] bg-[#003399] rounded-[2px]"></div>
+          <div className="w-full max-w-[48%] h-1 md:h-[4px] bg-[#d1d1d1] rounded-[2px]"></div>
+        </div>
 
-        <Stack direction="row" spacing={1}>
-          <NavButton>
-            <ArrowBackIcon />
-          </NavButton>
-          <NavButton>
-            <ArrowForwardIcon />
-          </NavButton>
-        </Stack>
-      </NavigationControls>
-    </ActivitiesContainer>
+        <div className="flex gap-2 md:gap-1">
+          <div className="border border-[#9CA3AF] md:w-[42px] md:h-[42px] rounded-full flex items-center justify-center text-[#9CA3AF] cursor-pointer">
+            <ChevronLeft fontSize="small" />
+          </div>
+          <div className="border border-black md:w-[42px] md:h-[42px] rounded-full flex items-center justify-center cursor-pointer">
+            <ChevronRight fontSize="small" />
+          </div>
+        </div>
+      </div>
+    </section>
   );
 };
 

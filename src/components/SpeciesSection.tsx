@@ -1,137 +1,9 @@
 "use client";
 import React from "react";
-import {
-  Box,
-  Typography,
-  Button,
-  Stack,
-  Card,
-  CardContent,
-  CardMedia,
-  IconButton,
-} from "@mui/material";
-import { styled } from "@mui/material/styles";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import Image from "next/image";
 import ArrowRightIcon from "./icons/ArrowRightIcon";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
-// ---------- Common Styles ----------
-const SectionContainer = styled(Box)({
-  padding: "64px 32px",
-});
-
-const SectionHeader = styled(Stack)({
-  justifyContent: "space-between",
-  alignItems: "center",
-  marginBottom: "32px",
-  minHeight: "48px",
-});
-
-const SectionTitle = styled(Typography)(({ theme }) => ({
-  fontSize: "32px",
-  fontWeight: 600,
-  color: theme.palette.text.primary,
-  fontFamily: '"Playfair Display", serif',
-}));
-
-const ViewAllButton = styled(Button)(({ theme }) => ({
-  color: theme.palette.primary.main,
-  fontSize: "12px",
-  fontWeight: 700,
-  textTransform: "uppercase",
-}));
-
-// ---------- Mobile Carousel ----------
-const MobileCarousel = styled(Box)(({ theme }) => ({
-  [theme.breakpoints.down("sm")]: {
-    overflowX: "auto",
-    "&::-webkit-scrollbar": { display: "none" },
-    scrollbarWidth: "none",
-    msOverflowStyle: "none",
-  },
-}));
-
-const MobileCarouselInner = styled(Stack)(({ theme }) => ({
-  [theme.breakpoints.down("sm")]: {
-    flexDirection: "row",
-    gap: "16px",
-    paddingBottom: "8px",
-    width: "max-content",
-  },
-}));
-
-// ---------- Species Styles ----------
-const SpeciesGrid = styled(Stack)(({ theme }) => ({
-  gap: "32px",
-  marginBottom: "48px",
-  flexDirection: "row",
-  [theme.breakpoints.down("sm")]: { display: "none" },
-}));
-
-const SpeciesCard = styled(Card)(({ theme }) => ({
-  flex: "1 1 0",
-  minWidth: 0,
-  // width: "350px",
-  borderRadius: "16px",
-  border: "1px solid #e4e4e4",
-  flexShrink: 0,
-  [theme.breakpoints.down("sm")]: { width: "280px" },
-}));
-
-const SpeciesImage = styled(CardMedia)({
-  margin: "13px 13px 0px 13px",
-  height: "194px",
-  borderRadius: "8px",
-});
-
-const SpeciesContent = styled(CardContent)({
-  padding: "16px",
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-});
-
-const SpeciesName = styled(Typography)(({ theme }) => ({
-  fontSize: "18px",
-  fontWeight: 700,
-  color: theme.palette.text.primary,
-}));
-
-const KnowMoreButton = styled(Button)(({ theme }) => ({
-  color: theme.palette.primary.main,
-  fontSize: "12px",
-  fontWeight: 700,
-  textTransform: "uppercase",
-  minWidth: "auto",
-}));
-
-const NavigationControls = styled(Stack)({
-  justifyContent: "space-between",
-  alignItems: "center",
-});
-
-const ProgressIndicators = styled(Stack)({
-  gap: "8px",
-});
-
-const ProgressBar = styled(Box, {
-  shouldForwardProp: (prop) => prop !== "active",
-})<{ active?: boolean }>(({ active, theme }) => ({
-  width: "500px",
-  height: "4px",
-  backgroundColor: active ? theme.palette.primary.main : "#d1d1d1",
-  borderRadius: "2px",
-}));
-
-const NavButton = styled(IconButton)(({ theme }) => ({
-  backgroundColor: "rgba(0, 51, 153, 0.1)",
-  color: theme.palette.primary.main,
-  width: "42px",
-  height: "42px",
-  "&:hover": { backgroundColor: "rgba(0, 51, 153, 0.2)" },
-}));
-
-// ---------- Component ----------
 const SpeciesSection: React.FC = () => {
   const species = [
     {
@@ -140,83 +12,107 @@ const SpeciesSection: React.FC = () => {
     },
     {
       name: "Banyan Tree",
-      image:
-        "https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=400&h=200&fit=crop",
+      image: "/images/neem-tree.jpg",
     },
     {
       name: "Mango Tree",
-      image:
-        "https://images.unsplash.com/photo-1615671524827-c1fe3973b648?w=400&h=200&fit=crop",
+      image: "/images/neem-tree.jpg",
     },
   ];
 
   return (
-    <SectionContainer>
-      <SectionHeader direction="row" position="relative">
-        <SectionTitle sx={{ mx: { xs: 0, sm: "auto" } }}>Species</SectionTitle>
-        <ViewAllButton sx={{ position: "absolute", right: 0 }}>
+    <section className="">
+      {/* Header */}
+      <div className="w-full md:text-center mb-8 relative">
+        <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold mx-auto sm:mx-0 text-black">
+          Species{" "}
+        </h2>
+        <button className="absolute right-0 top-4 text-[#003399] font-bold text-xs uppercase">
           View All
-        </ViewAllButton>
-      </SectionHeader>
+        </button>
+      </div>
 
-      {/* Desktop */}
-      <SpeciesGrid direction={{ xs: "column", sm: "row" }}>
-        {species.map((item, index) => (
-          <SpeciesCard key={index}>
-            <SpeciesImage image={item.image} title={item.name} />
-            <SpeciesContent>
-              <SpeciesName>{item.name}</SpeciesName>
-              <KnowMoreButton
-                endIcon={
-                  <ArrowRightIcon width={22} height={22} color="#003399" />
-                }
-              >
-                Know More
-              </KnowMoreButton>
-            </SpeciesContent>
-          </SpeciesCard>
+      {/* Desktop Grid */}
+      <div className="hidden sm:flex gap-8 mb-8">
+        {species.map((item, idx) => (
+          <div
+            key={idx}
+            className="flex-1 min-w-0 border border-gray-200 rounded-xl flex-shrink-0"
+          >
+            <div className="overflow-hidden w-full md:p-4 p-2">
+              <Image
+                src={item.image}
+                alt={item.name}
+                width={350}
+                height={194}
+                className="w-full rounded-xl"
+              />
+            </div>
+            <div className="p-4 flex justify-between items-center">
+              <p className="text-lg font-bold text-black truncate">
+                {item.name}
+              </p>
+              <button className="flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer">
+                Know More{" "}
+                <ArrowRightIcon width={22} height={22} color="#003399" />
+              </button>
+            </div>
+          </div>
         ))}
-      </SpeciesGrid>
+      </div>
 
-      {/* Mobile */}
-      <Box sx={{ display: { xs: "block", sm: "none" }, mb: 6 }}>
-        <MobileCarousel>
-          <MobileCarouselInner>
-            {species.map((item, index) => (
-              <SpeciesCard key={index}>
-                <SpeciesImage image={item.image} title={item.name} />
-                <SpeciesContent>
-                  <SpeciesName>{item.name}</SpeciesName>
-                  <KnowMoreButton
-                    endIcon={
-                      <ArrowRightIcon width={22} height={22} color="#003399" />
-                    }
-                  >
-                    Know More
-                  </KnowMoreButton>
-                </SpeciesContent>
-              </SpeciesCard>
-            ))}
-          </MobileCarouselInner>
-        </MobileCarousel>
-      </Box>
+      {/* Mobile Carousel */}
+      <div className="sm:hidden mb-6 overflow-x-auto scrollbar-none">
+        <div className="flex gap-4 pb-2 w-max">
+          {species.map((item, idx) => (
+            <div
+              key={idx}
+              className="flex-shrink-0 w-[280px] border border-gray-200 rounded-xl"
+            >
+              <div className="pt-3 px-3">
+                <Image
+                  src={item.image}
+                  alt={item.name}
+                  width={280}
+                  height={194}
+                  className="rounded-md object-cover"
+                />
+              </div>
+              <div className="p-4 flex sm:flex-root flex-col justify-between sm:items-center max-sm:gap-2">
+                <p className="text-lg font-bold text-black truncate">
+                  {item.name}
+                </p>
+                <button className="flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer">
+                  Know More{" "}
+                  <ArrowRightIcon
+                    width={22}
+                    height={22}
+                    color="#003399"
+                    className="max-sm:w-4"
+                  />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
 
-      {/* Desktop Navigation */}
-      <NavigationControls direction="row" display={{ xs: "none", sm: "flex" }}>
-        <ProgressIndicators direction="row">
-          <ProgressBar active />
-          <ProgressBar />
-        </ProgressIndicators>
-        <Stack direction="row" spacing={1}>
-          <NavButton>
-            <ArrowBackIcon />
-          </NavButton>
-          <NavButton>
-            <ArrowForwardIcon />
-          </NavButton>
-        </Stack>
-      </NavigationControls>
-    </SectionContainer>
+      <div className="md:flex hidden justify-between items-center md:flex-row flex-col">
+        <div className="flex w-full">
+          <div className="w-full max-w-[48%] h-1 md:h-[4px] bg-[#003399] rounded-[2px]"></div>
+          <div className="w-full max-w-[48%] h-1 md:h-[4px] bg-[#d1d1d1] rounded-[2px]"></div>
+        </div>
+
+        <div className="flex gap-2 md:gap-1">
+          <div className="border border-[#9CA3AF] md:w-[42px] md:h-[42px] rounded-full flex items-center justify-center text-[#9CA3AF] cursor-pointer">
+            <ChevronLeft fontSize="small" />
+          </div>
+          <div className="border border-black md:w-[42px] md:h-[42px] rounded-full flex items-center justify-center cursor-pointer">
+            <ChevronRight fontSize="small" />
+          </div>
+        </div>
+      </div>
+    </section>
   );
 };
 

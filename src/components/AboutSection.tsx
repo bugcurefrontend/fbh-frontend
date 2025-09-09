@@ -1,110 +1,42 @@
 "use client";
 import React from "react";
-import { Box, Typography, Button, Stack } from "@mui/material";
-import { styled } from "@mui/material/styles";
 import Image from "next/image";
 import ArrowRightIcon from "./icons/ArrowRightIcon";
 
-const AboutContainer = styled(Stack)(({ theme }) => ({
-  gap: "32px",
-  padding: "64px 32px",
-  alignItems: "center",
-
-  [theme.breakpoints.down("md")]: {
-    flexDirection: "column",
-    textAlign: "center",
-    padding: "40px 20px",
-  },
-}));
-
-const AboutImage = styled(Image)(({ theme }) => ({
-  borderRadius: "16px",
-  objectFit: "cover",
-
-  [theme.breakpoints.down("md")]: {
-    width: "100% !important",
-    height: "auto !important",
-  },
-}));
-
-const AboutContent = styled(Stack)(({ theme }) => ({
-  gap: "24px",
-  flex: 1,
-  maxWidth: "556px",
-
-  [theme.breakpoints.down("md")]: {
-    maxWidth: "100%",
-    alignItems: "center",
-  },
-}));
-
-const AboutTitle = styled(Typography)(({ theme }) => ({
-  fontSize: "32px",
-  fontWeight: 600,
-  color: theme.palette.text.primary,
-  fontFamily: '"Playfair Display", serif',
-
-  [theme.breakpoints.down("sm")]: {
-    fontSize: "24px",
-  },
-}));
-
-const AboutDescription = styled(Typography)(({ theme }) => ({
-  fontSize: "16px",
-  fontWeight: 600,
-  lineHeight: "24px",
-  color: theme.palette.text.primary,
-
-  [theme.breakpoints.down("sm")]: {
-    fontSize: "14px",
-  },
-}));
-
-const KnowMoreButton = styled(Button)(({ theme }) => ({
-  alignSelf: "flex-start",
-  color: theme.palette.primary.main,
-  fontSize: "12px",
-  fontWeight: 700,
-  textTransform: "uppercase",
-  padding: "12px 16px",
-  borderRadius: "8px",
-  border: `2px solid ${theme.palette.primary.main}`,
-  backgroundColor: "transparent",
-  "&:hover": {
-    backgroundColor: "rgba(0, 51, 153, 0.08)",
-  },
-
-  [theme.breakpoints.down("md")]: {
-    alignSelf: "center",
-  },
-}));
-
 const AboutSection: React.FC = () => {
   return (
-    <AboutContainer direction="row">
-      <AboutImage
+    <section className="flex md:flex-row flex-col gap-8 items-center">
+      <Image
         src="/images/architecture-circular.png"
         alt="Circular architecture with gardens"
         width={588}
         height={404}
+        className="rounded-xl object-cover w-full h-auto md:w-[50%]"
       />
 
-      <AboutContent>
-        <AboutTitle>What is Forests By Heartfulness?</AboutTitle>
+      {/* Content */}
+      <div className="flex flex-col gap-5 flex-1 max-w-[556px] md:max-w-full">
+        <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold text-black">
+          What is Forests By Heartfulness?
+        </h2>
 
-        <AboutDescription>
-          Forests By Heartfulness is rejuvenating Earth's native, endangered,
+        <p className="font-semibold sm:text-base text-sm leading-6 text-black">
+          Forests By Heartfulness is rejuvenating Earth’s native, endangered,
           and endemic species through green action, cutting-edge research,
           ecological empathy and a reconnection between humans and nature.
-        </AboutDescription>
+        </p>
 
-        <KnowMoreButton
-          endIcon={<ArrowRightIcon width={22} height={22} color="#003399" />}
-        >
-          Know More
-        </KnowMoreButton>
-      </AboutContent>
-    </AboutContainer>
+        <button className="flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer">
+          Know More{" "}
+          <ArrowRightIcon
+            width={22}
+            height={22}
+            color="#003399"
+            className="max-sm:w-4"
+          />
+        </button>
+      </div>
+    </section>
   );
 };
 

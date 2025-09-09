@@ -1,4 +1,3 @@
-import { Box } from "@mui/material";
 import Header from "../src/components/Header";
 import HeroSection from "../src/components/HeroSection";
 import StatisticsSection from "../src/components/StatisticsSection";
@@ -13,10 +12,11 @@ import Footer from "../src/components/Footer";
 
 export default function Home() {
   return (
-    <Box sx={{ minHeight: "100vh" }}>
+    <main className="min-h-screen">
       <Header />
       <HeroSection />
-      <Box sx={{ maxWidth: "1200px", mx: "auto" }}>
+
+      <section className="max-w-7xl mx-auto w-full md:px-8 px-4 space-y-16 mb-16">
         <StatisticsSection />
         <AboutSection />
         <PartnersSection />
@@ -25,8 +25,9 @@ export default function Home() {
         <ActivitiesSection />
         <TestimonialsSection />
         <CaseStudiesSection />
-      </Box>
+      </section>
+
       <Footer />
-    </Box>
+    </main>
   );
 }

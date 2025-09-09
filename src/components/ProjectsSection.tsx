@@ -1,148 +1,8 @@
 "use client";
 import React from "react";
-import {
-  Box,
-  Typography,
-  Button,
-  Stack,
-  Card,
-  CardContent,
-  CardMedia,
-  Chip,
-} from "@mui/material";
-import { styled } from "@mui/material/styles";
+import Image from "next/image";
 import LocationPinIcon from "./icons/LocationPinIcon";
 
-// ---------- Common Styles ----------
-const SectionContainer = styled(Box)({
-  padding: "64px 32px",
-});
-
-const SectionHeader = styled(Stack)({
-  justifyContent: "space-between",
-  alignItems: "center",
-  marginBottom: "32px",
-  minHeight: "48px",
-});
-
-const SectionTitle = styled(Typography)(({ theme }) => ({
-  fontSize: "32px",
-  fontWeight: 600,
-  color: theme.palette.text.primary,
-  fontFamily: '"Playfair Display", serif',
-}));
-
-const ViewAllButton = styled(Button)(({ theme }) => ({
-  color: theme.palette.primary.main,
-  fontSize: "12px",
-  fontWeight: 700,
-  textTransform: "uppercase",
-}));
-
-// ---------- Mobile Carousel ----------
-const MobileCarousel = styled(Box)(({ theme }) => ({
-  [theme.breakpoints.down("sm")]: {
-    overflowX: "auto",
-    "&::-webkit-scrollbar": { display: "none" },
-    scrollbarWidth: "none",
-    msOverflowStyle: "none",
-  },
-}));
-
-const MobileCarouselInner = styled(Stack)(({ theme }) => ({
-  [theme.breakpoints.down("sm")]: {
-    flexDirection: "row",
-    gap: "16px",
-    paddingBottom: "8px",
-    width: "max-content",
-  },
-}));
-
-// ---------- Projects Styles ----------
-const ProjectsGrid = styled(Box)(({ theme }) => ({
-  display: "grid",
-  gridTemplateColumns: "repeat(3, 1fr)",
-  gap: "32px",
-  [theme.breakpoints.down("sm")]: { display: "none" },
-}));
-
-const ProjectCard = styled(Card)(({ theme }) => ({
-  borderRadius: "16px",
-  boxShadow: "0px 1px 2px rgba(133, 133, 133, 0.30)",
-  overflow: "hidden",
-  flexShrink: 0,
-  [theme.breakpoints.down("sm")]: { width: "280px" },
-}));
-
-const ProjectImageContainer = styled(Box)({
-  position: "relative",
-  height: "200px",
-});
-
-const ProjectImage = styled(CardMedia)({
-  height: "100%",
-  position: "relative",
-});
-
-const ProjectBadges = styled(Stack)({
-  position: "absolute",
-  top: "16px",
-  left: "16px",
-  gap: "5px",
-});
-
-const ProjectBadge = styled(Chip)({
-  background: "rgba(51, 83, 62, 0.55)",
-  backdropFilter: "blur(2px)",
-  color: "#fff",
-  fontSize: "12px",
-  fontWeight: 600,
-  height: "24px",
-  radius: "4px",
-  padding: "4px",
-});
-
-const ProjectContent = styled(CardContent)({
-  padding: "24px",
-});
-
-const ProjectInfo = styled(Stack)({
-  marginBottom: "24px",
-  display: "flex",
-  flexDirection: "row",
-  justifyContent: "space-between",
-  alignItems: "center",
-});
-
-const ProjectName = styled(Typography)(({ theme }) => ({
-  fontSize: "18px",
-  fontWeight: 700,
-  color: theme.palette.text.primary,
-}));
-
-const ProjectLocation = styled(Stack)({
-  alignItems: "center",
-  gap: "8px",
-});
-
-const LocationText = styled(Typography)(({ theme }) => ({
-  fontSize: "16px",
-  fontWeight: 600,
-  color: theme.palette.text.primary,
-}));
-
-const DonateButton = styled(Button)(({ theme }) => ({
-  backgroundColor: theme.palette.primary.main,
-  color: "#ffffff",
-  fontSize: "16px",
-  fontWeight: 700,
-  padding: "12px 24px",
-  borderRadius: "8px",
-  width: "100%",
-  "&:hover": { backgroundColor: theme.palette.primary.dark },
-}));
-
-// ---------- Component ----------
 const ProjectsSection: React.FC = () => {
   const projects = [
     {
@@ -190,76 +50,109 @@ const ProjectsSection: React.FC = () => {
   ];
 
   return (
-    <SectionContainer>
-      <SectionHeader direction="row" position="relative">
-        <SectionTitle sx={{ mx: { xs: 0, sm: "auto" } }}>Projects</SectionTitle>
-        <ViewAllButton sx={{ position: "absolute", right: 0 }}>
+    <section className="">
+      {/* Header */}
+      <div className="w-full md:text-center mb-8 relative">
+        <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold mx-auto sm:mx-0 text-black">
+          Projects
+        </h2>
+        <button className="absolute right-0 top-4 text-[#003399] font-bold text-xs uppercase">
           View All
-        </ViewAllButton>
-      </SectionHeader>
+        </button>
+      </div>
 
       {/* Desktop Grid */}
-      <ProjectsGrid>
-        {projects.map((project, index) => (
-          <ProjectCard key={index}>
-            <ProjectImageContainer>
-              <ProjectImage image={project.image} title={project.name} />
-              <ProjectBadges direction="row">
-                {project.badges.map((badge, badgeIndex) => (
-                  <ProjectBadge key={badgeIndex} label={badge} size="small" />
+      <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-6">
+        {projects.map((project, idx) => (
+          <div
+            key={idx}
+            className="rounded-xl shadow-sm overflow-hidden border border-gray-200 flex flex-col"
+          >
+            <div className="relative h-52">
+              <Image
+                src={project.image}
+                alt={project.name}
+                fill
+                className="object-cover rounded-md"
+              />
+              <div className="absolute top-4 left-4 flex gap-3">
+                {project.badges.map((badge, i) => (
+                  <span
+                    key={i}
+                    className="bg-[#33533E8C] backdrop-blur-sm text-white text-xs font-semibold px-2 py-1 rounded"
+                  >
+                    {badge}
+                  </span>
                 ))}
-              </ProjectBadges>
-            </ProjectImageContainer>
-
-            <ProjectContent>
-              <ProjectInfo>
-                <ProjectName>{project.name}</ProjectName>
-                <ProjectLocation direction="row">
+              </div>
+            </div>
+            <div className="p-6 flex flex-col gap-6">
+              <div className="flex justify-between items-center">
+                <p className="font-bold text-lg text-black truncate">
+                  {project.name}
+                </p>
+                <div className="flex items-center gap-2">
                   <LocationPinIcon width={13} height={16} color="#19212c" />
-                  <LocationText>{project.location}</LocationText>
-                </ProjectLocation>
-              </ProjectInfo>
-              <DonateButton variant="contained">DONATE</DonateButton>
-            </ProjectContent>
-          </ProjectCard>
+                  <span className="text-base font-semibold text-black">
+                    {project.location}
+                  </span>
+                </div>
+              </div>
+              <button className="bg-[#003399] text-white font-bold text-base py-3 rounded w-full hover:bg-[#002080]">
+                DONATE
+              </button>
+            </div>
+          </div>
         ))}
-      </ProjectsGrid>
+      </div>
 
       {/* Mobile Carousel */}
-      <Box sx={{ display: { xs: "block", sm: "none" } }}>
-        <MobileCarousel>
-          <MobileCarouselInner>
-            {projects.map((project, index) => (
-              <ProjectCard key={index}>
-                <ProjectImageContainer>
-                  <ProjectImage image={project.image} title={project.name} />
-                  <ProjectBadges direction="row">
-                    {project.badges.map((badge, badgeIndex) => (
-                      <ProjectBadge
-                        key={badgeIndex}
-                        label={badge}
-                        size="small"
-                      />
-                    ))}
-                  </ProjectBadges>
-                </ProjectImageContainer>
-
-                <ProjectContent>
-                  <ProjectInfo>
-                    <ProjectName>{project.name}</ProjectName>
-                    <ProjectLocation direction="row">
-                      <LocationPinIcon width={13} height={16} color="#19212c" />
-                      <LocationText>{project.location}</LocationText>
-                    </ProjectLocation>
-                  </ProjectInfo>
-                  <DonateButton variant="contained">DONATE</DonateButton>
-                </ProjectContent>
-              </ProjectCard>
-            ))}
-          </MobileCarouselInner>
-        </MobileCarousel>
-      </Box>
-    </SectionContainer>
+      <div className="sm:hidden overflow-x-auto scrollbar-none">
+        <div className="flex gap-4 pb-2 w-max">
+          {projects.map((project, idx) => (
+            <div
+              key={idx}
+              className="flex-shrink-0 w-[280px] rounded-xl shadow-sm overflow-hidden border border-gray-200 flex flex-col"
+            >
+              <div className="relative h-52">
+                <Image
+                  src={project.image}
+                  alt={project.name}
+                  fill
+                  className="object-cover rounded-md"
+                />
+                <div className="absolute top-4 left-4 flex gap-1">
+                  {project.badges.map((badge, i) => (
+                    <span
+                      key={i}
+                      className="bg-[#33533E8C] backdrop-blur-sm text-white text-xs font-semibold px-2 py-1 rounded"
+                    >
+                      {badge}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div className="px-2 py-3 flex flex-col gap-6">
+                <div className="flex justify-between items-center">
+                  <p className="font-bold text-lg text-black truncate">
+                    {project.name}
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <LocationPinIcon width={13} height={16} color="#19212c" />
+                    <span className="text-base font-semibold text-black">
+                      {project.location}
+                    </span>
+                  </div>
+                </div>
+                <button className="bg-[#003399] text-white font-bold text-base py-[6px] rounded w-full hover:bg-[#002080]">
+                  DONATE
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 };
 

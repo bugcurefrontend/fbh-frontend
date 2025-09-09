@@ -1,13 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: [],
-    unoptimized: false,
+    domains: ["images.unsplash.com"], // allow Unsplash images
   },
-  // Enable static exports if needed
-  // output: 'export',
-  // trailingSlash: true,
-  // images: { unoptimized: true }
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

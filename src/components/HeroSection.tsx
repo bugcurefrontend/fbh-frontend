@@ -1,134 +1,41 @@
 "use client";
 import React from "react";
-import { Box, Typography, Button, Paper, IconButton } from "@mui/material";
-import { styled } from "@mui/material/styles";
-import {
-  DisplaySettings,
-  KeyboardArrowLeft,
-  KeyboardArrowRight,
-} from "@mui/icons-material";
 import Image from "next/image";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
-const HeroContainer = styled(Box)(({ theme }) => ({
-  height: "604px",
-  backgroundImage:
-    'linear-gradient(0deg, rgba(0, 13, 38, 0.30), rgba(0, 13, 38, 0.30)), url("/images/hero-forest-bg.png")',
-  backgroundSize: "cover",
-  backgroundPosition: "center",
-  backgroundRepeat: "no-repeat",
-  display: "flex",
-  alignItems: "center",
-  position: "relative",
-  paddingTop: "80px",
-
-  [theme.breakpoints.down("sm")]: {
-    height: "403px",
-    paddingTop: "60px",
-  },
-}));
-
-const HeroContent = styled(Box)(({ theme }) => ({
-  maxWidth: "582px",
-
-  [theme.breakpoints.down("sm")]: { maxWidth: "276px" },
-}));
-
-const HeroTitle = styled(Typography)(({ theme }) => ({
-  fontSize: "64px",
-  fontWeight: 700,
-  lineHeight: "76.8px",
-  color: "#ffffff",
-  marginBottom: "40px",
-
-  [theme.breakpoints.down("sm")]: {
-    fontSize: "38px",
-    lineHeight: "36px",
-    marginBottom: "24px",
-    width: "276px",
-  },
-}));
-
-const PlantButton = styled(Button)(({ theme }) => ({
-  backgroundColor: theme.palette.primary.main,
-  color: "#ffffff",
-  fontSize: "16px",
-  fontWeight: 700,
-  width: "360px",
-  borderRadius: "8px",
-  "&:hover": {
-    backgroundColor: theme.palette.primary.dark,
-  },
-
-  [theme.breakpoints.down("sm")]: {
-    width: "100%",
-    fontSize: "14px",
-    padding: "6px 16px",
-  },
-}));
-
-const NavigationControls = styled(Box)(({ theme }) => ({
-  position: "absolute",
-  right: "32px",
-  bottom: "0",
-  display: "flex",
-  gap: "12px",
-
-  [theme.breakpoints.down("sm")]: {
-    display: "none",
-  },
-}));
-
-const NavButton = styled(IconButton)<{ variant?: "filled" | "outlined" }>(
-  ({ theme, variant }) => ({
-    width: 42,
-    height: 42,
-    borderRadius: "50%",
-    border: variant === "outlined" ? "1px solid rgba(255,255,255,0.6)" : "none",
-    backgroundColor: variant === "filled" ? "#fff" : "transparent",
-    color: variant === "filled" ? "#000" : "rgba(255,255,255,0.8)",
-    transition: "all 0.2s ease",
-    "&:hover": {
-      backgroundColor:
-        variant === "filled"
-          ? "rgba(255,255,255,0.8)"
-          : "rgba(255,255,255,0.2)",
-    },
-  })
-);
-
-const HeroSection: React.FC = () => {
+const HeroSection = () => {
   return (
-    <HeroContainer>
-      <Box
-        maxWidth={1200}
-        mx="auto"
-        width="100%"
-        position="relative"
-        padding={{ xs: "8px 16px", sm: "0 32px" }}
-      >
-        <HeroContent>
-          <HeroTitle>Putting heart back into the Earth</HeroTitle>
-          <PlantButton variant="contained">PLANT A TREE</PlantButton>
-        </HeroContent>
+    <div
+      className="h-[604px] bg-cover bg-center bg-no-repeat relative"
+      style={{
+        backgroundImage:
+          'linear-gradient(0deg, rgba(0, 13, 38, 0.30), rgba(0, 13, 38, 0.30)), url("/images/hero-forest-bg.png")',
+      }}
+    >
+      <div className="max-w-7xl w-full mx-auto relative md:px-8 px-4 pt-[258px]">
+        <div className="sm:max-w-[582px] max-w-[276px]">
+          <h1 className="sm:text-[64px] font-bold sm:leading-[1.2] text-white mb-10 text-[38px] leading-[36px] sm:mb-6">
+            Putting heart back into the Earth
+          </h1>
+          <button className="bg-[#003399] text-white font-bold text-base sm:py-3 py-[6px] rounded max-w-[370px] w-full hover:bg-[#002080]">
+            PlANT A TREE
+          </button>
+        </div>
 
-        <Box
-          display={{ sm: "none", xs: "flex" }}
-          justifyContent="center"
-          mt={6}
-        >
+        <div className="md:hidden absolute -bottom-20 left-1/2 -translate-x-1/2">
           <Image src="/images/dots.png" alt="dots" width={48} height={8} />
-        </Box>
+        </div>
 
-        <NavigationControls>
-          <NavButton variant="outlined">
-            <KeyboardArrowLeft />
-          </NavButton>
-          <NavButton variant="filled">
-            <KeyboardArrowRight />
-          </NavButton>
-        </NavigationControls>
-      </Box>
-    </HeroContainer>
+        <div className="absolute right-8 bottom-0 sm:flex gap-3 hidden">
+          <button className="w-[42px] h-[42px] rounded-full border border-white/60 text-white/80 bg-transparent transition-all hover:bg-white/20 flex items-center justify-center">
+            <ChevronLeft />
+          </button>
+          <button className="w-[42px] h-[42px] rounded-full bg-white text-black transition-all hover:bg-white/80 flex items-center justify-center">
+            <ChevronRight />
+          </button>
+        </div>
+      </div>
+    </div>
   );
 };
 

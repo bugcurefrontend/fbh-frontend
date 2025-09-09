@@ -1,139 +1,12 @@
 "use client";
 import React from "react";
-import { Box, Typography, Stack, Link, IconButton } from "@mui/material";
-import { styled } from "@mui/material/styles";
 import Image from "next/image";
-import InstagramIcon from "@mui/icons-material/Instagram";
-import FacebookIcon from "@mui/icons-material/Facebook";
-import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import TwitterIcon from "@mui/icons-material/Twitter";
-
-const FooterContainer = styled(Box)({
-  backgroundColor: "#0f172a",
-  color: "#e6e6e6",
-});
-
-const FooterMain = styled(Stack)(({ theme }) => ({
-  gap: "64px",
-  padding: "64px 32px",
-  alignItems: "flex-start",
-
-  [theme.breakpoints.down("sm")]: {
-    flexDirection: "column",
-    padding: "24px",
-  },
-}));
-
-const FooterLogo = styled(Box)({
-  width: "389px",
-  display: "flex",
-  flexDirection: "column",
-  gap: "24px",
-});
-
-const LogoImage = styled(Image)({
-  width: "64px",
-  height: "auto",
-});
-
-const AppDownloadButtons = styled(Stack)({
-  gap: "12px",
-});
-
-const FooterLinks = styled(Stack)(({ theme }) => ({
-  gap: "200px",
-  flex: 1,
-
-  [theme.breakpoints.down("sm")]: {
-    gap: "100px",
-  },
-}));
-
-const LinkColumn = styled(Stack)({
-  gap: "16px",
-});
-
-const ColumnTitle = styled(Typography)({
-  fontFamily: "Poppins, sans-serif",
-  fontSize: "18px",
-  fontWeight: 500,
-  color: "#e6e6e6",
-  marginBottom: "8px",
-});
-
-const LinkList = styled(Stack)({
-  gap: "8px",
-});
-
-const FooterLink = styled(Link)({
-  fontFamily: "Poppins, sans-serif",
-  fontSize: "14px",
-  fontWeight: 400,
-  lineHeight: "20px",
-  color: "#e6e6e6",
-  textDecoration: "none",
-  cursor: "pointer",
-  "&:hover": {
-    color: "#ffffff",
-    textDecoration: "underline",
-  },
-});
-
-const SocialLink = styled(Stack)({
-  alignItems: "center",
-  gap: "8px",
-  cursor: "pointer",
-  "&:hover": {
-    "& .MuiTypography-root": {
-      color: "#ffffff",
-    },
-  },
-});
-
-const SocialIcon = styled(IconButton)({
-  color: "#e6e6e6",
-  padding: "4px",
-  "&:hover": {
-    color: "#ffffff",
-  },
-});
-
-const FooterBottom = styled(Stack)(({ theme }) => ({
-  justifyContent: "center",
-  gap: "80px",
-  alignItems: "center",
-  height: "72px",
-  backgroundColor: "black",
-
-  [theme.breakpoints.down("sm")]: {
-    flexDirection: "column",
-    gap: "16px",
-    height: "95px",
-  },
-}));
-
-const Copyright = styled(Typography)({
-  fontFamily: "Poppins, sans-serif",
-  fontSize: "16px",
-  fontWeight: 500,
-  color: "#ffffff",
-});
-
-const LegalLinks = styled(Stack)({
-  gap: "60px",
-});
-
-const LegalLink = styled(Link)({
-  fontFamily: "Poppins, sans-serif",
-  fontSize: "16px",
-  fontWeight: 500,
-  color: "#ffffff",
-  textDecoration: "underline",
-  cursor: "pointer",
-  "&:hover": {
-    opacity: 0.8,
-  },
-});
+import {
+  FacebookIcon,
+  InstagramIcon,
+  LinkedinIcon,
+  TwitterIcon,
+} from "lucide-react";
 
 const Footer: React.FC = () => {
   const usefulLinks = [
@@ -146,74 +19,105 @@ const Footer: React.FC = () => {
   ];
 
   const socialLinks = [
-    { name: "Instagram", icon: <InstagramIcon /> },
-    { name: "Facebook", icon: <FacebookIcon /> },
-    { name: "LinkedIn", icon: <LinkedInIcon /> },
-    { name: "Twitter", icon: <TwitterIcon /> },
+    { name: "Instagram", src: "/images/social/Instagram.png" },
+    { name: "Facebook", src: "/images/social/Facebook.png" },
+    { name: "LinkedIn", src: "/images/social/Linkedin.png" },
+    { name: "Twitter", src: "/images/social/x.png" },
   ];
 
   return (
-    <FooterContainer>
-      <Box maxWidth="1200px" mx="auto">
-        <FooterMain direction="row">
-          <FooterLogo>
-            <LogoImage
-              src="/images/logo2.png"
-              alt="Forests by Heartfulness"
-              width={120}
-              height={40}
+    <footer className="bg-[#0f172a] text-[#e6e6e6]">
+      <div className="max-w-7xl mx-auto md:px-8 px-4 py-16 flex flex-col sm:flex-row sm:justify-between gap-16 sm:gap-16">
+        {/* Logo & App Downloads */}
+        <div className="flex flex-col gap-6 md:min-w-sm w-full sm:w-auto">
+          <Image
+            src="/images/logo2.png"
+            alt="Forests by Heartfulness"
+            width={64}
+            height={12}
+          />
+          <div className="flex gap-2">
+            <Image
+              src="/images/google-play.png"
+              alt="Get it on Google Play"
+              width={131}
+              height={42}
+              className="cursor-pointer"
             />
-            <AppDownloadButtons direction="row">
-              <Image
-                src="/images/google-play.png"
-                alt="Get it on Google Play"
-                width={150}
-                height={45}
-                style={{ cursor: "pointer" }}
-              />
-              <Image
-                src="/images/app-store.png"
-                alt="Get it on Google Play"
-                width={150}
-                height={45}
-                style={{ cursor: "pointer" }}
-              />
-            </AppDownloadButtons>
-          </FooterLogo>
+            <Image
+              src="/images/app-store.png"
+              alt="Get it on App Store"
+              width={131}
+              height={42}
+              className="cursor-pointer"
+            />
+          </div>
+        </div>
 
-          <FooterLinks direction="row">
-            <LinkColumn>
-              <ColumnTitle>Useful Links</ColumnTitle>
-              <LinkList>
-                {usefulLinks.map((link, index) => (
-                  <FooterLink key={index}>{link}</FooterLink>
-                ))}
-              </LinkList>
-            </LinkColumn>
+        {/* Links */}
+        <div className="flex flex-1 gap-8">
+          {/* Useful Links */}
+          <div className="flex flex-col gap-4 w-full">
+            <h3 className="font-poppins font-medium text-lg text-[#e6e6e6] mb-2">
+              Useful Links
+            </h3>
+            <ul className="flex flex-col gap-2">
+              {usefulLinks.map((link, index) => (
+                <li
+                  key={index}
+                  className="text-sm font-normal text-[#e6e6e6] hover:text-white hover:underline cursor-pointer"
+                >
+                  {link}
+                </li>
+              ))}
+            </ul>
+          </div>
 
-            <LinkColumn>
-              <ColumnTitle>Social</ColumnTitle>
-              <LinkList>
-                {socialLinks.map((social, index) => (
-                  <SocialLink key={index} direction="row">
-                    <SocialIcon size="small">{social.icon}</SocialIcon>
-                    <FooterLink>{social.name}</FooterLink>
-                  </SocialLink>
-                ))}
-              </LinkList>
-            </LinkColumn>
-          </FooterLinks>
-        </FooterMain>
-      </Box>
+          {/* Social Links */}
+          <div className="flex flex-col gap-4 w-full">
+            <h3 className="font-poppins font-medium text-lg text-[#e6e6e6] mb-2">
+              Social
+            </h3>
+            <ul className="flex flex-col gap-2">
+              {socialLinks.map((social, index) => (
+                <li
+                  key={index}
+                  className="flex items-center gap-2 cursor-pointer hover:text-white"
+                >
+                  <span className="text-[#e6e6e6] hover:text-white">
+                    <Image src={social.src} alt="icon" width={24} height={24} />{" "}
+                  </span>
+                  <span className="text-sm font-normal">{social.name}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
 
-      <FooterBottom direction="row">
-        <Copyright>© 2025 Heartfulness - All rights reserved</Copyright>
-        <LegalLinks direction="row">
-          <LegalLink>Terms</LegalLink>
-          <LegalLink>Privacy</LegalLink>
-        </LegalLinks>
-      </FooterBottom>
-    </FooterContainer>
+      {/* Footer Bottom */}
+      <div className="bg-black">
+        <div className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-20 h-[95px] sm:h-[72px] px-4 max-w-7xl mx-auto">
+          <p className="font-poppins font-medium text-white text-sm sm:text-base">
+            © 2025 Heartfulness - All rights reserved
+          </p>
+          <div className="flex gap-6">
+            <a
+              href="#"
+              className="font-poppins font-medium text-white text-sm sm:text-base underline hover:opacity-80"
+            >
+              Terms
+            </a>
+            <a
+              href="#"
+              className="font-poppins font-medium text-white text-sm sm:text-base underline hover:opacity-80"
+            >
+              Privacy
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
   );
 };
 
