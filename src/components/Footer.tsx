@@ -12,13 +12,6 @@ const Footer: React.FC = () => {
     "Donate",
   ];
 
-  const socialLinks = [
-    { name: "Instagram", src: "/images/social/instagram.png" },
-    { name: "Facebook", src: "/images/social/facebook.png" },
-    { name: "LinkedIn", src: "/images/social/linkedin.png" },
-    { name: "Twitter", src: "/images/social/twitter.png" },
-  ];
-
   return (
     <footer className="bg-[#0f172a] text-[#e6e6e6]">
       <div className="max-w-7xl mx-auto md:px-8 px-4 py-16 flex flex-col sm:flex-row sm:justify-between gap-16 sm:gap-16">
@@ -73,17 +66,50 @@ const Footer: React.FC = () => {
               Social
             </h3>
             <ul className="flex flex-col gap-2">
-              {socialLinks.map((social, index) => (
-                <li
-                  key={index}
-                  className="flex items-center gap-2 cursor-pointer hover:text-white"
-                >
-                  <span className="text-[#e6e6e6] hover:text-white">
-                    <Image src={social.src} alt="icon" width={24} height={24} />{" "}
-                  </span>
-                  <span className="text-sm font-normal">{social.name}</span>
-                </li>
-              ))}
+              <li className="flex items-center gap-2 cursor-pointer hover:text-white">
+                <span className="text-[#e6e6e6] hover:text-white">
+                  <Image
+                    src="/images/social/instagram.png"
+                    alt="icon"
+                    width={24}
+                    height={24}
+                  />
+                </span>
+                <span className="text-sm font-normal">Instagram</span>
+              </li>
+              <li className="flex items-center gap-2 cursor-pointer hover:text-white">
+                <span className="text-[#e6e6e6] hover:text-white">
+                  <Image
+                    src="/images/social/linkedin.png"
+                    alt="icon"
+                    width={24}
+                    height={24}
+                  />
+                </span>
+                <span className="text-sm font-normal">Linkedin</span>
+              </li>
+              <li className="flex items-center gap-2 cursor-pointer hover:text-white">
+                <span className="text-[#e6e6e6] hover:text-white">
+                  <Image
+                    src="/images/social/facebook.png"
+                    alt="icon"
+                    width={24}
+                    height={24}
+                  />
+                </span>
+                <span className="text-sm font-normal">Facebook</span>
+              </li>
+              <li className="flex items-center gap-2 cursor-pointer hover:text-white">
+                <span className="text-[#e6e6e6] hover:text-white">
+                  <Image
+                    src="/images/social/twitter.png"
+                    alt="icon"
+                    width={24}
+                    height={24}
+                  />
+                </span>
+                <span className="text-sm font-normal">X</span>
+              </li>
             </ul>
           </div>
         </div>
