@@ -19,9 +19,9 @@ const Footer: React.FC = () => {
   ];
 
   const socialLinks = [
-    { name: "Instagram", src: "/images/social/Instagram.png" },
-    { name: "Facebook", src: "/images/social/Facebook.png" },
-    { name: "LinkedIn", src: "/images/social/Linkedin.png" },
+    { name: "Instagram", src: "/images/social/instagram.png" },
+    { name: "Facebook", src: "/images/social/facebook.png" },
+    { name: "LinkedIn", src: "/images/social/linkedin.png" },
     { name: "Twitter", src: "/images/social/x.png" },
   ];
 
