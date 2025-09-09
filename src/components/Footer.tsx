@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import Image from "next/image";
+import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
 
 const Footer: React.FC = () => {
   const usefulLinks = [
@@ -65,48 +66,29 @@ const Footer: React.FC = () => {
             <h3 className="font-poppins font-medium text-lg text-[#e6e6e6] mb-2">
               Social
             </h3>
-            <ul className="flex flex-col gap-2">
+            <ul className="flex flex-col md:gap-3 gap-2">
               <li className="flex items-center gap-2 cursor-pointer hover:text-white">
-                <span className="text-[#e6e6e6] hover:text-white">
-                  <img
-                    src="/images/social/instagram.png"
-                    alt="icon"
-                    width={24}
-                    height={24}
-                  />
-                </span>
-                <span className="text-sm font-normal">Instagram</span>
-              </li>
-              <li className="flex items-center gap-2 cursor-pointer hover:text-white">
-                <span className="text-[#e6e6e6] hover:text-white">
-                  <img
-                    src="/images/social/linkedin.png"
-                    alt="icon"
-                    width={24}
-                    height={24}
-                  />
-                </span>
-                <span className="text-sm font-normal">Linkedin</span>
-              </li>
-              <li className="flex items-center gap-2 cursor-pointer hover:text-white">
-                <span className="text-[#e6e6e6] hover:text-white">
-                  <img
-                    src="/images/social/facebook.png"
-                    alt="icon"
-                    width={24}
-                    height={24}
-                  />
+                <span className="h-6 w-6 text-[#e6e6e6] hover:text-white">
+                  <Facebook />
                 </span>
                 <span className="text-sm font-normal">Facebook</span>
               </li>
               <li className="flex items-center gap-2 cursor-pointer hover:text-white">
-                <span className="text-[#e6e6e6] hover:text-white">
-                  <img
-                    src="/images/social/twitter.png"
-                    alt="icon"
-                    width={24}
-                    height={24}
-                  />
+                <span className="h-6 w-6 text-[#e6e6e6] hover:text-white">
+                  <Instagram />
+                </span>
+                <span className="text-sm font-normal">Instagram</span>
+              </li>
+              <li className="flex items-center gap-2 cursor-pointer hover:text-white">
+                <span className="h-6 w-6 text-[#e6e6e6] hover:text-white">
+                  <Linkedin />
+                </span>
+                <span className="text-sm font-normal">Linkedin</span>
+              </li>
+
+              <li className="flex items-center gap-2 cursor-pointer hover:text-white">
+                <span className="h-6 w-6 text-[#e6e6e6] hover:text-white">
+                  <Twitter />
                 </span>
                 <span className="text-sm font-normal">X</span>
               </li>
