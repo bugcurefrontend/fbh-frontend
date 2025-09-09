@@ -68,7 +68,7 @@ const Footer: React.FC = () => {
             <ul className="flex flex-col gap-2">
               <li className="flex items-center gap-2 cursor-pointer hover:text-white">
                 <span className="text-[#e6e6e6] hover:text-white">
-                  <Image
+                  <img
                     src="/images/social/instagram.png"
                     alt="icon"
                     width={24}
@@ -79,7 +79,7 @@ const Footer: React.FC = () => {
               </li>
               <li className="flex items-center gap-2 cursor-pointer hover:text-white">
                 <span className="text-[#e6e6e6] hover:text-white">
-                  <Image
+                  <img
                     src="/images/social/linkedin.png"
                     alt="icon"
                     width={24}
@@ -90,7 +90,7 @@ const Footer: React.FC = () => {
               </li>
               <li className="flex items-center gap-2 cursor-pointer hover:text-white">
                 <span className="text-[#e6e6e6] hover:text-white">
-                  <Image
+                  <img
                     src="/images/social/facebook.png"
                     alt="icon"
                     width={24}
@@ -101,7 +101,7 @@ const Footer: React.FC = () => {
               </li>
               <li className="flex items-center gap-2 cursor-pointer hover:text-white">
                 <span className="text-[#e6e6e6] hover:text-white">
-                  <Image
+                  <img
                     src="/images/social/twitter.png"
                     alt="icon"
                     width={24}
