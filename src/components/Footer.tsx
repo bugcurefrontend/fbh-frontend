@@ -1,12 +1,6 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import {
-  FacebookIcon,
-  InstagramIcon,
-  LinkedinIcon,
-  TwitterIcon,
-} from "lucide-react";
 
 const Footer: React.FC = () => {
   const usefulLinks = [
@@ -22,7 +16,7 @@ const Footer: React.FC = () => {
     { name: "Instagram", src: "/images/social/instagram.png" },
     { name: "Facebook", src: "/images/social/facebook.png" },
     { name: "LinkedIn", src: "/images/social/linkedin.png" },
-    { name: "Twitter", src: "/images/social/x.png" },
+    { name: "Twitter", src: "/images/social/twitter.png" },
   ];
 
   return (
