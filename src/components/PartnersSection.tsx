@@ -27,7 +27,7 @@ const PartnersSection: React.FC = () => {
           alt={partner.name}
           width={160}
           height={100}
-          className="object-contain max-w-[70px] max-h-[20px] sm:max-h-[40px] sm:max-w-[90px] w-fit h-fit"
+          className="object-contain max-w-[80px] max-h-[30px] sm:max-h-[40px] sm:max-w-[90px] w-fit h-fit"
         />
       </div>
     ),
@@ -36,7 +36,7 @@ const PartnersSection: React.FC = () => {
   }));
 
   return (
-    <section className="bg-white rounded-xl border border-gray-200 shadow-[0_12px_24px_rgba(133,133,133,0.12)] pt-4 pb-6 sm:pt-8 sm:pb-12 text-center space-y-5 sm:space-y-10">
+    <section className="bg-white rounded-xl border border-gray-200 shadow-[0_12px_24px_rgba(133,133,133,0.12)] pt-4 pb-8 sm:pt-8 sm:pb-12 text-center space-y-6 sm:space-y-10">
       <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold text-black">
         Our Supporting Partners
       </h2>

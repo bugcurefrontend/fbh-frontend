@@ -25,7 +25,7 @@ const CaseStudiesSection = () => {
 
   return (
     <div className="">
-      <h2 className="text-[32px] font-semibold text-[#232d26] font-['Playfair_Display'] text-center mb-10 md:mb-[40px] md:text-[24px]">
+      <h2 className="text-3xl sm:text-4xl font-[Playfair_Display] font-semibold sm:text-center text-[#232d26] sm:mb-10 mb-6">
         Case Study
       </h2>
 

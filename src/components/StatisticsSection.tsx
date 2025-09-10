@@ -99,58 +99,70 @@ const StatisticsSection: React.FC = () => {
       <div className="flex flex-col sm:hidden gap-8">
         {/* Row 1 */}
         <div className="flex justify-between items-center gap-4">
-          <div className="flex flex-col items-center gap-2 text-center flex-1">
+          <div className="flex flex-col items-center gap-3 text-center flex-1">
             <div className="w-8 h-8 flex items-center justify-center">
               {topRowStats[0].mobileIcon}
             </div>
-            <p className="text-2xl font-semibold">{topRowStats[0].number}</p>
-            <p className="text-xs text-gray-500">{topRowStats[0].label}</p>
+            <p className="text-2xl font-bold">{topRowStats[0].number}</p>
+            <p className="text-xs te font-semiboldxt-gray-500">
+              {topRowStats[0].label}
+            </p>
           </div>
           <div className="h-[80px] w-[1px] bg-gray-300"></div>
-          <div className="flex flex-col items-center gap-2 text-center flex-1">
+          <div className="flex flex-col items-center gap-3 text-center flex-1">
             <div className="w-7 h-7 flex items-center justify-center">
               {topRowStats[1].mobileIcon}
             </div>
-            <p className="text-2xl font-semibold">{topRowStats[1].number}</p>
-            <p className="text-xs text-gray-500">{topRowStats[1].label}</p>
+            <p className="text-2xl font-bold">{topRowStats[1].number}</p>
+            <p className="text-xs te font-semiboldxt-gray-500">
+              {topRowStats[1].label}
+            </p>
           </div>
         </div>
 
         {/* Row 2 */}
         <div className="flex justify-between items-center gap-4">
-          <div className="flex flex-col items-center gap-2 text-center flex-1">
+          <div className="flex flex-col items-center gap-3 text-center flex-1">
             <div className="w-7 h-7 flex items-center justify-center">
               {topRowStats[2].mobileIcon}
             </div>
-            <p className="text-2xl font-semibold">{topRowStats[2].number}</p>
-            <p className="text-xs text-gray-500">{topRowStats[2].label}</p>
+            <p className="text-2xl font-bold">{topRowStats[2].number}</p>
+            <p className="text-xs te font-semiboldxt-gray-500">
+              {topRowStats[2].label}
+            </p>
           </div>
           <div className="h-[80px] w-[1px] bg-gray-300"></div>
-          <div className="flex flex-col items-center gap-2 text-center flex-1">
+          <div className="flex flex-col items-center gap-3 text-center flex-1">
             <div className="w-8 h-8 flex items-center justify-center">
               {bottomRowStats[0].mobileIcon}
             </div>
-            <p className="text-2xl font-semibold">{bottomRowStats[0].number}</p>
-            <p className="text-xs text-gray-500">{bottomRowStats[0].label}</p>
+            <p className="text-2xl font-bold">{bottomRowStats[0].number}</p>
+            <p className="text-xs font-semibold text-gray-500">
+              {bottomRowStats[0].label}
+            </p>
           </div>
         </div>
 
         {/* Row 3 */}
         <div className="flex justify-between items-center gap-4">
-          <div className="flex flex-col items-center gap-2 text-center flex-1">
+          <div className="flex flex-col items-center gap-3 text-center flex-1">
             <div className="w-7 h-8 flex items-center justify-center">
               {bottomRowStats[1].mobileIcon}
             </div>
-            <p className="text-2xl font-semibold">{bottomRowStats[1].number}</p>
-            <p className="text-xs text-gray-500">{bottomRowStats[1].label}</p>
+            <p className="text-2xl font-bold">{bottomRowStats[1].number}</p>
+            <p className="text-xs font-semibold text-gray-500">
+              {bottomRowStats[1].label}
+            </p>
           </div>
           <div className="h-[80px] w-[1px] bg-gray-300"></div>
-          <div className="flex flex-col items-center gap-2 text-center flex-1">
+          <div className="flex flex-col items-center gap-3 text-center flex-1">
             <div className="w-8 h-8 flex items-center justify-center">
               {bottomRowStats[2].mobileIcon}
             </div>
-            <p className="text-2xl font-semibold">{bottomRowStats[2].number}</p>
-            <p className="text-xs text-gray-500">{bottomRowStats[2].label}</p>
+            <p className="text-2xl font-bold">{bottomRowStats[2].number}</p>
+            <p className="text-xs font-semibold text-gray-500">
+              {bottomRowStats[2].label}
+            </p>
           </div>
         </div>
       </div>

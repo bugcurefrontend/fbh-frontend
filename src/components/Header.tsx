@@ -3,9 +3,8 @@
 import * as React from "react";
 import Image from "next/image";
 import { ChevronDown } from "lucide-react";
-import { Button } from "./ui/button";
 import { CustomNavigationMenu } from "./ui/navigation-menu";
-import { MobileNavigation } from "./mobile-navigation";
+import { MobileNavigation } from "./ui/mobile-navigation";
 
 export default function Header() {
   const navigationItems = [

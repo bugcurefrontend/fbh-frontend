@@ -8,6 +8,7 @@ import {
   ChevronDownIcon,
   LogOutIcon,
   MenuIcon,
+  ChevronDown,
 } from "lucide-react";
 
 export function MobileNavigation() {
@@ -25,6 +26,7 @@ export function MobileNavigation() {
     { key: "getInvolved", label: "GET INVOLVED" },
     { key: "plantForCause", label: "PLANT FOR A CAUSE" },
     { key: "contact", label: "CONTACT US" },
+    { key: "login", label: "LOGIN" },
   ];
 
   const mobileMenuContent: Record<string, string[]> = {
@@ -70,7 +72,13 @@ export function MobileNavigation() {
         className="p-2 rounded-md text-gray-700 hover:bg-[#E6EBF5] transition-colors"
         aria-label="Toggle menu"
       >
-        <MenuIcon size={24} />
+        <Image
+          src="/images/menu.png"
+          alt="Get it on App Store"
+          width={18}
+          height={12}
+          className="cursor-pointer"
+        />{" "}
       </button>
 
       {/* Drawer */}
@@ -101,8 +109,8 @@ export function MobileNavigation() {
           <div className="flex-1 overflow-y-auto h-full py-2">
             {/* Navigation Items */}
             {navigationItems.map((item) => (
-              <div key={item.key} className="border-b border-gray-100">
-                {item.key !== "contact" ? (
+              <div key={item.key} className="space-y-3">
+                {item.key !== "contact" && item.key != "login" ? (
                   <>
                     <button
                       onClick={() => handleMobileMenuExpand(item.key)}
@@ -128,17 +136,18 @@ export function MobileNavigation() {
                         mobileExpandedMenu === item.key ? "max-h-96" : "max-h-0"
                       }`}
                     >
-                      <div className="pl-6 pb-2">
+                      <ul className="pl-8 pb-2 list-disc list-outside">
                         {mobileMenuContent[item.key]?.map((subItem) => (
-                          <a
-                            key={subItem}
-                            href="#"
-                            className="block py-2 px-4 text-gray-700 hover:bg-gray-50 rounded-md transition-colors text-sm"
-                          >
-                            {subItem}
-                          </a>
+                          <li key={subItem}>
+                            <a
+                              href="#"
+                              className="block py-2 text-gray-700 hover:bg-gray-50 rounded-md transition-colors text-sm"
+                            >
+                              {subItem}
+                            </a>
+                          </li>
                         ))}
-                      </div>
+                      </ul>
                     </div>
                   </>
                 ) : (
@@ -152,10 +161,10 @@ export function MobileNavigation() {
               </div>
             ))}
 
-            <div className="my-2 border-b border-gray-200"></div>
+            {/* <div className="my-2 border-b border-gray-200"></div> */}
 
             {/* User Profile Section */}
-            <div className="px-4 py-3">
+            {/* <div className="px-4 py-3">
               <div className="flex items-center space-x-3 mb-3">
                 <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
                   <span className="text-gray-600">JD</span>
@@ -165,10 +174,10 @@ export function MobileNavigation() {
                   <div className="text-xs text-gray-500">xyz@gmail.com</div>
                 </div>
               </div>
-            </div>
+            </div> */}
 
             {/* Dashboard and My Trees */}
-            <div className="border-b border-gray-100">
+            {/* <div className="border-b border-gray-100">
               <a
                 href="#"
                 className="block p-4 hover:bg-gray-50 transition-colors text-sm"
@@ -183,25 +192,22 @@ export function MobileNavigation() {
               >
                 My Trees
               </a>
-            </div>
+            </div> */}
 
-            <div className="my-2 border-b border-gray-200"></div>
+            {/* <div className="my-2 border-b border-gray-200"></div> */}
 
             {/* Sign Out */}
-            <div className="border-b border-gray-100">
+            {/* <div className="border-b border-gray-100">
               <button className="flex justify-between items-center w-full p-4 text-red-600 hover:bg-gray-50 transition-colors text-sm">
                 <span>Sign Out</span>
                 <LogOutIcon size={18} />
               </button>
-            </div>
+            </div> */}
 
             {/* Country/Language Selector */}
-            <div className="p-4 mt-auto flex justify-center">
-              <button className="flex items-center gap-2 border border-gray-300 rounded-md px-3 py-2 hover:border-blue-500 transition-colors text-sm">
-                <div className="w-5 h-5 bg-gray-200 rounded-sm"></div>
-                <span>EN</span>
-                <ChevronDownIcon size={16} />
-              </button>
+            <div className="mt-6 w-fit mx-auto flex gap-2 items-center justify-center px-2 py-1 border border-[#E4E4E4] rounded-sm hover:bg-gray-100 cursor-pointer transition">
+              <Image src="/images/flag.png" alt="dots" width={24} height={24} />
+              <ChevronDown />
             </div>
           </div>
         </div>
