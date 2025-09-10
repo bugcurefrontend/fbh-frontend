@@ -56,10 +56,10 @@ const StatisticsSection: React.FC = () => {
     <div className="relative -top-12 sm:top-[-48px] z-10 bg-white rounded-xl sm:rounded-[16px] shadow-[0_8px_32px_rgba(133,133,133,0.1)] p-5 sm:p-8 flex flex-col gap-8 sm:gap-16">
       {/* Desktop Layout */}
       <div className="hidden sm:flex flex-col gap-14">
-        <div className="flex justify-around items-center gap-8">
+        <div className="flex justify-around items-center">
           {topRowStats.map((stat, idx) => (
             <React.Fragment key={idx}>
-              <div className="flex flex-col items-center text-center gap-4">
+              <div className="flex flex-col items-center text-center gap-4 w-[33.33%]">
                 <div className="w-10 h-10 sm:w-10 sm:h-10 flex items-center justify-center">
                   {stat.icon}
                 </div>
@@ -69,16 +69,16 @@ const StatisticsSection: React.FC = () => {
                 <p className="text-base text-gray-500">{stat.label}</p>
               </div>
               {idx < topRowStats.length - 1 && (
-                <div className="h-[97px] w-[1px] bg-gray-300"></div>
+                <div className="h-[97px] w-[0.5px] bg-[#D1D5DB]"></div>
               )}
             </React.Fragment>
           ))}
         </div>
 
-        <div className="flex justify-around items-center gap-8">
+        <div className="flex justify-around items-center">
           {bottomRowStats.map((stat, idx) => (
             <React.Fragment key={idx}>
-              <div className="flex flex-col items-center text-center gap-4">
+              <div className="flex flex-col items-center text-center gap-4 w-[33.33%]">
                 <div className="w-10 h-10 flex items-center justify-center">
                   {stat.icon}
                 </div>
@@ -88,7 +88,7 @@ const StatisticsSection: React.FC = () => {
                 <p className="text-base text-gray-500">{stat.label}</p>
               </div>
               {idx < bottomRowStats.length - 1 && (
-                <div className="h-[97px] w-[1px] bg-gray-300"></div>
+                <div className="h-[97px] w-[0.5px] bg-[#D1D5DB]"></div>
               )}
             </React.Fragment>
           ))}
