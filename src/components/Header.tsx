@@ -55,8 +55,14 @@ export default function Header() {
 
           <div className="flex items-center justify-center gap-3">
             <div className="flex gap-2 items-center justify-center px-2 py-1 border border-[#E4E4E4] rounded-sm hover:bg-gray-100 cursor-pointer transition">
-              <Image src="/images/flag.png" alt="dots" width={24} height={24} />
-              <ChevronDown />
+              <Image
+                src="/images/flag.png"
+                alt="dots"
+                width={24}
+                height={24}
+                className="min-w-6 min-h-6"
+              />
+              <ChevronDown className="min-w-4 min-h-4" />
             </div>
 
             <button className="uppercase text-xs font-bold px-[10px] py-3 hover:bg-[#E6EBF5] bg-white transition-colors">
