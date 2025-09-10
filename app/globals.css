@@ -5,10 +5,17 @@
     var(--animation-direction, forwards) linear infinite;
 
   @keyframes scroll {
-    to {
-      transform: translate(calc(-50% - 0.5rem));
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(calc(-50% - 0.5rem));
     }
   }
+}
+
+.scroller ul {
+  transition: transform 0.1s ease-out;
 }
 
 @custom-variant dark (&:is(.dark *));

@@ -32,7 +32,7 @@ export function CustomNavigationMenu({
         <li>
           <a
             href="#"
-            className="uppercase text-xs font-bold px-3 py-2 hover:bg-gray-100 rounded-md truncate transition-colors"
+            className="uppercase text-xs font-bold px-3 py-3 hover:bg-[#E6EBF5] truncate transition-colors"
           >
             Contact us
           </a>

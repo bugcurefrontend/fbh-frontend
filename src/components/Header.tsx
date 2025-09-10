@@ -60,9 +60,9 @@ export default function Header() {
               <ChevronDown />
             </div>
 
-            <Button className="uppercase text-xs font-bold bg-white text-black hover:shadow-sm hover:bg-white">
+            <button className="uppercase text-xs font-bold px-[10px] py-3 hover:bg-[#E6EBF5] bg-white transition-colors">
               login
-            </Button>
+            </button>
           </div>
         </div>
 

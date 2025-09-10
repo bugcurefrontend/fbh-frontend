@@ -5,25 +5,29 @@ import { InfiniteMovingCards } from "./ui/infinite-moving-cards";
 
 const PartnersSection: React.FC = () => {
   const partners = [
-    { name: "first", logo: "/images/partners/first.png" },
+    { name: "Google", logo: "/images/partners/google1.png" },
     { name: "Accenture", logo: "/images/partners/accenture.png" },
-    { name: "Google", logo: "/images/partners/google.png" },
+    { name: "Amazon", logo: "/images/partners/amazon.png" },
     { name: "Bank of America", logo: "/images/partners/america.png" },
     { name: "WWF", logo: "/images/partners/wwf.png" },
     { name: "Zscaler", logo: "/images/partners/zscaler.png" },
+    { name: "FedEX", logo: "/images/partners/fedex.png" },
+    { name: "Microsoft", logo: "/images/partners/microsoft.png" },
+    { name: "Samsung", logo: "/images/partners/samsung.png" },
+    { name: "MPG", logo: "/images/partners/mp.png" },
   ];
 
   // Map partners to the expected format
   const items = partners.map((partner) => ({
     id: partner.name,
     quote: (
-      <div className="flex items-center justify-center w-[160px] md:h-[100px]">
+      <div className="flex items-center justify-center">
         <Image
           src={partner.logo}
           alt={partner.name}
           width={160}
           height={100}
-          className="object-contain max-h-[100px] max-w-[160px]"
+          className="object-contain max-w-[70px] max-h-[20px] sm:max-h-[40px] sm:max-w-[90px] w-fit h-fit"
         />
       </div>
     ),
@@ -32,7 +36,7 @@ const PartnersSection: React.FC = () => {
   }));
 
   return (
-    <section className="bg-white rounded-xl border border-gray-200 shadow-[0_12px_24px_rgba(133,133,133,0.12)] py-4 sm:py-8 text-center space-y-5">
+    <section className="bg-white rounded-xl border border-gray-200 shadow-[0_12px_24px_rgba(133,133,133,0.12)] pt-4 pb-6 sm:pt-8 sm:pb-12 text-center space-y-5 sm:space-y-10">
       <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold text-black">
         Our Supporting Partners
       </h2>
