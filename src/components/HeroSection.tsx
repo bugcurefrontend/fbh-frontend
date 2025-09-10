@@ -12,7 +12,7 @@ const HeroSection = () => {
           'linear-gradient(0deg, rgba(0, 13, 38, 0.30), rgba(0, 13, 38, 0.30)), url("/images/hero-forest-bg.png")',
       }}
     >
-      <div className="max-w-7xl w-full mx-auto relative md:px-8 px-4 pt-[258px]">
+      <div className="w-full mx-auto relative md:px-8 px-4 pt-[258px]">
         <div className="sm:max-w-[582px] max-w-[276px]">
           <h1 className="sm:text-[64px] font-bold sm:leading-[1.2] text-white mb-10 text-[38px] leading-[36px] sm:mb-6">
             Putting heart back into the Earth

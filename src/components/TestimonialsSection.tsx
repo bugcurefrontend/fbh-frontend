@@ -14,18 +14,16 @@ const TestimonialsSection: React.FC = () => {
       {/* Testimonial Card */}
       <div className="flex flex-col md:flex-row gap-16 items-center justify-between">
         {/* Image */}
-        <div className="flex-shrink-0">
-          <Image
-            src="/images/volunteer-testimonial.png"
-            alt="Volunteer testimonial"
-            width={493}
-            height={423}
-            className="rounded-lg object-cover w-full h-full"
-          />
-        </div>
+        <Image
+          src="/images/volunteer-testimonial.png"
+          alt="Volunteer testimonial"
+          width={493}
+          height={423}
+          className="rounded-xl object-cover w-full h-auto lg:w-[45%]"
+        />
 
         {/* Content */}
-        <div className="max-w-2xl md:space-y-10 space-y-6 max-md:flex flex-col items-center text-center md:text-start">
+        <div className="max-w-2xl lg:max-w-full lg:w-[55%] md:space-y-10 space-y-6 max-md:flex flex-col items-center text-center md:text-start">
           {/* Quote Icon */}
           <div className="w-20 h-20 flex items-center justify-center">
             <QuoteIcon width={77} height={77} color="#003399" />

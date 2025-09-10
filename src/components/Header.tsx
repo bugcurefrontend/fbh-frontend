@@ -8,8 +8,6 @@ import { CustomNavigationMenu } from "./ui/navigation-menu";
 import { MobileNavigation } from "./mobile-navigation";
 
 export default function Header() {
-  const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
-
   const navigationItems = [
     {
       label: "About",
@@ -37,23 +35,23 @@ export default function Header() {
     },
   ];
 
-  const handleMobileMenuToggle = () => {
-    setMobileMenuOpen(!mobileMenuOpen);
-  };
   return (
     <header className="fixed top-0 left-0 w-full z-50 bg-white/95 backdrop-blur-md shadow-sm">
-      <div className="max-w-7xl mx-auto flex items-center justify-between h-16 sm:h-20 px-4 sm:px-8">
+      <div className="mx-auto flex items-center justify-between h-16 sm:h-20 px-4 sm:px-8">
         {/* Logo */}
-        <Image
-          src="/images/logo3.png"
-          alt="logo"
-          width={57}
-          height={46}
-          priority
-        />
+        <div className="md:w-full md:max-w-[30%]">
+          <Image
+            src="/images/logo3.png"
+            alt="logo"
+            width={57}
+            height={46}
+            priority
+            className="min-w-[57px]"
+          />
+        </div>
 
         {/* Desktop navigation */}
-        <div className="hidden lg:flex items-center gap-10 xl:gap-14">
+        <div className="w-full hidden lg:flex items-center justify-between gap-10 xl:gap-14">
           <CustomNavigationMenu navigationItems={navigationItems} />
 
           <div className="flex items-center justify-center gap-3">
