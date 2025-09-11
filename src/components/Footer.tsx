@@ -26,18 +26,18 @@ const Footer: React.FC = () => {
           />
           <div className="flex gap-2">
             <Image
-              src="/images/google-play.png"
-              alt="Get it on Google Play"
+              src="/images/g-play.png"
+              alt="Google Play"
               width={131}
               height={42}
-              className="cursor-pointer"
+              className="cursor-pointer min-w-[131px] min-h-[42px]"
             />
             <Image
               src="/images/app-store.png"
-              alt="Get it on App Store"
+              alt="App Store"
               width={131}
               height={42}
-              className="cursor-pointer"
+              className="cursor-pointer min-w-[131px] min-h-[42px]"
             />
           </div>
         </div>

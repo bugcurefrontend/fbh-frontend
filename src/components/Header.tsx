@@ -5,6 +5,13 @@ import Image from "next/image";
 import { ChevronDown } from "lucide-react";
 import { CustomNavigationMenu } from "./ui/navigation-menu";
 import { MobileNavigation } from "./ui/mobile-navigation";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
 
 export default function Header() {
   const navigationItems = [
@@ -54,16 +61,31 @@ export default function Header() {
           <CustomNavigationMenu navigationItems={navigationItems} />
 
           <div className="flex items-center justify-center gap-3">
-            <div className="flex gap-2 items-center justify-center px-2 py-1 border border-[#E4E4E4] rounded-sm hover:bg-gray-100 cursor-pointer transition">
-              <Image
-                src="/images/flag.png"
-                alt="dots"
-                width={24}
-                height={24}
-                className="min-w-6 min-h-6"
-              />
-              <ChevronDown className="min-w-4 min-h-4" />
-            </div>
+            <Select defaultValue="india">
+              <SelectTrigger>
+                <SelectValue placeholder="Country" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="india">
+                  <Image
+                    src="/images/flag.png"
+                    alt="dots"
+                    width={24}
+                    height={24}
+                    className="min-w-6 min-h-6"
+                  />
+                </SelectItem>
+                <SelectItem value="us">
+                  <Image
+                    src="/images/us.png"
+                    alt="dots"
+                    width={24}
+                    height={24}
+                    className="min-w-6 min-h-6"
+                  />
+                </SelectItem>
+              </SelectContent>
+            </Select>
 
             <button className="uppercase text-xs font-bold px-[10px] py-3 hover:bg-[#E6EBF5] bg-white transition-colors">
               login

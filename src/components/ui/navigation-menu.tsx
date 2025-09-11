@@ -94,18 +94,18 @@ function NavigationMenuItem({ item }: { item: NavigationItem }) {
       {isOpen && (
         <div
           className={cn(
-            "absolute left-0 top-full z-50 mt-1.5 min-w-[200px] overflow-hidden border bg-white shadow-md animate-in fade-in-0 zoom-in-95"
+            "absolute left-0 top-full z-50 min-w-[200px] overflow-hidden border bg-white shadow-md animate-in fade-in-0 zoom-in-95"
           )}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
-          <div className="px-0 pt-4 pb-2">
-            <ul className="grid gap-2">
+          <div className="px-0 py-2">
+            <ul className="grid">
               {item.sub.map((sub) => (
                 <li key={sub}>
                   <a
                     href="#"
-                    className="block text-[16px] font-medium hover:bg-[#E6EBF5] px-4 py-2 transition-colors rounded-sm"
+                    className="block text-[16px] font-medium hover:bg-[#E6EBF5] px-4 py-2 transition-colors"
                   >
                     {sub}
                   </a>
