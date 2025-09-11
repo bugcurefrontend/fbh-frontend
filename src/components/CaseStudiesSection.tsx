@@ -48,7 +48,7 @@ const CaseStudiesSection = () => {
 
   return (
     <div className="">
-      <h2 className="text-3xl sm:text-4xl font-[Playfair_Display] font-semibold sm:text-center text-[#232d26] sm:mb-10 mb-6">
+      <h2 className="text-3xl sm:text-4xl font-[Playfair_Display] font-semibold sm:text-center text-[#232D26] sm:mb-10 mb-6">
         Case Study
       </h2>
 

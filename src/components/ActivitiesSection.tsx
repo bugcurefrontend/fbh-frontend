@@ -57,7 +57,7 @@ const ActivitiesSection: React.FC = () => {
       {/* Header */}
       <div className="w-full md:text-center mb-8 relative">
         <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold mx-auto sm:mx-0 text-black">
-          FBG Activities
+          FBH Activities
         </h2>
         <button className="absolute right-0 top-4 text-[#003399] font-bold text-xs uppercase">
           View All
@@ -81,7 +81,7 @@ const ActivitiesSection: React.FC = () => {
               key={idx}
               className="basis-1/1 sm:basis-1/2 lg:basis-1/3 pl-4"
             >
-              <div className="flex-1 min-w-0 border border-gray-200 rounded-xl flex-shrink-0 overflow-hidden">
+              <div className="flex-1 h-full min-w-0 border border-gray-200 rounded-xl flex-shrink-0 overflow-hidden">
                 <Image
                   src={activity.image}
                   alt={activity.title}

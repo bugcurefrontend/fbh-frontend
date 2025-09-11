@@ -7,12 +7,12 @@ const TestimonialsSection: React.FC = () => {
   return (
     <section className="">
       {/* Section Title */}
-      <h2 className="text-3xl sm:text-4xl font-[Playfair_Display] font-semibold sm:text-center text-[#232d26] sm:mb-10 mb-6">
+      <h2 className="text-3xl sm:text-4xl font-[Playfair_Display] font-semibold sm:text-center text-[#232D26] sm:mb-10 mb-6">
         Testimonials
       </h2>
 
       {/* Testimonial Card */}
-      <div className="flex flex-col md:flex-row sm:gap-16 gap-6 items-center justify-between">
+      <div className="border border-[#e4e4e4] p-4 rounded-2xl flex flex-col md:flex-row sm:gap-16 gap-6 items-center justify-between">
         {/* Image */}
         <Image
           src="/images/volunteer-testimonial.png"

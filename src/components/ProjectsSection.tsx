@@ -2,6 +2,7 @@
 import React from "react";
 import Image from "next/image";
 import LocationPinIcon from "./icons/LocationPinIcon";
+import { HandHeart } from "lucide-react";
 
 const ProjectsSection: React.FC = () => {
   const projects = [
@@ -98,8 +99,15 @@ const ProjectsSection: React.FC = () => {
                   </span>
                 </div>
               </div>
-              <button className="bg-[#003399] text-white font-bold text-base py-3 rounded w-full hover:bg-[#002080]">
+              <button className="bg-[#003399] text-white font-bold text-base py-3 rounded-[8px] w-full hover:bg-[#002080] gap-2 flex items-center justify-center">
                 DONATE
+                <Image
+                  src="/images/donate.png"
+                  alt="donate"
+                  width={24}
+                  height={24}
+                  className=""
+                />{" "}
               </button>
             </div>
           </div>
