@@ -2,14 +2,15 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import { ChevronRightIcon, XIcon, ChevronDownIcon } from "lucide-react";
+
 import {
-  ChevronRightIcon,
-  XIcon,
-  ChevronDownIcon,
-  LogOutIcon,
-  MenuIcon,
-  ChevronDown,
-} from "lucide-react";
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./select";
 
 export function MobileNavigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -204,10 +205,32 @@ export function MobileNavigation() {
               </button>
             </div> */}
 
-            {/* Country/Language Selector */}
-            <div className="mt-6 w-fit mx-auto flex gap-2 items-center justify-center px-2 py-1 border border-[#E4E4E4] rounded-sm hover:bg-gray-100 cursor-pointer transition">
-              <Image src="/images/flag.png" alt="dots" width={24} height={24} />
-              <ChevronDown />
+            <div className="flex items-center justify-center w-full mt-6">
+              <Select defaultValue="india">
+                <SelectTrigger>
+                  <SelectValue placeholder="Country" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="india">
+                    <Image
+                      src="/images/flag.png"
+                      alt="dots"
+                      width={24}
+                      height={24}
+                      className="min-w-6 min-h-6"
+                    />
+                  </SelectItem>
+                  <SelectItem value="us">
+                    <Image
+                      src="/images/us.png"
+                      alt="dots"
+                      width={24}
+                      height={24}
+                      className="min-w-6 min-h-6"
+                    />
+                  </SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
         </div>

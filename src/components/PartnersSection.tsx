@@ -36,7 +36,7 @@ const PartnersSection: React.FC = () => {
   }));
 
   return (
-    <section className="bg-white rounded-xl border border-gray-200 shadow-[0_12px_24px_rgba(133,133,133,0.12)] py-5 sm:py-4 text-center space-y-6 sm:space-y-14 sm:h-[232px]">
+    <section className="bg-white rounded-xl border border-gray-200  max-sm:py-6 max-sm:pb-10 sm:py-4 text-center space-y-10 sm:space-y-14 sm:h-[232px]">
       <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold text-black">
         Our Supporting Partners
       </h2>
