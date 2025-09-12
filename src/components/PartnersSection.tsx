@@ -17,7 +17,6 @@ const PartnersSection: React.FC = () => {
     { name: "MPG", logo: "/images/partners/mp.png" },
   ];
 
-  // Map partners to the expected format
   const items = partners.map((partner) => ({
     id: partner.name,
     quote: (

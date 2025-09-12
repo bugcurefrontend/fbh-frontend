@@ -7,8 +7,7 @@ const heroSlides = [
     id: 1,
     title: "Putting heart back into the Earth",
     buttonText: "PLANT A TREE",
-    bgImage:
-      "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=2000&q=80",
+    bgImage: "/images/hero-water-bg.avif",
   },
   {
     id: 2,
@@ -20,8 +19,7 @@ const heroSlides = [
     id: 3,
     title: "One Tree Can Change the World",
     buttonText: "DONATE NOW",
-    bgImage:
-      "https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=2000&q=80",
+    bgImage: "/images/hero-girls-bg.avif",
   },
 ];
 

@@ -1,60 +1,102 @@
 "use client";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import QuoteIcon from "./icons/QuoteIcon";
 
 const TestimonialsSection: React.FC = () => {
+  const testimonials = [
+    {
+      quote:
+        "From initial setup to daily use, the experience has been flawless. It’s incredibly user-friendly and robust. This tool has become indispensable for our daily operations, providing reliable performance and insightful analytics. We couldn't be happier with our decision.",
+      name: "Akshay Shinde",
+      designation: "TIMES OF INDIA",
+      src: "/images/volunteer-testimonial.png",
+    },
+    {
+      quote:
+        "An absolute pleasure to work with. The team went above and beyond to tailor the solution to our specific needs, and the impact on our project delivery has been immediate and positive. Fantastic product and even better people!",
+      name: "James Kim",
+      designation: "Engineering Lead at DataPro",
+      src: "/images/t-2.jpg",
+    },
+    {
+      quote:
+        "This platform is a game-changer! The intuitive design and powerful features have streamlined our operations beyond expectation. We've seen a significant boost in efficiency, and the customer support is truly exceptional. Highly recommended for any business looking to innovate and grow.",
+      name: "Lisa Thompson",
+      designation: "VP of Technology at FutureNet",
+      src: "/images/t-1.webp",
+    },
+  ];
+
+  const [current, setCurrent] = useState(0);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const startAutoPlay = () => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    timerRef.current = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % testimonials.length);
+    }, 5000);
+  };
+
+  useEffect(() => {
+    startAutoPlay();
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, []);
+
+  const currentTestimonial = testimonials[current];
+
+  const handleDotClick = (index: number) => {
+    setCurrent(index);
+    startAutoPlay();
+  };
+
   return (
-    <section className="">
-      {/* Section Title */}
+    <section>
       <h2 className="text-3xl sm:text-4xl font-[Playfair_Display] font-semibold sm:text-center text-[#232D26] sm:mb-10 mb-6">
         Testimonials
       </h2>
 
-      {/* Testimonial Card */}
       <div className="border border-[#e4e4e4] p-4 rounded-2xl flex flex-col md:flex-row sm:gap-16 gap-6 items-center justify-between">
-        {/* Image */}
         <Image
-          src="/images/volunteer-testimonial.png"
-          alt="Volunteer testimonial"
+          src={currentTestimonial.src}
+          alt={`Testimonial from ${currentTestimonial.name}`}
           width={493}
           height={423}
-          className="rounded-xl object-cover w-full h-auto lg:w-[45%]"
+          className="rounded-xl w-full sm:w-[45%] sm:max-h-[40%] h-full"
         />
 
-        {/* Content */}
         <div className="max-w-2xl lg:max-w-full lg:w-[55%] md:space-y-10 space-y-6 max-md:flex flex-col items-center text-center md:text-start">
-          {/* Quote Icon */}
           <div className="sm:w-20 sm:h-20 w-12 h-12 flex items-center justify-center">
             <QuoteIcon width={77} height={77} color="#003399" />
           </div>
 
-          {/* Text */}
           <div className="flex flex-col gap-4">
-            {/* Attribution */}
             <div className="flex flex-col gap-1">
               <span className="text-2xl font-semibold text-[#333333]">
-                TIMES OF INDIA
+                {currentTestimonial.designation}
               </span>
               <span className="text-xl font-bold text-gray-600">
-                Akshay Shinde
+                {currentTestimonial.name}
               </span>
             </div>
 
-            {/* Quote */}
             <p className="text-base font-normal leading-6 text-[#454950]">
-              Lorem ipsum dolor sit amet consectetur. Nibh porta dui fermentum
-              in facilisi sed. Pellentesque lectus proin gravida in. Malesuada
-              etiam viverra ut auctor semper lacinia. Eu dictum odio eu quam
-              integer placerat posuere.
+              {currentTestimonial.quote}
             </p>
           </div>
 
-          {/* Pagination Dots */}
           <div className="flex sm:gap-3 gap-2">
-            <span className="w-10 sm:h-2 h-1.5 rounded bg-[#003399]"></span>
-            <span className="w-10 sm:h-2 h-1.5 rounded bg-[#e6ebf5]"></span>
-            <span className="w-10 sm:h-2 h-1.5 rounded bg-[#e6ebf5]"></span>
+            {testimonials.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => handleDotClick(index)}
+                className={`w-10 sm:h-2 h-1.5 rounded transition-all duration-300 ${
+                  index === current ? "bg-[#003399]" : "bg-[#e6ebf5]"
+                }`}
+              ></button>
+            ))}
           </div>
         </div>
       </div>

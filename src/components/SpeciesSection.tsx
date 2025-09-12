@@ -13,20 +13,17 @@ import {
 const SpeciesSection: React.FC = () => {
   const species = [
     { name: "Neem (Azadirachta)", image: "/images/neem-tree.jpg" },
-    { name: "Banyan Tree", image: "/images/neem-tree.jpg" },
-    { name: "Mango Tree", image: "/images/neem-tree.jpg" },
+    { name: "Banyan Tree", image: "/images/banyan-tree.avif" },
+    { name: "Mango Tree", image: "/images/mango-tree.webp" },
     { name: "Neem (Azadirachta)", image: "/images/neem-tree.jpg" },
-    { name: "Banyan Tree", image: "/images/neem-tree.jpg" },
-    { name: "Mango Tree", image: "/images/neem-tree.jpg" },
-    { name: "Neem (Azadirachta)", image: "/images/neem-tree.jpg" },
-    { name: "Banyan Tree", image: "/images/neem-tree.jpg" },
-    { name: "Mango Tree", image: "/images/neem-tree.jpg" },
+    { name: "Banyan Tree", image: "/images/banyan-tree.avif" },
+    { name: "Mango Tree", image: "/images/mango-tree.webp" },
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const totalSlides = species.length;
-  const visibleSlides = 3; // because we used basis-1/3
+  const visibleSlides = 3;
   const progress =
     ((currentIndex + visibleSlides) / totalSlides) * 100 > 100
       ? 100

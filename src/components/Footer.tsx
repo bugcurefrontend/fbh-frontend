@@ -16,7 +16,6 @@ const Footer: React.FC = () => {
   return (
     <footer className="bg-[#0f172a] text-[#e6e6e6]">
       <div className="mx-auto md:px-8 px-4 py-16 flex flex-col sm:flex-row sm:justify-between gap-16 sm:gap-16">
-        {/* Logo & App Downloads */}
         <div className="flex flex-col gap-6 md:min-w-sm w-full sm:w-auto">
           <Image
             src="/images/logo2.png"
@@ -44,7 +43,6 @@ const Footer: React.FC = () => {
 
         {/* Links */}
         <div className="flex flex-1 gap-8">
-          {/* Useful Links */}
           <div className="flex flex-col gap-4 w-full">
             <h3 className="font-poppins font-medium text-lg text-[#e6e6e6] mb-2">
               Useful Links
@@ -61,7 +59,6 @@ const Footer: React.FC = () => {
             </ul>
           </div>
 
-          {/* Social Links */}
           <div className="flex flex-col gap-4 w-full">
             <h3 className="font-poppins font-medium text-lg text-[#e6e6e6] mb-2">
               Social
@@ -69,15 +66,15 @@ const Footer: React.FC = () => {
             <ul className="flex flex-col md:gap-3 gap-2">
               <li className="flex items-center gap-2 cursor-pointer hover:text-white">
                 <span className="h-6 w-6 text-[#e6e6e6] hover:text-white">
-                  <Facebook />
-                </span>
-                <span className="text-sm font-normal">Facebook</span>
-              </li>
-              <li className="flex items-center gap-2 cursor-pointer hover:text-white">
-                <span className="h-6 w-6 text-[#e6e6e6] hover:text-white">
                   <Instagram />
                 </span>
                 <span className="text-sm font-normal">Instagram</span>
+              </li>
+              <li className="flex items-center gap-2 cursor-pointer hover:text-white">
+                <span className="h-6 w-6 text-[#e6e6e6] hover:text-white">
+                  <Facebook />
+                </span>
+                <span className="text-sm font-normal">Facebook</span>
               </li>
               <li className="flex items-center gap-2 cursor-pointer hover:text-white">
                 <span className="h-6 w-6 text-[#e6e6e6] hover:text-white">

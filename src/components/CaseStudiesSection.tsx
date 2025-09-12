@@ -40,14 +40,14 @@ const CaseStudiesSection = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const totalSlides = caseStudies.length;
-  const visibleSlides = 2; // because we used basis-1/3
+  const visibleSlides = 2;
   const progress =
     ((currentIndex + visibleSlides) / totalSlides) * 100 > 100
       ? 100
       : ((currentIndex + visibleSlides) / totalSlides) * 100;
 
   return (
-    <div className="">
+    <section>
       <h2 className="text-3xl sm:text-4xl font-[Playfair_Display] font-semibold sm:text-center text-[#232D26] sm:mb-10 mb-6">
         Case Study
       </h2>
@@ -165,7 +165,7 @@ const CaseStudiesSection = () => {
           </div>
         ))}
       </div>
-    </div>
+    </section>
   );
 };
 

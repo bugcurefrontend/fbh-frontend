@@ -46,7 +46,7 @@ const ActivitiesSection: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const totalSlides = activities.length;
-  const visibleSlides = 3; // because we used basis-1/3
+  const visibleSlides = 3;
   const progress =
     ((currentIndex + visibleSlides) / totalSlides) * 100 > 100
       ? 100

@@ -2,7 +2,6 @@
 import React from "react";
 import Image from "next/image";
 import LocationPinIcon from "./icons/LocationPinIcon";
-import { HandHeart } from "lucide-react";
 
 const ProjectsSection: React.FC = () => {
   const projects = [
