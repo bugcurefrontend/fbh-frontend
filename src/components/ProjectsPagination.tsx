@@ -37,6 +37,7 @@ const ProjectsPagination: React.FC<ProjectsPaginationProps> = ({
           <PaginationItem key={i}>
             <PaginationLink
               href="#"
+              size="default"
               onClick={(e) => {
                 e.preventDefault();
                 onPageChange(i);
@@ -59,6 +60,7 @@ const ProjectsPagination: React.FC<ProjectsPaginationProps> = ({
         <PaginationItem key={1}>
           <PaginationLink
             href="#"
+            size="default"
             onClick={(e) => {
               e.preventDefault();
               onPageChange(1);
@@ -94,6 +96,7 @@ const ProjectsPagination: React.FC<ProjectsPaginationProps> = ({
             <PaginationItem key={i}>
               <PaginationLink
                 href="#"
+                size="default"
                 onClick={(e) => {
                   e.preventDefault();
                   onPageChange(i);
@@ -127,6 +130,7 @@ const ProjectsPagination: React.FC<ProjectsPaginationProps> = ({
           <PaginationItem key={totalPages}>
             <PaginationLink
               href="#"
+              size="default"
               onClick={(e) => {
                 e.preventDefault();
                 onPageChange(totalPages);
@@ -155,6 +159,7 @@ const ProjectsPagination: React.FC<ProjectsPaginationProps> = ({
           <PaginationItem>
             <PaginationPrevious
               href="#"
+              size="default"
               onClick={(e) => {
                 e.preventDefault();
                 if (hasPrevious) {
@@ -174,6 +179,7 @@ const ProjectsPagination: React.FC<ProjectsPaginationProps> = ({
           <PaginationItem>
             <PaginationNext
               href="#"
+              size="default"
               onClick={(e) => {
                 e.preventDefault();
                 if (hasNext) {
