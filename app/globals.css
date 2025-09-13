@@ -57,6 +57,26 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  
+  /* Project page specific colors */
+  --project-card-bg: #ffffff;
+  --project-badge-bg: rgba(255, 255, 255, 0.9);
+  --project-badge-text: #4b5563;
+  --plant-button-bg: #003399;
+  --plant-button-hover: #002266;
+  --search-border: #d1d5db;
+  --pagination-border: #e8e8e9;
+  --pagination-active: #003399;
+  --pagination-inactive: #454950;
+  --location-text: #4c4748;
+  --hero-overlay: rgba(0, 0, 0, 0.4);
+  
+  /* Project detail page specific colors */
+  --project-detail-bg: #ffffff;
+  --project-stats-border: #e5e7eb;
+  --project-tabs-active: #003399;
+  --project-tabs-inactive: #6b7280;
+  --switch-active: #003399;
 }
 
 * {
@@ -148,6 +168,26 @@ button {
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  
+  /* Project page specific theme colors */
+  --color-project-card-bg: var(--project-card-bg);
+  --color-project-badge-bg: var(--project-badge-bg);
+  --color-project-badge-text: var(--project-badge-text);
+  --color-plant-button-bg: var(--plant-button-bg);
+  --color-plant-button-hover: var(--plant-button-hover);
+  --color-search-border: var(--search-border);
+  --color-pagination-border: var(--pagination-border);
+  --color-pagination-active: var(--pagination-active);
+  --color-pagination-inactive: var(--pagination-inactive);
+  --color-location-text: var(--location-text);
+  --color-hero-overlay: var(--hero-overlay);
+  
+  /* Project detail page specific theme colors */
+  --color-project-detail-bg: var(--project-detail-bg);
+  --color-project-stats-border: var(--project-stats-border);
+  --color-project-tabs-active: var(--project-tabs-active);
+  --color-project-tabs-inactive: var(--project-tabs-inactive);
+  --color-switch-active: var(--switch-active);
 }
 
 .dark {
