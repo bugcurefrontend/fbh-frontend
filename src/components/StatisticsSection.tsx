@@ -53,7 +53,7 @@ const StatisticsSection: React.FC = () => {
   ];
 
   return (
-    <div className="relative -top-12 sm:top-[-48px] z-10 bg-white rounded-xl sm:rounded-[16px] shadow-[0_8px_32px_rgba(133,133,133,0.1)] p-5 sm:p-8 flex flex-col gap-8 sm:gap-16">
+    <div className="border border-[#E4E4E4] relative -top-12 sm:top-[-48px] z-10 bg-white rounded-xl sm:rounded-[16px] shadow-[0_8px_32px_rgba(133,133,133,0.1)] p-5 sm:p-8 flex flex-col gap-8 sm:gap-16">
       {/* Desktop Layout */}
       <div className="hidden sm:flex flex-col gap-14">
         <div className="flex justify-around items-center">
@@ -96,7 +96,7 @@ const StatisticsSection: React.FC = () => {
       </div>
 
       {/* Mobile Layout */}
-      <div className="flex flex-col sm:hidden gap-8">
+      <div className="flex flex-col sm:hidden gap-12">
         {/* Row 1 */}
         <div className="flex justify-between items-center gap-4">
           <div className="flex flex-col items-center gap-3 text-center flex-1">
@@ -104,17 +104,17 @@ const StatisticsSection: React.FC = () => {
               {topRowStats[0].mobileIcon}
             </div>
             <p className="text-2xl font-bold">{topRowStats[0].number}</p>
-            <p className="text-xs te font-semiboldxt-gray-500">
+            <p className="text-xs max-[500px]:w-20 font-semibold text-[#454950]">
               {topRowStats[0].label}
             </p>
           </div>
-          <div className="h-[80px] w-[1px] bg-gray-300"></div>
+          <div className="h-[96px] w-[0.5px] bg-[#D1D5DB] rounded"></div>
           <div className="flex flex-col items-center gap-3 text-center flex-1">
             <div className="w-7 h-7 flex items-center justify-center">
               {topRowStats[1].mobileIcon}
             </div>
             <p className="text-2xl font-bold">{topRowStats[1].number}</p>
-            <p className="text-xs te font-semiboldxt-gray-500">
+            <p className="text-xs font-semibold text-[#454950]">
               {topRowStats[1].label}
             </p>
           </div>
@@ -127,17 +127,17 @@ const StatisticsSection: React.FC = () => {
               {topRowStats[2].mobileIcon}
             </div>
             <p className="text-2xl font-bold">{topRowStats[2].number}</p>
-            <p className="text-xs te font-semiboldxt-gray-500">
+            <p className="text-xs font-semibold text-[#454950]">
               {topRowStats[2].label}
             </p>
           </div>
-          <div className="h-[80px] w-[1px] bg-gray-300"></div>
+          <div className="h-[96px] w-[0.5px] bg-[#D1D5DB] rounded"></div>
           <div className="flex flex-col items-center gap-3 text-center flex-1">
             <div className="w-8 h-8 flex items-center justify-center">
               {bottomRowStats[0].mobileIcon}
             </div>
             <p className="text-2xl font-bold">{bottomRowStats[0].number}</p>
-            <p className="text-xs font-semibold text-gray-500">
+            <p className="text-xs max-[500px]:w-20 font-semibold text-[#454950]">
               {bottomRowStats[0].label}
             </p>
           </div>
@@ -150,17 +150,17 @@ const StatisticsSection: React.FC = () => {
               {bottomRowStats[1].mobileIcon}
             </div>
             <p className="text-2xl font-bold">{bottomRowStats[1].number}</p>
-            <p className="text-xs font-semibold text-gray-500">
+            <p className="text-xs font-semibold text-[#454950]">
               {bottomRowStats[1].label}
             </p>
           </div>
-          <div className="h-[80px] w-[1px] bg-gray-300"></div>
+          <div className="h-[96px] w-[0.5px] bg-[#D1D5DB] rounded"></div>
           <div className="flex flex-col items-center gap-3 text-center flex-1">
             <div className="w-8 h-8 flex items-center justify-center">
               {bottomRowStats[2].mobileIcon}
             </div>
             <p className="text-2xl font-bold">{bottomRowStats[2].number}</p>
-            <p className="text-xs font-semibold text-gray-500">
+            <p className="text-xs font-semibold text-[#454950]">
               {bottomRowStats[2].label}
             </p>
           </div>

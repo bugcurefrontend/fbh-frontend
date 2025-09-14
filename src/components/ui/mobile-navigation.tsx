@@ -107,17 +107,17 @@ export function MobileNavigation() {
             </button>
           </div>
 
-          <div className="flex-1 overflow-y-auto h-full py-2">
+          <div className="flex-1 overflow-y-auto h-full py-4">
             {/* Navigation Items */}
             {navigationItems.map((item) => (
-              <div key={item.key} className="space-y-3">
+              <div key={item.key} className="space-y-2">
                 {item.key !== "contact" && item.key != "login" ? (
                   <>
                     <button
                       onClick={() => handleMobileMenuExpand(item.key)}
-                      className="flex justify-between items-center w-full p-4 hover:bg-gray-50 transition-colors"
+                      className="flex justify-between items-center w-full px-4 py-3 hover:bg-gray-50 transition-colors"
                     >
-                      <span className="font-medium text-sm">{item.label}</span>
+                      <span className="font-medium">{item.label}</span>
                       {mobileExpandedMenu === item.key ? (
                         <ChevronDownIcon
                           size={20}
@@ -139,10 +139,10 @@ export function MobileNavigation() {
                     >
                       <ul className="pl-8 pb-2 list-disc list-outside">
                         {mobileMenuContent[item.key]?.map((subItem) => (
-                          <li key={subItem}>
+                          <li key={subItem} className="text-[#454950]">
                             <a
                               href="#"
-                              className="block py-2 text-gray-700 hover:bg-gray-50 rounded-md transition-colors text-sm"
+                              className="block py-2 rounded-md transition-colors text-sm"
                             >
                               {subItem}
                             </a>
@@ -154,7 +154,7 @@ export function MobileNavigation() {
                 ) : (
                   <a
                     href="#"
-                    className="block p-4 hover:bg-gray-50 transition-colors font-medium text-sm"
+                    className="block py-3 px-4 hover:bg-gray-50 transition-colors font-medium"
                   >
                     {item.label}
                   </a>

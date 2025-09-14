@@ -41,7 +41,7 @@ const SpeciesSection: React.FC = () => {
         </button>
       </div>
 
-      {/* Carousel */}
+      {/*Desktop Carousel */}
       <Carousel
         className="max-sm:hidden"
         opts={{ align: "start" }}
@@ -52,11 +52,11 @@ const SpeciesSection: React.FC = () => {
           });
         }}
       >
-        <CarouselContent className="-ml-4">
+        <CarouselContent className="-ml-8">
           {species.map((item, idx) => (
             <CarouselItem
               key={idx}
-              className="basis-1/1 sm:basis-1/2 lg:basis-1/3 pl-4"
+              className="basis-1/1 sm:basis-1/2 lg:basis-1/3 pl-8"
             >
               <div className="flex-1 min-w-0 border border-gray-200 rounded-xl flex-shrink-0">
                 <div className="overflow-hidden w-full md:p-4 p-2">
@@ -105,7 +105,7 @@ const SpeciesSection: React.FC = () => {
           {species.map((item, idx) => (
             <div
               key={idx}
-              className="flex-1 min-w-0 border border-gray-200 rounded-xl flex-shrink-0 overflow-hidden"
+              className="flex-1 min-w-[314px] max-w-[314px] border border-gray-200 rounded-xl flex-shrink-0 overflow-hidden"
             >
               <div className="pt-3 px-3">
                 <Image

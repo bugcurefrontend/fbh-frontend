@@ -20,7 +20,7 @@ const AboutSection: React.FC = () => {
           What is Forests By Heartfulness?
         </h2>
 
-        <p className="font-semibold sm:text-base text-sm leading-6 text-black">
+        <p className="font-semibold sm:text-base text-sm leading-6 sm:text-[#19212C] text-[#454950]">
           Forests By Heartfulness is rejuvenating Earth’s native, endangered,
           and endemic species through green action, cutting-edge research,
           ecological empathy and a reconnection between humans and nature.

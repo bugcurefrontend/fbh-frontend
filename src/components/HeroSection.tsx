@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { motion } from "framer-motion";
 
 const heroSlides = [
   {
@@ -51,24 +52,37 @@ const HeroSection = () => {
     startAutoPlay();
   };
 
-  const slide = heroSlides[current];
-
   return (
-    <div
-      className="h-[604px] bg-cover bg-center bg-no-repeat relative transition-all duration-700"
-      style={{
-        backgroundImage: `linear-gradient(0deg, rgba(0, 13, 38, 0.30), rgba(0, 13, 38, 0.30)), url(${slide.bgImage})`,
-      }}
-    >
-      <div className="w-full mx-auto relative md:px-8 px-4 pt-[258px]">
-        <div className="sm:max-w-[582px] max-w-[276px]">
+    <div className="h-[604px] relative overflow-hidden">
+      {/* Background with fade */}
+      <motion.div
+        key={heroSlides[current].id}
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: `linear-gradient(0deg, rgba(0, 13, 38, 0.30), rgba(0, 13, 38, 0.30)), url(${heroSlides[current].bgImage})`,
+        }}
+        initial={{ opacity: 0.9 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0.9 }}
+        transition={{ duration: 1 }}
+      />
+
+      <div className="relative w-full max-w-7xl mx-auto md:px-8 px-4 pt-[258px]">
+        <motion.div
+          initial={{ opacity: 0.9 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0.9 }}
+          transition={{ duration: 1 }}
+          key={heroSlides[current].id}
+          className="sm:max-w-[582px] max-w-[276px]"
+        >
           <h1 className="sm:text-[64px] font-bold sm:leading-[1.2] text-white mb-10 text-[38px] leading-[36px] sm:mb-6">
-            {slide.title}
+            {heroSlides[current].title}
           </h1>
           <button className="bg-[#003399] text-white font-bold text-base sm:py-3 py-[6px] rounded max-w-[370px] w-full hover:bg-[#002080]">
-            {slide.buttonText}
+            {heroSlides[current].buttonText}
           </button>
-        </div>
+        </motion.div>
 
         {/* Mobile Dots */}
         <div className="md:hidden absolute -bottom-20 left-1/2 -translate-x-1/2 flex gap-3">

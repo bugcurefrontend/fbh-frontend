@@ -48,7 +48,7 @@ const CaseStudiesSection = () => {
 
   return (
     <section>
-      <h2 className="text-3xl sm:text-4xl font-[Playfair_Display] font-semibold sm:text-center text-[#232D26] sm:mb-10 mb-6">
+      <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold sm:text-center text-[#232D26] sm:mb-10 mb-6">
         Case Study
       </h2>
 
@@ -128,17 +128,17 @@ const CaseStudiesSection = () => {
         {caseStudies.map((study, idx) => (
           <div
             key={idx}
-            className="w-full rounded-[9px] border border-[#e4e4e4] flex flex-row p-4 gap-6 shadow-none"
+            className="w-full rounded-[9px] border border-[#e4e4e4] flex flex-row p-3 gap-3.5 shadow-none items-center"
           >
             <Image
               src={study.image}
               alt={study.title}
               height={170}
               width={140}
-              className="rounded-sm object-cover"
+              className="rounded-sm object-cover min-h-[173px]"
             />
 
-            <div className="space-y-4">
+            <div className="space-y-3">
               <div className="flex flex-col">
                 <h3 className="text-[16px] font-semibold text-[#333333] leading-tight">
                   {study.title}
@@ -148,7 +148,7 @@ const CaseStudiesSection = () => {
                 </p>
               </div>
 
-              <p className="text-[10px] font-normal leading-[20px] text-[#454950] flex-1 line-clamp-4 md:line-clamp-4">
+              <p className="text-[10px] font-normal leading-[16px] text-[#454950] flex-1 line-clamp-4 md:line-clamp-4">
                 {study.description}
               </p>
 

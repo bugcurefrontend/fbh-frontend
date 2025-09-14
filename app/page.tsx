@@ -16,7 +16,7 @@ export default function Home() {
       <Header />
       <HeroSection />
 
-      <section className="mx-auto w-full md:px-8 px-4 space-y-16 mb-16">
+      <section className="max-w-7xl mx-auto w-full md:px-8 px-4 space-y-16 mb-16">
         <StatisticsSection />
         <AboutSection />
         <PartnersSection />

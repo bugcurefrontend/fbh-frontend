@@ -75,11 +75,11 @@ const ActivitiesSection: React.FC = () => {
           });
         }}
       >
-        <CarouselContent className="-ml-4">
+        <CarouselContent className="-ml-8">
           {activities.map((activity, idx) => (
             <CarouselItem
               key={idx}
-              className="basis-1/1 sm:basis-1/2 lg:basis-1/3 pl-4"
+              className="basis-1/1 sm:basis-1/2 lg:basis-1/3 pl-8"
             >
               <div className="flex-1 h-full min-w-0 border border-gray-200 rounded-xl flex-shrink-0 overflow-hidden">
                 <Image
@@ -87,7 +87,7 @@ const ActivitiesSection: React.FC = () => {
                   alt={activity.title}
                   width={350}
                   height={194}
-                  className="w-full"
+                  className="w-full max-h-48 object-cover"
                 />
                 <div className="p-6 flex flex-col gap-4">
                   <div className="flex items-center gap-2">
@@ -137,9 +137,9 @@ const ActivitiesSection: React.FC = () => {
               alt={activity.title}
               width={350}
               height={194}
-              className="w-full"
+              className="w-full max-h-40 object-cover"
             />
-            <div className="p-6 flex flex-col gap-4">
+            <div className="px-3 py-4 flex flex-col gap-2">
               <div className="flex items-center gap-2">
                 <Calendar className="w-5 h-5" />
                 <span className="text-sm font-bold text-black">

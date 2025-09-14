@@ -73,7 +73,7 @@ const ProjectsSection: React.FC = () => {
                 src={project.image}
                 alt={project.name}
                 fill
-                className="object-cover rounded-md"
+                className="object-cover rounded-t-md"
               />
               <div className="absolute top-4 left-4 flex gap-3">
                 {project.badges.map((badge, i) => (
@@ -99,7 +99,7 @@ const ProjectsSection: React.FC = () => {
                 </div>
               </div>
               <button className="bg-[#003399] text-white font-bold text-base py-3 rounded-[8px] w-full hover:bg-[#002080] gap-2 flex items-center justify-center">
-                DONATE
+                PLANT A TREE
                 <Image
                   src="/images/donate.png"
                   alt="donate"
@@ -119,14 +119,14 @@ const ProjectsSection: React.FC = () => {
           {projects.map((project, idx) => (
             <div
               key={idx}
-              className="flex-shrink-0 w-[280px] rounded-xl shadow-sm overflow-hidden border border-gray-200 flex flex-col"
+              className="flex-1 min-w-[314px] max-w-[314px] border border-gray-200 rounded-xl flex-shrink-0 overflow-hidden"
             >
               <div className="relative h-52">
                 <Image
                   src={project.image}
                   alt={project.name}
                   fill
-                  className="object-cover rounded-md"
+                  className="object-cover rounded-t-md"
                 />
                 <div className="absolute top-4 left-4 flex gap-1">
                   {project.badges.map((badge, i) => (
@@ -151,8 +151,15 @@ const ProjectsSection: React.FC = () => {
                     </span>
                   </div>
                 </div>
-                <button className="bg-[#003399] text-white font-bold text-base py-[6px] rounded w-full hover:bg-[#002080]">
-                  DONATE
+                <button className="bg-[#003399] text-white font-bold text-base py-2 rounded-[8px] w-full hover:bg-[#002080] gap-2 flex items-center justify-center">
+                  PLANT A TREE
+                  <Image
+                    src="/images/donate.png"
+                    alt="donate"
+                    width={24}
+                    height={24}
+                    className=""
+                  />{" "}
                 </button>
               </div>
             </div>

@@ -54,7 +54,7 @@ const TestimonialsSection: React.FC = () => {
 
   return (
     <section>
-      <h2 className="text-3xl sm:text-4xl font-[Playfair_Display] font-semibold sm:text-center text-[#232D26] sm:mb-10 mb-6">
+      <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold sm:text-center text-[#232D26] sm:mb-10 mb-6">
         Testimonials
       </h2>
 
@@ -73,16 +73,16 @@ const TestimonialsSection: React.FC = () => {
           </div>
 
           <div className="flex flex-col gap-4">
-            <div className="flex flex-col gap-1">
-              <span className="text-2xl font-semibold text-[#333333]">
+            <div className="flex flex-col sm:gap-1">
+              <span className="sm:text-2xl text-lg font-semibold text-[#333333]">
                 {currentTestimonial.designation}
               </span>
-              <span className="text-xl font-bold text-gray-600">
+              <span className="sm:text-xl text-base sm:font-bold font-semibold text-[#4B5563]">
                 {currentTestimonial.name}
               </span>
             </div>
 
-            <p className="text-base font-normal leading-6 text-[#454950]">
+            <p className="sm:text-base text-xs font-normal sm:leading-6 leading-5 text-[#454950]">
               {currentTestimonial.quote}
             </p>
           </div>
