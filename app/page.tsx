@@ -22,7 +22,6 @@ export default function Home() {
         <ActivitiesSection />
         <TestimonialsSection />
         <CaseStudiesSection />
-     
     </main>
   );
 }

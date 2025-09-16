@@ -53,8 +53,8 @@ const TestimonialsSection: React.FC = () => {
   };
 
   return (
-    <section>
-      <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold sm:text-center text-[#232D26] sm:mb-10 mb-6">
+    <section className="mt-16 md:mx-8">
+      <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold sm:text-center text-[#232D26] sm:mb-10 mb-6 md:text-[32px] md:font-semibold md:leading-[48px] md:align-middle md:text-[#232D26]">
         Testimonials
       </h2>
 
@@ -74,15 +74,15 @@ const TestimonialsSection: React.FC = () => {
 
           <div className="flex flex-col gap-4">
             <div className="flex flex-col sm:gap-1">
-              <span className="sm:text-2xl text-lg font-semibold text-[#333333]">
+              <span className="sm:text-2xl text-lg font-semibold text-[#333333] md:text-2xl md:font-semibold md:leading-9 md:align-middle">
                 {currentTestimonial.designation}
               </span>
-              <span className="sm:text-xl text-base sm:font-bold font-semibold text-[#4B5563]">
+              <span className="sm:text-xl text-base sm:font-bold font-semibold text-[#4B5563] md:text-xl md:font-bold md:leading-[30px] md:align-middle">
                 {currentTestimonial.name}
               </span>
             </div>
 
-            <p className="sm:text-base text-xs font-normal sm:leading-6 leading-5 text-[#454950]">
+            <p className="sm:text-base text-xs font-normal sm:leading-6 leading-5 text-[#454950] md:text-base md:font-normal md:leading-6 md:text-[#454950]">
               {currentTestimonial.quote}
             </p>
           </div>

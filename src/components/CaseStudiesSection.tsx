@@ -47,7 +47,7 @@ const CaseStudiesSection = () => {
       : ((currentIndex + visibleSlides) / totalSlides) * 100;
 
   return (
-    <section>
+    <section className="mt-16 md:mx-8">
       <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold sm:text-center text-[#232D26] sm:mb-10 mb-6">
         Case Study
       </h2>
@@ -79,19 +79,19 @@ const CaseStudiesSection = () => {
 
                 <div className="flex flex-col gap-4 md:gap-[24px] flex-1 min-w-0">
                   <div className="flex flex-col gap-1 md:gap-[4px]">
-                    <h3 className="text-[18px] md:text-[18px] font-bold text-[#333333] leading-tight">
+                    <h3 className="text-[18px] md:text-[18px] font-bold text-[#333333] leading-tight md:text-lg md:font-bold md:leading-[26px] md:align-middle">
                       {study.title}
                     </h3>
-                    <p className="text-[16px] md:text-[16px] font-semibold text-[#4b5563] leading-tight">
+                    <p className="text-[16px] md:text-[16px] font-semibold text-[#4b5563] leading-tight md:text-base md:font-semibold md:leading-6 md:align-middle">
                       {study.subtitle}
                     </p>
                   </div>
 
-                  <p className="text-[16px] font-normal leading-[20px] text-[#454950] flex-1 line-clamp-4 md:line-clamp-4">
+                  <p className="text-[16px] font-normal leading-[20px] text-[#454950] flex-1 line-clamp-4 md:line-clamp-4 md:text-base md:font-normal md:leading-6 md:text-[#454950]">
                     {study.description}
                   </p>
 
-                  <button className="flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer">
+                  <button className="flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer md:font-bold md:text-xs md:leading-[18px] md:uppercase md:text-[#003399]">
                     Know More{" "}
                     <ArrowRightIcon
                       width={22}
@@ -152,7 +152,7 @@ const CaseStudiesSection = () => {
                 {study.description}
               </p>
 
-              <button className="flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer">
+              <button className="flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer md:font-bold md:text-xs md:leading-[18px] md:uppercase md:text-[#003399]">
                 Read More{" "}
                 <ArrowRightIcon
                   width={22}

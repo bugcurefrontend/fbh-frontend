@@ -53,13 +53,13 @@ const ActivitiesSection: React.FC = () => {
       : ((currentIndex + visibleSlides) / totalSlides) * 100;
 
   return (
-    <section className="relative">
+    <section className="relative mt-16 md:mx-8">
       {/* Header */}
       <div className="w-full md:text-center mb-8 relative">
-        <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold mx-auto sm:mx-0 text-black">
+        <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold mx-auto sm:mx-0 text-black md:text-[32px] md:font-semibold md:leading-[48px] md:align-middle md:text-[#090C0F]">
           FBH Activities
         </h2>
-        <button className="absolute right-0 top-4 text-[#003399] font-bold text-xs uppercase">
+        <button className="absolute right-0 top-4 text-[#003399] font-bold text-xs uppercase md:font-bold md:text-xs md:leading-[18px] md:text-center md:align-middle md:uppercase md:text-[#003399]">
           View All
         </button>
       </div>
@@ -92,14 +92,14 @@ const ActivitiesSection: React.FC = () => {
                 <div className="p-6 flex flex-col gap-4">
                   <div className="flex items-center gap-2">
                     <Calendar className="w-5 h-5" />
-                    <span className="text-sm font-bold text-black">
+                    <span className="text-sm font-bold text-black md:text-sm md:font-bold md:leading-[22px] md:text-center md:align-middle md:text-[#090C0F]">
                       {activity.date}
                     </span>
                   </div>
-                  <h3 className="text-lg font-bold text-[#333333]">
+                  <h3 className="text-lg font-bold text-[#333333] md:text-lg md:font-bold md:leading-[26px] md:align-middle md:text-[#333333]">
                     {activity.title}
                   </h3>
-                  <p className="text-sm font-normal text-gray-600">
+                  <p className="text-sm font-normal text-gray-600 md:text-sm md:font-normal md:leading-[21px] md:align-middle md:text-[#595959]">
                     {activity.description}
                   </p>
                 </div>
@@ -142,14 +142,14 @@ const ActivitiesSection: React.FC = () => {
             <div className="px-3 py-4 flex flex-col gap-2">
               <div className="flex items-center gap-2">
                 <Calendar className="w-5 h-5" />
-                <span className="text-sm font-bold text-black">
+                <span className="text-sm font-bold text-black md:text-sm md:font-bold md:leading-[22px] md:text-center md:align-middle md:text-[#090C0F]">
                   {activity.date}
                 </span>
               </div>
-              <h3 className="text-lg font-bold text-[#333333]">
+              <h3 className="text-lg font-bold text-[#333333] md:text-lg md:font-bold md:leading-[26px] md:align-middle md:text-[#333333]">
                 {activity.title}
               </h3>
-              <p className="text-sm font-normal text-gray-600">
+              <p className="text-sm font-normal text-gray-600 md:text-sm md:font-normal md:leading-[21px] md:align-middle md:text-[#595959]">
                 {activity.description}
               </p>
             </div>

@@ -30,13 +30,13 @@ const SpeciesSection: React.FC = () => {
       : ((currentIndex + visibleSlides) / totalSlides) * 100;
 
   return (
-    <section className="relative">
+    <section className="relative mt-16 md:mx-8">
       {/* Header */}
       <div className="w-full md:text-center mb-8 relative">
-        <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold mx-auto sm:mx-0 text-black">
+        <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold mx-auto sm:mx-0 text-black md:text-[32px] md:font-semibold md:leading-[48px] md:align-middle md:text-[#090C0F]">
           Species
         </h2>
-        <button className="absolute right-0 top-4 text-[#003399] font-bold text-xs uppercase">
+        <button className="absolute right-0 top-4 text-[#003399] font-bold text-xs uppercase md:font-bold md:text-xs md:leading-[18px] md:text-center md:align-middle md:uppercase md:text-[#003399]">
           View All
         </button>
       </div>
@@ -69,7 +69,7 @@ const SpeciesSection: React.FC = () => {
                   />
                 </div>
                 <div className="p-4 flex justify-between items-center">
-                  <p className="text-lg font-bold text-black truncate">
+                  <p className="text-lg font-bold text-black truncate md:text-lg md:font-bold md:leading-[26px] md:align-middle md:text-[#19212C]">
                     {item.name}
                   </p>
                   <button className="flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer">
@@ -117,7 +117,7 @@ const SpeciesSection: React.FC = () => {
                 />
               </div>
               <div className="p-4 flex sm:flex-root flex-col justify-between sm:items-center max-sm:gap-2">
-                <p className="text-lg font-bold text-black truncate">
+                <p className="text-lg font-bold text-black truncate md:text-lg md:font-bold md:leading-[26px] md:align-middle md:text-[#19212C]">
                   {item.name}
                 </p>
                 <button className="flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer">

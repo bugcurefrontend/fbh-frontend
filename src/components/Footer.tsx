@@ -15,7 +15,7 @@ const Footer: React.FC = () => {
 
   return (
     <footer className="bg-[#0f172a] text-[#e6e6e6] mt-16">
-      <div className="max-w-7xl mx-auto md:px-8 px-4 py-16 flex flex-col sm:flex-row sm:justify-between gap-16 sm:gap-16">
+      <div className="md:px-8 mx-auto md:px-8 px-4 py-16 flex flex-col sm:flex-row sm:justify-between gap-16 sm:gap-16">
         <div className="flex flex-col gap-6 md:min-w-sm w-full sm:w-auto">
           <Image
             src="/images/logo2.png"
@@ -96,7 +96,7 @@ const Footer: React.FC = () => {
 
       {/* Footer Bottom */}
       <div className="bg-black">
-        <div className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-20 h-[95px] sm:h-[72px] px-4 max-w-7xl mx-auto">
+        <div className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-20 h-[95px] sm:h-[72px] px-4 mx-auto">
           <p className="font-poppins font-medium text-white text-sm sm:text-base">
             © 2025 Heartfulness - All rights reserved
           </p>
