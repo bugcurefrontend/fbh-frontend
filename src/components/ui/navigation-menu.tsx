@@ -38,7 +38,7 @@ export function CustomNavigationMenu({
         <li>
           <a
             href="#"
-            className="uppercase text-xs font-bold px-3 py-3 hover:bg-[#E6EBF5] truncate transition-colors"
+            className="uppercase text-xs font-bold leading-[18px] text-center align-middle px-3 py-3 hover:bg-[#E6EBF5] truncate transition-colors"
           >
             Contact us
           </a>
@@ -83,7 +83,7 @@ function NavigationMenuItem({ item }: { item: NavigationItem }) {
     >
       <button
         className={cn(
-          "group inline-flex h-9 w-max items-center justify-center bg-background px-4 py-2 uppercase text-xs font-bold rounded-none hover:bg-[#E6EBF5] truncate max-xl:px-2 transition-colors",
+          "group inline-flex h-9 w-max items-center justify-center bg-background px-4 py-2 uppercase text-xs font-bold leading-[18px] text-center align-middle rounded-none hover:bg-[#E6EBF5] truncate max-xl:px-2 transition-colors",
           "hover:bg-[#E6EBF5] focus:bg-[#E6EBF5] focus-visible:outline-1 focus-visible:ring-[3px] focus-visible:ring-ring/50 outline-none"
         )}
       >

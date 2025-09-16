@@ -65,9 +65,9 @@ export default function Header() {
 
   return (
     <header className="fixed top-0 left-0 w-full z-50 bg-white/95 backdrop-blur-md shadow-sm h-16">
-      <div className="max-w-7xl mx-auto h-full flex items-center justify-between px-4 sm:px-8">
+      <div className="mx-auto h-full flex items-center justify-between px-4 sm:px-8">
         {/* Logo */}
-        <div className="md:w-full md:max-w-[30%]">
+        <div className="md:w-full ">
           <Link href="/">
             <Image
               src="/images/logo3.png"
@@ -81,13 +81,14 @@ export default function Header() {
         </div>
 
         {/* Desktop navigation */}
-        <div className="w-full hidden lg:flex items-center justify-between gap-10 xl:gap-14">
+        <div className="w-full hidden lg:flex items-center gap-10 xl:gap-14">
           <CustomNavigationMenu navigationItems={navigationItems} />
-
+          <div className="flex-1"></div>
           <div className="flex items-center justify-center gap-3">
             <Select defaultValue="india">
-              <SelectTrigger>
+              <SelectTrigger className="border-2 py-[10px] px-[6px] rounded-[5px]">
                 <SelectValue placeholder="Country" />
+                <span className="ml-1 text-sm font-normal leading-5 text-center align-middle">INR</span>
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="india">
