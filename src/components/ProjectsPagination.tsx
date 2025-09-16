@@ -29,7 +29,7 @@ const ProjectsPagination: React.FC<ProjectsPaginationProps> = ({
   const renderPageNumbers = () => {
     const pages = [];
     const maxVisiblePages = 7;
-    
+
     if (totalPages <= maxVisiblePages) {
       // Show all pages if total is small
       for (let i = 1; i <= totalPages; i++) {
@@ -89,7 +89,7 @@ const ProjectsPagination: React.FC<ProjectsPaginationProps> = ({
       // Show current page and surrounding pages
       const start = Math.max(2, currentPage - 1);
       const end = Math.min(totalPages - 1, currentPage + 1);
-      
+
       for (let i = start; i <= end; i++) {
         if (i !== 1 && i !== totalPages) {
           pages.push(

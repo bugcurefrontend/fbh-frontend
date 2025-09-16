@@ -13,7 +13,6 @@ import Footer from "../src/components/Footer";
 export default function Home() {
   return (
     <main className="min-h-screen">
-      <Header />
       <HeroSection />
 
       <section className="max-w-7xl mx-auto w-full md:px-8 px-4 space-y-16 mb-16">
@@ -26,8 +25,6 @@ export default function Home() {
         <TestimonialsSection />
         <CaseStudiesSection />
       </section>
-
-      <Footer />
     </main>
   );
 }

@@ -4,9 +4,15 @@ import React, { useState, useRef, useEffect } from "react";
 import { ChevronDownIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+interface subItem {
+  label: string;
+  href: string;
+}
+
 interface NavigationItem {
   label: string;
-  sub: string[];
+  sub: subItem[];
+  href?: string;
 }
 
 interface NavigationMenuProps {
@@ -101,13 +107,13 @@ function NavigationMenuItem({ item }: { item: NavigationItem }) {
         >
           <div className="px-0 py-2">
             <ul className="grid">
-              {item.sub.map((sub) => (
-                <li key={sub}>
+              {item.sub.map((item) => (
+                <li key={item.label}>
                   <a
-                    href="#"
+                    href={item.href}
                     className="block text-[16px] font-medium hover:bg-[#E6EBF5] px-4 py-2 transition-colors"
                   >
-                    {sub}
+                    {item.label}
                   </a>
                 </li>
               ))}
