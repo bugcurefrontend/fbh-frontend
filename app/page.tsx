@@ -14,8 +14,6 @@ export default function Home() {
   return (
     <main className="min-h-screen">
       <HeroSection />
-
-      <section className="max-w-7xl mx-auto w-full md:px-8 px-4 space-y-16 mb-16">
         <StatisticsSection />
         <AboutSection />
         <PartnersSection />
@@ -24,7 +22,7 @@ export default function Home() {
         <ActivitiesSection />
         <TestimonialsSection />
         <CaseStudiesSection />
-      </section>
+     
     </main>
   );
 }
