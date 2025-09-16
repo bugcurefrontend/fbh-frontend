@@ -26,6 +26,7 @@ const heroSlides = [
 
 const HeroSection = () => {
   const [current, setCurrent] = useState(0);
+  const [activeButton, setActiveButton] = useState<'left' | 'right'>('right');
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const startAutoPlay = () => {
@@ -44,16 +45,18 @@ const HeroSection = () => {
 
   const nextSlide = () => {
     setCurrent((prev) => (prev + 1) % heroSlides.length);
+    setActiveButton('right');
     startAutoPlay();
   };
 
   const prevSlide = () => {
     setCurrent((prev) => (prev === 0 ? heroSlides.length - 1 : prev - 1));
+    setActiveButton('left');
     startAutoPlay();
   };
 
   return (
-    <div className="h-[604px] relative overflow-hidden">
+    <div className="h-[604px] relative overflow-hidden md:px-8">
       {/* Background with fade */}
       <motion.div
         key={heroSlides[current].id}
@@ -67,7 +70,7 @@ const HeroSection = () => {
         transition={{ duration: 1 }}
       />
 
-      <div className="relative w-full max-w-7xl mx-auto md:px-8 px-4 pt-[258px]">
+      <div className="relative w-full mx-auto md:px-8 px-4 pt-[258px]">
         <motion.div
           initial={{ opacity: 0.9 }}
           animate={{ opacity: 1 }}
@@ -79,7 +82,7 @@ const HeroSection = () => {
           <h1 className="sm:text-[64px] font-bold sm:leading-[1.2] text-white mb-10 text-[38px] leading-[36px] sm:mb-6">
             {heroSlides[current].title}
           </h1>
-          <button className="bg-[#003399] text-white font-bold text-base sm:py-3 py-[6px] rounded max-w-[370px] w-full hover:bg-[#002080]">
+          <button className="bg-[#003399] text-white font-bold text-base sm:py-3 py-[6px] rounded md:w-[370px] md:h-12 md:py-[11px] md:px-[22px] md:rounded-lg md:text-base md:font-bold md:leading-[26px] md:text-[#FFFFFF] max-w-[370px] w-full hover:bg-[#002080]">
             {heroSlides[current].buttonText}
           </button>
         </motion.div>
@@ -100,13 +103,21 @@ const HeroSection = () => {
         <div className="absolute right-8 bottom-0 sm:flex gap-3 hidden">
           <button
             onClick={prevSlide}
-            className="w-[42px] h-[42px] rounded-full border border-white/60 text-white/80 bg-transparent transition-all hover:bg-white/20 flex items-center justify-center"
+            className={`w-[42px] h-[42px] rounded-full transition-all flex items-center justify-center ${
+              activeButton === 'left'
+                ? 'bg-white text-black hover:bg-white/80'
+                : 'border border-white/60 text-white/80 bg-transparent hover:bg-white/20'
+            }`}
           >
             <ChevronLeft />
           </button>
           <button
             onClick={nextSlide}
-            className="w-[42px] h-[42px] rounded-full bg-white text-black transition-all hover:bg-white/80 flex items-center justify-center"
+            className={`w-[42px] h-[42px] rounded-full transition-all flex items-center justify-center ${
+              activeButton === 'right'
+                ? 'bg-white text-black hover:bg-white/80'
+                : 'border border-white/60 text-white/80 bg-transparent hover:bg-white/20'
+            }`}
           >
             <ChevronRight />
           </button>

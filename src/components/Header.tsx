@@ -64,7 +64,7 @@ export default function Header() {
   ];
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50 bg-white/95 backdrop-blur-md shadow-sm h-16">
+    <header className="fixed top-0 left-0 w-full z-50 bg-[#FFFFFF] backdrop-blur-md shadow-sm h-16">
       <div className="mx-auto h-full flex items-center justify-between px-4 sm:px-8">
         {/* Logo */}
         <div className="md:w-full ">
@@ -88,7 +88,6 @@ export default function Header() {
             <Select defaultValue="india">
               <SelectTrigger className="border-2 py-[10px] px-[6px] rounded-[5px]">
                 <SelectValue placeholder="Country" />
-                <span className="ml-1 text-sm font-normal leading-5 text-center align-middle">INR</span>
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="india">
@@ -99,6 +98,7 @@ export default function Header() {
                     height={24}
                     className="min-w-6 min-h-6"
                   />
+                  <span className="ml-1 text-sm font-normal leading-5 text-center align-middle">INR</span>
                 </SelectItem>
                 <SelectItem value="us">
                   <Image
@@ -108,6 +108,7 @@ export default function Header() {
                     height={24}
                     className="min-w-6 min-h-6"
                   />
+                  <span className="ml-1 text-sm font-normal leading-5 text-center align-middle">USD</span>
                 </SelectItem>
               </SelectContent>
             </Select>
