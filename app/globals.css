@@ -3,6 +3,10 @@
 @theme inline {
   --animate-scroll: scroll var(--animation-duration, 40s)
     var(--animation-direction, forwards) linear infinite;
+  --animate-scroll-right: scroll-right var(--animation-duration, 20s)
+    var(--animation-direction, forwards) linear infinite;
+  --animate-scroll-left: scroll-left var(--animation-duration, 20s)
+    var(--animation-direction, forwards) linear infinite;
 
   @keyframes scroll {
     0% {
@@ -10,6 +14,24 @@
     }
     100% {
       transform: translateX(calc(-50% - 0.5rem));
+    }
+  }
+
+  @keyframes scroll-right {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(0%);
+    }
+  }
+
+  @keyframes scroll-left {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-100%);
     }
   }
 }

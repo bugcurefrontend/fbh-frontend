@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import QuoteIcon from "./icons/QuoteIcon";
 
 const TestimonialsSection: React.FC = () => {
@@ -59,15 +60,31 @@ const TestimonialsSection: React.FC = () => {
       </h2>
 
       <div className="border border-[#e4e4e4] p-4 rounded-2xl flex flex-col md:flex-row sm:gap-16 gap-6 items-center justify-between">
-        <Image
-          src={currentTestimonial.src}
-          alt={`Testimonial from ${currentTestimonial.name}`}
-          width={493}
-          height={423}
+        <motion.div
+          key={`image-${current}`}
+          initial={{ opacity: 0.9 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0.9 }}
+          transition={{ duration: 1 }}
           className="rounded-xl w-full sm:w-[45%] sm:max-h-[40%] h-full"
-        />
+        >
+          <Image
+            src={currentTestimonial.src}
+            alt={`Testimonial from ${currentTestimonial.name}`}
+            width={493}
+            height={423}
+            className="rounded-xl w-full h-full object-cover"
+          />
+        </motion.div>
 
-        <div className="max-w-2xl lg:max-w-full lg:w-[55%] md:space-y-10 space-y-6 max-md:flex flex-col items-center text-center md:text-start">
+        <motion.div
+          key={`content-${current}`}
+          initial={{ opacity: 0.9 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0.9 }}
+          transition={{ duration: 1 }}
+          className="max-w-2xl lg:max-w-full lg:w-[55%] md:space-y-10 space-y-6 max-md:flex flex-col items-center text-center md:text-start"
+        >
           <div className="sm:w-20 sm:h-20 w-12 h-12 flex items-center justify-center">
             <QuoteIcon width={77} height={77} color="#003399" />
           </div>
@@ -98,7 +115,7 @@ const TestimonialsSection: React.FC = () => {
               ></button>
             ))}
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

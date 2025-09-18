@@ -40,13 +40,53 @@ const PartnersSection: React.FC = () => {
         Our Supporting Partners
       </h2>
 
-      <InfiniteMovingCards
-        items={items}
-        direction="left"
-        speed="fast"
-        pauseOnHover={true}
-        className="bg-transparent"
-      />
+      {/* Mobile 2 Row Layout */}
+      <div className="sm:hidden space-y-4">
+        {/* First Row - Moving Right */}
+        <div className="overflow-hidden pb-10">
+          <div className="flex animate-scroll-right space-x-8">
+            {[...partners, ...partners].map((partner, index) => (
+              <div key={`row1-${index}`} className="flex-shrink-0 flex items-center justify-center">
+                <Image
+                  src={partner.logo}
+                  alt={partner.name}
+                  width={160}
+                  height={100}
+                  className="object-contain max-w-[80px] max-h-[30px] w-fit h-fit"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Second Row - Moving Left */}
+        <div className="overflow-hidden">
+          <div className="flex animate-scroll-left space-x-8">
+            {[...partners, ...partners].map((partner, index) => (
+              <div key={`row2-${index}`} className="flex-shrink-0 flex items-center justify-center">
+                <Image
+                  src={partner.logo}
+                  alt={partner.name}
+                  width={160}
+                  height={100}
+                  className="object-contain max-w-[80px] max-h-[30px] w-fit h-fit"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Desktop Infinite Scroll */}
+      <div className="hidden sm:block">
+        <InfiniteMovingCards
+          items={items}
+          direction="left"
+          speed="fast"
+          pauseOnHover={true}
+          className="bg-transparent"
+        />
+      </div>
     </section>
   );
 };
