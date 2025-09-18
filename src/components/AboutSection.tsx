@@ -5,7 +5,7 @@ import ArrowRightIcon from "./icons/ArrowRightIcon";
 
 const AboutSection: React.FC = () => {
   return (
-    <section className="flex md:flex-row flex-col gap-8 items-center md:px-8">
+    <section className="flex md:flex-row flex-col gap-8 items-center">
       <Image
         src="/images/architecture-circular.png"
         alt="Circular architecture with gardens"

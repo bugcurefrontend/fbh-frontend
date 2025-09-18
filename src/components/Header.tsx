@@ -67,7 +67,7 @@ export default function Header() {
     <header className="fixed top-0 left-0 w-full z-50 bg-[#FFFFFF] backdrop-blur-md shadow-sm h-16">
       <div className="mx-auto h-full flex items-center justify-between px-4 sm:px-8">
         {/* Logo */}
-        <div className="md:w-full ">
+        <div className="md:w-full">
           <Link href="/">
             <Image
               src="/images/logo3.png"
@@ -98,7 +98,9 @@ export default function Header() {
                     height={24}
                     className="min-w-6 min-h-6"
                   />
-                  <span className="ml-1 text-sm font-normal leading-5 text-center align-middle">INR</span>
+                  <span className="ml-1 text-sm font-normal leading-5 text-center align-middle">
+                    INR
+                  </span>
                 </SelectItem>
                 <SelectItem value="us">
                   <Image
@@ -108,7 +110,9 @@ export default function Header() {
                     height={24}
                     className="min-w-6 min-h-6"
                   />
-                  <span className="ml-1 text-sm font-normal leading-5 text-center align-middle">USD</span>
+                  <span className="ml-1 text-sm font-normal leading-5 text-center align-middle">
+                    USD
+                  </span>
                 </SelectItem>
               </SelectContent>
             </Select>

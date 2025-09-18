@@ -50,7 +50,7 @@ const ProjectsSection: React.FC = () => {
   ];
 
   return (
-    <section className="mt-16 md:mx-8">
+    <section className="mt-16">
       {/* Header */}
       <div className="w-full md:text-center mb-8 relative">
         <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold mx-auto sm:mx-0 text-black md:text-[32px] md:font-semibold md:leading-[48px] md:align-middle md:text-[#090C0F]">
@@ -98,7 +98,7 @@ const ProjectsSection: React.FC = () => {
                   </span>
                 </div>
               </div>
-              <button className="bg-[#003399] text-white font-bold text-base py-3 rounded-[8px] w-full hover:bg-[#002080] gap-2 flex items-center justify-center md:w-[352px] md:h-12 md:gap-2 md:rounded-lg md:py-[11px] md:px-[22px] md:font-bold md:text-base md:leading-[26px] md:text-[#FFFFFF] md:bg-[#003399]">
+              <button className="bg-[#003399] text-white font-bold text-base py-3 rounded-[8px] w-full hover:bg-[#002080] gap-2 flex items-center justify-center md:h-12 md:gap-2 md:rounded-lg md:py-[11px] md:px-[22px] md:font-bold md:text-base md:leading-[26px] md:text-[#FFFFFF] md:bg-[#003399]">
                 PLANT A TREE
                 <Image
                   src="/images/donate.png"

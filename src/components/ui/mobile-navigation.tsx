@@ -2,8 +2,12 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { ChevronRightIcon, XIcon, ChevronDownIcon } from "lucide-react";
-
+import {
+  ChevronRightIcon,
+  XIcon,
+  ChevronDownIcon,
+  MenuIcon,
+} from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -67,21 +71,46 @@ export function MobileNavigation() {
 
   return (
     <div className="lg:hidden">
-      {/* Mobile menu button */}
-      <button
-        onClick={handleMobileMenuToggle}
-        className="p-2 rounded-md text-gray-700 hover:bg-[#E6EBF5] transition-colors"
-        aria-label="Toggle menu"
-      >
-        <Image
-          src="/images/menu.png"
-          alt="Get it on App Store"
-          width={18}
-          height={12}
-          className="cursor-pointer"
-        />{" "}
-      </button>
-
+      <div className="flex items-center justify-center gap-4">
+        <Select defaultValue="india">
+          <SelectTrigger className="border-2 py-[10px] px-[6px] rounded-[5px]">
+            <SelectValue placeholder="Country" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="india">
+              <Image
+                src="/images/flag.png"
+                alt="dots"
+                width={24}
+                height={24}
+                className="min-w-6 min-h-6"
+              />
+              <span className="ml-1 text-sm font-normal leading-5 text-center align-middle">
+                INR
+              </span>
+            </SelectItem>
+            <SelectItem value="us">
+              <Image
+                src="/images/us.png"
+                alt="dots"
+                width={24}
+                height={24}
+                className="min-w-6 min-h-6"
+              />
+              <span className="ml-1 text-sm font-normal leading-5 text-center align-middle">
+                USD
+              </span>
+            </SelectItem>
+          </SelectContent>
+        </Select>
+        <button
+          onClick={handleMobileMenuToggle}
+          className="h-6 w-6 flex items-center justify-center"
+          aria-label="Toggle menu"
+        >
+          <MenuIcon size={24} />
+        </button>
+      </div>
       {/* Drawer */}
       <div
         className={`h-screen overflow-y-scroll fixed top-0 right-0 w-full bg-white z-50 shadow-xl transform transition-transform duration-300 ease-in-out ${
@@ -204,34 +233,6 @@ export function MobileNavigation() {
                 <LogOutIcon size={18} />
               </button>
             </div> */}
-
-            <div className="flex items-center justify-center w-full mt-6">
-              <Select defaultValue="india">
-                <SelectTrigger>
-                  <SelectValue placeholder="Country" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="india">
-                    <Image
-                      src="/images/flag.png"
-                      alt="dots"
-                      width={24}
-                      height={24}
-                      className="min-w-6 min-h-6"
-                    />
-                  </SelectItem>
-                  <SelectItem value="us">
-                    <Image
-                      src="/images/us.png"
-                      alt="dots"
-                      width={24}
-                      height={24}
-                      className="min-w-6 min-h-6"
-                    />
-                  </SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
           </div>
         </div>
       </div>

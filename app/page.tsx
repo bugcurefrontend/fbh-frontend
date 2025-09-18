@@ -1,4 +1,3 @@
-import Header from "../src/components/Header";
 import HeroSection from "../src/components/HeroSection";
 import StatisticsSection from "../src/components/StatisticsSection";
 import AboutSection from "../src/components/AboutSection";
@@ -8,12 +7,12 @@ import ProjectsSection from "../src/components/ProjectsSection";
 import ActivitiesSection from "../src/components/ActivitiesSection";
 import TestimonialsSection from "../src/components/TestimonialsSection";
 import CaseStudiesSection from "../src/components/CaseStudiesSection";
-import Footer from "../src/components/Footer";
 
 export default function Home() {
   return (
     <main className="min-h-screen">
       <HeroSection />
+      <section className="px-4 md:px-8">
         <StatisticsSection />
         <AboutSection />
         <PartnersSection />
@@ -22,6 +21,7 @@ export default function Home() {
         <ActivitiesSection />
         <TestimonialsSection />
         <CaseStudiesSection />
+      </section>
     </main>
   );
 }

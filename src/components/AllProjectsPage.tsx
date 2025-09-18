@@ -4,6 +4,14 @@ import React, { useState } from "react";
 import ProjectCard from "./ProjectCard";
 import SearchBar from "./SearchBar";
 import ProjectsPagination from "./ProjectsPagination";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "./ui/breadcrumb";
 
 interface Project {
   id: string;
@@ -68,12 +76,18 @@ const AllProjectsPage: React.FC<AllProjectsPageProps> = ({
           backgroundPosition: "center",
         }}
       >
-        <div className="max-w-7xl w-full mx-auto px-4 md:px-8 space-y-12 text-white">
-          <p className="text-base font-semibold">
-            <span className="hover:underline cursor-pointer">Homepage</span>
-            <span className="mx-2">{">"}</span>
-            <span>All Projects</span>
-          </p>
+        <div className="w-full mx-auto px-4 md:px-8 space-y-12 text-white">
+          <Breadcrumb>
+            <BreadcrumbList className="text-white font-semibold text-base">
+              <BreadcrumbItem>
+                <BreadcrumbLink href="/">Homepage</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbLink href="/projects">All Projects</BreadcrumbLink>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
 
           <div className="space-y-4">
             <h1 className="text-3xl md:text-4xl font-playfair font-semibold">
@@ -87,7 +101,7 @@ const AllProjectsPage: React.FC<AllProjectsPageProps> = ({
         </div>
       </section>
 
-      <main className="max-w-7xl mx-auto md:px-8 px-4 space-y-8">
+      <main className="mx-auto md:px-8 px-4 space-y-8">
         <SearchBar
           value={searchQuery}
           onChange={handleSearchChange}
