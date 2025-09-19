@@ -1,8 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import Header from "./Header";
-import Footer from "./Footer";
 import ProjectHero from "./ProjectHero";
 import ProjectTabs from "./ProjectTabs";
 import RelatedProjects from "./RelatedProjects";
@@ -70,41 +68,35 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      <Header />
-      
-      <main className="container mx-auto px-4 py-8 space-y-16">
-        {/* Project Hero Section */}
-        <ProjectHero
-          title={projectData.title}
-          location={projectData.location}
-          description={projectData.description}
-          heroImageUrl={projectData.heroImageUrl}
-          heroImageAlt={projectData.heroImageAlt}
-          treeSpecies={projectData.treeSpecies}
-          stats={projectData.stats}
-          isGeoTagged={isGeoTagged}
-          onGeoTaggedChange={setIsGeoTagged}
-          onPlantTree={handlePlantTree}
-          onGiftTree={handleGiftTree}
-        />
+    <main className="container mx-auto md:px-8 px-4 py-8 space-y-16">
+      {/* Project Hero Section */}
+      <ProjectHero
+        title={projectData.title}
+        location={projectData.location}
+        description={projectData.description}
+        heroImageUrl={projectData.heroImageUrl}
+        heroImageAlt={projectData.heroImageAlt}
+        treeSpecies={projectData.treeSpecies}
+        stats={projectData.stats}
+        isGeoTagged={isGeoTagged}
+        onGeoTaggedChange={setIsGeoTagged}
+        onPlantTree={handlePlantTree}
+        onGiftTree={handleGiftTree}
+      />
 
-        {/* Project Tabs Section */}
-        <ProjectTabs
-          projectDescription={projectData.projectDescription}
-          projectDetails={projectData.projectDetails}
-        />
+      {/* Project Tabs Section */}
+      <ProjectTabs
+        projectDescription={projectData.projectDescription}
+        projectDetails={projectData.projectDetails}
+      />
 
-        {/* Related Projects Section */}
-        <RelatedProjects
-          projects={relatedProjects}
-          onPlantTree={handleRelatedPlantTree}
-          onViewAll={handleViewAll}
-        />
-      </main>
-
-      <Footer />
-    </div>
+      {/* Related Projects Section */}
+      <RelatedProjects
+        projects={relatedProjects}
+        onPlantTree={handleRelatedPlantTree}
+        onViewAll={handleViewAll}
+      />
+    </main>
   );
 };
 

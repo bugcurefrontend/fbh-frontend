@@ -12,6 +12,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "./ui/breadcrumb";
+import Link from "next/link";
 
 interface Project {
   id: string;
@@ -111,17 +112,19 @@ const AllProjectsPage: React.FC<AllProjectsPageProps> = ({
         {/* Projects Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projects.map((project) => (
-            <ProjectCard
-              key={project.id}
-              id={project.id}
-              title={project.title}
-              location={project.location}
-              plantedCount={project.plantedCount}
-              category={project.category}
-              imageUrl={project.imageUrl}
-              imageAlt={project.imageAlt}
-              onPlantTree={handlePlantTree}
-            />
+            <Link href="/project-detail">
+              <ProjectCard
+                key={project.id}
+                id={project.id}
+                title={project.title}
+                location={project.location}
+                plantedCount={project.plantedCount}
+                category={project.category}
+                imageUrl={project.imageUrl}
+                imageAlt={project.imageAlt}
+                onPlantTree={handlePlantTree}
+              />
+            </Link>
           ))}
         </div>
 
