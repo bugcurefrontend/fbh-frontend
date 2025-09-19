@@ -12,16 +12,14 @@ export default function Home() {
   return (
     <main className="min-h-screen">
       <HeroSection />
-      <section className="px-4 md:px-8">
-        <StatisticsSection />
-        <AboutSection />
-        <PartnersSection />
-        <SpeciesSection />
-        <ProjectsSection />
-        <ActivitiesSection />
-        <TestimonialsSection />
-        <CaseStudiesSection />
-      </section>
+      <StatisticsSection />
+      <AboutSection />
+      <PartnersSection />
+      <SpeciesSection />
+      <ProjectsSection />
+      <ActivitiesSection />
+      <TestimonialsSection />
+      <CaseStudiesSection />
     </main>
   );
 }

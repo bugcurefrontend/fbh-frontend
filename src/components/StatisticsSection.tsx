@@ -53,7 +53,7 @@ const StatisticsSection: React.FC = () => {
   ];
 
   return (
-    <div className="border border-[#E4E4E4] relative -top-12 sm:top-[-48px] z-10 bg-white rounded-xl sm:rounded-[16px] shadow-[0_8px_32px_rgba(133,133,133,0.1)] p-5 sm:p-8 flex flex-col gap-8 sm:gap-16 sm:mx-auto sm:max-w-[1400px]">
+    <div className="mx-4 md:mx-auto border border-[#E4E4E4] relative -top-12 sm:top-[-48px] z-10 bg-white rounded-xl sm:rounded-[16px] shadow-[0_8px_32px_rgba(133,133,133,0.1)] p-5 sm:p-8 flex flex-col gap-8 sm:gap-16 sm:mx-auto sm:max-w-[1400px]">
       {/* Desktop Layout */}
       <div className="hidden sm:flex flex-col gap-14">
         <div className="flex justify-around items-center">
@@ -66,7 +66,9 @@ const StatisticsSection: React.FC = () => {
                 <p className="text-4xl font-semibold text-black sm:text-[40px]">
                   {stat.number}
                 </p>
-                <p className="md:text-base md:font-normal md:leading-6 md:text-center md:align-middle md:text-[#454950] text-base text-gray-500">{stat.label}</p>
+                <p className="md:text-base md:font-normal md:leading-6 md:text-center md:align-middle md:text-[#454950] text-base text-gray-500">
+                  {stat.label}
+                </p>
               </div>
               {idx < topRowStats.length - 1 && (
                 <div className="h-[97px] w-[0.5px] bg-[#D1D5DB]"></div>
@@ -85,7 +87,9 @@ const StatisticsSection: React.FC = () => {
                 <p className="text-4xl font-semibold text-black sm:text-[40px]">
                   {stat.number}
                 </p>
-                <p className="md:text-base md:font-normal md:leading-6 md:text-center md:align-middle md:text-[#454950] text-base text-gray-500">{stat.label}</p>
+                <p className="md:text-base md:font-normal md:leading-6 md:text-center md:align-middle md:text-[#454950] text-base text-gray-500">
+                  {stat.label}
+                </p>
               </div>
               {idx < bottomRowStats.length - 1 && (
                 <div className="h-[97px] w-[0.5px] bg-[#D1D5DB]"></div>

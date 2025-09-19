@@ -35,7 +35,7 @@ const PartnersSection: React.FC = () => {
   }));
 
   return (
-    <section className="bg-white rounded-xl border border-gray-200  max-sm:py-6 max-sm:pb-10 sm:py-4 text-center space-y-10 sm:space-y-14 sm:h-[232px] mt-16">
+    <section className="mx-4 md:mx-8 bg-white rounded-xl border border-gray-200  max-sm:py-6 max-sm:pb-10 sm:py-4 text-center space-y-10 sm:space-y-14 sm:h-[232px] mt-16">
       <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold text-black md:text-[32px] md:font-semibold md:leading-[48px] md:text-center md:align-middle md:text-[#090C0F]">
         Our Supporting Partners
       </h2>
@@ -46,7 +46,10 @@ const PartnersSection: React.FC = () => {
         <div className="overflow-hidden pb-10">
           <div className="flex animate-scroll-right space-x-8">
             {[...partners, ...partners].map((partner, index) => (
-              <div key={`row1-${index}`} className="flex-shrink-0 flex items-center justify-center">
+              <div
+                key={`row1-${index}`}
+                className="flex-shrink-0 flex items-center justify-center"
+              >
                 <Image
                   src={partner.logo}
                   alt={partner.name}
@@ -63,7 +66,10 @@ const PartnersSection: React.FC = () => {
         <div className="overflow-hidden">
           <div className="flex animate-scroll-left space-x-8">
             {[...partners, ...partners].map((partner, index) => (
-              <div key={`row2-${index}`} className="flex-shrink-0 flex items-center justify-center">
+              <div
+                key={`row2-${index}`}
+                className="flex-shrink-0 flex items-center justify-center"
+              >
                 <Image
                   src={partner.logo}
                   alt={partner.name}
