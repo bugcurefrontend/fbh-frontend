@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import ProjectHero from "./ProjectHero";
 import ProjectTabs from "./ProjectTabs";
 import RelatedProjects from "./RelatedProjects";
+import ProjectAccordion from "./ProjectAccordion";
 
 interface Project {
   id: string;
@@ -68,7 +69,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
   };
 
   return (
-    <main className="container mx-auto md:px-8 px-4 py-8 space-y-16">
+    <main className="mx-auto md:px-8 px-4 md:py-8 py-4 md:space-y-16 space-y-8">
       {/* Project Hero Section */}
       <ProjectHero
         title={projectData.title}
@@ -86,6 +87,11 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
 
       {/* Project Tabs Section */}
       <ProjectTabs
+        projectDescription={projectData.projectDescription}
+        projectDetails={projectData.projectDetails}
+      />
+
+      <ProjectAccordion
         projectDescription={projectData.projectDescription}
         projectDetails={projectData.projectDetails}
       />

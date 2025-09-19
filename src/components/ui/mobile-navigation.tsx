@@ -80,7 +80,7 @@ export function MobileNavigation() {
             <SelectItem value="india">
               <Image
                 src="/images/flag.png"
-                alt="dots"
+                alt="ind"
                 width={24}
                 height={24}
                 className="min-w-6 min-h-6"
@@ -92,7 +92,7 @@ export function MobileNavigation() {
             <SelectItem value="us">
               <Image
                 src="/images/us.png"
-                alt="dots"
+                alt="usa"
                 width={24}
                 height={24}
                 className="min-w-6 min-h-6"

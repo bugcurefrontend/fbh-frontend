@@ -1,39 +1,50 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { cn } from "@/lib/utils"
+import * as React from "react";
+import { cn } from "@/lib/utils";
 
 interface TabsContextValue {
-  value: string
-  onValueChange: (value: string) => void
+  value: string;
+  onValueChange: (value: string) => void;
 }
 
-const TabsContext = React.createContext<TabsContextValue | null>(null)
+const TabsContext = React.createContext<TabsContextValue | null>(null);
 
 interface TabsProps {
-  defaultValue?: string
-  value?: string
-  onValueChange?: (value: string) => void
-  className?: string
-  children: React.ReactNode
+  defaultValue?: string;
+  value?: string;
+  onValueChange?: (value: string) => void;
+  className?: string;
+  children: React.ReactNode;
 }
 
 const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(
-  ({ className, defaultValue, value, onValueChange, children, ...props }, ref) => {
-    const [internalValue, setInternalValue] = React.useState(defaultValue || "")
-    
-    const currentValue = value !== undefined ? value : internalValue
-    const handleValueChange = React.useCallback((newValue: string) => {
-      if (value === undefined) {
-        setInternalValue(newValue)
-      }
-      onValueChange?.(newValue)
-    }, [value, onValueChange])
+  (
+    { className, defaultValue, value, onValueChange, children, ...props },
+    ref
+  ) => {
+    const [internalValue, setInternalValue] = React.useState(
+      defaultValue || ""
+    );
 
-    const contextValue = React.useMemo(() => ({
-      value: currentValue,
-      onValueChange: handleValueChange,
-    }), [currentValue, handleValueChange])
+    const currentValue = value !== undefined ? value : internalValue;
+    const handleValueChange = React.useCallback(
+      (newValue: string) => {
+        if (value === undefined) {
+          setInternalValue(newValue);
+        }
+        onValueChange?.(newValue);
+      },
+      [value, onValueChange]
+    );
+
+    const contextValue = React.useMemo(
+      () => ({
+        value: currentValue,
+        onValueChange: handleValueChange,
+      }),
+      [currentValue, handleValueChange]
+    );
 
     return (
       <TabsContext.Provider value={contextValue}>
@@ -41,10 +52,10 @@ const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(
           {children}
         </div>
       </TabsContext.Provider>
-    )
+    );
   }
-)
-Tabs.displayName = "Tabs"
+);
+Tabs.displayName = "Tabs";
 
 const TabsList = React.forwardRef<
   HTMLDivElement,
@@ -59,33 +70,34 @@ const TabsList = React.forwardRef<
     )}
     {...props}
   />
-))
-TabsList.displayName = "TabsList"
+));
+TabsList.displayName = "TabsList";
 
-interface TabsTriggerProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  value: string
+interface TabsTriggerProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  value: string;
 }
 
 const TabsTrigger = React.forwardRef<HTMLButtonElement, TabsTriggerProps>(
   ({ className, value, children, ...props }, ref) => {
-    const context = React.useContext(TabsContext)
-    
+    const context = React.useContext(TabsContext);
+
     if (!context) {
-      throw new Error("TabsTrigger must be used within a Tabs component")
+      throw new Error("TabsTrigger must be used within a Tabs component");
     }
 
-    const isActive = context.value === value
-    
+    const isActive = context.value === value;
+
     const handleClick = () => {
-      context.onValueChange(value)
-    }
+      context.onValueChange(value);
+    };
 
     const handleKeyDown = (event: React.KeyboardEvent) => {
-      if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault()
-        handleClick()
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        handleClick();
       }
-    }
+    };
 
     return (
       <button
@@ -94,38 +106,39 @@ const TabsTrigger = React.forwardRef<HTMLButtonElement, TabsTriggerProps>(
         aria-selected={isActive}
         aria-controls={`tabpanel-${value}`}
         tabIndex={isActive ? 0 : -1}
+        data-state={isActive ? "active" : "inactive"}
         onClick={handleClick}
         onKeyDown={handleKeyDown}
         className={cn(
           "inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
-          isActive && "bg-background text-foreground shadow",
+          isActive && "bg-background text-foreground",
           className
         )}
         {...props}
       >
         {children}
       </button>
-    )
+    );
   }
-)
-TabsTrigger.displayName = "TabsTrigger"
+);
+TabsTrigger.displayName = "TabsTrigger";
 
 interface TabsContentProps extends React.HTMLAttributes<HTMLDivElement> {
-  value: string
+  value: string;
 }
 
 const TabsContent = React.forwardRef<HTMLDivElement, TabsContentProps>(
   ({ className, value, children, ...props }, ref) => {
-    const context = React.useContext(TabsContext)
-    
+    const context = React.useContext(TabsContext);
+
     if (!context) {
-      throw new Error("TabsContent must be used within a Tabs component")
+      throw new Error("TabsContent must be used within a Tabs component");
     }
 
-    const isActive = context.value === value
+    const isActive = context.value === value;
 
     if (!isActive) {
-      return null
+      return null;
     }
 
     return (
@@ -143,9 +156,9 @@ const TabsContent = React.forwardRef<HTMLDivElement, TabsContentProps>(
       >
         {children}
       </div>
-    )
+    );
   }
-)
-TabsContent.displayName = "TabsContent"
+);
+TabsContent.displayName = "TabsContent";
 
-export { Tabs, TabsList, TabsTrigger, TabsContent }
+export { Tabs, TabsList, TabsTrigger, TabsContent };

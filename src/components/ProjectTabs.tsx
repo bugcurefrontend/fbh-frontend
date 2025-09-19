@@ -14,44 +14,36 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({
   projectDetails,
 }) => {
   return (
-    <div className="w-full">
+    <div className="w-full max-md:hidden">
       <Tabs defaultValue="overview" className="w-full">
         <div className="border-b border-gray-200">
           <TabsList className="flex bg-transparent p-0 h-auto w-full justify-start">
             <TabsTrigger
               value="overview"
-              className="flex items-center gap-2 px-4 py-4 border-b-2 border-transparent data-[state=active]:border-[#003399] data-[state=active]:text-[#003399] bg-transparent text-gray-600 hover:text-[#003399] rounded-none relative"
+              className="flex items-center gap-2 px-4 py-4 border-b-2 border-transparent bg-transparent text-gray-600 hover:text-[#003399] rounded-none relative data-[state=active]:border-[#003399] data-[state=active]:text-[#003399] data-[state=active]:bg-transparent"
             >
-              <div className="w-6 h-6 rounded-full border-2 border-current flex items-center justify-center">
-                <BarChart3 className="w-4 h-4" />
-              </div>
+              <BarChart3 className="w-4 h-4" />
               <span className="font-bold text-base">Overview</span>
             </TabsTrigger>
             <TabsTrigger
               value="updates"
-              className="flex items-center gap-2 px-4 py-4 border-b-2 border-transparent data-[state=active]:border-[#003399] data-[state=active]:text-[#003399] bg-transparent text-gray-600 hover:text-[#003399] rounded-none"
+              className="flex items-center gap-2 px-4 py-4 border-b-2 border-transparent bg-transparent text-gray-600 hover:text-[#003399] rounded-none data-[state=active]:border-[#003399] data-[state=active]:text-[#003399] data-[state=active]:bg-transparent"
             >
-              <div className="w-6 h-6 rounded-full border-2 border-current flex items-center justify-center">
-                <Clock className="w-4 h-4" />
-              </div>
+              <Clock className="w-4 h-4" />
               <span className="font-bold text-base">Updates</span>
             </TabsTrigger>
             <TabsTrigger
               value="species"
-              className="flex items-center gap-2 px-4 py-4 border-b-2 border-transparent data-[state=active]:border-[#003399] data-[state=active]:text-[#003399] bg-transparent text-gray-600 hover:text-[#003399] rounded-none"
+              className="flex items-center gap-2 px-4 py-4 border-b-2 border-transparent bg-transparent text-gray-600 hover:text-[#003399] rounded-none data-[state=active]:border-[#003399] data-[state=active]:text-[#003399] data-[state=active]:bg-transparent"
             >
-              <div className="w-6 h-6 rounded-full border-2 border-current flex items-center justify-center">
-                <Leaf className="w-4 h-4" />
-              </div>
+              <Leaf className="w-4 h-4" />
               <span className="font-bold text-base">Species</span>
             </TabsTrigger>
             <TabsTrigger
               value="donors"
-              className="flex items-center gap-2 px-4 py-4 border-b-2 border-transparent data-[state=active]:border-[#003399] data-[state=active]:text-[#003399] bg-transparent text-gray-600 hover:text-[#003399] rounded-none"
+              className="flex items-center gap-2 px-4 py-4 border-b-2 border-transparent bg-transparent text-gray-600 hover:text-[#003399] rounded-none data-[state=active]:border-[#003399] data-[state=active]:text-[#003399] data-[state=active]:bg-transparent"
             >
-              <div className="w-6 h-6 rounded-full border-2 border-current flex items-center justify-center">
-                <Users className="w-4 h-4" />
-              </div>
+              <Users className="w-4 h-4" />
               <span className="font-bold text-base">Donors</span>
             </TabsTrigger>
           </TabsList>
@@ -63,7 +55,9 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({
               Project Description:
             </h3>
             <div className="space-y-6 text-gray-700">
-              <p className="text-lg leading-6 font-public-sans">{projectDescription}</p>
+              <p className="text-lg leading-6 font-public-sans">
+                {projectDescription}
+              </p>
               {projectDetails.map((detail, index) => (
                 <p key={index} className="text-lg leading-6 font-inter">
                   {detail}

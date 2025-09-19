@@ -26,15 +26,15 @@ const RelatedProjects: React.FC<RelatedProjectsProps> = ({
   onViewAll,
 }) => {
   return (
-    <div className="space-y-8">
+    <div className="md:space-y-8 space-y-6">
       {/* Header */}
       <div className="flex justify-between items-center">
-        <h2 className="text-3xl font-playfair font-semibold text-gray-900">
+        <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold sm:text-center text-[#232D26]">
           Explore other projects
         </h2>
         <button
           onClick={onViewAll}
-          className="text-sm font-bold text-[#003399] hover:text-[#002266] uppercase tracking-wide"
+          className="md:text-sm text-xs font-bold text-[#003399] hover:text-[#002266] uppercase tracking-wide"
         >
           VIEW ALL
         </button>
