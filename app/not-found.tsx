@@ -4,7 +4,7 @@ import { ArrowLeft, Home, Search, TreePine } from "lucide-react";
 
 export default function Custom404() {
   return (
-    <div className="lg:h-screen pt-20 pd:mt-10 bg-gradient-to-b from-green-50 to-white flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gradient-to-b from-green-50 to-white flex items-center justify-center px-4">
       <div className="max-w-2xl mx-auto text-center">
         {/* 404 Visual */}
         <div className="relative mb-8">

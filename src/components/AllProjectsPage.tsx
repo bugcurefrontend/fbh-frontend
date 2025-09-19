@@ -68,7 +68,7 @@ const AllProjectsPage: React.FC<AllProjectsPageProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-white mt-16 space-y-8">
+    <div className="min-h-screen bg-white space-y-8">
       <section
         className="relative h-[288px] flex items-center justify-center"
         style={{
