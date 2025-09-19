@@ -7,6 +7,7 @@ import {
   XIcon,
   ChevronDownIcon,
   MenuIcon,
+  LogInIcon,
 } from "lucide-react";
 import {
   Select,
@@ -71,12 +72,12 @@ export function MobileNavigation() {
 
   return (
     <div className="lg:hidden">
-      <div className="flex items-center justify-center gap-4">
+      <div className="flex items-center justify-end gap-4">
         <Select defaultValue="india">
           <SelectTrigger className="border-2 py-[10px] px-[6px] rounded-[5px]">
             <SelectValue placeholder="Country" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent align="end" side="bottom">
             <SelectItem value="india">
               <Image
                 src="/images/flag.png"
@@ -112,11 +113,12 @@ export function MobileNavigation() {
         </button>
       </div>
       {/* Drawer */}
-      <div
-        className={`h-screen overflow-y-scroll fixed top-0 right-0 w-full bg-white z-50 shadow-xl transform transition-transform duration-300 ease-in-out ${
-          mobileMenuOpen ? "translate-x-0" : "translate-x-full"
-        } ${isClosing ? "translate-x-full" : ""}`}
-      >
+      {mobileMenuOpen && (
+        <div
+          className={`h-screen overflow-y-scroll fixed top-0 right-0 w-full bg-white z-50 shadow-xl transform transition-transform duration-300 ease-in-out ${
+            mobileMenuOpen ? "translate-x-0" : "translate-x-full"
+          } ${isClosing ? "translate-x-full" : ""}`}
+        >
         <div className="flex flex-col h-full">
           {/* Header with close button */}
           <div className="flex justify-between items-center p-4 border-b border-gray-200 h-16">
@@ -183,9 +185,12 @@ export function MobileNavigation() {
                 ) : (
                   <a
                     href="#"
-                    className="block py-3 px-4 hover:bg-gray-50 transition-colors font-medium"
+                    className={`block py-3 px-4 hover:bg-gray-50 transition-colors font-medium flex items-center gap-2 ${
+                      item.key === "login" ? "!text-[#003399]" : ""
+                    }`}
                   >
                     {item.label}
+                    {item.key === "login" && <LogInIcon size={18} />}
                   </a>
                 )}
               </div>
@@ -235,7 +240,8 @@ export function MobileNavigation() {
             </div> */}
           </div>
         </div>
-      </div>
+        </div>
+      )}
     </div>
   );
 }
