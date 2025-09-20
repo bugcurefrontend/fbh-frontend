@@ -28,15 +28,12 @@ const RelatedProjects: React.FC<RelatedProjectsProps> = ({
   return (
     <div className="md:space-y-8 space-y-6">
       {/* Header */}
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold sm:text-center text-[#232D26]">
-          Explore other projects
+      <div className="w-full md:text-center mb-8 relative">
+        <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold mx-auto sm:mx-0 text-black md:text-[32px] md:font-semibold md:leading-[48px] md:align-middle md:text-[#090C0F]">
+          Explore other projects{" "}
         </h2>
-        <button
-          onClick={onViewAll}
-          className="md:text-sm text-xs font-bold text-[#003399] hover:text-[#002266] uppercase tracking-wide"
-        >
-          VIEW ALL
+        <button className="absolute right-0 top-4 text-[#003399] font-bold text-xs uppercase md:font-bold md:text-xs md:leading-[18px] md:text-center md:align-middle md:uppercase md:text-[#003399]">
+          View All
         </button>
       </div>
 

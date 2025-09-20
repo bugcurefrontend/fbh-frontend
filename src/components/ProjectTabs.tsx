@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "./ui/tabs";
-import { ArrowRightIcon, BarChart3, Clock, Leaf, Users } from "lucide-react";
+import { ArrowRightIcon, Users } from "lucide-react";
 import Image from "next/image";
 import {
   Select,
@@ -11,6 +11,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
+import Overview from "./icons/overview";
+import Update from "./icons/update";
+import Species from "./icons/Species";
 
 interface ProjectTabsProps {
   projectDescription: string;
@@ -69,28 +72,28 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({
               value="overview"
               className="flex items-center gap-2 px-4 py-4 border-b-2 border-transparent bg-transparent text-gray-600 hover:text-[#003399] rounded-none relative data-[state=active]:border-[#003399] data-[state=active]:text-[#003399] data-[state=active]:bg-transparent"
             >
-              <BarChart3 className="w-4 h-4" />
+              <Overview className="w-6 h-6" />
               <span className="font-bold text-base">Overview</span>
             </TabsTrigger>
             <TabsTrigger
               value="updates"
               className="flex items-center gap-2 px-4 py-4 border-b-2 border-transparent bg-transparent text-gray-600 hover:text-[#003399] rounded-none data-[state=active]:border-[#003399] data-[state=active]:text-[#003399] data-[state=active]:bg-transparent"
             >
-              <Clock className="w-4 h-4" />
+              <Update className="w-6 h-6" />
               <span className="font-bold text-base">Updates</span>
             </TabsTrigger>
             <TabsTrigger
               value="species"
               className="flex items-center gap-2 px-4 py-4 border-b-2 border-transparent bg-transparent text-gray-600 hover:text-[#003399] rounded-none data-[state=active]:border-[#003399] data-[state=active]:text-[#003399] data-[state=active]:bg-transparent"
             >
-              <Leaf className="w-4 h-4" />
+              <Species className="w-6 h-6" />
               <span className="font-bold text-base">Species</span>
             </TabsTrigger>
             <TabsTrigger
               value="donors"
               className="flex items-center gap-2 px-4 py-4 border-b-2 border-transparent bg-transparent text-gray-600 hover:text-[#003399] rounded-none data-[state=active]:border-[#003399] data-[state=active]:text-[#003399] data-[state=active]:bg-transparent"
             >
-              <Users className="w-4 h-4" />
+              <Users className="w-6 h-6" />
               <span className="font-bold text-base">Donors</span>
             </TabsTrigger>
           </TabsList>
@@ -130,13 +133,13 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({
               <div key={update.id} className="space-y-4">
                 <h3 className="font-bold text-xl">{update.month}</h3>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+                <div className="flex justify-between items-center">
                   {/* Images */}
-                  <div className="grid grid-cols-2 gap-4 col-span-2">
+                  <div className="w-1/2 grid grid-cols-2 gap-2 col-span-2">
                     {update.images.map((img, i) => (
                       <div
                         key={i}
-                        className="relative w-full h-40 md:h-48 lg:h-60 rounded-lg overflow-hidden"
+                        className="relative w-full h-[185px] rounded-lg overflow-hidden"
                       >
                         <Image
                           src={img}
@@ -149,7 +152,7 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({
                   </div>
 
                   {/* Text */}
-                  <p className="text-sm text-gray-700 leading-relaxed">
+                  <p className="w-[45%] text-sm text-gray-700 leading-relaxed">
                     {update.text}
                   </p>
                 </div>
