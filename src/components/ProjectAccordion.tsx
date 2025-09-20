@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { BarChart3, Clock, Leaf, Users } from "lucide-react";
+import { ArrowRightIcon, BarChart3, Clock, Leaf, Users } from "lucide-react";
 import {
   Accordion,
   AccordionItem,
@@ -41,6 +41,12 @@ const updates = [
     ],
     text: "Lorem ipsum dolor sit amet consectetur. Suspendisse tortor cras vitae ultrices. Magna amet scelerisque pellentesque penatibus ullamcorper lacinia nisl ante.",
   },
+];
+
+const species = [
+  { name: "Neem (Azadirachta)", image: "/images/neem-tree.jpg" },
+  { name: "Banyan Tree", image: "/images/banyan-tree.avif" },
+  { name: "Mango Tree", image: "/images/mango-tree.webp" },
 ];
 
 const ProjectAccordion: React.FC<ProjectAccordionProps> = ({
@@ -136,13 +142,29 @@ const ProjectAccordion: React.FC<ProjectAccordionProps> = ({
               <span className="font-semibold text-base">Species</span>
             </div>
           </AccordionTrigger>
-          <AccordionContent className="px-4 py-4 space-y-2">
-            <h3 className="text-base font-semibold text-gray-900">
-              Tree Species
-            </h3>
-            <p className="text-sm text-gray-600">
-              Information about tree species will be displayed here.
-            </p>
+          <AccordionContent className="py-3 gap-4 grid grid-cols-1 sm:grid-cols-2 items-center">
+            {species.map((item) => (
+              <div className="flex-1 min-w-0 border border-gray-200 rounded-xl flex-shrink-0">
+                <div className="overflow-hidden w-full md:p-4 p-2">
+                  <Image
+                    src={item.image}
+                    alt={item.name}
+                    width={350}
+                    height={160}
+                    className="w-full rounded-xl max-h-[160px] object-cover"
+                  />
+                </div>
+                <div className="px-4 pt-2 pb-4 space-y-2">
+                  <p className="text-base truncate font-semibold md:leading-[26px] md:align-middle text-[#19212C]">
+                    {item.name}
+                  </p>
+                  <button className="flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer">
+                    Know More
+                    <ArrowRightIcon width={22} height={22} color="#003399" />
+                  </button>
+                </div>
+              </div>
+            ))}
           </AccordionContent>
         </AccordionItem>
 

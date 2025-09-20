@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "./ui/tabs";
-import { BarChart3, Clock, Leaf, Users } from "lucide-react";
+import { ArrowRightIcon, BarChart3, Clock, Leaf, Users } from "lucide-react";
 import Image from "next/image";
 import {
   Select,
@@ -45,6 +45,15 @@ const updates = [
     ],
     text: "Lorem ipsum dolor sit amet consectetur. Suspendisse tortor cras vitae ultrices. Magna amet scelerisque pellentesque penatibus ullamcorper lacinia nisl ante.",
   },
+];
+
+const species = [
+  { name: "Neem (Azadirachta)", image: "/images/neem-tree.jpg" },
+  { name: "Banyan Tree", image: "/images/banyan-tree.avif" },
+  { name: "Mango Tree", image: "/images/mango-tree.webp" },
+  { name: "Neem (Azadirachta)", image: "/images/neem-tree.jpg" },
+  { name: "Banyan Tree", image: "/images/banyan-tree.avif" },
+  { name: "Mango Tree", image: "/images/mango-tree.webp" },
 ];
 
 const ProjectTabs: React.FC<ProjectTabsProps> = ({
@@ -149,16 +158,32 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({
           </div>
         </TabsContent>
 
-        <TabsContent value="species" className="mt-8">
-          <div className="text-center py-12">
-            <Leaf className="w-16 h-16 mx-auto text-gray-300 mb-4" />
-            <h3 className="text-xl font-semibold text-gray-600 mb-2">
-              Tree Species
-            </h3>
-            <p className="text-gray-500">
-              Information about tree species will be displayed here.
-            </p>
-          </div>
+        <TabsContent
+          value="species"
+          className="mt-6 gap-8 grid grid-cols-3 items-center"
+        >
+          {species.map((item) => (
+            <div className="flex-1 min-w-0 border border-gray-200 rounded-xl flex-shrink-0">
+              <div className="overflow-hidden w-full md:p-4 p-2">
+                <Image
+                  src={item.image}
+                  alt={item.name}
+                  width={350}
+                  height={194}
+                  className="w-full rounded-xl"
+                />
+              </div>
+              <div className="p-4 flex justify-between items-center">
+                <p className="text-lg font-bold text-black truncate md:text-lg md:font-bold md:leading-[26px] md:align-middle md:text-[#19212C]">
+                  {item.name}
+                </p>
+                <button className="flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer">
+                  Know More
+                  <ArrowRightIcon width={22} height={22} color="#003399" />
+                </button>
+              </div>
+            </div>
+          ))}
         </TabsContent>
 
         <TabsContent value="donors" className="mt-8">
