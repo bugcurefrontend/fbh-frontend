@@ -3,11 +3,49 @@
 import React from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "./ui/tabs";
 import { BarChart3, Clock, Leaf, Users } from "lucide-react";
+import Image from "next/image";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
 
 interface ProjectTabsProps {
   projectDescription: string;
   projectDetails: string[];
 }
+
+const updates = [
+  {
+    id: 1,
+    month: "July 2025",
+    images: [
+      "https://images.unsplash.com/photo-1600196895335-5fb111df31a5?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTAwNDR8MHwxfHNlYXJjaHwxfHxmb3Jlc3QlMjB0cmVlcyUyMG5hdHVyZXxlbnwwfDB8fGdyZWVufDE3NTc3NjExNzB8MA&ixlib=rb-4.1.0&q=85",
+      "https://images.unsplash.com/photo-1568943542306-bf5807bdc38c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTAwNDR8MHwxfHNlYXJjaHwxfHxtb3VudGFpbiUyMGZvcmVzdCUyMGV2ZXJncmVlbnxlbnwwfDB8fGdyZWVufDE3NTc3NjExNzB8MA&ixlib=rb-4.1.0&q=85",
+    ],
+    text: "In 2023, the Honourable Chief Minister of Madhya Pradesh, Shri. Mohan Yadav invited FBH to afforest an initial parcel of 12 sites in Satna aggregating 650 HA. This project was kicked off in 2023 by the Dy. Chief Minister, Shri Rajendra Shukla.",
+  },
+  {
+    id: 2,
+    month: "July 2025",
+    images: [
+      "https://images.unsplash.com/photo-1600196895335-5fb111df31a5?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTAwNDR8MHwxfHNlYXJjaHwxfHxmb3Jlc3QlMjB0cmVlcyUyMG5hdHVyZXxlbnwwfDB8fGdyZWVufDE3NTc3NjExNzB8MA&ixlib=rb-4.1.0&q=85",
+      "https://images.unsplash.com/photo-1568943542306-bf5807bdc38c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTAwNDR8MHwxfHNlYXJjaHwxfHxtb3VudGFpbiUyMGZvcmVzdCUyMGV2ZXJncmVlbnxlbnwwfDB8fGdyZWVufDE3NTc3NjExNzB8MA&ixlib=rb-4.1.0&q=85",
+    ],
+    text: "Lorem ipsum dolor sit amet consectetur. Suspendisse tortor cras vitae ultrices. Magna amet scelerisque pellentesque penatibus ullamcorper lacinia nisl ante.",
+  },
+  {
+    id: 3,
+    month: "July 2025",
+    images: [
+      "https://images.unsplash.com/photo-1600196895335-5fb111df31a5?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTAwNDR8MHwxfHNlYXJjaHwxfHxmb3Jlc3QlMjB0cmVlcyUyMG5hdHVyZXxlbnwwfDB8fGdyZWVufDE3NTc3NjExNzB8MA&ixlib=rb-4.1.0&q=85",
+      "https://images.unsplash.com/photo-1568943542306-bf5807bdc38c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTAwNDR8MHwxfHNlYXJjaHwxfHxtb3VudGFpbiUyMGZvcmVzdCUyMGV2ZXJncmVlbnxlbnwwfDB8fGdyZWVufDE3NTc3NjExNzB8MA&ixlib=rb-4.1.0&q=85",
+    ],
+    text: "Lorem ipsum dolor sit amet consectetur. Suspendisse tortor cras vitae ultrices. Magna amet scelerisque pellentesque penatibus ullamcorper lacinia nisl ante.",
+  },
+];
 
 const ProjectTabs: React.FC<ProjectTabsProps> = ({
   projectDescription,
@@ -67,15 +105,47 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({
           </div>
         </TabsContent>
 
-        <TabsContent value="updates" className="mt-8">
-          <div className="text-center py-12">
-            <Clock className="w-16 h-16 mx-auto text-gray-300 mb-4" />
-            <h3 className="text-xl font-semibold text-gray-600 mb-2">
-              Project Updates
-            </h3>
-            <p className="text-gray-500">
-              Updates and progress reports will be displayed here.
-            </p>
+        <TabsContent value="updates" className="mt-6 space-y-4">
+          <div className="w-full container mx-auto px-4 md:px-6 py-6 space-y-10 relative">
+            <Select defaultValue="2025">
+              <SelectTrigger className="absolute top-6 right-6 gap-10 hover:rounded-[5xl] border-2 py-[10px] px-[6px] rounded-[5px]">
+                <SelectValue placeholder="Year" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="2025">2025</SelectItem>
+                <SelectItem value="2024">2024</SelectItem>
+                <SelectItem value="2023">2023</SelectItem>
+              </SelectContent>
+            </Select>
+            {updates.map((update) => (
+              <div key={update.id} className="space-y-4">
+                <h3 className="font-bold text-xl">{update.month}</h3>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+                  {/* Images */}
+                  <div className="grid grid-cols-2 gap-4 col-span-2">
+                    {update.images.map((img, i) => (
+                      <div
+                        key={i}
+                        className="relative w-full h-40 md:h-48 lg:h-60 rounded-lg overflow-hidden"
+                      >
+                        <Image
+                          src={img}
+                          alt={`Update image ${i + 1}`}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Text */}
+                  <p className="text-sm text-gray-700 leading-relaxed">
+                    {update.text}
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
         </TabsContent>
 
