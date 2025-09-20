@@ -114,7 +114,7 @@ const ProjectsSection: React.FC = () => {
       </div>
 
       {/* Mobile Carousel */}
-      <div className="sm:hidden overflow-x-auto scrollbar-none">
+      <div className="sm:hidden overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         <div className="flex gap-4 pb-2 w-max">
           {projects.map((project, idx) => (
             <div
