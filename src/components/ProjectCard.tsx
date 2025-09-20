@@ -50,9 +50,11 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           </div>
         </div>
       </div>
-      <div className="p-6 flex flex-col gap-6">
+      <div className="max-md:px-2.5 max-md:py-4 md:p-6 flex flex-col md:gap-6 gap-4">
         <div className="flex justify-between items-center">
-          <p className="font-bold text-lg text-black truncate">{title}</p>
+          <p className="md:font-bold font-semibold md:text-lg text-black truncate">
+            {title}
+          </p>
           <div className="flex items-center gap-2">
             <LocationPinIcon width={13} height={16} color="#19212c" />
             <span className="text-base font-semibold text-black">
@@ -62,7 +64,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         </div>
         <button
           onClick={() => onPlantTree(id)}
-          className="bg-[#003399] text-white font-bold text-base py-3 rounded-[8px] w-full hover:bg-[#002080] gap-2 flex items-center justify-center"
+          className="bg-[#003399] text-white font-bold md:text-base text-sm md:py-3 py-1.5 rounded-[8px] w-full hover:bg-[#002080] gap-2 flex items-center justify-center"
         >
           PLANT A TREE
           <Image

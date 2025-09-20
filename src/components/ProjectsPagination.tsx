@@ -45,7 +45,7 @@ const ProjectsPagination: React.FC<ProjectsPaginationProps> = ({
               isActive={currentPage === i}
               className={
                 currentPage === i
-                  ? "bg-blue-50 text-[#003399] border-[#003399]"
+                  ? "bg-blue-50 text-[#003399]"
                   : "text-gray-600 hover:text-[#003399]"
               }
             >
@@ -68,7 +68,7 @@ const ProjectsPagination: React.FC<ProjectsPaginationProps> = ({
             isActive={currentPage === 1}
             className={
               currentPage === 1
-                ? "bg-blue-50 text-[#003399] border-[#003399]"
+                ? "bg-blue-50 text-[#003399]"
                 : "text-gray-600 hover:text-[#003399]"
             }
           >
@@ -104,7 +104,7 @@ const ProjectsPagination: React.FC<ProjectsPaginationProps> = ({
                 isActive={currentPage === i}
                 className={
                   currentPage === i
-                    ? "bg-blue-50 text-[#003399] border-[#003399]"
+                    ? "bg-blue-50 text-[#003399]"
                     : "text-gray-600 hover:text-[#003399]"
                 }
               >
@@ -138,7 +138,7 @@ const ProjectsPagination: React.FC<ProjectsPaginationProps> = ({
               isActive={currentPage === totalPages}
               className={
                 currentPage === totalPages
-                  ? "bg-blue-50 text-[#003399] border-[#003399]"
+                  ? "bg-blue-50 text-[#003399]"
                   : "text-gray-600 hover:text-[#003399]"
               }
             >
@@ -153,9 +153,9 @@ const ProjectsPagination: React.FC<ProjectsPaginationProps> = ({
   };
 
   return (
-    <div className="border-t border-gray-200 pt-8">
+    <div className="border-t border-gray-200 pt-8 overflow-hidden">
       <Pagination>
-        <PaginationContent>
+        <PaginationContent className="w-full justify-between">
           <PaginationItem>
             <PaginationPrevious
               href="#"
@@ -174,7 +174,7 @@ const ProjectsPagination: React.FC<ProjectsPaginationProps> = ({
             />
           </PaginationItem>
 
-          {renderPageNumbers()}
+          <div className="flex">{renderPageNumbers()}</div>
 
           <PaginationItem>
             <PaginationNext

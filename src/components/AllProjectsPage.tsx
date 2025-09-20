@@ -70,16 +70,16 @@ const AllProjectsPage: React.FC<AllProjectsPageProps> = ({
   return (
     <div className="min-h-screen bg-white space-y-8">
       <section
-        className="relative h-[288px] flex items-center justify-center"
+        className="relative h-[213px] md:h-[288px] flex items-center justify-center"
         style={{
           backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1655985313952-4a182841d6e3?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTAwNDR8MHwxfHNlYXJjaHwzfHxmb3Jlc3QlMjBsYW5kc2NhcGUlMjB3aWRlfGVufDB8MHx8Z3JlZW58MTc1Nzc2MTE3M3ww&ixlib=rb-4.1.0&q=85')`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       >
-        <div className="w-full mx-auto px-4 md:px-8 space-y-12 text-white">
+        <div className="w-full mx-auto px-4 md:px-12 md:space-y-12 space-y-8 text-white">
           <Breadcrumb>
-            <BreadcrumbList className="text-white font-semibold text-base">
+            <BreadcrumbList className="text-white font-semibold md:text-base text-sm leading-[18px]">
               <BreadcrumbItem>
                 <BreadcrumbLink href="/">Homepage</BreadcrumbLink>
               </BreadcrumbItem>
@@ -91,10 +91,10 @@ const AllProjectsPage: React.FC<AllProjectsPageProps> = ({
           </Breadcrumb>
 
           <div className="space-y-4">
-            <h1 className="text-3xl md:text-4xl font-playfair font-semibold">
+            <h1 className="font-[Playfair_Display] text-[22px] md:text-[32px] md:leading-12 leading-[30px] font-semibold">
               All Projects
             </h1>
-            <p className="md:text-lg font-bold leading-[26px] w-[70%]">
+            <p className="md:text-lg text-[10px] md:font-bold font-semibold leading-4 md:leading-[26px] w-[85%] md:w-[70%]">
               Our projects create healthier ecosystems while fostering a culture
               of care, sustainability, and humanity for future generations.
             </p>
