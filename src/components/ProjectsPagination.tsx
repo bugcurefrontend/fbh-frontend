@@ -224,8 +224,44 @@ const ProjectsPagination: React.FC<ProjectsPaginationProps> = ({
   return (
     <div className="border-t border-gray-200 pt-8 overflow-hidden">
       <Pagination>
-        <PaginationContent className="w-full justify-center">
+        <PaginationContent className="w-full justify-between md:justify-between justify-center">
+          <PaginationItem className="hidden md:block">
+            <PaginationPrevious
+              href="#"
+              size="default"
+              onClick={(e) => {
+                e.preventDefault();
+                if (hasPrevious) {
+                  onPageChange(currentPage - 1);
+                }
+              }}
+              className={
+                !hasPrevious
+                  ? "pointer-events-none opacity-50"
+                  : "text-gray-600 hover:text-[#003399] border border-gray-200 rounded-lg"
+              }
+            />
+          </PaginationItem>
+
           <div className="flex">{renderPageNumbers()}</div>
+
+          <PaginationItem className="hidden md:block">
+            <PaginationNext
+              href="#"
+              size="default"
+              onClick={(e) => {
+                e.preventDefault();
+                if (hasNext) {
+                  onPageChange(currentPage + 1);
+                }
+              }}
+              className={
+                !hasNext
+                  ? "pointer-events-none opacity-50"
+                  : "text-gray-600 hover:text-[#003399] border border-gray-200 rounded-lg"
+              }
+            />
+          </PaginationItem>
         </PaginationContent>
       </Pagination>
     </div>
