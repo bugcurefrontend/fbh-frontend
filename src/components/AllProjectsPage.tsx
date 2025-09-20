@@ -112,9 +112,8 @@ const AllProjectsPage: React.FC<AllProjectsPageProps> = ({
         {/* Projects Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projects.map((project) => (
-            <Link href="/project-detail">
+            <Link key={project.id} href="/project-detail">
               <ProjectCard
-                key={project.id}
                 id={project.id}
                 title={project.title}
                 location={project.location}
