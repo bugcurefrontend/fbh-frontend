@@ -2,17 +2,11 @@
 
 import React from "react";
 import Image from "next/image";
-import {
-  MapPin,
-  Info,
-  Mountain,
-  Leaf,
-  TreePine,
-  Share2,
-  Gift,
-} from "lucide-react";
+import { MapPin, Info, Share2, Gift } from "lucide-react";
 import { Button } from "./ui/button";
 import { Switch } from "./ui/switch";
+import LandscapeIcon from "./icons/LandscapeIcon";
+import TreeSpeciesIcon from "./icons/TreeSpeciesIcon";
 
 interface ProjectHeroProps {
   title: string;
@@ -120,9 +114,8 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
           {/* Statistics */}
           <div className="border border-[#E4E4E4] rounded-2xl flex items-center justify-between p-6">
             <div className="text-center space-y-2 xl:space-y-4 flex-1">
-              <div className="md:w-10 w-8 md:h-10 h-8 mx-auto">
-                <Mountain className="w-full h-full text-green-600" />
-              </div>
+              <LandscapeIcon className="md:w-10 w-8 h-8 md:h-10  text-white mx-auto" />
+
               <div className="md:text-2xl text-lg font-bold md:font-semibold text-black">
                 {stats.treesAvailable.toLocaleString()}+
               </div>
@@ -134,11 +127,7 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
             <div className="w-px md:h-[140px] h-[96px] bg-gray-300 mx-6"></div>
 
             <div className="text-center space-y-2 xl:space-y-4 flex-1">
-              <div className="md:w-10 w-8 md:h-10 h-8 mx-auto">
-                <div className="w-full h-full bg-green-600 rounded-full flex items-center justify-center">
-                  <Leaf className="w-6 h-6 text-white" />
-                </div>
-              </div>
+              <TreeSpeciesIcon className="md:w-10 w-8 h-8 md:h-10 mx-auto" />
               <div className="md:text-2xl text-lg font-bold md:font-semibold text-black">
                 {stats.treesPlanted.toLocaleString()}+
               </div>
@@ -150,9 +139,13 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
             <div className="w-px md:h-[140px] h-[96px] bg-gray-300 mx-6"></div>
             <div className="text-center space-y-2 xl:space-y-4 flex-1">
               <div className="md:w-10 w-8 md:h-10 h-8 mx-auto">
-                <div className="w-full h-full bg-green-600 rounded-lg flex items-center justify-center">
-                  <TreePine className="w-6 h-6 text-white" />
-                </div>
+                <Image
+                  src="/images/tree.png"
+                  alt="tree"
+                  width={40}
+                  height={40}
+                  className="md:w-10 w-8 h-8 md:h-10 mx-auto"
+                />
               </div>
               <div className="md:text-2xl text-lg font-bold md:font-semibold text-black">
                 {stats.totalTrees.toLocaleString()}+
