@@ -70,7 +70,7 @@ export default function Header() {
         <div className="md:w-full">
           <Link href="/">
             <Image
-              src="/images/logo3.png"
+              src="/images/logo3.svg"
               alt="logo"
               width={57}
               height={46}

@@ -124,7 +124,7 @@ export function MobileNavigation() {
           <div className="flex justify-between items-center p-4 border-b border-gray-200 h-16">
             {/* Logo */}
             <Image
-              src="/images/logo3.png"
+              src="/images/logo3.svg"
               alt="logo"
               width={57}
               height={46}
