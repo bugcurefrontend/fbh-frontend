@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import ProjectHero from "./ProjectHero";
 import ProjectTabs from "./ProjectTabs";
-import RelatedProjects from "./RelatedProjects";
 import ProjectAccordion from "./ProjectAccordion";
 
 interface Project {
@@ -89,18 +88,14 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
       <ProjectTabs
         projectDescription={projectData.projectDescription}
         projectDetails={projectData.projectDetails}
+        relatedProjects={relatedProjects}
+        onPlantTree={handleRelatedPlantTree}
+        onViewAll={handleViewAll}
       />
 
       <ProjectAccordion
         projectDescription={projectData.projectDescription}
         projectDetails={projectData.projectDetails}
-      />
-
-      {/* Related Projects Section */}
-      <RelatedProjects
-        projects={relatedProjects}
-        onPlantTree={handleRelatedPlantTree}
-        onViewAll={handleViewAll}
       />
     </main>
   );

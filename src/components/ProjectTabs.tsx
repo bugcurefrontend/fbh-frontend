@@ -14,10 +14,35 @@ import {
 import Overview from "./icons/overview";
 import Update from "./icons/update";
 import Species from "./icons/Species";
+import RelatedProjects from "./RelatedProjects";
+import ProjectsPagination from "./ProjectsPagination";
+
+interface Donor {
+  id: string;
+  name: string;
+  location: string;
+  date: string;
+  donationType: "For Self" | "For Gifting";
+  treesPlanted: number;
+  avatar?: string;
+}
+
+interface Project {
+  id: string;
+  title: string;
+  location: string;
+  plantedCount: number;
+  category: string;
+  imageUrl: string;
+  imageAlt: string;
+}
 
 interface ProjectTabsProps {
   projectDescription: string;
   projectDetails: string[];
+  relatedProjects: Project[];
+  onPlantTree: (projectId: string) => void;
+  onViewAll: () => void;
 }
 
 const updates = [
@@ -59,10 +84,116 @@ const species = [
   { name: "Mango Tree", image: "/images/mango-tree.webp" },
 ];
 
+// Sample donor data
+const donorsData: Donor[] = [
+  {
+    id: "1",
+    name: "Olivia Rhye",
+    location: "Prakasam",
+    date: "Jan 6, 2024",
+    donationType: "For Self",
+    treesPlanted: 177,
+    avatar: "/images/avatars/olivia.jpg"
+  },
+  {
+    id: "2",
+    name: "Phoenix Baker",
+    location: "Anantapur",
+    date: "Jan 6, 2024",
+    donationType: "For Gifting",
+    treesPlanted: 994,
+  },
+  {
+    id: "3",
+    name: "Lana Steiner",
+    location: "Chittoor",
+    date: "Jan 6, 2024",
+    donationType: "For Self",
+    treesPlanted: 492,
+    avatar: "/images/avatars/lana.jpg"
+  },
+  {
+    id: "4",
+    name: "Anonymous",
+    location: "Anonymous",
+    date: "Jan 5, 2024",
+    donationType: "For Gifting",
+    treesPlanted: 447,
+  },
+  {
+    id: "5",
+    name: "Candice Wu",
+    location: "Srikakulam",
+    date: "Jan 5, 2024",
+    donationType: "For Self",
+    treesPlanted: 583,
+    avatar: "/images/avatars/candice.jpg"
+  },
+  {
+    id: "6",
+    name: "Natali Craig",
+    location: "Vizianagaram",
+    date: "Jan 5, 2024",
+    donationType: "For Gifting",
+    treesPlanted: 357,
+    avatar: "/images/avatars/natali.jpg"
+  },
+  {
+    id: "7",
+    name: "Drew Cano",
+    location: "Sri Potti Sriramulu Nellore",
+    date: "Jan 4, 2024",
+    donationType: "For Self",
+    treesPlanted: 196,
+    avatar: "/images/avatars/drew.jpg"
+  },
+  {
+    id: "8",
+    name: "Orlando Diggs",
+    location: "YSR Kadapa",
+    date: "Jan 3, 2024",
+    donationType: "For Self",
+    treesPlanted: 540,
+    avatar: "/images/avatars/orlando.jpg"
+  },
+  {
+    id: "9",
+    name: "Andi Lane",
+    location: "Krishna",
+    date: "Jan 3, 2024",
+    donationType: "For Self",
+    treesPlanted: 738,
+    avatar: "/images/avatars/andi.jpg"
+  },
+  {
+    id: "10",
+    name: "Kate Morrison",
+    location: "West Godavari",
+    date: "Jan 3, 2024",
+    donationType: "For Self",
+    treesPlanted: 561,
+    avatar: "/images/avatars/kate.jpg"
+  },
+];
+
 const ProjectTabs: React.FC<ProjectTabsProps> = ({
   projectDescription,
   projectDetails,
+  relatedProjects,
+  onPlantTree,
+  onViewAll,
 }) => {
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const donorsPerPage = 10;
+  const totalPages = Math.ceil(donorsData.length / donorsPerPage);
+
+  const startIndex = (currentPage - 1) * donorsPerPage;
+  const endIndex = startIndex + donorsPerPage;
+  const currentDonors = donorsData.slice(startIndex, endIndex);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
   return (
     <div className="w-full max-md:hidden">
       <Tabs defaultValue="overview" className="w-full">
@@ -115,6 +246,15 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({
               ))}
             </div>
           </div>
+
+          {/* Related Projects Section - Only shown in Overview */}
+          <div className="mt-16">
+            <RelatedProjects
+              projects={relatedProjects}
+              onPlantTree={onPlantTree}
+              onViewAll={onViewAll}
+            />
+          </div>
         </TabsContent>
 
         <TabsContent value="updates" className="mt-6 space-y-4">
@@ -165,8 +305,8 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({
           value="species"
           className="mt-6 gap-8 grid grid-cols-3 items-center"
         >
-          {species.map((item) => (
-            <div className="flex-1 min-w-0 border border-gray-200 rounded-xl flex-shrink-0">
+          {species.map((item, index) => (
+            <div key={index} className="flex-1 min-w-0 border border-gray-200 rounded-xl flex-shrink-0">
               <div className="overflow-hidden w-full md:p-4 p-2">
                 <Image
                   src={item.image}
@@ -190,14 +330,81 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({
         </TabsContent>
 
         <TabsContent value="donors" className="mt-8">
-          <div className="text-center py-12">
-            <Users className="w-16 h-16 mx-auto text-gray-300 mb-4" />
-            <h3 className="text-xl font-semibold text-gray-600 mb-2">
-              Project Donors
-            </h3>
-            <p className="text-gray-500">
-              Donor information and contributions will be displayed here.
-            </p>
+          <div className="w-full">
+            {/* Donors Table */}
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr className="border-b border-gray-200">
+                    <th className="text-left py-4 px-2 text-sm font-medium text-gray-600">S.No.</th>
+                    <th className="text-left py-4 px-2 text-sm font-medium text-gray-600">Donor Name</th>
+                    <th className="text-left py-4 px-2 text-sm font-medium text-gray-600">Date</th>
+                    <th className="text-left py-4 px-2 text-sm font-medium text-gray-600">Donation For</th>
+                    <th className="text-left py-4 px-2 text-sm font-medium text-gray-600">Trees Planted</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {currentDonors.map((donor, index) => (
+                    <tr key={donor.id} className="border-b border-gray-100">
+                      <td className="py-4 px-2 text-sm text-gray-900">
+                        {startIndex + index + 1}
+                      </td>
+                      <td className="py-4 px-2">
+                        <div className="flex items-center gap-3">
+                          {donor.avatar ? (
+                            <Image
+                              src={donor.avatar}
+                              alt={donor.name}
+                              width={40}
+                              height={40}
+                              className="rounded-full"
+                            />
+                          ) : donor.name === "Anonymous" ? (
+                            <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                              <Users className="w-5 h-5 text-blue-600" />
+                            </div>
+                          ) : (
+                            <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
+                              <span className="text-white font-medium text-sm">
+                                {donor.name.split(' ').map(n => n[0]).join('').toUpperCase()}
+                              </span>
+                            </div>
+                          )}
+                          <div>
+                            <p className="text-sm font-medium text-gray-900">{donor.name}</p>
+                            <p className="text-sm text-gray-500">{donor.location}</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="py-4 px-2 text-sm text-gray-900">
+                        {donor.date}
+                      </td>
+                      <td className="py-4 px-2">
+                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                          donor.donationType === "For Self"
+                            ? "bg-green-100 text-green-800"
+                            : "bg-orange-100 text-orange-800"
+                        }`}>
+                          {donor.donationType}
+                        </span>
+                      </td>
+                      <td className="py-4 px-2 text-sm font-medium text-gray-900">
+                        {donor.treesPlanted.toLocaleString()}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Pagination */}
+            <ProjectsPagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              hasNext={currentPage < totalPages}
+              hasPrevious={currentPage > 1}
+              onPageChange={handlePageChange}
+            />
           </div>
         </TabsContent>
       </Tabs>
