@@ -96,6 +96,9 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
       <ProjectAccordion
         projectDescription={projectData.projectDescription}
         projectDetails={projectData.projectDetails}
+        relatedProjects={relatedProjects}
+        onPlantTree={handleRelatedPlantTree}
+        onViewAll={handleViewAll}
       />
     </main>
   );

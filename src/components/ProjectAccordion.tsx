@@ -20,10 +20,24 @@ import Overview from "./icons/overview";
 import Update from "./icons/update";
 import Species from "./icons/Species";
 import DonorsTable from "./DonorsTable";
+import RelatedProjects from "./RelatedProjects";
+
+interface Project {
+  id: string;
+  title: string;
+  location: string;
+  plantedCount: number;
+  category: string;
+  imageUrl: string;
+  imageAlt: string;
+}
 
 interface ProjectAccordionProps {
   projectDescription: string;
   projectDetails: string[];
+  relatedProjects: Project[];
+  onPlantTree: (projectId: string) => void;
+  onViewAll: () => void;
 }
 
 const updates = [
@@ -56,6 +70,9 @@ const species = [
 const ProjectAccordion: React.FC<ProjectAccordionProps> = ({
   projectDescription,
   projectDetails,
+  relatedProjects,
+  onPlantTree,
+  onViewAll,
 }) => {
   return (
     <div className="w-full md:hidden">
@@ -80,6 +97,15 @@ const ProjectAccordion: React.FC<ProjectAccordionProps> = ({
                 {detail}
               </p>
             ))}
+            
+            {/* Related Projects Section - Only shown in Overview */}
+            <div className="mt-8">
+              <RelatedProjects
+                projects={relatedProjects}
+                onPlantTree={onPlantTree}
+                onViewAll={onViewAll}
+              />
+            </div>
           </AccordionContent>
         </AccordionItem>
 
