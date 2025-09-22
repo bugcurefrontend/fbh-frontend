@@ -16,6 +16,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
+import Overview from "./icons/overview";
+import Update from "./icons/update";
+import Species from "./icons/Species";
 
 interface ProjectAccordionProps {
   projectDescription: string;
@@ -60,7 +63,7 @@ const ProjectAccordion: React.FC<ProjectAccordionProps> = ({
         <AccordionItem value="overview">
           <AccordionTrigger className="flex items-center justify-between py-3 font-medium text-[#454950] data-[state=open]:text-[#003399]">
             <div className="flex items-center gap-2">
-              <BarChart3 className="w-5 h-5 text-inherit" />
+              <Overview className="w-5 h-5" />
               <span className="font-semibold text-base">Overview</span>
             </div>
           </AccordionTrigger>
@@ -83,14 +86,14 @@ const ProjectAccordion: React.FC<ProjectAccordionProps> = ({
         <AccordionItem value="updates">
           <AccordionTrigger className="flex items-center justify-between py-3 font-medium text-[#454950] data-[state=open]:text-[#003399]">
             <div className="flex items-center gap-2">
-              <Clock className="w-5 h-5 text-inherit" />
+              <Update className="w-5 h-5" />
               <span className="font-semibold text-base">Updates</span>
             </div>
           </AccordionTrigger>
           <AccordionContent className="py-3">
             <div className="w-full mx-auto space-y-6 relative">
               <Select defaultValue="2025">
-                <SelectTrigger className="absolute top-0 right-0 gap-3 hover:rounded border-2 max-h-6 px-3">
+                <SelectTrigger className="absolute top-0 right-0 gap-3 hover:rounded rounded border-2 max-h-6 px-3">
                   <SelectValue placeholder="Year" />
                 </SelectTrigger>
                 <SelectContent>
@@ -138,7 +141,7 @@ const ProjectAccordion: React.FC<ProjectAccordionProps> = ({
         <AccordionItem value="species">
           <AccordionTrigger className="flex items-center justify-between py-3 font-medium text-[#454950] data-[state=open]:text-[#003399]">
             <div className="flex items-center gap-2">
-              <Leaf className="w-5 h-5 text-inherit" />
+              <Species className="w-5 h-5" />
               <span className="font-semibold text-base">Species</span>
             </div>
           </AccordionTrigger>
