@@ -4,16 +4,14 @@ import React, { useState } from "react";
 import Image from "next/image";
 import SearchBar from "./SearchBar";
 import ProjectsPagination from "./ProjectsPagination";
-import { ArrowRightIcon } from "lucide-react";
+import ArrowRightIcon from "./icons/ArrowRightIcon";
 import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
-  BreadcrumbPage,
   BreadcrumbSeparator,
 } from "./ui/breadcrumb";
-import Link from "next/link";
 
 interface Species {
   name: string;
@@ -113,7 +111,7 @@ const AllSpeciesPage: React.FC<AllSpeciesPageProps> = ({
         />
 
         {/* Species Grid - Same design as ProjectTabs */}
-        <div className="mt-6 gap-8 grid grid-cols-3 items-center">
+        <div className="mt-6 gap-6 md:gap-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 items-center">
           {speciesData.map((item, index) => (
             <div
               key={index}
@@ -129,7 +127,7 @@ const AllSpeciesPage: React.FC<AllSpeciesPageProps> = ({
                 />
               </div>
               <div className="p-4 flex justify-between items-center">
-                <p className="text-lg font-bold text-black truncate md:text-lg md:font-bold md:leading-[26px] md:align-middle md:text-[#19212C]">
+                <p className="text-sm font-semibold text-black truncate md:text-lg md:font-bold md:leading-[26px] md:align-middle md:text-[#19212C]">
                   {item.name}
                 </p>
                 <button className="flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer">

@@ -128,7 +128,7 @@ const UserAvatar: React.FC<{
 
 const DonorsTable = () => {
   const [currentPage, setCurrentPage] = React.useState(1);
-  const donorsPerPage = 10;
+  const donorsPerPage = 1;
   const totalPages = Math.ceil(donorsData.length / donorsPerPage);
 
   const handlePageChange = (page: number) => {

@@ -42,7 +42,7 @@ export default function Header() {
     {
       label: "Species",
       sub: [
-        { label: "Tree Species", href: "/species/trees" },
+        { label: "Tree Species", href: "/species" },
         { label: "Plant Database", href: "/species/database" },
       ],
     },
