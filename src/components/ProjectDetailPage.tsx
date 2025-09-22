@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import ProjectHero from "./ProjectHero";
 import ProjectTabs from "./ProjectTabs";
 import ProjectAccordion from "./ProjectAccordion";
+import MobileStickyActions from "./MobileStickyActions";
 
 interface Project {
   id: string;
@@ -68,7 +69,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
   };
 
   return (
-    <main className="mx-auto md:px-8 px-4 md:pt-8 pt-4 md:space-y-16 space-y-8">
+    <main className="mx-auto md:px-8 px-4 md:pt-8 pt-4 md:space-y-16 space-y-8 pb-32 md:pb-0">
       {/* Project Hero Section */}
       <ProjectHero
         title={projectData.title}
@@ -99,6 +100,14 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
         relatedProjects={relatedProjects}
         onPlantTree={handleRelatedPlantTree}
         onViewAll={handleViewAll}
+      />
+
+      {/* Mobile Sticky Actions */}
+      <MobileStickyActions
+        isGeoTagged={isGeoTagged}
+        onGeoTaggedChange={setIsGeoTagged}
+        onPlantTree={handlePlantTree}
+        onGiftTree={handleGiftTree}
       />
     </main>
   );
