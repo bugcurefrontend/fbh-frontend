@@ -14,7 +14,7 @@ const Footer: React.FC = () => {
   ];
 
   return (
-    <footer className="bg-[#0f172a] text-[#e6e6e6] mt-16">
+    <footer className="bg-[#0f172a] text-[#e6e6e6] md:mt-16 mt-8">
       <div className="md:px-8 mx-auto px-4 py-16 flex flex-col sm:flex-row sm:justify-between gap-16 sm:gap-16">
         <div className="flex flex-col gap-6 md:min-w-sm w-full sm:w-auto">
           <Image

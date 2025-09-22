@@ -96,7 +96,10 @@ const AllSpeciesPage: React.FC<AllSpeciesPageProps> = ({
               Species
             </h1>
             <p className="md:text-lg text-[10px] md:font-bold font-semibold leading-4 md:leading-[26px] w-[85%] md:w-[70%]">
-              Explore our collection of tree species, each with unique environmental, cultural, and medicinal value. Learn about their impact on biodiversity, carbon absorption, and communities—and choose to donate or gift a tree that creates a lasting difference.
+              Explore our collection of tree species, each with unique
+              environmental, cultural, and medicinal value. Learn about their
+              impact on biodiversity, carbon absorption, and communities—and
+              choose to donate or gift a tree that creates a lasting difference.
             </p>
           </div>
         </div>
@@ -112,7 +115,10 @@ const AllSpeciesPage: React.FC<AllSpeciesPageProps> = ({
         {/* Species Grid - Same design as ProjectTabs */}
         <div className="mt-6 gap-8 grid grid-cols-3 items-center">
           {speciesData.map((item, index) => (
-            <div key={index} className="flex-1 min-w-0 border border-gray-200 rounded-xl flex-shrink-0">
+            <div
+              key={index}
+              className="flex-1 min-w-0 border border-gray-200 rounded-xl flex-shrink-0"
+            >
               <div className="overflow-hidden w-full md:p-4 p-2">
                 <Image
                   src={item.image}
@@ -142,6 +148,7 @@ const AllSpeciesPage: React.FC<AllSpeciesPageProps> = ({
           hasNext={pagination.hasNext}
           hasPrevious={pagination.hasPrevious}
           onPageChange={handlePageChange}
+          className="pt-5"
         />
       </main>
     </div>

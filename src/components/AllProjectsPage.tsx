@@ -134,6 +134,7 @@ const AllProjectsPage: React.FC<AllProjectsPageProps> = ({
           hasNext={pagination.hasNext}
           hasPrevious={pagination.hasPrevious}
           onPageChange={handlePageChange}
+          className="pt-5"
         />
       </main>
     </div>

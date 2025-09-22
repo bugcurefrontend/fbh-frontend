@@ -17,6 +17,7 @@ interface ProjectsPaginationProps {
   hasNext: boolean;
   hasPrevious: boolean;
   onPageChange: (page: number) => void;
+  className?: string;
 }
 
 const ProjectsPagination: React.FC<ProjectsPaginationProps> = ({
@@ -25,6 +26,7 @@ const ProjectsPagination: React.FC<ProjectsPaginationProps> = ({
   hasNext,
   hasPrevious,
   onPageChange,
+  className,
 }) => {
   const renderPageNumbers = () => {
     if (totalPages <= 7) {
@@ -222,9 +224,9 @@ const ProjectsPagination: React.FC<ProjectsPaginationProps> = ({
   };
 
   return (
-    <div className="border-t border-gray-200 pt-8 overflow-hidden">
+    <div className={`border-t border-gray-200 overflow-hidden ${className}`}>
       <Pagination>
-        <PaginationContent className="w-full justify-between md:justify-between justify-center">
+        <PaginationContent className="w-full md:justify-between justify-center">
           <PaginationItem className="hidden md:block">
             <PaginationPrevious
               href="#"

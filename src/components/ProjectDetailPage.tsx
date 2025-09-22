@@ -68,7 +68,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
   };
 
   return (
-    <main className="mx-auto md:px-8 px-4 md:py-8 py-4 md:space-y-16 space-y-8">
+    <main className="mx-auto md:px-8 px-4 md:pt-8 pt-4 md:space-y-16 space-y-8">
       {/* Project Hero Section */}
       <ProjectHero
         title={projectData.title}

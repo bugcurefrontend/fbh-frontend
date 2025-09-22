@@ -19,6 +19,7 @@ import {
 import Overview from "./icons/overview";
 import Update from "./icons/update";
 import Species from "./icons/Species";
+import DonorsTable from "./DonorsTable";
 
 interface ProjectAccordionProps {
   projectDescription: string;
@@ -179,13 +180,8 @@ const ProjectAccordion: React.FC<ProjectAccordionProps> = ({
               <span className="font-semibold text-base">Donors</span>
             </div>
           </AccordionTrigger>
-          <AccordionContent className="px-4 py-4 space-y-2">
-            <h3 className="text-base font-semibold text-gray-900">
-              Project Donors
-            </h3>
-            <p className="text-sm text-gray-600">
-              Donor information and contributions will be displayed here.
-            </p>
+          <AccordionContent className="py-3 md:py-4">
+            <DonorsTable />
           </AccordionContent>
         </AccordionItem>
       </Accordion>
