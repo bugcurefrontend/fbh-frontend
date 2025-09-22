@@ -12,6 +12,7 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "./ui/breadcrumb";
+import Link from "next/link";
 
 interface Species {
   name: string;
@@ -113,29 +114,28 @@ const AllSpeciesPage: React.FC<AllSpeciesPageProps> = ({
         {/* Species Grid - Same design as ProjectTabs */}
         <div className="mt-6 gap-6 md:gap-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 items-center">
           {speciesData.map((item, index) => (
-            <div
-              key={index}
-              className="flex-1 min-w-0 border border-gray-200 rounded-xl flex-shrink-0"
-            >
-              <div className="overflow-hidden w-full md:p-4 p-2">
-                <Image
-                  src={item.image}
-                  alt={item.name}
-                  width={350}
-                  height={194}
-                  className="w-full rounded-xl"
-                />
+            <Link href="/species-detail" key={index}>
+              <div className="flex-1 min-w-0 border border-gray-200 rounded-xl flex-shrink-0">
+                <div className="overflow-hidden w-full md:p-4 p-2">
+                  <Image
+                    src={item.image}
+                    alt={item.name}
+                    width={350}
+                    height={194}
+                    className="w-full rounded-xl"
+                  />
+                </div>
+                <div className="p-4 flex justify-between items-center">
+                  <p className="text-sm font-semibold text-black truncate md:text-lg md:font-bold md:leading-[26px] md:align-middle md:text-[#19212C]">
+                    {item.name}
+                  </p>
+                  <button className="flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer">
+                    Know More
+                    <ArrowRightIcon width={22} height={22} color="#003399" />
+                  </button>
+                </div>
               </div>
-              <div className="p-4 flex justify-between items-center">
-                <p className="text-sm font-semibold text-black truncate md:text-lg md:font-bold md:leading-[26px] md:align-middle md:text-[#19212C]">
-                  {item.name}
-                </p>
-                <button className="flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer">
-                  Know More
-                  <ArrowRightIcon width={22} height={22} color="#003399" />
-                </button>
-              </div>
-            </div>
+            </Link>
           ))}
         </div>
 
