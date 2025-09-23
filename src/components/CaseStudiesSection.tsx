@@ -47,7 +47,7 @@ const CaseStudiesSection = () => {
       : ((currentIndex + visibleSlides) / totalSlides) * 100;
 
   return (
-    <section className="px-4 md:px-8 mt-16">
+    <section className="px-4 md:px-8 mt-8 md:mt-16">
       <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold sm:text-center text-[#232D26] sm:mb-10 mb-6">
         Case Study
       </h2>
