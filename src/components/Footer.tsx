@@ -65,34 +65,39 @@ const Footer: React.FC = () => {
             </h3>
             <ul className="flex flex-col md:gap-3 gap-2">
               <li className="flex items-center gap-2 cursor-pointer hover:text-white">
-                <span className="h-6 w-6 text-[#e6e6e6] hover:text-white">
-                  <Instagram />
-                </span>
+                <div className="h-6 w-6 bg-white rounded-full flex items-center justify-center">
+                  <Instagram className="h-4 w-4 text-black" />
+                </div>
                 <span className="text-sm font-normal">Instagram</span>
               </li>
               <li className="flex items-center gap-2 cursor-pointer hover:text-white">
-                <span className="h-6 w-6 text-[#e6e6e6] hover:text-white">
-                  <Facebook />
-                </span>
+                <div className="h-6 w-6 rounded-full flex items-center justify-center">
+                  <Image
+                    src="/images/Vector.png"
+                    alt="Facebook"
+                    width={24}
+                    height={24}
+                    className=""
+                  />
+                </div>
                 <span className="text-sm font-normal">Facebook</span>
               </li>
               <li className="flex items-center gap-2 cursor-pointer hover:text-white">
-                <span className="h-6 w-6 text-[#e6e6e6] hover:text-white">
-                  <Linkedin />
-                </span>
+                <div className="h-6 w-6 bg-white rounded-full flex items-center justify-center">
+                  <Linkedin className="h-4 w-4 text-black" />
+                </div>
                 <span className="text-sm font-normal">Linkedin</span>
               </li>
-
               <li className="flex items-center gap-2 cursor-pointer hover:text-white">
-                <Image
-                  src="/images/social/twitter.png"
-                  alt="X"
-                  width={24}
-                  height={24}
-                />
-                {/* <span className="h-6 w-6 text-[#e6e6e6] hover:text-white">
-                  <Twitter />
-                </span> */}
+                <div className="h-6 w-6 rounded-full flex items-center justify-center">
+                  <Image
+                    src="/images/Img - Twitter_margin.png"
+                    alt="Twitter"
+                    width={24}
+                    height={24}
+                    className=""
+                  />
+                </div>
                 <span className="text-sm font-normal">X</span>
               </li>
             </ul>
