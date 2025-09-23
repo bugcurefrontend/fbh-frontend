@@ -68,11 +68,11 @@ const SpeciesSection: React.FC = () => {
                     className="w-full rounded-xl"
                   />
                 </div>
-                <div className="p-4 flex justify-between items-center">
+                <div className="p-4 pt-2 flex justify-between items-center">
                   <p className="text-lg font-bold text-black truncate md:text-lg md:font-bold md:leading-[26px] md:align-middle md:text-[#19212C]">
                     {item.name}
                   </p>
-                  <button className="flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer">
+                  <button className="mr-4 flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer">
                     Know More
                     <ArrowRightIcon width={22} height={22} color="#003399" />
                   </button>
