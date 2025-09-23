@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
+import { Facebook, Instagram, Linkedin } from "lucide-react";
 
 const Footer: React.FC = () => {
   const usefulLinks = [
@@ -89,13 +89,13 @@ const Footer: React.FC = () => {
                 <span className="text-sm font-normal">Linkedin</span>
               </li>
               <li className="flex items-center gap-2 cursor-pointer hover:text-white">
-                <div className="h-6 w-6 rounded-full flex items-center justify-center">
+                <div className="h-9 w-9 rounded-full flex items-center justify-center">
                   <Image
                     src="/images/Img - Twitter_margin.png"
                     alt="Twitter"
-                    width={24}
-                    height={24}
-                    className=""
+                    width={36}
+                    height={36}
+                    className="object-contain"
                   />
                 </div>
                 <span className="text-sm font-normal">X</span>
