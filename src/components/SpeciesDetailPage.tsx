@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import SpeciesHero from "./SpeciesHero";
 import RelatedSpecies from "./RelatedSpecies";
 import FAQSection from "./FAQSection";
+import GeoTagToggleAndActions from "./GeoTagToggleAndActions";
 
 interface SpeciesDetailData {
   id: string;
@@ -45,7 +46,7 @@ const SpeciesDetailPage: React.FC<SpeciesDetailPageProps> = ({
   };
 
   return (
-    <main className="mx-auto md:px-8 px-4 md:pt-8 pt-4 md:space-y-16 space-y-8">
+    <main className="mx-auto md:px-8 px-4 md:pt-8 pt-4 md:space-y-16 space-y-8 pb-32 md:pb-0">
       {/* Species Hero Section */}
       <SpeciesHero
         name={speciesData.name}
@@ -63,6 +64,15 @@ const SpeciesDetailPage: React.FC<SpeciesDetailPageProps> = ({
 
       <FAQSection />
       <RelatedSpecies />
+
+      {/* Mobile Sticky Actions */}
+      <GeoTagToggleAndActions
+        isGeoTagged={isGeoTagged}
+        onGeoTaggedChange={setIsGeoTagged}
+        onPlantTree={handlePlantTree}
+        onGiftTree={handleGiftTree}
+        variant="mobile"
+      />
     </main>
   );
 };

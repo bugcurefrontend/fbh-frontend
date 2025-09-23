@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import ProjectHero from "./ProjectHero";
 import ProjectTabs from "./ProjectTabs";
 import ProjectAccordion from "./ProjectAccordion";
-import MobileStickyActions from "./MobileStickyActions";
+import GeoTagToggleAndActions from "./GeoTagToggleAndActions";
 
 interface Project {
   id: string;
@@ -103,11 +103,12 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
       />
 
       {/* Mobile Sticky Actions */}
-      <MobileStickyActions
+      <GeoTagToggleAndActions
         isGeoTagged={isGeoTagged}
         onGeoTaggedChange={setIsGeoTagged}
         onPlantTree={handlePlantTree}
         onGiftTree={handleGiftTree}
+        variant="mobile"
       />
     </main>
   );

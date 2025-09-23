@@ -2,9 +2,8 @@
 
 import React from "react";
 import Image from "next/image";
-import { Info, Share2, Gift, Clock, Wind, Ruler } from "lucide-react";
-import { Button } from "./ui/button";
-import { Switch } from "./ui/switch";
+import { Share2, Clock, Wind, Ruler } from "lucide-react";
+import GeoTagToggleAndActions from "./GeoTagToggleAndActions";
 
 interface SpeciesHeroProps {
   name: string;
@@ -69,7 +68,7 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
             {treeSpecies.map((species) => (
               <div
                 key={species.id}
-                className="w-20 h-20 rounded-lg overflow-hidden border-3 border-white shadow-lg cursor-pointer"
+                className="w-20 h-20 rounded-lg overflow-hidden border border-white shadow-lg cursor-pointer"
               >
                 <Image
                   src={species.imageUrl}
@@ -167,47 +166,14 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
             </div>
           </div>
 
-          {/* Geo-tagged Toggle */}
-          <div className="max-sm:hidden border border-[#E4E4E4] rounded-2xl px-4 py-6 space-y-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <span className="text-gray-800 text-base">
-                  I want my trees to be geo-tagged.
-                </span>
-                <Info className="w-4 h-4 text-gray-400" />
-              </div>
-              <Switch
-                checked={isGeoTagged}
-                onCheckedChange={onGeoTaggedChange}
-                className="data-[state=checked]:bg-[#003399]"
-              />
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex gap-4">
-              <Button
-                onClick={onPlantTree}
-                className="flex-1 bg-[#003399] hover:bg-[#002266] text-white font-bold py-3 h-12 rounded-lg uppercase text-base"
-              >
-                PLANT A TREE
-                <Image
-                  src="/images/donate.png"
-                  alt="donate"
-                  width={24}
-                  height={24}
-                  className=""
-                />
-              </Button>
-              <Button
-                onClick={onGiftTree}
-                variant="outline"
-                className="flex-1 border-gray-300 font-bold py-3 h-12 rounded-lg hover:bg-gray-50 uppercase text-base text-[#003399] hover:text-[#002266]"
-              >
-                GIFT A TREE
-                <Gift size={16} />
-              </Button>
-            </div>
-          </div>
+          {/* Geo-tagged Toggle and Actions */}
+          <GeoTagToggleAndActions
+            isGeoTagged={isGeoTagged}
+            onGeoTaggedChange={onGeoTaggedChange}
+            onPlantTree={onPlantTree}
+            onGiftTree={onGiftTree}
+            variant="desktop"
+          />
         </div>
       </div>
     </div>
