@@ -38,7 +38,7 @@ export function CustomNavigationMenu({
         <li>
           <a
             href="#"
-            className="uppercase text-xs font-bold leading-[18px] text-center align-middle text-[#19212C] px-3 py-3 hover:bg-[#E6EBF5] truncate transition-colors"
+            className="group inline-flex h-9 w-max items-center justify-center bg-background px-4 py-2 uppercase text-xs font-bold leading-[18px] text-center align-middle text-[#19212C] rounded-none hover:bg-[#E6EBF5] truncate max-xl:px-2 transition-colors"
           >
             Contact us
           </a>

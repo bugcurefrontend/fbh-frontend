@@ -48,7 +48,7 @@ const Gallery: React.FC = () => {
   return (
     <section className="relative">
       {/* Large Image */}
-      <div className="w-full h-[300px] md:h-[400px] lg:h-[573px] relative rounded-xl overflow-hidden">
+      <div className="w-full h-[361px] md:h-[400px] lg:h-[573px] relative rounded-xl overflow-hidden">
         <Image
           src={images[selectedIndex]}
           alt={`Gallery Image ${selectedIndex + 1}`}
@@ -58,7 +58,7 @@ const Gallery: React.FC = () => {
       </div>
 
       {/* Thumbnails Carousel */}
-      <div className="mt-4">
+      <div className="mt-4 max-md:hidden">
         <Carousel
           opts={{ align: "start" }}
           setApi={(api) => {
@@ -123,6 +123,18 @@ const Gallery: React.FC = () => {
             </div>
           </div>
         </Carousel>
+      </div>
+
+      {/* Mobile Dots */}
+      <div className="md:hidden mt-4 flex gap-3 items-center justify-center">
+        {images.map((_, i) => (
+          <div
+            key={i}
+            className={`w-2 h-2 rounded-full ${
+              i === selectedIndex ? "bg-[#003399]" : "bg-[#E6EBF5]"
+            }`}
+          />
+        ))}
       </div>
     </section>
   );
