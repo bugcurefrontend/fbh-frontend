@@ -142,19 +142,64 @@ const DonorsTable = () => {
           <table className="w-full">
             <thead className="border-b border-gray-200">
               <tr>
-                <th className="w-[20%] py-3 px-6 text-xs font-medium text-[#454950] uppercase leading-[18px]">
+                <th
+                  className="w-[20%] py-3 px-6 text-xs font-medium uppercase"
+                  style={{
+                    fontFamily: "Poppins, sans-serif",
+                    fontWeight: 500,
+                    fontSize: "12px",
+                    lineHeight: "18px",
+                    color: "#454950",
+                  }}
+                >
                   S No.
                 </th>
-                <th className="w-[20%] text-left py-3 px-6 text-xs font-medium text-[#454950] uppercase leading-[18px]">
+                <th
+                  className="w-[20%] text-left py-3 px-6 text-xs font-medium uppercase"
+                  style={{
+                    fontFamily: "Poppins, sans-serif",
+                    fontWeight: 500,
+                    fontSize: "12px",
+                    lineHeight: "18px",
+                    color: "#454950",
+                  }}
+                >
                   Donor Name
                 </th>
-                <th className="w-[20%] text-left py-3 px-6 text-xs font-medium text-[#454950] uppercase leading-[18px]">
+                <th
+                  className="w-[20%] text-left py-3 px-6 text-xs font-medium uppercase"
+                  style={{
+                    fontFamily: "Poppins, sans-serif",
+                    fontWeight: 500,
+                    fontSize: "12px",
+                    lineHeight: "18px",
+                    color: "#454950",
+                  }}
+                >
                   Date
                 </th>
-                <th className="w-[20%] text-left py-3 px-6 text-xs font-medium text-[#454950] uppercase leading-[18px]">
+                <th
+                  className="w-[20%] text-left py-3 px-6 text-xs font-medium uppercase"
+                  style={{
+                    fontFamily: "Poppins, sans-serif",
+                    fontWeight: 500,
+                    fontSize: "12px",
+                    lineHeight: "18px",
+                    color: "#454950",
+                  }}
+                >
                   Donation For
                 </th>
-                <th className="w-[20%] py-3 px-6 text-xs font-medium text-[#454950] uppercase leading-[18px]">
+                <th
+                  className="w-[20%] py-3 px-6 text-xs font-medium uppercase"
+                  style={{
+                    fontFamily: "Poppins, sans-serif",
+                    fontWeight: 500,
+                    fontSize: "12px",
+                    lineHeight: "18px",
+                    color: "#454950",
+                  }}
+                >
                   Trees Planted
                 </th>
               </tr>
@@ -167,7 +212,16 @@ const DonorsTable = () => {
                     (index + 1) % 2 === 1 ? "bg-[#F9FAFB]" : "bg-white"
                   }`}
                 >
-                  <td className="text-center py-4 px-6 text-sm text-[#090C0F]">
+                  <td
+                    className="text-center py-4 px-6"
+                    style={{
+                      fontFamily: "'Public Sans', sans-serif",
+                      fontWeight: 600,
+                      fontSize: "14px",
+                      lineHeight: "22px",
+                      color: "#090C0F",
+                    }}
+                  >
                     {index + 1}
                   </td>
                   <td className="py-4 px-6">
@@ -179,31 +233,79 @@ const DonorsTable = () => {
                       />
 
                       <div>
-                        <div className="text-sm text-[#090C0F]">
+                        <div
+                          style={{
+                            fontFamily: "'Public Sans', sans-serif",
+                            fontWeight: 600,
+                            fontSize: "14px",
+                            lineHeight: "22px",
+                            color: "#090C0F",
+                          }}
+                        >
                           {donor.name}
                         </div>
-                        <div className="text-sm text-gray-500">
+                        <div
+                          style={{
+                            fontFamily: "'Public Sans', sans-serif",
+                            fontWeight: 400,
+                            fontSize: "14px",
+                            lineHeight: "22px",
+                            color: "#454950",
+                          }}
+                        >
                           {donor.location}
                         </div>
                       </div>
                     </div>
                   </td>
-                  <td className="py-4 px-6 text-sm text-[#090C0F]">
-                    {donor.date}
+                  <td className="py-4 px-6">
+                    <div
+                      style={{
+                        fontFamily: "'Public Sans', sans-serif",
+                        fontWeight: 600,
+                        fontSize: "14px",
+                        lineHeight: "22px",
+                        color: "#454950",
+                      }}
+                    >
+                      {donor.date}
+                    </div>
                   </td>
                   <td className="py-4 px-6">
                     <span
-                      className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
+                      className={`inline-flex px-2 py-1 rounded-full ${
                         donor.donationType === "For Self"
-                          ? "bg-green-100 text-green-700"
-                          : "bg-orange-100 text-orange-700"
+                          ? "bg-green-100"
+                          : "bg-orange-100"
                       }`}
+                      style={{
+                        fontFamily: "'Public Sans', sans-serif",
+                        fontWeight: 600,
+                        fontSize: "12px",
+                        lineHeight: "18px",
+                        letterSpacing: "0px",
+                        color:
+                          donor.donationType === "For Self"
+                            ? "#12B569"
+                            : "#F78F08",
+                        textAlign: "center",
+                      }}
                     >
                       {donor.donationType}
                     </span>
                   </td>
-                  <td className="text-center py-4 px-6 text-sm font-medium text-[#090C0F]">
-                    {donor.treesPlanted}
+                  <td className="text-center py-4 px-6">
+                    <div
+                      style={{
+                        fontFamily: "'Public Sans', sans-serif",
+                        fontWeight: 600,
+                        fontSize: "14px",
+                        lineHeight: "22px",
+                        color: "#454950",
+                      }}
+                    >
+                      {donor.treesPlanted}
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -236,7 +338,17 @@ const DonorsTable = () => {
                 isAnonymous={donor.name === "Anonymous"}
               />
               <div className="flex-1">
-                <div className="font-medium text-gray-900">{donor.name}</div>
+                <div
+                  style={{
+                    fontFamily: "'Public Sans', sans-serif",
+                    fontWeight: 600,
+                    fontSize: "14px",
+                    lineHeight: "22px",
+                    color: "#090C0F",
+                  }}
+                >
+                  {donor.name}
+                </div>
                 <div className="flex justify-between items-center mt-1">
                   <div className="flex items-center text-[#0D824B]">
                     <Image
@@ -246,11 +358,29 @@ const DonorsTable = () => {
                       height={18}
                       className="mr-1"
                     />
-                    <span className="text-sm font-normal">
+                    <span
+                      style={{
+                        fontFamily: "'Public Sans', sans-serif",
+                        fontWeight: 600,
+                        fontSize: "14px",
+                        lineHeight: "22px",
+                        color: "#454950",
+                      }}
+                    >
                       {donor.treesPlanted} Trees Planted
                     </span>
                   </div>
-                  <div className="text-xs text-gray-500">{donor.date}</div>
+                  <div
+                    style={{
+                      fontFamily: "'Public Sans', sans-serif",
+                      fontWeight: 600,
+                      fontSize: "14px",
+                      lineHeight: "22px",
+                      color: "#454950",
+                    }}
+                  >
+                    {donor.date}
+                  </div>
                 </div>
               </div>
             </div>
