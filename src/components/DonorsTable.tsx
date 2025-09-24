@@ -143,7 +143,7 @@ const DonorsTable = () => {
             <thead className="border-b border-gray-200">
               <tr>
                 <th
-                  className="w-[20%] py-3 px-6 text-xs font-medium uppercase"
+                  className="w-[20%] py-3 px-6 text-xs font-medium"
                   style={{
                     fontFamily: "Poppins, sans-serif",
                     fontWeight: 500,
@@ -155,7 +155,7 @@ const DonorsTable = () => {
                   S No.
                 </th>
                 <th
-                  className="w-[20%] text-left py-3 px-6 text-xs font-medium uppercase"
+                  className="w-[20%] text-left py-3 px-6 text-xs font-medium"
                   style={{
                     fontFamily: "Poppins, sans-serif",
                     fontWeight: 500,
@@ -167,7 +167,7 @@ const DonorsTable = () => {
                   Donor Name
                 </th>
                 <th
-                  className="w-[20%] text-left py-3 px-6 text-xs font-medium uppercase"
+                  className="w-[20%] text-left py-3 px-6 text-xs font-medium"
                   style={{
                     fontFamily: "Poppins, sans-serif",
                     fontWeight: 500,
@@ -179,7 +179,7 @@ const DonorsTable = () => {
                   Date
                 </th>
                 <th
-                  className="w-[20%] text-left py-3 px-6 text-xs font-medium uppercase"
+                  className="w-[20%] text-left py-3 px-6 text-xs font-medium"
                   style={{
                     fontFamily: "Poppins, sans-serif",
                     fontWeight: 500,
@@ -191,7 +191,7 @@ const DonorsTable = () => {
                   Donation For
                 </th>
                 <th
-                  className="w-[20%] py-3 px-6 text-xs font-medium uppercase"
+                  className="w-[20%] py-3 px-6 text-xs font-medium"
                   style={{
                     fontFamily: "Poppins, sans-serif",
                     fontWeight: 500,

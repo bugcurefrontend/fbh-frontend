@@ -41,7 +41,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           fill
           className="object-cover rounded-t-md"
         />
-        <div className="absolute top-4 left-4 flex gap-3">
+        <div className="absolute top-4 md:left-4 left-2.5 flex gap-3">
           <div className="bg-[#33533E8C] backdrop-blur-sm text-white text-xs font-semibold px-2 py-1 rounded flex">
             {formatPlantedCount(plantedCount)}
           </div>
@@ -50,7 +50,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           </div>
         </div>
       </div>
-      <div className="max-md:px-2.5 max-md:py-4 md:p-6 flex flex-col md:gap-6 gap-4">
+      <div className="px-2.5 md:px-4 py-4 md:py-6 flex flex-col md:gap-6 gap-4">
         <div className="flex justify-between items-center">
           <p className="md:font-bold font-semibold md:text-lg text-black truncate">
             {title}

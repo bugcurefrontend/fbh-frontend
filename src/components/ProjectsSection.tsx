@@ -75,7 +75,7 @@ const ProjectsSection: React.FC = () => {
                 fill
                 className="object-cover rounded-t-md"
               />
-              <div className="absolute top-4 left-4 flex gap-3">
+              <div className="absolute top-4 md:left-4 left-2.5 flex gap-3">
                 {project.badges.map((badge, i) => (
                   <span
                     key={i}
@@ -86,7 +86,7 @@ const ProjectsSection: React.FC = () => {
                 ))}
               </div>
             </div>
-            <div className="p-6 flex flex-col gap-6">
+            <div className="px-2.5 md:px-4 py-4 md:py-6 flex flex-col md:gap-6 gap-4">
               <div className="flex justify-between items-center">
                 <p className="font-bold text-lg text-black truncate md:font-bold md:text-lg md:leading-[26px] md:align-middle md:text-[#090C0F]">
                   {project.name}
