@@ -17,32 +17,28 @@ import {
   SelectValue,
 } from "./select";
 
-export function MobileNavigation() {
+interface subItem {
+  label: string;
+  href: string;
+}
+
+interface NavigationItem {
+  label: string;
+  sub: subItem[];
+  href?: string;
+}
+
+interface NavigationMenuProps {
+  navigationItems: NavigationItem[];
+  className?: string;
+}
+
+export function MobileNavigation({ navigationItems }: NavigationMenuProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileExpandedMenu, setMobileExpandedMenu] = useState<string | null>(
     null
   );
   const [isClosing, setIsClosing] = useState(false);
-
-  const navigationItems = [
-    { key: "about", label: "ABOUT" },
-    { key: "howItWorks", label: "HOW IT WORKS" },
-    { key: "projects", label: "PROJECTS" },
-    { key: "species", label: "SPECIES" },
-    { key: "getInvolved", label: "GET INVOLVED" },
-    { key: "plantForCause", label: "PLANT FOR A CAUSE" },
-    { key: "contact", label: "CONTACT US" },
-    { key: "login", label: "LOGIN" },
-  ];
-
-  const mobileMenuContent: Record<string, string[]> = {
-    about: ["Our Mission", "Our Team", "FAQs"],
-    howItWorks: ["Process", "Technology", "Impact"],
-    projects: ["Current Projects", "Past Projects", "Future Initiatives"],
-    species: ["Tree Species", "Plant Varieties", "Conservation"],
-    getInvolved: ["Volunteer", "Donate", "Partnerships"],
-    plantForCause: ["Campaigns", "Events", "Success Stories"],
-  };
 
   const handleMobileMenuToggle = () => {
     if (mobileMenuOpen) {
@@ -119,127 +115,74 @@ export function MobileNavigation() {
             mobileMenuOpen ? "translate-x-0" : "translate-x-full"
           } ${isClosing ? "translate-x-full" : ""}`}
         >
-        <div className="flex flex-col h-full">
-          {/* Header with close button */}
-          <div className="flex justify-between items-center p-4 border-b border-gray-200 h-16">
-            {/* Logo */}
-            <Image
-              src="/images/logo3.svg"
-              alt="logo"
-              width={57}
-              height={46}
-              priority
-            />
-            <button
-              onClick={handleClose}
-              className="p-1 rounded-md hover:bg-gray-100 transition-colors"
-            >
-              <XIcon size={24} />
-            </button>
-          </div>
+          <div className="flex flex-col h-full">
+            {/* Header with close button */}
+            <div className="flex justify-between items-center p-4 border-b border-gray-200 h-16">
+              {/* Logo */}
+              <Image
+                src="/images/logo3.svg"
+                alt="logo"
+                width={57}
+                height={46}
+                priority
+              />
+              <button
+                onClick={handleClose}
+                className="p-1 rounded-md hover:bg-gray-100 transition-colors"
+              >
+                <XIcon size={24} />
+              </button>
+            </div>
 
-          <div className="flex-1 overflow-y-auto h-full py-4">
-            {/* Navigation Items */}
-            {navigationItems.map((item) => (
-              <div key={item.key} className="space-y-2">
-                {item.key !== "contact" && item.key != "login" ? (
-                  <>
-                    <button
-                      onClick={() => handleMobileMenuExpand(item.key)}
-                      className="flex justify-between items-center w-full px-4 py-3 hover:bg-gray-50 transition-colors"
-                    >
-                      <span className="font-medium">{item.label}</span>
-                      {mobileExpandedMenu === item.key ? (
-                        <ChevronDownIcon
-                          size={20}
-                          className="transition-transform"
-                        />
-                      ) : (
-                        <ChevronRightIcon
-                          size={20}
-                          className="transition-transform"
-                        />
-                      )}
-                    </button>
-
-                    {/* Collapsible submenu */}
-                    <div
-                      className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                        mobileExpandedMenu === item.key ? "max-h-96" : "max-h-0"
-                      }`}
-                    >
-                      <ul className="pl-8 pb-2 list-disc list-outside">
-                        {mobileMenuContent[item.key]?.map((subItem) => (
-                          <li key={subItem} className="text-[#454950]">
-                            <a
-                              href="#"
-                              className="block py-2 rounded-md transition-colors text-sm"
-                            >
-                              {subItem}
-                            </a>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </>
-                ) : (
-                  <a
-                    href="#"
-                    className={`block py-3 px-4 hover:bg-gray-50 transition-colors font-medium flex items-center gap-2 ${
-                      item.key === "login" ? "!text-[#003399]" : ""
+            <div className="flex-1 overflow-y-auto py-4">
+              {navigationItems.map((item, index) => (
+                <div key={index} className="space-y-2">
+                  <button
+                    onClick={() => handleMobileMenuExpand(item.label)}
+                    className="flex justify-between items-center w-full px-4 py-3 hover:bg-gray-50 transition-colors"
+                  >
+                    <span className="font-medium text-lg text-#090C0F uppercase">
+                      {item.label}
+                    </span>
+                    {mobileExpandedMenu === item.label ? (
+                      <ChevronDownIcon size={20} />
+                    ) : (
+                      <ChevronRightIcon size={20} />
+                    )}
+                  </button>
+                  <div
+                    className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                      mobileExpandedMenu === item.label ? "max-h-96" : "max-h-0"
                     }`}
                   >
-                    {item.label}
-                    {item.key === "login" && <LogInIcon size={18} />}
-                  </a>
-                )}
-              </div>
-            ))}
-
-            {/* <div className="my-2 border-b border-gray-200"></div> */}
-
-            {/* User Profile Section */}
-            {/* <div className="px-4 py-3">
-              <div className="flex items-center space-x-3 mb-3">
-                <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
-                  <span className="text-gray-600">JD</span>
+                    <ul className="pl-8 pb-2 list-disc list-outside">
+                      {item.sub.map((subItem, subIndex) => (
+                        <li key={subIndex} className="text-[#454950]">
+                          <a href={subItem.href} className="block py-2">
+                            {subItem.label}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
-                <div>
-                  <div className="font-semibold text-sm">John Doe</div>
-                  <div className="text-xs text-gray-500">xyz@gmail.com</div>
-                </div>
-              </div>
-            </div> */}
-
-            {/* Dashboard and My Trees */}
-            {/* <div className="border-b border-gray-100">
+              ))}
               <a
-                href="#"
-                className="block p-4 hover:bg-gray-50 transition-colors text-sm"
+                href="/contact"
+                className="flex justify-between items-center w-full px-4 py-3 hover:bg-gray-50 transition-colors font-medium text-lg text-#090C0F uppercase"
               >
-                Dashboard
+                Contact Us
+              </a>
+
+              <a
+                href="/login"
+                className="mt-2 py-3 px-4 hover:bg-gray-50 transition-colors flex items-center gap-2 !text-[#003399] font-semibold text-lg uppercase"
+              >
+                Login
+                <LogInIcon size={18} />
               </a>
             </div>
-            <div className="border-b border-gray-100">
-              <a
-                href="#"
-                className="block p-4 hover:bg-gray-50 transition-colors text-sm"
-              >
-                My Trees
-              </a>
-            </div> */}
-
-            {/* <div className="my-2 border-b border-gray-200"></div> */}
-
-            {/* Sign Out */}
-            {/* <div className="border-b border-gray-100">
-              <button className="flex justify-between items-center w-full p-4 text-red-600 hover:bg-gray-50 transition-colors text-sm">
-                <span>Sign Out</span>
-                <LogOutIcon size={18} />
-              </button>
-            </div> */}
           </div>
-        </div>
         </div>
       )}
     </div>

@@ -9,6 +9,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "./ui/carousel";
+import Link from "next/link";
 
 const SpeciesSection: React.FC = () => {
   const species = [
@@ -58,26 +59,28 @@ const SpeciesSection: React.FC = () => {
               key={idx}
               className="basis-1/1 sm:basis-1/2 lg:basis-1/3 pl-8"
             >
-              <div className="flex-1 min-w-0 border border-gray-200 rounded-xl flex-shrink-0">
-                <div className="overflow-hidden w-full md:p-4 p-2">
-                  <Image
-                    src={item.image}
-                    alt={item.name}
-                    width={350}
-                    height={194}
-                    className="w-full rounded-xl"
-                  />
+              <Link href="/species-detail">
+                <div className="flex-1 min-w-0 border border-gray-200 rounded-xl flex-shrink-0">
+                  <div className="overflow-hidden w-full md:p-4 p-2">
+                    <Image
+                      src={item.image}
+                      alt={item.name}
+                      width={350}
+                      height={194}
+                      className="w-full rounded-xl"
+                    />
+                  </div>
+                  <div className="p-4 pt-2 flex justify-between items-center">
+                    <p className="text-lg font-bold text-black truncate md:text-lg md:font-bold md:leading-[26px] md:align-middle md:text-[#19212C]">
+                      {item.name}
+                    </p>
+                    <button className="mr-4 flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer">
+                      Know More
+                      <ArrowRightIcon width={22} height={22} color="#003399" />
+                    </button>
+                  </div>
                 </div>
-                <div className="p-4 pt-2 flex justify-between items-center">
-                  <p className="text-lg font-bold text-black truncate md:text-lg md:font-bold md:leading-[26px] md:align-middle md:text-[#19212C]">
-                    {item.name}
-                  </p>
-                  <button className="mr-4 flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer">
-                    Know More
-                    <ArrowRightIcon width={22} height={22} color="#003399" />
-                  </button>
-                </div>
-              </div>
+              </Link>
             </CarouselItem>
           ))}
         </CarouselContent>
@@ -103,34 +106,33 @@ const SpeciesSection: React.FC = () => {
       <div className="sm:hidden mb-6 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         <div className="flex gap-4 pb-2 w-max">
           {species.map((item, idx) => (
-            <div
-              key={idx}
-              className="flex-1 min-w-[314px] max-w-[314px] border border-gray-200 rounded-xl flex-shrink-0 overflow-hidden"
-            >
-              <div className="pt-3 px-3">
-                <Image
-                  src={item.image}
-                  alt={item.name}
-                  width={280}
-                  height={194}
-                  className="rounded-md object-cover"
-                />
-              </div>
-              <div className="p-4 flex sm:flex-root flex-col justify-between sm:items-center max-sm:gap-2">
-                <p className="text-lg font-bold text-black truncate md:text-lg md:font-bold md:leading-[26px] md:align-middle md:text-[#19212C]">
-                  {item.name}
-                </p>
-                <button className="flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer">
-                  Know More{" "}
-                  <ArrowRightIcon
-                    width={22}
-                    height={22}
-                    color="#003399"
-                    className="max-sm:w-4"
+            <Link key={idx} href="/species-detail">
+              <div className="flex-1 min-w-[314px] max-w-[314px] border border-gray-200 rounded-xl flex-shrink-0 overflow-hidden">
+                <div className="pt-3 px-3">
+                  <Image
+                    src={item.image}
+                    alt={item.name}
+                    width={280}
+                    height={194}
+                    className="rounded-md object-cover"
                   />
-                </button>
+                </div>
+                <div className="p-4 flex sm:flex-root flex-col justify-between sm:items-center max-sm:gap-2">
+                  <p className="text-lg font-bold text-black truncate md:text-lg md:font-bold md:leading-[26px] md:align-middle md:text-[#19212C]">
+                    {item.name}
+                  </p>
+                  <button className="flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer">
+                    Know More{" "}
+                    <ArrowRightIcon
+                      width={22}
+                      height={22}
+                      color="#003399"
+                      className="max-sm:w-4"
+                    />
+                  </button>
+                </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

@@ -2,6 +2,7 @@
 import React from "react";
 import Image from "next/image";
 import ArrowRightIcon from "./icons/ArrowRightIcon";
+import Link from "next/link";
 
 const AboutSection: React.FC = () => {
   return (
@@ -26,15 +27,17 @@ const AboutSection: React.FC = () => {
           ecological empathy and a reconnection between humans and nature.
         </p>
 
-        <button className="flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer md:font-bold md:text-xs md:leading-[18px] md:uppercase md:text-[#003399]">
-          Know More{" "}
-          <ArrowRightIcon
-            width={22}
-            height={22}
-            color="#003399"
-            className="max-sm:w-4"
-          />
-        </button>
+        <Link href="/about" className="w-fit">
+          <button className="flex items-center gap-2 text-[#003399] font-bold text-xs uppercase cursor-pointer md:font-bold md:text-xs md:leading-[18px] md:uppercase md:text-[#003399]">
+            Know More{" "}
+            <ArrowRightIcon
+              width={22}
+              height={22}
+              color="#003399"
+              className="max-sm:w-4"
+            />
+          </button>
+        </Link>
       </div>
     </section>
   );

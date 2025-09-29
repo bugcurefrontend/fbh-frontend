@@ -79,7 +79,6 @@ export default function Header() {
             />
           </Link>
         </div>
-
         {/* Desktop navigation */}
         <div className="w-full hidden lg:flex items-center gap-10 xl:gap-14">
           <CustomNavigationMenu navigationItems={navigationItems} />
@@ -123,7 +122,8 @@ export default function Header() {
           </div>
         </div>
 
-        <MobileNavigation />
+        {/* Mobile Navigation */}
+        <MobileNavigation navigationItems={navigationItems} />
       </div>
     </header>
   );

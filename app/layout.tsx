@@ -17,7 +17,7 @@ export const metadata = {
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "700"] });
 const publicSans = Public_Sans({
   subsets: ["latin"],
-  weight: ["400", "600", "700"],
+  weight: ["400", "500", "600", "700"],
 });
 const playfair = Playfair_Display({
   subsets: ["latin"],
