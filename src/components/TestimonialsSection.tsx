@@ -73,7 +73,7 @@ const TestimonialsSection: React.FC = () => {
             alt={`Testimonial from ${currentTestimonial.name}`}
             width={493}
             height={423}
-            className="rounded-xl w-full h-full object-cover"
+            className="rounded-xl w-full min-h-[423px] max-h-[423px] h-full object-cover"
           />
         </motion.div>
 
