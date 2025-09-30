@@ -85,7 +85,7 @@ export default function Header() {
           <div className="flex-1"></div>
           <div className="flex items-center justify-center gap-3">
             <Select defaultValue="india">
-              <SelectTrigger className="border-2 py-[10px] px-[6px] rounded-[5px]">
+              <SelectTrigger className="border-2 py-[10px] px-[6px] rounded-[5px] min-w-[105px]">
                 <SelectValue placeholder="Country" />
               </SelectTrigger>
               <SelectContent>
