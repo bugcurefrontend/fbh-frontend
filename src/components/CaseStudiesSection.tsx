@@ -140,19 +140,19 @@ const CaseStudiesSection = () => {
 
             <div className="space-y-3">
               <div className="flex flex-col">
-                <h3 className="text-[16px] font-semibold text-[#333333] leading-tight">
+                <h3 className="text-[16px] font-semibold text-[#333333] leading-[20px] font-[Public_Sans]">
                   {study.title}
                 </h3>
-                <p className="text-[14px] text-[#4b5563] leading-tight">
+                <p className="text-[14px] font-normal leading-[18px] text-[#4b5563] font-[Public_Sans]">
                   {study.subtitle}
                 </p>
               </div>
 
-              <p className="text-[10px] font-normal leading-[16px] text-[#454950] flex-1 line-clamp-4 md:line-clamp-4">
+              <p className="text-[10px] font-semibold leading-[16px] text-[#595959] flex-1 line-clamp-4 md:line-clamp-4 font-[Public_Sans]">
                 {study.description}
               </p>
 
-              <button className="flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer md:font-bold md:text-xs md:leading-[18px] md:uppercase md:text-[#003399]">
+              <button className="flex items-center gap-2 text-[#003399] font-bold text-xs leading-[18px] uppercase min-w-[0] cursor-pointer font-[Public_Sans]">
                 Read More{" "}
                 <ArrowRightIcon
                   width={22}
