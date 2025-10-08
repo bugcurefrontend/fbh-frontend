@@ -66,14 +66,14 @@ const TestimonialsSection: React.FC = () => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0.9 }}
           transition={{ duration: 1 }}
-          className="rounded-xl w-full sm:w-[45%] sm:max-h-[40%] h-full"
+          className="rounded-xl w-full md:w-[45%] md:max-h-[40%] h-full"
         >
           <Image
             src={currentTestimonial.src}
             alt={`Testimonial from ${currentTestimonial.name}`}
             width={493}
             height={423}
-            className="rounded-lg w-full min-h-[316px] md:min-h-[423px] max-h-[423px] h-full object-cover"
+            className="rounded-lg w-full min-h-[316px] md:min-h-[423px] h-full object-cover"
           />
         </motion.div>
 
@@ -83,7 +83,7 @@ const TestimonialsSection: React.FC = () => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0.9 }}
           transition={{ duration: 1 }}
-          className="max-w-2xl lg:max-w-full lg:w-[55%] md:space-y-10 space-y-6 max-md:flex flex-col items-center text-center md:text-start"
+          className="max-w-full md:w-[55%] md:space-y-10 space-y-6 max-md:flex flex-col items-center text-center md:text-start"
         >
           <div className="sm:w-20 sm:h-20 w-12 h-12 flex items-center justify-center">
             <QuoteIcon

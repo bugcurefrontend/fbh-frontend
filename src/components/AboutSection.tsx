@@ -12,7 +12,7 @@ const AboutSection: React.FC = () => {
         alt="Circular architecture with gardens"
         width={588}
         height={404}
-        className="rounded-xl object-cover w-full h-auto md:w-[588px]"
+        className="rounded-xl object-cover w-full h-auto md:w-[46%] xl:w-[588px]"
       />
 
       {/* Content */}

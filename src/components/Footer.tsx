@@ -29,14 +29,14 @@ const Footer: React.FC = () => {
               alt="Google Play"
               width={154}
               height={52}
-              className="cursor-pointer min-w-[154px] min-h-[52px]"
+              className="cursor-pointer min-w-[134px] min-h-[41px] md:min-w-[154px] md:min-h-[52px]"
             />
             <Image
               src="/images/app-store.png"
               alt="App Store"
               width={154}
               height={52}
-              className="cursor-pointer min-w-[154px] min-h-[52px]"
+              className="cursor-pointer min-w-[134px] min-h-[41px] md:min-w-[154px] md:min-h-[52px]"
             />
           </div>
         </div>

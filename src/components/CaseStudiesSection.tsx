@@ -66,7 +66,7 @@ const CaseStudiesSection = () => {
         <CarouselContent className="-ml-4">
           {caseStudies.map((study, idx) => (
             <CarouselItem key={idx} className="basis-1/1 sm:basis-1/2 pl-4">
-              <div className="w-full rounded-[16px] border border-[#e4e4e4] flex flex-col md:flex-row overflow-hidden p-4 md:p-[16px] gap-6 md:gap-[24px] shadow-none">
+              <div className="w-full rounded-[16px] border border-[#e4e4e4] flex flex-col lg:flex-row overflow-hidden p-4 md:p-[16px] gap-6 md:gap-[24px] shadow-none">
                 <div className="w-full h-[200px] md:w-[245px] md:h-[304px] flex-shrink-0 rounded-[8px] overflow-hidden relative md:flex-shrink-0">
                   <Image
                     src={study.image}
@@ -87,7 +87,7 @@ const CaseStudiesSection = () => {
                     </p>
                   </div>
 
-                  <p className="text-[16px] font-normal leading-[20px] text-[#454950] flex-1 line-clamp-4 md:line-clamp-4 md:text-base md:font-normal md:leading-6 md:text-[#454950]">
+                  <p className="text-[16px] font-normal leading-[20px] text-[#454950] flex-1 line-clamp-4 md:text-base md:font-normal md:leading-6 md:text-[#454950]">
                     {study.description}
                   </p>
 
