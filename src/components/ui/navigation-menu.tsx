@@ -27,18 +27,18 @@ export function CustomNavigationMenu({
   return (
     <nav
       className={cn(
-        "relative flex max-w-max flex-1 items-center justify-center",
+        "relative hidden lg:flex flex-1 items-center justify-center",
         className
       )}
     >
-      <ul className="flex flex-1 list-none items-center justify-center gap-1">
+      <ul className="flex flex-1 list-none items-center justify-center">
         {navigationItems.map((item) => (
           <NavigationMenuItem key={item.label} item={item} />
         ))}
         <li>
           <a
             href="#"
-            className="group inline-flex h-9 w-max items-center justify-center bg-background px-4 py-2 uppercase text-xs font-bold leading-[18px] text-center align-middle text-[#19212C] rounded-none hover:bg-[#E6EBF5] truncate max-xl:px-2 transition-colors"
+            className="group inline-flex items-center justify-center bg-background p-2 uppercase text-xs font-bold leading-[18px] text-center align-middle text-[#19212C] rounded-none hover:bg-[#E6EBF5] transition-colors"
           >
             Contact us
           </a>
@@ -83,16 +83,17 @@ function NavigationMenuItem({ item }: { item: NavigationItem }) {
     >
       <button
         className={cn(
-          "group inline-flex h-9 w-max items-center justify-center bg-background px-4 py-2 uppercase text-xs font-bold leading-[18px] text-center align-middle text-[#19212C] rounded-none hover:bg-[#E6EBF5] truncate max-xl:px-2 transition-colors",
+          "group inline-flex items-center justify-center bg-background p-2 uppercase text-xs font-bold leading-[18px] text-center align-middle text-[#19212C] rounded-none hover:bg-[#E6EBF5] transition-colors",
           "hover:bg-[#E6EBF5] focus:bg-[#E6EBF5] focus-visible:outline-1 focus-visible:ring-[3px] focus-visible:ring-ring/50 outline-none"
         )}
       >
         {item.label}
         <ChevronDownIcon
           className={cn(
-            "relative top-[1px] ml-1 size-3 transition duration-300",
+            "ml-1 size-4 transition duration-300",
             isOpen && "rotate-180"
           )}
+          strokeWidth={2}
           aria-hidden="true"
         />
       </button>

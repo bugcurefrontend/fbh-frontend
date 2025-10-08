@@ -22,7 +22,7 @@ const TestimonialsSection: React.FC = () => {
     },
     {
       quote:
-        "This platform is a game-changer! The intuitive design and powerful features have streamlined our operations beyond expectation. We've seen a significant boost in efficiency, and the customer support is truly exceptional. Highly recommended for any business looking to innovate and grow.",
+        "This platform is a game-changer! Its intuitive design and powerful features have streamlined our operations, boosting efficiency. The customer support is exceptional. Highly recommended for any business aiming to grow.",
       name: "Lisa Thompson",
       designation: "VP of Technology at FutureNet",
       src: "/images/t-1.webp",
@@ -54,8 +54,8 @@ const TestimonialsSection: React.FC = () => {
   };
 
   return (
-    <section className="px-4 md:px-8 mt-8 md:mt-16">
-      <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold sm:text-center text-[#232D26] sm:mb-10 mb-6 md:text-[32px] md:font-semibold md:leading-[48px] md:align-middle md:text-[#232D26]">
+    <section className="max-w-7xl mx-auto px-4 md:px-8 mt-8 md:mt-16">
+      <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold sm:text-center text-[#232D26] mb-6 md:text-[32px] md:font-semibold md:leading-[48px] md:align-middle md:text-[#232D26]">
         Testimonials
       </h2>
 
@@ -73,7 +73,7 @@ const TestimonialsSection: React.FC = () => {
             alt={`Testimonial from ${currentTestimonial.name}`}
             width={493}
             height={423}
-            className="rounded-xl w-full min-h-[423px] max-h-[423px] h-full object-cover"
+            className="rounded-lg w-full min-h-[316px] md:min-h-[423px] max-h-[423px] h-full object-cover"
           />
         </motion.div>
 
@@ -86,7 +86,12 @@ const TestimonialsSection: React.FC = () => {
           className="max-w-2xl lg:max-w-full lg:w-[55%] md:space-y-10 space-y-6 max-md:flex flex-col items-center text-center md:text-start"
         >
           <div className="sm:w-20 sm:h-20 w-12 h-12 flex items-center justify-center">
-            <QuoteIcon width={77} height={77} color="#003399" />
+            <QuoteIcon
+              width={77}
+              height={77}
+              color="#003399"
+              className="opacity-90"
+            />
           </div>
 
           <div className="flex flex-col gap-4">

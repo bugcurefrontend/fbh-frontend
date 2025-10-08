@@ -44,38 +44,40 @@ const PartnersSection: React.FC = () => {
   }));
 
   return (
-    <section className="mx-4 md:mx-8 bg-white rounded-xl border border-gray-200 max-sm:p-[30px] sm:py-4 text-center space-y-6 sm:space-y-14 h-[232px] mt-8 md:mt-16">
-      <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold text-black md:text-[32px] md:font-semibold md:leading-[48px] md:text-center md:align-middle md:text-[#090C0F]">
-        Our Supporting Partners
-      </h2>
+    <section className="max-w-7xl mx-auto px-4 md:px-8">
+      <div className="bg-white rounded-xl border border-gray-200 max-sm:p-[30px] sm:py-4 text-center space-y-6 sm:space-y-14 h-[232px] mt-8 md:mt-16">
+        <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold text-black md:text-[32px] md:font-semibold md:leading-[48px] md:text-center md:align-middle md:text-[#090C0F]">
+          Our Supporting Partners
+        </h2>
 
-      {/* Mobile 2 Layout */}
-      <div className="grid grid-cols-3 sm:hidden space-y-2.5 gap-x-2">
-        {mobilePartners.map((partner) => (
-          <div
-            key={partner.name}
-            className="flex items-center justify-center my-4"
-          >
-            <Image
-              src={partner.logo}
-              alt={partner.name}
-              width={70}
-              height={24}
-              className="object-contain max-w-[70px] max-h-[24px]"
-            />
-          </div>
-        ))}
-      </div>
+        {/* Mobile 2 Layout */}
+        <div className="grid grid-cols-3 sm:hidden space-y-2.5 gap-x-2">
+          {mobilePartners.map((partner) => (
+            <div
+              key={partner.name}
+              className="flex items-center justify-center my-4"
+            >
+              <Image
+                src={partner.logo}
+                alt={partner.name}
+                width={70}
+                height={24}
+                className="object-contain max-w-[70px] max-h-[24px]"
+              />
+            </div>
+          ))}
+        </div>
 
-      {/* Desktop Infinite Scroll */}
-      <div className="hidden sm:block">
-        <InfiniteMovingCards
-          items={items}
-          direction="left"
-          speed="fast"
-          pauseOnHover={true}
-          className="bg-transparent"
-        />
+        {/* Desktop Infinite Scroll */}
+        <div className="hidden sm:block">
+          <InfiniteMovingCards
+            items={items}
+            direction="left"
+            speed="fast"
+            pauseOnHover={true}
+            className="bg-transparent"
+          />
+        </div>
       </div>
     </section>
   );

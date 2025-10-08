@@ -26,7 +26,7 @@ const heroSlides = [
 
 const HeroSection = () => {
   const [current, setCurrent] = useState(0);
-  const [activeButton, setActiveButton] = useState<'left' | 'right'>('right');
+  const [activeButton, setActiveButton] = useState<"left" | "right">("right");
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const startAutoPlay = () => {
@@ -45,18 +45,18 @@ const HeroSection = () => {
 
   const nextSlide = () => {
     setCurrent((prev) => (prev + 1) % heroSlides.length);
-    setActiveButton('right');
+    setActiveButton("right");
     startAutoPlay();
   };
 
   const prevSlide = () => {
     setCurrent((prev) => (prev === 0 ? heroSlides.length - 1 : prev - 1));
-    setActiveButton('left');
+    setActiveButton("left");
     startAutoPlay();
   };
 
   return (
-    <div className="h-[604px] relative overflow-hidden md:px-8">
+    <div className="md:h-[540px] h-[403px] relative overflow-hidden">
       {/* Background with fade */}
       <motion.div
         key={heroSlides[current].id}
@@ -70,7 +70,7 @@ const HeroSection = () => {
         transition={{ duration: 1 }}
       />
 
-      <div className="relative w-full mx-auto md:px-8 px-4 pt-[258px]">
+      <div className="relative w-full max-w-7xl mx-auto md:px-16 px-4 md:pt-[194px] pt-[102px]">
         <motion.div
           initial={{ opacity: 0.9 }}
           animate={{ opacity: 1 }}
@@ -79,7 +79,7 @@ const HeroSection = () => {
           key={heroSlides[current].id}
           className="sm:max-w-[582px] max-w-[276px]"
         >
-          <h1 className="sm:text-[64px] font-bold sm:leading-[1.2] text-white mb-10 text-[38px] leading-[36px] sm:mb-6">
+          <h1 className="sm:text-[64px] font-bold text-white mb-4 text-[38px] leading-[1.2] sm:mb-6">
             {heroSlides[current].title}
           </h1>
           <button className="bg-[#003399] text-white font-bold text-base sm:py-3 py-[6px] rounded md:w-[370px] md:h-12 md:py-[11px] md:px-[22px] md:rounded-lg md:text-base md:font-bold md:leading-[26px] md:text-[#FFFFFF] max-w-[370px] w-full hover:bg-[#002080]">
@@ -88,7 +88,7 @@ const HeroSection = () => {
         </motion.div>
 
         {/* Mobile Dots */}
-        <div className="md:hidden absolute -bottom-20 left-1/2 -translate-x-1/2 flex gap-3">
+        <div className="md:hidden absolute top-[334px] left-1/2 -translate-x-1/2 flex gap-3">
           {heroSlides.map((_, i) => (
             <div
               key={i}
@@ -100,13 +100,13 @@ const HeroSection = () => {
         </div>
 
         {/* Navigation Buttons */}
-        <div className="absolute right-8 bottom-0 sm:flex gap-3 hidden">
+        <div className="absolute right-16 bottom-0 sm:flex gap-3 hidden">
           <button
             onClick={prevSlide}
             className={`w-[42px] h-[42px] rounded-full transition-all flex items-center justify-center ${
-              activeButton === 'left'
-                ? 'bg-white text-black hover:bg-white/80'
-                : 'border border-white/60 text-white/80 bg-transparent hover:bg-white/20'
+              activeButton === "left"
+                ? "bg-white text-black hover:bg-white/80"
+                : "border border-white/60 text-white/80 bg-transparent hover:bg-white/20"
             }`}
           >
             <ChevronLeft />
@@ -114,9 +114,9 @@ const HeroSection = () => {
           <button
             onClick={nextSlide}
             className={`w-[42px] h-[42px] rounded-full transition-all flex items-center justify-center ${
-              activeButton === 'right'
-                ? 'bg-white text-black hover:bg-white/80'
-                : 'border border-white/60 text-white/80 bg-transparent hover:bg-white/20'
+              activeButton === "right"
+                ? "bg-white text-black hover:bg-white/80"
+                : "border border-white/60 text-white/80 bg-transparent hover:bg-white/20"
             }`}
           >
             <ChevronRight />

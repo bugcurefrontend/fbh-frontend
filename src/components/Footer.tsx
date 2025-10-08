@@ -15,28 +15,28 @@ const Footer: React.FC = () => {
 
   return (
     <footer className="bg-[#0f172a] text-[#e6e6e6] md:mt-16 mt-8">
-      <div className="md:px-8 mx-auto px-4 py-16 flex flex-col sm:flex-row sm:justify-between gap-16 sm:gap-16">
-        <div className="flex flex-col gap-6 md:min-w-sm w-full sm:w-auto">
+      <div className="md:px-14 max-w-7xl mx-auto px-4 py-16 flex flex-col sm:flex-row sm:justify-between max-sm:gap-16">
+        <div className="flex flex-col gap-6 md:min-w-[389px] w-full sm:w-auto">
           <Image
             src="/images/logo2.png"
             alt="Forests by Heartfulness"
-            width={64}
-            height={12}
+            width={65}
+            height={52}
           />
-          <div className="flex gap-2">
+          <div className="flex gap-4">
             <Image
               src="/images/g-play.png"
               alt="Google Play"
-              width={131}
-              height={42}
-              className="cursor-pointer min-w-[131px] min-h-[42px]"
+              width={154}
+              height={52}
+              className="cursor-pointer min-w-[154px] min-h-[52px]"
             />
             <Image
               src="/images/app-store.png"
               alt="App Store"
-              width={131}
-              height={42}
-              className="cursor-pointer min-w-[131px] min-h-[42px]"
+              width={154}
+              height={52}
+              className="cursor-pointer min-w-[154px] min-h-[52px]"
             />
           </div>
         </div>
@@ -51,7 +51,7 @@ const Footer: React.FC = () => {
               {usefulLinks.map((link, index) => (
                 <li
                   key={index}
-                  className="text-sm font-normal text-[#e6e6e6] hover:text-white hover:underline cursor-pointer"
+                  className="text-sm leading-5 font-poppins font-normal text-[#e6e6e6] hover:text-white hover:underline cursor-pointer"
                 >
                   {link}
                 </li>
@@ -64,13 +64,13 @@ const Footer: React.FC = () => {
               Social
             </h3>
             <ul className="flex flex-col md:gap-3 gap-2">
-              <li className="flex items-center gap-2 cursor-pointer hover:text-white">
+              <li className="flex items-center gap-4 cursor-pointer hover:text-white">
                 <div className="h-6 w-6 bg-white rounded-full flex items-center justify-center">
                   <Instagram className="h-4 w-4 text-black" />
                 </div>
                 <span className="text-sm font-normal">Instagram</span>
               </li>
-              <li className="flex items-center gap-2 cursor-pointer hover:text-white">
+              <li className="flex items-center gap-4 cursor-pointer hover:text-white">
                 <div className="h-6 w-6 rounded-full flex items-center justify-center">
                   <Image
                     src="/images/Vector.png"
@@ -82,23 +82,23 @@ const Footer: React.FC = () => {
                 </div>
                 <span className="text-sm font-normal">Facebook</span>
               </li>
-              <li className="flex items-center gap-2 cursor-pointer hover:text-white">
+              <li className="flex items-center gap-4 cursor-pointer hover:text-white">
                 <div className="h-6 w-6 bg-white rounded-full flex items-center justify-center">
                   <Linkedin className="h-4 w-4 text-black" />
                 </div>
                 <span className="text-sm font-normal">Linkedin</span>
               </li>
-              <li className="flex items-center gap-2 cursor-pointer hover:text-white">
-                <div className="h-9 w-9 rounded-full flex items-center justify-center">
+              <li className="flex items-center gap-4 cursor-pointer hover:text-white">
+                <div className="h-6 w-6 rounded-full flex items-center justify-center">
                   <Image
                     src="/images/Img - Twitter_margin.png"
                     alt="Twitter"
-                    width={36}
-                    height={36}
+                    width={24}
+                    height={24}
                     className="object-contain"
                   />
                 </div>
-                <span className="text-sm font-normal">X</span>
+                <span className="text-sm font-normal">Twitter</span>
               </li>
             </ul>
           </div>
@@ -111,18 +111,18 @@ const Footer: React.FC = () => {
           <p className="font-poppins font-medium text-white text-sm sm:text-base">
             © 2025 Heartfulness - All rights reserved
           </p>
-          <div className="flex gap-6">
+          <div className="flex gap-6 sm:gap-12">
             <a
               href="#"
-              className="font-poppins font-medium text-white text-sm sm:text-base underline hover:opacity-80"
+              className="font-poppins font-medium text-white text-sm sm:text-base"
             >
-              Terms
+              <span className="underline">Terms</span>
             </a>
             <a
               href="#"
-              className="font-poppins font-medium text-white text-sm sm:text-base underline hover:opacity-80"
+              className="font-poppins font-medium text-white text-sm sm:text-base"
             >
-              Privacy
+              <span className="underline">Privacy</span>
             </a>
           </div>
         </div>

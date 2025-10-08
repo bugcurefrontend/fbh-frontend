@@ -65,10 +65,10 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 left-0 w-full z-50 bg-[#FFFFFF] backdrop-blur-md shadow-sm h-16">
-      <div className="mx-auto h-full flex items-center justify-between px-4 sm:px-8">
+      <div className="max-w-7xl mx-auto h-full flex items-center justify-between px-4 sm:px-8">
         {/* Logo */}
-        <div className="md:w-full">
-          <Link href="/">
+        <div className="xl:max-w-[150px] xl:w-full">
+          <Link href="/" className="w-fit">
             <Image
               src="/images/logo3.svg"
               alt="logo"
@@ -79,47 +79,45 @@ export default function Header() {
             />
           </Link>
         </div>
-        {/* Desktop navigation */}
-        <div className="w-full hidden lg:flex items-center gap-10 xl:gap-14">
-          <CustomNavigationMenu navigationItems={navigationItems} />
-          <div className="flex-1"></div>
-          <div className="flex items-center justify-center gap-3">
-            <Select defaultValue="india">
-              <SelectTrigger className="border-2 py-[10px] px-[6px] rounded-[5px] min-w-[105px]">
-                <SelectValue placeholder="Country" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="india">
-                  <Image
-                    src="/images/flag.png"
-                    alt="ind"
-                    width={24}
-                    height={24}
-                    className="min-w-6 min-h-6"
-                  />
-                  <span className="ml-1 text-sm font-normal leading-5 text-center align-middle">
-                    INR
-                  </span>
-                </SelectItem>
-                <SelectItem value="us">
-                  <Image
-                    src="/images/us.png"
-                    alt="usa"
-                    width={24}
-                    height={24}
-                    className="min-w-6 min-h-6"
-                  />
-                  <span className="ml-1 text-sm font-normal leading-5 text-center align-middle">
-                    USD
-                  </span>
-                </SelectItem>
-              </SelectContent>
-            </Select>
 
-            <button className="uppercase text-xs font-bold px-[10px] py-3 hover:bg-[#E6EBF5] bg-white transition-colors">
-              login
-            </button>
-          </div>
+        {/* Desktop navigation */}
+        <CustomNavigationMenu navigationItems={navigationItems} />
+        <div className="hidden lg:flex items-center justify-center gap-3">
+          <Select defaultValue="india">
+            <SelectTrigger className="border-2 py-[10px] px-[6px] rounded-[5px]">
+              <SelectValue placeholder="Country" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="india">
+                <Image
+                  src="/images/flag.png"
+                  alt="ind"
+                  width={24}
+                  height={24}
+                  className="min-w-6 min-h-6"
+                />
+                <span className="text-sm font-normal leading-5 text-center align-middle">
+                  INR
+                </span>
+              </SelectItem>
+              <SelectItem value="us">
+                <Image
+                  src="/images/us.png"
+                  alt="usa"
+                  width={24}
+                  height={24}
+                  className="min-w-6 min-h-6"
+                />
+                <span className="text-sm font-normal leading-5 text-center align-middle">
+                  USD
+                </span>
+              </SelectItem>
+            </SelectContent>
+          </Select>
+
+          <button className="uppercase text-xs font-bold px-[10px] py-3 hover:bg-[#E6EBF5] bg-white transition-colors">
+            login
+          </button>
         </div>
 
         {/* Mobile Navigation */}

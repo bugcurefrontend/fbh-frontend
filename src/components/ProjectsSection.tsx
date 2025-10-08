@@ -51,7 +51,7 @@ const ProjectsSection: React.FC = () => {
   ];
 
   return (
-    <section className="px-4 md:px-8 mt-8 md:mt-16">
+    <section className="max-w-7xl mx-auto px-4 md:px-8 mt-8 md:mt-16">
       {/* Header */}
       <div className="w-full md:text-center mb-8 relative">
         <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold mx-auto sm:mx-0 text-black md:text-[32px] md:font-semibold md:leading-[48px] md:align-middle md:text-[#090C0F]">

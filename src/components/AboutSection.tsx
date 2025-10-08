@@ -6,17 +6,17 @@ import Link from "next/link";
 
 const AboutSection: React.FC = () => {
   return (
-    <section className="px-4 md:px-8 flex md:flex-row flex-col gap-8 items-center">
+    <section className="max-w-7xl mx-auto px-4 md:px-8 flex md:flex-row flex-col gap-8 items-center">
       <Image
         src="/images/architecture-circular.png"
         alt="Circular architecture with gardens"
         width={588}
         height={404}
-        className="rounded-xl object-cover w-full h-auto md:w-[50%]"
+        className="rounded-xl object-cover w-full h-auto md:w-[588px]"
       />
 
       {/* Content */}
-      <div className="flex flex-col gap-5 flex-1 max-w-[556px] md:max-w-full">
+      <div className="flex flex-col gap-6 p-4 flex-1 max-w-[556px] md:max-w-full">
         <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold text-black md:text-[32px] md:font-semibold md:leading-[48px] md:align-middle md:text-[#090C0F]">
           What is Forests By Heartfulness?
         </h2>

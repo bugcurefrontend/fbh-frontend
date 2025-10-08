@@ -53,7 +53,7 @@ const ActivitiesSection: React.FC = () => {
       : ((currentIndex + visibleSlides) / totalSlides) * 100;
 
   return (
-    <section className="px-4 md:px-8 relative mt-8 md:mt-16">
+    <section className="max-w-7xl mx-auto px-4 md:px-8 relative mt-8 md:mt-16">
       {/* Header */}
       <div className="w-full md:text-center mb-8 relative">
         <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold mx-auto sm:mx-0 text-black md:text-[32px] md:font-semibold md:leading-[48px] md:align-middle md:text-[#090C0F]">
@@ -89,17 +89,17 @@ const ActivitiesSection: React.FC = () => {
                   height={194}
                   className="w-full max-h-48 object-cover"
                 />
-                <div className="p-6 flex flex-col gap-4">
+                <div className="p-6 flex flex-col gap-2">
                   <div className="flex items-center gap-2">
                     <Calendar className="w-5 h-5" />
                     <span className="text-sm font-bold text-black md:text-sm md:font-bold md:leading-[22px] md:text-center md:align-middle md:text-[#090C0F]">
                       {activity.date}
                     </span>
                   </div>
-                  <h3 className="text-lg font-bold text-[#333333] md:text-lg md:font-bold md:leading-[26px] md:align-middle md:text-[#333333]">
+                  <h3 className="text-lg font-bold text-[#333333] md:text-lg md:font-bold md:leading-[26px] md:align-middle md:text-[#333333] truncate">
                     {activity.title}
                   </h3>
-                  <p className="text-sm font-normal text-gray-600 md:text-sm md:font-normal md:leading-[21px] md:align-middle md:text-[#595959]">
+                  <p className="text-sm font-normal text-gray-600 md:text-sm md:font-normal md:leading-[21px] md:align-middle md:text-[#595959] line-clamp-2">
                     {activity.description}
                   </p>
                 </div>
