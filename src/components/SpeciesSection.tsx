@@ -118,16 +118,16 @@ const SpeciesSection: React.FC = () => {
                   />
                 </div>
                 <div className="p-4 flex sm:flex-root flex-col justify-between sm:items-center max-sm:gap-2">
-                  <p className="text-lg font-bold text-black truncate md:text-lg md:font-bold md:leading-[26px] md:align-middle md:text-[#19212C]">
+                  <p className="font-semibold truncate md:text-lg md:font-bold md:leading-[26px] md:align-middle text-[#19212C]">
                     {item.name}
                   </p>
-                  <button className="flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer">
+                  <button className="py-[11px] pr-[12px] flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer">
                     Know More{" "}
                     <ArrowRightIcon
-                      width={22}
-                      height={22}
+                      width={24}
+                      height={24}
                       color="#003399"
-                      className="max-sm:w-4"
+                      className="max-sm:w-6"
                     />
                   </button>
                 </div>

@@ -72,7 +72,7 @@ const ProjectsSection: React.FC = () => {
                   src={project.image}
                   alt={project.name}
                   fill
-                  className="object-cover rounded-t-md"
+                  className="object-cover rounded-t-[16px]"
                 />
                 <div className="absolute top-4 md:left-4 left-2.5 flex gap-3">
                   {project.badges.map((badge, i) => (
@@ -124,7 +124,7 @@ const ProjectsSection: React.FC = () => {
                     src={project.image}
                     alt={project.name}
                     fill
-                    className="object-cover rounded-t-md"
+                    className="object-cover rounded-t-[16px]"
                   />
                   <div className="absolute top-4 left-4 flex gap-1">
                     {project.badges.map((badge, i) => (
@@ -137,14 +137,14 @@ const ProjectsSection: React.FC = () => {
                     ))}
                   </div>
                 </div>
-                <div className="px-2 py-3 flex flex-col gap-6">
+                <div className="px-2 py-3 flex flex-col gap-4">
                   <div className="flex justify-between items-center">
-                    <p className="font-bold text-lg text-black truncate md:font-bold md:text-lg md:leading-[26px] md:align-middle md:text-[#090C0F]">
+                    <p className="font-semibold truncate md:font-bold md:text-lg md:leading-[26px] md:align-middle text-[#090C0F]">
                       {project.name}
                     </p>
                     <div className="flex items-center gap-2">
                       <LocationPinIcon width={13} height={16} color="#19212c" />
-                      <span className="text-base font-semibold text-black md:text-base md:font-semibold md:leading-6 md:align-middle md:text-[#19212C]">
+                      <span className="font-semibold md:font-semibold md:leading-6 md:align-middle text-[#19212C]">
                         {project.location}
                       </span>
                     </div>
