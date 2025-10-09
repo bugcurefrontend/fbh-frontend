@@ -34,7 +34,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 
   return (
     <div className="rounded-xl shadow-sm overflow-hidden border border-gray-200 flex flex-col">
-      <div className="relative h-52">
+      <div className="relative h-[200px]">
         <Image
           src={imageUrl}
           alt={imageAlt}
@@ -50,14 +50,14 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           </div>
         </div>
       </div>
-      <div className="px-2.5 md:px-4 py-4 md:py-6 flex flex-col md:gap-6 gap-4">
+      <div className="px-2.5 md:px-4 pt-4 pb-4 md:pb-6 md:pt-4 flex flex-col md:gap-6 gap-4">
         <div className="flex justify-between items-center">
-          <p className="md:font-bold font-semibold md:text-lg text-black truncate">
+          <p className="md:font-bold font-semibold md:text-lg md:text-[#4C4748] text-[#19212C] truncate">
             {title}
           </p>
           <div className="flex items-center gap-2">
-            <LocationPinIcon width={13} height={16} color="#19212c" />
-            <span className="text-base font-semibold text-black">
+            <LocationPinIcon width={13} height={16} color="#63676C" />
+            <span className="text-base font-semibold md:text-[#4C4748] text-[#19212C]">
               {location}
             </span>
           </div>

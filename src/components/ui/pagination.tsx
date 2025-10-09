@@ -52,7 +52,7 @@ const PaginationLink = ({
         variant: isActive ? "outline" : "ghost",
         size,
       }),
-      "max-[400px]:px-2",
+      "px-4",
       className
     )}
     {...props}
