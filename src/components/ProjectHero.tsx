@@ -46,7 +46,7 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
     <div className="bg-white rounded-2xl overflow-hidden">
       <div className="flex flex-col lg:flex-row space-x-6 space-y-6 lg:space-y-0">
         {/* Left side - Hero Image */}
-        <div className="lg:w-[546px] w-full lg:h-[557px] relative flex-shrink-0">
+        <div className="lg:w-[546px] w-full lg:h-[573px] relative flex-shrink-0">
           <div className="min-h-[360px] h-full w-full relative overflow-hidden rounded-lg">
             <Image
               src={heroImageUrl}
@@ -69,13 +69,13 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
             {treeSpecies.map((species) => (
               <div
                 key={species.id}
-                className="w-20 h-20 rounded-lg overflow-hidden border border-white shadow-lg cursor-pointer"
+                className="w-[112px] h-[112px] rounded-lg overflow-hidden border border-white shadow-lg cursor-pointer"
               >
                 <Image
                   src={species.imageUrl}
                   alt={species.imageAlt}
-                  width={80}
-                  height={80}
+                  width={112}
+                  height={112}
                   className="object-cover w-full h-full"
                 />
               </div>
@@ -89,20 +89,23 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
         {/* Right side - Project Details */}
         <div className="flex flex-col justify-between">
           {/* Title and Location */}
-          <div className="md:space-y-2 space-y-4 relative">
+          <div className="max-md:space-y-2 relative">
             <div className="md:space-y-2 space-y-1">
               <h1 className="text-lg md:text-2xl font-semibold text-gray-900 font-public-sans">
                 {title}
               </h1>
-              <div className="flex items-center gap-2 text-gray-600">
-                <MapPin className="w-4 h-4" />
+              <div className="flex items-center gap-1 text-gray-600">
+                <MapPin className="w-5.5 h-5.5" />
                 <span className="md:text-base text-sm md:font-semibold">
                   {location}
                 </span>
               </div>
             </div>
-            <p className="text-gray-700 md:text-base text-sm leading-6">
-              {description}
+            <p className="md:mt-4 text-gray-700 md:text-base text-sm leading-6">
+              {description}{" "}
+              <span className="text-[#003399] text-sm font-semibold">
+                Read More
+              </span>
             </p>
 
             <button className="md:hidden absolute right-0 top-2 flex items-center justify-center h-9 w-9 rounded text-white bg-[#003399] hover:bg-[#002266]">
@@ -118,7 +121,7 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
               <div className="md:text-2xl text-lg font-bold md:font-semibold text-black">
                 {stats.treesAvailable.toLocaleString()}+
               </div>
-              <div className="md:text-base text-xs font-semibold text-gray-600">
+              <div className="md:text-base text-xs text-gray-600">
                 Trees <br className="md:hidden" /> Available
               </div>
             </div>
@@ -130,7 +133,7 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
               <div className="md:text-2xl text-lg font-bold md:font-semibold text-black">
                 {stats.treesPlanted.toLocaleString()}+
               </div>
-              <div className="md:text-base text-xs font-semibold text-gray-600">
+              <div className="md:text-base text-xs text-gray-600">
                 Trees <br className="md:hidden" /> Planted
               </div>
             </div>
@@ -149,7 +152,7 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
               <div className="md:text-2xl text-lg font-bold md:font-semibold text-black">
                 {stats.totalTrees.toLocaleString()}+
               </div>
-              <div className="md:text-base text-xs font-semibold text-gray-600">
+              <div className="md:text-base text-xs text-gray-600">
                 Total <br className="md:hidden" /> Trees
               </div>
             </div>

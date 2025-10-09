@@ -2,7 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
-import { Info, Gift } from "lucide-react";
+import { Info } from "lucide-react";
 import { Switch } from "./ui/switch";
 import { Button } from "./ui/button";
 
@@ -27,8 +27,8 @@ const GeoTagToggleAndActions: React.FC<GeoTagToggleAndActionsProps> = ({
     <div
       className={
         isMobile
-          ? "md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-50 px-4 pt-3 pb-6 space-y-4 safe-area-inset-bottom"
-          : "max-sm:hidden border border-[#E4E4E4] rounded-2xl px-4 py-6 space-y-4"
+          ? "md:hidden fixed bottom-0 left-0 right-0 border-t border-gray-200 shadow-lg z-50 px-4 pt-3 pb-6 space-y-4 safe-area-inset-bottom bg-[#E6EBF54D]"
+          : "max-sm:hidden border border-[#E4E4E4] rounded-2xl px-4 py-6 space-y-4 bg-[#E6EBF54D]"
       }
     >
       {/* Geo-tagged Toggle */}
@@ -72,12 +72,18 @@ const GeoTagToggleAndActions: React.FC<GeoTagToggleAndActionsProps> = ({
         <Button
           onClick={onGiftTree}
           variant="outline"
-          className={`flex-1 border-gray-300 font-bold py-3 h-12 rounded-lg hover:bg-gray-50 uppercase text-[#003399] hover:text-[#002266] ${
+          className={`flex-1 border-[1.5px] border-[#003399] font-bold py-3 h-12 rounded-lg hover:bg-gray-50 uppercase text-[#003399] hover:text-[#002266] ${
             isMobile ? "text-sm gap-2" : "text-base"
           }`}
         >
           GIFT A TREE
-          <Gift size={16} />
+          <Image
+            src="/images/gift.png"
+            alt="gift"
+            width={20}
+            height={20}
+            className=""
+          />
         </Button>
       </div>
     </div>

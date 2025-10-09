@@ -3,6 +3,8 @@
 import React from "react";
 import Image from "next/image";
 import { MapPin } from "lucide-react";
+import Link from "next/link";
+import ProjectCard from "./ProjectCard";
 
 interface Project {
   id: string;
@@ -39,54 +41,19 @@ const RelatedProjects: React.FC<RelatedProjectsProps> = ({
 
       {/* Desktop Grid */}
       <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-6">
-        {projects.map((project, idx) => (
-          <div
-            key={idx}
-            className="rounded-xl shadow-sm overflow-hidden border border-gray-200 flex flex-col"
-          >
-            <div className="relative h-52">
-              <Image
-                src={project.imageUrl}
-                alt={project.imageAlt}
-                fill
-                className="object-cover rounded-t-md"
-              />
-
-              <div className="absolute top-4 left-4 flex gap-3">
-                <div className="bg-[#33533E8C] backdrop-blur-sm text-white text-xs font-semibold px-2 py-1 rounded md:text-base md:font-semibold md:leading-6 md:align-middle md:text-[#FFFFFF]">
-                  {project.plantedCount >= 100
-                    ? "100+ planted"
-                    : `${project.plantedCount}+ planted`}
-                </div>
-                <div className="bg-[#33533E8C] backdrop-blur-sm text-white text-xs font-semibold px-2 py-1 rounded md:text-base md:font-semibold md:leading-6 md:align-middle md:text-[#FFFFFF]">
-                  {project.category}
-                </div>
-              </div>
-            </div>
-            <div className="p-6 flex flex-col gap-6">
-              <div className="flex justify-between items-center">
-                <p className="font-bold text-lg text-black truncate md:font-bold md:text-lg md:leading-[26px] md:align-middle md:text-[#090C0F]">
-                  {project.title}
-                </p>
-                <div className="flex items-center gap-2">
-                  <MapPin width={13} height={16} color="#19212c" />
-                  <span className="text-base font-semibold text-black md:text-base md:font-semibold md:leading-6 md:align-middle md:text-[#19212C]">
-                    {project.location}
-                  </span>
-                </div>
-              </div>
-              <button className="bg-[#003399] text-white font-bold text-base py-3 rounded-[8px] w-full hover:bg-[#002080] gap-2 flex items-center justify-center md:h-12 md:gap-2 md:rounded-lg md:py-[11px] md:px-[22px] md:font-bold md:text-base md:leading-[26px] md:text-[#FFFFFF] md:bg-[#003399]">
-                PLANT A TREE
-                <Image
-                  src="/images/donate.png"
-                  alt="donate"
-                  width={24}
-                  height={24}
-                  className=""
-                />{" "}
-              </button>
-            </div>
-          </div>
+        {projects.map((project) => (
+          <Link key={project.id} href="/project-detail">
+            <ProjectCard
+              id={project.id}
+              title={project.title}
+              location={project.location}
+              plantedCount={project.plantedCount}
+              category={project.category}
+              imageUrl={project.imageUrl}
+              imageAlt={project.imageAlt}
+              onPlantTree={onPlantTree}
+            />
+          </Link>
         ))}
       </div>
 

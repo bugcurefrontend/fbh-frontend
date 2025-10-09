@@ -85,31 +85,31 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({
     <div className="w-full max-md:hidden">
       <Tabs defaultValue="overview" className="w-full">
         <div className="border-b border-gray-200">
-          <TabsList className="flex bg-transparent p-0 h-auto w-full justify-start">
+          <TabsList className="flex bg-transparent p-0 h-auto w-full justify-start gap-8">
             <TabsTrigger
               value="overview"
-              className="flex items-center gap-2 px-4 py-4 border-b-2 border-transparent bg-transparent text-gray-600 hover:text-[#003399] rounded-none relative data-[state=active]:border-[#003399] data-[state=active]:text-[#003399] data-[state=active]:bg-transparent"
+              className="flex items-center gap-2 px-1 py-4 border-b-2 border-transparent bg-transparent text-[#63676C] hover:text-[#003399] rounded-none relative data-[state=active]:border-[#003399] data-[state=active]:text-[#003399] data-[state=active]:bg-transparent"
             >
               <Overview className="w-6 h-6" />
               <span className="font-bold text-base">Overview</span>
             </TabsTrigger>
             <TabsTrigger
               value="updates"
-              className="flex items-center gap-2 px-4 py-4 border-b-2 border-transparent bg-transparent text-gray-600 hover:text-[#003399] rounded-none data-[state=active]:border-[#003399] data-[state=active]:text-[#003399] data-[state=active]:bg-transparent"
+              className="flex items-center gap-2 px-1 py-4 border-b-2 border-transparent bg-transparent text-[#63676C] hover:text-[#003399] rounded-none data-[state=active]:border-[#003399] data-[state=active]:text-[#003399] data-[state=active]:bg-transparent"
             >
               <Update className="w-6 h-6" />
               <span className="font-bold text-base">Updates</span>
             </TabsTrigger>
             <TabsTrigger
               value="species"
-              className="flex items-center gap-2 px-4 py-4 border-b-2 border-transparent bg-transparent text-gray-600 hover:text-[#003399] rounded-none data-[state=active]:border-[#003399] data-[state=active]:text-[#003399] data-[state=active]:bg-transparent"
+              className="flex items-center gap-2 px-1 py-4 border-b-2 border-transparent bg-transparent text-[#63676C] hover:text-[#003399] rounded-none data-[state=active]:border-[#003399] data-[state=active]:text-[#003399] data-[state=active]:bg-transparent"
             >
               <Species className="w-6 h-6" />
               <span className="font-bold text-base">Species</span>
             </TabsTrigger>
             <TabsTrigger
               value="donors"
-              className="flex items-center gap-2 px-4 py-4 border-b-2 border-transparent bg-transparent text-gray-600 hover:text-[#003399] rounded-none data-[state=active]:border-[#003399] data-[state=active]:text-[#003399] data-[state=active]:bg-transparent"
+              className="flex items-center gap-2 px-1 py-4 border-b-2 border-transparent bg-transparent text-[#63676C] hover:text-[#003399] rounded-none data-[state=active]:border-[#003399] data-[state=active]:text-[#003399] data-[state=active]:bg-transparent"
             >
               <Users className="w-6 h-6" />
               <span className="font-bold text-base">Donors</span>
@@ -119,15 +119,13 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({
 
         <TabsContent value="overview" className="mt-8 space-y-4">
           <div>
-            <h3 className="text-xl font-bold text-gray-800 mb-4 font-public-sans">
+            <h3 className="text-xl font-bold text-[#454950] mb-4 font-public-sans leading-[30px]">
               Project Description:
             </h3>
-            <div className="space-y-6 text-gray-700">
-              <p className="text-lg leading-6 font-public-sans">
-                {projectDescription}
-              </p>
+            <div className="space-y-4 text-[#454950]">
+              <p className="font-public-sans">{projectDescription}</p>
               {projectDetails.map((detail, index) => (
-                <p key={index} className="text-lg leading-6 font-inter">
+                <p key={index} className="font-inter">
                   {detail}
                 </p>
               ))}
