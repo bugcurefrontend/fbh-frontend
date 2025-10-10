@@ -111,7 +111,7 @@ const UserAvatar: React.FC<{
 }> = ({ name, avatar, isAnonymous }) => {
   if (isAnonymous || !avatar) {
     return (
-      <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+      <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
         <User className="w-5 h-5 text-blue-600" />
       </div>
     );
@@ -121,7 +121,7 @@ const UserAvatar: React.FC<{
     <img
       src={avatar}
       alt={name}
-      className="w-10 h-10 rounded-full object-cover"
+      className="w-8 h-8 rounded-full object-cover"
     />
   );
 };
@@ -213,7 +213,7 @@ const DonorsTable = () => {
                   }`}
                 >
                   <td
-                    className="text-center py-4 px-6"
+                    className="text-center py-3.5 px-3.5"
                     style={{
                       fontFamily: "'Public Sans', sans-serif",
                       fontWeight: 600,
@@ -224,7 +224,7 @@ const DonorsTable = () => {
                   >
                     {index + 1}
                   </td>
-                  <td className="py-4 px-6">
+                  <td className="py-3.5 pl-3.5 overflow-hidden">
                     <div className="flex items-center space-x-3">
                       <UserAvatar
                         name={donor.name}
@@ -245,6 +245,7 @@ const DonorsTable = () => {
                           {donor.name}
                         </div>
                         <div
+                          className="truncate"
                           style={{
                             fontFamily: "'Public Sans', sans-serif",
                             fontWeight: 400,
@@ -258,7 +259,7 @@ const DonorsTable = () => {
                       </div>
                     </div>
                   </td>
-                  <td className="py-4 px-6">
+                  <td className="py-3.5 px-3.5">
                     <div
                       style={{
                         fontFamily: "'Public Sans', sans-serif",
@@ -271,7 +272,7 @@ const DonorsTable = () => {
                       {donor.date}
                     </div>
                   </td>
-                  <td className="py-4 px-6">
+                  <td className="py-3.5 px-3.5">
                     <span
                       className={`inline-flex px-2 py-1 rounded-full ${
                         donor.donationType === "For Self"
@@ -294,7 +295,7 @@ const DonorsTable = () => {
                       {donor.donationType}
                     </span>
                   </td>
-                  <td className="text-center py-4 px-6">
+                  <td className="text-center py-3.5 px-3.5">
                     <div
                       style={{
                         fontFamily: "'Public Sans', sans-serif",
@@ -374,9 +375,9 @@ const DonorsTable = () => {
                     style={{
                       fontFamily: "'Public Sans', sans-serif",
                       fontWeight: 600,
-                      fontSize: "14px",
+                      fontSize: "10px",
+                      color: "#63676C",
                       lineHeight: "22px",
-                      color: "#454950",
                     }}
                   >
                     {donor.date}
@@ -393,7 +394,7 @@ const DonorsTable = () => {
           hasNext={currentPage < totalPages}
           hasPrevious={currentPage > 1}
           onPageChange={handlePageChange}
-          className="pt-3 pb-4 px-6"
+          className="pt-3 px-6"
         />
       </div>
     </main>

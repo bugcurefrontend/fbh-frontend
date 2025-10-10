@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { ArrowRightIcon, BarChart3, Clock, Leaf, Users } from "lucide-react";
+import { CircleArrowRight, Users } from "lucide-react";
 import {
   Accordion,
   AccordionItem,
@@ -97,7 +97,7 @@ const ProjectAccordion: React.FC<ProjectAccordionProps> = ({
                 {detail}
               </p>
             ))}
-            
+
             {/* Related Projects Section - Only shown in Overview */}
             <div className="mt-8">
               <RelatedProjects
@@ -141,7 +141,7 @@ const ProjectAccordion: React.FC<ProjectAccordionProps> = ({
                       {update.images.map((img, i) => (
                         <div
                           key={i}
-                          className="relative w-full h-40 md:h-48 lg:h-60 rounded-lg overflow-hidden"
+                          className="relative w-full h-31 md:h-48 lg:h-60 rounded-lg overflow-hidden"
                         >
                           <Image
                             src={img}
@@ -173,24 +173,27 @@ const ProjectAccordion: React.FC<ProjectAccordionProps> = ({
             </div>
           </AccordionTrigger>
           <AccordionContent className="py-3 gap-4 grid grid-cols-1 sm:grid-cols-2 items-center">
-            {species.map((item) => (
-              <div className="flex-1 min-w-0 border border-gray-200 rounded-xl flex-shrink-0">
+            {species.map((item, index) => (
+              <div
+                key={index}
+                className="flex-1 min-w-0 border border-gray-200 rounded-xl flex-shrink-0"
+              >
                 <div className="overflow-hidden w-full md:p-4 p-2">
                   <Image
                     src={item.image}
                     alt={item.name}
                     width={350}
                     height={160}
-                    className="w-full rounded-xl max-h-[160px] object-cover"
+                    className="w-full rounded-lg max-h-[160px] object-cover"
                   />
                 </div>
                 <div className="px-4 pt-2 pb-4 space-y-2">
                   <p className="text-base truncate font-semibold md:leading-[26px] md:align-middle text-[#19212C]">
                     {item.name}
                   </p>
-                  <button className="flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer">
+                  <button className="pt-2 flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer">
                     Know More
-                    <ArrowRightIcon width={22} height={22} color="#003399" />
+                    <CircleArrowRight width={22} height={22} color="#003399" />
                   </button>
                 </div>
               </div>

@@ -89,7 +89,7 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
         {/* Right side - Project Details */}
         <div className="flex flex-col justify-between">
           {/* Title and Location */}
-          <div className="max-md:space-y-2 relative">
+          <div className="max-md:space-y-4 relative">
             <div className="md:space-y-2 space-y-1">
               <h1 className="text-lg md:text-2xl font-semibold text-gray-900 font-public-sans">
                 {title}
@@ -103,7 +103,7 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
             </div>
             <p className="md:mt-4 text-gray-700 md:text-base text-sm leading-6">
               {description}{" "}
-              <span className="text-[#003399] text-sm font-semibold">
+              <span className="max-md:hidden text-[#003399] text-sm font-semibold">
                 Read More
               </span>
             </p>
@@ -114,7 +114,7 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
           </div>
 
           {/* Statistics */}
-          <div className="border border-[#E4E4E4] rounded-2xl flex items-center justify-between p-6">
+          <div className="max-md:mt-2 border border-[#E4E4E4] rounded-2xl flex items-center justify-between p-6">
             <div className="text-center space-y-2 xl:space-y-4 flex-1">
               <LandscapeIcon className="md:w-10 w-8 h-8 md:h-10  text-white mx-auto" />
 

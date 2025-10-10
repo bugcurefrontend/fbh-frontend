@@ -27,7 +27,7 @@ const GeoTagToggleAndActions: React.FC<GeoTagToggleAndActionsProps> = ({
     <div
       className={
         isMobile
-          ? "md:hidden fixed bottom-0 left-0 right-0 border-t border-gray-200 shadow-lg z-50 px-4 pt-3 pb-6 space-y-4 safe-area-inset-bottom bg-[#E6EBF54D]"
+          ? "md:hidden bg-white fixed bottom-0 left-0 right-0 border-t border-gray-200 shadow-lg z-50 px-4 pt-3 pb-6 space-y-4 safe-area-inset-bottom"
           : "max-sm:hidden border border-[#E4E4E4] rounded-2xl px-4 py-6 space-y-4 bg-[#E6EBF54D]"
       }
     >
@@ -80,8 +80,8 @@ const GeoTagToggleAndActions: React.FC<GeoTagToggleAndActionsProps> = ({
           <Image
             src="/images/gift.png"
             alt="gift"
-            width={20}
-            height={20}
+            width={isMobile ? 18 : 20}
+            height={isMobile ? 18 : 20}
             className=""
           />
         </Button>

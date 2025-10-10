@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "./ui/tabs";
-import { ArrowRightIcon, Users } from "lucide-react";
+import { CircleArrowRight, Users } from "lucide-react";
 import Image from "next/image";
 import {
   Select,
@@ -16,6 +16,7 @@ import Update from "./icons/update";
 import Species from "./icons/Species";
 import RelatedProjects from "./RelatedProjects";
 import DonorsTable from "./DonorsTable";
+import Link from "next/link";
 
 interface Project {
   id: string;
@@ -43,7 +44,7 @@ const updates = [
       "https://images.unsplash.com/photo-1600196895335-5fb111df31a5?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTAwNDR8MHwxfHNlYXJjaHwxfHxmb3Jlc3QlMjB0cmVlcyUyMG5hdHVyZXxlbnwwfDB8fGdyZWVufDE3NTc3NjExNzB8MA&ixlib=rb-4.1.0&q=85",
       "https://images.unsplash.com/photo-1568943542306-bf5807bdc38c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTAwNDR8MHwxfHNlYXJjaHwxfHxtb3VudGFpbiUyMGZvcmVzdCUyMGV2ZXJncmVlbnxlbnwwfDB8fGdyZWVufDE3NTc3NjExNzB8MA&ixlib=rb-4.1.0&q=85",
     ],
-    text: "In 2023, the Honourable Chief Minister of Madhya Pradesh, Shri. Mohan Yadav invited FBH to afforest an initial parcel of 12 sites in Satna aggregating 650 HA. This project was kicked off in 2023 by the Dy. Chief Minister, Shri Rajendra Shukla.",
+    text: "Lorem ipsum dolor sit amet consectetur. Suspendisse tortor cras vitae ultrices. Magna amet scelerisque pellentesque penatibus ullamcorper lacinia nisl ante. Imperdiet et cursus proin dui congue scelerisque. Nec dui diam nulla.",
   },
   {
     id: 2,
@@ -52,7 +53,7 @@ const updates = [
       "https://images.unsplash.com/photo-1600196895335-5fb111df31a5?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTAwNDR8MHwxfHNlYXJjaHwxfHxmb3Jlc3QlMjB0cmVlcyUyMG5hdHVyZXxlbnwwfDB8fGdyZWVufDE3NTc3NjExNzB8MA&ixlib=rb-4.1.0&q=85",
       "https://images.unsplash.com/photo-1568943542306-bf5807bdc38c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTAwNDR8MHwxfHNlYXJjaHwxfHxtb3VudGFpbiUyMGZvcmVzdCUyMGV2ZXJncmVlbnxlbnwwfDB8fGdyZWVufDE3NTc3NjExNzB8MA&ixlib=rb-4.1.0&q=85",
     ],
-    text: "Lorem ipsum dolor sit amet consectetur. Suspendisse tortor cras vitae ultrices. Magna amet scelerisque pellentesque penatibus ullamcorper lacinia nisl ante.",
+    text: "Lorem ipsum dolor sit amet consectetur. Suspendisse tortor cras vitae ultrices. Magna amet scelerisque pellentesque penatibus ullamcorper lacinia nisl ante. Imperdiet et cursus proin dui congue scelerisque. Nec dui diam nulla.",
   },
   {
     id: 3,
@@ -61,7 +62,7 @@ const updates = [
       "https://images.unsplash.com/photo-1600196895335-5fb111df31a5?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTAwNDR8MHwxfHNlYXJjaHwxfHxmb3Jlc3QlMjB0cmVlcyUyMG5hdHVyZXxlbnwwfDB8fGdyZWVufDE3NTc3NjExNzB8MA&ixlib=rb-4.1.0&q=85",
       "https://images.unsplash.com/photo-1568943542306-bf5807bdc38c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTAwNDR8MHwxfHNlYXJjaHwxfHxtb3VudGFpbiUyMGZvcmVzdCUyMGV2ZXJncmVlbnxlbnwwfDB8fGdyZWVufDE3NTc3NjExNzB8MA&ixlib=rb-4.1.0&q=85",
     ],
-    text: "Lorem ipsum dolor sit amet consectetur. Suspendisse tortor cras vitae ultrices. Magna amet scelerisque pellentesque penatibus ullamcorper lacinia nisl ante.",
+    text: "Lorem ipsum dolor sit amet consectetur. Suspendisse tortor cras vitae ultrices. Magna amet scelerisque pellentesque penatibus ullamcorper lacinia nisl ante. Imperdiet et cursus proin dui congue scelerisque. Nec dui diam nulla.",
   },
 ];
 
@@ -88,28 +89,28 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({
           <TabsList className="flex bg-transparent p-0 h-auto w-full justify-start gap-8">
             <TabsTrigger
               value="overview"
-              className="flex items-center gap-2 px-1 py-4 border-b-2 border-transparent bg-transparent text-[#63676C] hover:text-[#003399] rounded-none relative data-[state=active]:border-[#003399] data-[state=active]:text-[#003399] data-[state=active]:bg-transparent"
+              className="flex items-center gap-2 pl-2 pr-1 py-4 border-b-2 border-transparent bg-transparent text-[#63676C] hover:text-[#003399] rounded-none relative data-[state=active]:border-[#003399] data-[state=active]:text-[#003399] data-[state=active]:bg-transparent"
             >
-              <Overview className="w-6 h-6" />
+              <Overview className="w-6 h-6 mr-0.5" />
               <span className="font-bold text-base">Overview</span>
             </TabsTrigger>
             <TabsTrigger
               value="updates"
-              className="flex items-center gap-2 px-1 py-4 border-b-2 border-transparent bg-transparent text-[#63676C] hover:text-[#003399] rounded-none data-[state=active]:border-[#003399] data-[state=active]:text-[#003399] data-[state=active]:bg-transparent"
+              className="flex items-center gap-2 pl-2 pr-1 py-4 border-b-2 border-transparent bg-transparent text-[#63676C] hover:text-[#003399] rounded-none data-[state=active]:border-[#003399] data-[state=active]:text-[#003399] data-[state=active]:bg-transparent"
             >
-              <Update className="w-6 h-6" />
+              <Update className="w-6 h-6 mr-0.5" />
               <span className="font-bold text-base">Updates</span>
             </TabsTrigger>
             <TabsTrigger
               value="species"
-              className="flex items-center gap-2 px-1 py-4 border-b-2 border-transparent bg-transparent text-[#63676C] hover:text-[#003399] rounded-none data-[state=active]:border-[#003399] data-[state=active]:text-[#003399] data-[state=active]:bg-transparent"
+              className="flex items-center gap-2 pl-2 pr-1 py-4 border-b-2 border-transparent bg-transparent text-[#63676C] hover:text-[#003399] rounded-none data-[state=active]:border-[#003399] data-[state=active]:text-[#003399] data-[state=active]:bg-transparent"
             >
               <Species className="w-6 h-6" />
               <span className="font-bold text-base">Species</span>
             </TabsTrigger>
             <TabsTrigger
               value="donors"
-              className="flex items-center gap-2 px-1 py-4 border-b-2 border-transparent bg-transparent text-[#63676C] hover:text-[#003399] rounded-none data-[state=active]:border-[#003399] data-[state=active]:text-[#003399] data-[state=active]:bg-transparent"
+              className="flex items-center gap-2 pl-2 pr-1 py-4 border-b-2 border-transparent bg-transparent text-[#63676C] hover:text-[#003399] rounded-none data-[state=active]:border-[#003399] data-[state=active]:text-[#003399] data-[state=active]:bg-transparent"
             >
               <Users className="w-6 h-6" />
               <span className="font-bold text-base">Donors</span>
@@ -142,10 +143,10 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({
           </div>
         </TabsContent>
 
-        <TabsContent value="updates" className="mt-8 space-y-4">
-          <div className="w-full container mx-auto px-4 md:px-6 space-y-10 relative">
+        <TabsContent value="updates" className="md:mt-11 mt-8 space-y-4">
+          <div className="w-full px-4 md:px-14 space-y-10 relative">
             <Select defaultValue="2025">
-              <SelectTrigger className="absolute top-6 right-6 gap-10 hover:rounded-[5xl] border-2 py-[10px] px-[6px] rounded-[5px]">
+              <SelectTrigger className="absolute -top-1.5 right-14 gap-10 py-[9px] px-[13px] rounded-md border-[#D1D5DB] text-[#333333] text-sm">
                 <SelectValue placeholder="Year" />
               </SelectTrigger>
               <SelectContent>
@@ -156,15 +157,17 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({
             </Select>
             {updates.map((update) => (
               <div key={update.id} className="space-y-4">
-                <h3 className="font-bold text-xl">{update.month}</h3>
+                <h3 className="font-bold md:leading-[30px] text-xl text-[#454950]">
+                  {update.month}
+                </h3>
 
                 <div className="flex justify-between items-center">
                   {/* Images */}
-                  <div className="w-1/2 grid grid-cols-2 gap-2 col-span-2">
+                  <div className="flex gap-8">
                     {update.images.map((img, i) => (
                       <div
                         key={i}
-                        className="relative w-full h-[185px] rounded-lg overflow-hidden"
+                        className="relative w-[241px] h-[185px] rounded-lg overflow-hidden"
                       >
                         <Image
                           src={img}
@@ -177,9 +180,7 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({
                   </div>
 
                   {/* Text */}
-                  <p className="w-[45%] text-sm text-gray-700 leading-relaxed">
-                    {update.text}
-                  </p>
+                  <p className="w-[45%] max-md:text-sm">{update.text}</p>
                 </div>
               </div>
             ))}
@@ -191,33 +192,32 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({
           className="mt-8 gap-8 grid grid-cols-3 items-center"
         >
           {species.map((item, index) => (
-            <div
-              key={index}
-              className="flex-1 min-w-0 border border-gray-200 rounded-xl flex-shrink-0"
-            >
-              <div className="overflow-hidden w-full md:p-4 p-2">
-                <Image
-                  src={item.image}
-                  alt={item.name}
-                  width={350}
-                  height={194}
-                  className="w-full rounded-xl"
-                />
+            <Link key={index} href="/project-detail">
+              <div className="flex-1 min-w-0 border border-gray-200 rounded-xl flex-shrink-0">
+                <div className="overflow-hidden w-full md:p-4 p-2">
+                  <Image
+                    src={item.image}
+                    alt={item.name}
+                    width={350}
+                    height={194}
+                    className="w-full object-cover rounded-lg max-h-[194px]"
+                  />
+                </div>
+                <div className="p-4 pt-2 flex justify-between items-center">
+                  <p className="text-lg font-bold text-black truncate md:text-lg md:font-bold md:leading-[26px] md:align-middle md:text-[#19212C]">
+                    {item.name}
+                  </p>
+                  <button className="mr-4 flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer">
+                    Know More
+                    <CircleArrowRight width={22} height={22} color="#003399" />
+                  </button>
+                </div>
               </div>
-              <div className="p-4 flex justify-between items-center">
-                <p className="text-lg font-bold text-black truncate md:text-lg md:font-bold md:leading-[26px] md:align-middle md:text-[#19212C]">
-                  {item.name}
-                </p>
-                <button className="flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer">
-                  Know More
-                  <ArrowRightIcon width={22} height={22} color="#003399" />
-                </button>
-              </div>
-            </div>
+            </Link>
           ))}
         </TabsContent>
 
-        <TabsContent value="donors" className="mt-8 px-6">
+        <TabsContent value="donors" className="mt-8 px-10">
           <DonorsTable />
         </TabsContent>
       </Tabs>

@@ -1,7 +1,8 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import { Facebook, Instagram, Linkedin } from "lucide-react";
+import { Instagram, Linkedin } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 const Footer: React.FC = () => {
   const usefulLinks = [
@@ -13,8 +14,13 @@ const Footer: React.FC = () => {
     "Donate",
   ];
 
+  const pathname = usePathname();
+  const footerClass = `bg-[#0f172a] text-[#e6e6e6] md:mt-16 mt-8 ${
+    pathname === "/project-detail" ? "max-md:mb-30" : ""
+  }`;
+
   return (
-    <footer className="bg-[#0f172a] text-[#e6e6e6] md:mt-16 mt-8">
+    <footer className={footerClass}>
       <div className="md:px-14 max-w-7xl mx-auto px-4 py-16 flex flex-col sm:flex-row sm:justify-between max-sm:gap-16">
         <div className="flex flex-col gap-6 md:min-w-[389px] w-full sm:w-auto">
           <Image
