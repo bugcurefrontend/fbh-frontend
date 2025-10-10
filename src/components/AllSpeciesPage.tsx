@@ -77,34 +77,39 @@ const AllSpeciesPage: React.FC<AllSpeciesPageProps> = ({
           backgroundPosition: "center",
         }}
       >
-        <div className="w-full mx-auto px-4 md:px-12 md:space-y-12 space-y-8 text-white">
+        <div className="max-w-7xl w-full mx-auto px-4 md:px-8 md:space-y-12 space-y-8 text-white">
           <Breadcrumb>
-            <BreadcrumbList className="text-white font-semibold md:text-base text-sm leading-[18px]">
+            <BreadcrumbList className="text-white font-normal md:text-base text-sm leading-[18px]">
               <BreadcrumbItem>
                 <BreadcrumbLink href="/">Homepage</BreadcrumbLink>
               </BreadcrumbItem>
-              <BreadcrumbSeparator />
+              <BreadcrumbSeparator className="font-bold" />
               <BreadcrumbItem>
-                <BreadcrumbLink href="/species">Species</BreadcrumbLink>
+                <BreadcrumbLink href="/species">All Species</BreadcrumbLink>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
 
           <div className="space-y-4">
             <h1 className="font-[Playfair_Display] text-[22px] md:text-[32px] md:leading-12 leading-[30px] font-semibold">
-              Species
+              All Species
             </h1>
-            <p className="md:text-lg text-[10px] md:font-bold font-semibold leading-4 md:leading-[26px] w-[85%] md:w-[70%]">
+            <p className="max-md:hidden md:text-lg text-[10px] md:font-bold font-semibold leading-4 md:leading-[26px] w-[85%] md:w-[70%]">
               Explore our collection of tree species, each with unique
               environmental, cultural, and medicinal value. Learn about their
               impact on biodiversity, carbon absorption, and communities—and
               choose to donate or gift a tree that creates a lasting difference.
             </p>
+            <p className="md:hidden md:text-lg text-[10px] md:font-bold font-semibold leading-4 md:leading-[26px] w-[85%] md:w-[70%]">
+              Explore our collection of tree species, each with unique
+              environmental, cultural, and medicinal value. Learn about their
+              impact on biodiversity, carbon absorption.
+            </p>
           </div>
         </div>
       </section>
 
-      <main className="mx-auto md:px-8 px-4 space-y-8">
+      <main className="max-w-7xl mx-auto md:px-8 px-4 space-y-8 pb-4">
         <SearchBar
           value={searchQuery}
           onChange={handleSearchChange}
@@ -114,7 +119,7 @@ const AllSpeciesPage: React.FC<AllSpeciesPageProps> = ({
         {/* Species Grid - Same design as ProjectTabs */}
         <div className="mt-6 gap-6 md:gap-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 items-center">
           {speciesData.map((item, index) => (
-            <Link href="/species-detail" key={index}>
+            <Link key={index} href="/species-detail">
               <div className="flex-1 min-w-0 border border-gray-200 rounded-xl flex-shrink-0">
                 <div className="overflow-hidden w-full md:p-4 p-2">
                   <Image
@@ -122,14 +127,14 @@ const AllSpeciesPage: React.FC<AllSpeciesPageProps> = ({
                     alt={item.name}
                     width={350}
                     height={194}
-                    className="w-full rounded-xl"
+                    className="w-full object-cover rounded-lg max-h-[194px]"
                   />
                 </div>
-                <div className="p-4 flex justify-between items-center">
-                  <p className="text-sm font-semibold text-black truncate md:text-lg md:font-bold md:leading-[26px] md:align-middle md:text-[#19212C]">
+                <div className="p-4 pt-2 flex justify-between items-center">
+                  <p className="text-lg font-bold text-black truncate md:text-lg md:font-bold md:leading-[26px] md:align-middle md:text-[#19212C]">
                     {item.name}
                   </p>
-                  <button className="flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer">
+                  <button className="mr-4 flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer">
                     Know More
                     <ArrowRightIcon width={22} height={22} color="#003399" />
                   </button>
