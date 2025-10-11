@@ -6,7 +6,7 @@ import Link from "next/link";
 
 const AboutSection: React.FC = () => {
   return (
-    <section className="max-w-7xl mx-auto px-4 md:px-8 flex md:flex-row flex-col gap-8 items-center">
+    <section className="max-w-7xl mx-auto px-4 md:px-8 flex md:flex-row flex-col gap-8 items-center mb-8 md:mb-16">
       <Image
         src="/images/architecture-circular.png"
         alt="Circular architecture with gardens"

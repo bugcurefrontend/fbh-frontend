@@ -7,7 +7,7 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { MapPin } from "lucide-react";
+import { MapPin, Share2 } from "lucide-react";
 
 const CaseStudy = () => {
   return (
@@ -20,9 +20,9 @@ const CaseStudy = () => {
           backgroundPosition: "center",
         }}
       >
-        <div className="w-full mx-auto px-4 md:px-12 md:space-y-12 space-y-8 text-white">
+        <div className="max-w-7xl w-full mx-auto px-4 md:px-12 md:space-y-12 space-y-8 text-white relative">
           <Breadcrumb>
-            <BreadcrumbList className="text-white font-semibold md:text-base text-sm leading-[18px]">
+            <BreadcrumbList className="text-white font-normal md:text-base text-sm leading-[18px]">
               <BreadcrumbItem>
                 <BreadcrumbLink href="/">Homepage</BreadcrumbLink>
               </BreadcrumbItem>
@@ -37,26 +37,29 @@ const CaseStudy = () => {
             </BreadcrumbList>
           </Breadcrumb>
 
-          <div className="space-y-4">
+          <div className="space-y-2">
             <h1 className="font-[Playfair_Display] text-[22px] md:text-[32px] md:leading-12 leading-[30px] font-semibold">
               Satna, NPCI
             </h1>
-            <div className="flex items-center gap-2 md:text-lg text-[10px] md:font-bold font-semibold leading-4 md:leading-[26px]">
-              <MapPin className="w-4 h-4" />
-              <span className="md:text-base text-sm md:font-semibold">
+            <div className="flex items-center gap-1 md:text-lg text-[10px] md:font-bold font-semibold leading-4 md:leading-[26px]">
+              <MapPin className="w-4 h-4 md:w-6 md:h-6" />
+              <span className="md:text-xl md:leading-[30px] text-base md:font-bold">
                 Madhya Pradesh
               </span>
             </div>
           </div>
         </div>
+        <button className="flex items-center justify-center absolute md:bottom-17 bottom-13 right-4 md:right-43 md:h-12 md:w-12 h-8 w-8 rounded md:rounded-[8px] text-white bg-[#003399] hover:bg-[#002266]">
+          <Share2 strokeWidth={1.5} className="md:w-6 w-4.5 md:h-6 h-4.5" />
+        </button>
       </section>
 
-      <div className="md:space-y-12 space-y-8">
-        <div className="space-y-6 md:px-8 px-4">
+      <div className="max-w-7xl mx-auto md:space-y-12 space-y-8">
+        <div className="md:space-y-6 space-y-4 md:px-8 px-4">
           <h1 className="text-center font-[Playfair_Display] text-[22px] md:text-[32px] md:leading-12 leading-[30px] font-semibold">
             Overview
           </h1>
-          <p className="text-[#454950] max-md:text-sm">
+          <p className="max-md:hidden text-[#454950] max-md:text-sm">
             Lorem ipsum dolor sit amet consectetur. Nibh porta dui fermentum in
             facilisi sed. Pellentesque lectus proin gravida in. Malesuada etiam
             viverra ut auctor semper lacinia. Eu dictum odio eu quam integer
@@ -67,6 +70,14 @@ const CaseStudy = () => {
             tincidunt venenatis. Turpis suspendisse porttitor et lacinia pretium
             tincidunt odio orci hendrerit.
           </p>
+          <p className="md:hidden text-[#454950] text-sm">
+            The Neem tree (Azadirachta indica) has been revered in India for
+            centuries as the “village pharmacy.” It is known for its exceptional
+            medicinal properties, ability to purify air, and its role in
+            cultural traditions. Beyond health, Neem supports soil fertility,
+            provides shade, and sustains biodiversity, making it a vital part of
+            ecosystems and communities alike.
+          </p>
         </div>
         <PartnersSection />
         <div className="space-y-6 md:px-8 px-4">
@@ -76,8 +87,6 @@ const CaseStudy = () => {
           <Gallery />
         </div>
       </div>
-
-      <main className="mx-auto md:px-8 px-4 space-y-8"></main>
     </main>
   );
 };

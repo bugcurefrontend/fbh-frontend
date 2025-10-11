@@ -45,7 +45,7 @@ const PartnersSection: React.FC = () => {
 
   return (
     <section className="max-w-7xl mx-auto px-4 md:px-8">
-      <div className="bg-white rounded-xl border border-gray-200 max-sm:p-[30px] sm:py-4 text-center space-y-6 sm:space-y-14 h-[232px] mt-8 md:mt-16">
+      <div className="bg-white rounded-xl border border-gray-200 max-sm:p-[30px] sm:py-4 text-center space-y-6 sm:space-y-14 h-[232px]">
         <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold text-black md:text-[32px] md:font-semibold md:leading-[48px] md:text-center md:align-middle md:text-[#090C0F]">
           Our Supporting Partners
         </h2>

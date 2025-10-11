@@ -16,7 +16,9 @@ const Footer: React.FC = () => {
 
   const pathname = usePathname();
   const footerClass = `bg-[#0f172a] text-[#e6e6e6] md:mt-16 mt-8 ${
-    pathname === "/project-detail" ? "max-md:mb-30" : ""
+    pathname === "/project-detail" || pathname === "/species-detail"
+      ? "max-md:mb-30"
+      : ""
   }`;
 
   return (
