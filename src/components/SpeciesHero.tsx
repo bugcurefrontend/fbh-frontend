@@ -2,7 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
-import { Share2, Clock, Wind, Ruler } from "lucide-react";
+import { Share2 } from "lucide-react";
 import GeoTagToggleAndActions from "./GeoTagToggleAndActions";
 
 interface SpeciesHeroProps {
@@ -45,7 +45,7 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
     <div className="bg-white rounded-2xl overflow-hidden">
       <div className="flex flex-col lg:flex-row space-x-6 space-y-6 lg:space-y-0">
         {/* Left side - Hero Image */}
-        <div className="lg:w-[546px] w-full lg:max-h-[557px] relative flex-shrink-0">
+        <div className="lg:w-[546px] w-full lg:h-[573px] relative flex-shrink-0">
           <div className="min-h-[360px] h-full w-full relative overflow-hidden rounded-lg">
             <Image
               src={heroImageUrl}
@@ -68,13 +68,13 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
             {treeSpecies.map((species) => (
               <div
                 key={species.id}
-                className="w-20 h-20 rounded-lg overflow-hidden border border-white shadow-lg cursor-pointer"
+                className="w-[112px] h-[112px] rounded-lg overflow-hidden border border-white shadow-lg cursor-pointer"
               >
                 <Image
                   src={species.imageUrl}
                   alt={species.imageAlt}
-                  width={80}
-                  height={80}
+                  width={112}
+                  height={112}
                   className="object-cover w-full min-h-full"
                 />
               </div>
@@ -90,7 +90,7 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
           {/* Title and Scientific Name */}
           <div className="md:space-y-2 space-y-4 relative">
             <div className="md:space-y-2 space-y-1 flex items-center justify-between">
-              <h1 className="text-lg md:text-2xl font-semibold text-gray-900 font-public-sans">
+              <h1 className="text-lg md:text-2xl font-semibold md:text-gray-900 text-[#333333] font-public-sans">
                 {name} ({scientificName})
               </h1>
               <button className="md:hidden flex items-center justify-center h-9 w-9 rounded text-white bg-[#003399] hover:bg-[#002266]">
@@ -117,7 +117,7 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
               <div className="md:text-2xl text-lg font-bold md:font-semibold text-black">
                 {characteristics.lifespan}
               </div>
-              <div className="md:text-base text-xs font-semibold text-gray-600">
+              <div className="md:text-base text-xs text-[#4C4748]">
                 Lifespan
               </div>
             </div>
@@ -137,7 +137,7 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
               <div className="md:text-2xl text-lg font-bold md:font-semibold text-black">
                 {characteristics.oxygenReleased}
               </div>
-              <div className="md:text-base text-xs font-semibold text-gray-600">
+              <div className="md:text-base text-xs text-[#4C4748]">
                 Oxygen <span className="max-md:hidden">Released</span>
               </div>
             </div>
@@ -160,9 +160,7 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
                 </span>
                 <span className="md:hidden">{characteristics.height}</span>
               </div>
-              <div className="md:text-base text-xs font-semibold text-gray-600">
-                Height
-              </div>
+              <div className="md:text-base text-xs text-[#4C4748]">Height</div>
             </div>
           </div>
 

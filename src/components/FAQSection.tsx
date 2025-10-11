@@ -69,15 +69,17 @@ const FAQSection: React.FC<FAQSectionProps> = ({ faqs }) => {
                 </span>
                 <div className="flex-shrink-0">
                   {openItem === faq.id ? (
-                    <Minus className="w-5 h-5 text-[#63676C]" />
+                    <Minus strokeWidth={2} className="w-6 h-6 text-[#63676C]" />
                   ) : (
-                    <Plus className="w-5 h-5 text-[#63676C]" />
+                    <Plus strokeWidth={2} className="w-6 h-6 text-[#63676C]" />
                   )}
                 </div>
               </button>
 
               {openItem === faq.id && (
-                <p className="text-[#454950] text-sm px-6 pb-6">{faq.answer}</p>
+                <p className="text-[#454950] max-md:text-sm px-6 pb-6">
+                  {faq.answer}
+                </p>
               )}
             </div>
           ))}

@@ -23,7 +23,7 @@ const RelatedSpecies = () => {
 
       <div className="hidden mt-6 gap-6 md:gap-8 sm:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 items-center">
         {species.map((item, index) => (
-          <Link href="/species-detail" key={index}>
+          <Link key={index} href="/species-detail">
             <div className="flex-1 min-w-0 border border-gray-200 rounded-xl flex-shrink-0">
               <div className="overflow-hidden w-full md:p-4 p-2">
                 <Image
@@ -31,14 +31,14 @@ const RelatedSpecies = () => {
                   alt={item.name}
                   width={350}
                   height={194}
-                  className="w-full rounded-xl"
+                  className="w-full object-cover rounded-lg max-h-[194px]"
                 />
               </div>
-              <div className="p-4 flex justify-between items-center">
-                <p className="text-sm font-semibold text-black truncate md:text-lg md:font-bold md:leading-[26px] md:align-middle md:text-[#19212C]">
+              <div className="p-4 pt-2 flex justify-between items-center">
+                <p className="text-lg font-bold text-black truncate md:text-lg md:font-bold md:leading-[26px] md:align-middle md:text-[#19212C]">
                   {item.name}
                 </p>
-                <button className="flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer">
+                <button className="mr-4 flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer">
                   Know More
                   <ArrowRightIcon width={22} height={22} color="#003399" />
                 </button>
@@ -51,34 +51,33 @@ const RelatedSpecies = () => {
       <div className="sm:hidden mb-6 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         <div className="flex gap-4 pb-2 w-max">
           {species.map((item, idx) => (
-            <div
-              key={idx}
-              className="flex-1 min-w-[314px] max-w-[314px] border border-gray-200 rounded-xl flex-shrink-0 overflow-hidden"
-            >
-              <div className="pt-3 px-3">
-                <Image
-                  src={item.image}
-                  alt={item.name}
-                  width={280}
-                  height={194}
-                  className="rounded-md object-cover"
-                />
-              </div>
-              <div className="p-4 flex sm:flex-root flex-col justify-between sm:items-center max-sm:gap-2">
-                <p className="text-lg font-bold text-black truncate md:text-lg md:font-bold md:leading-[26px] md:align-middle md:text-[#19212C]">
-                  {item.name}
-                </p>
-                <button className="flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer">
-                  Know More{" "}
-                  <ArrowRightIcon
-                    width={22}
-                    height={22}
-                    color="#003399"
-                    className="max-sm:w-4"
+            <Link key={idx} href="/species-detail">
+              <div className="flex-1 min-w-[314px] max-w-[314px] border border-gray-200 rounded-xl flex-shrink-0 overflow-hidden">
+                <div className="pt-3 px-3">
+                  <Image
+                    src={item.image}
+                    alt={item.name}
+                    width={280}
+                    height={194}
+                    className="rounded-md object-cover"
                   />
-                </button>
+                </div>
+                <div className="p-4 flex sm:flex-root flex-col justify-between sm:items-center max-sm:gap-2">
+                  <p className="font-semibold truncate md:text-lg md:font-bold md:leading-[26px] md:align-middle text-[#19212C]">
+                    {item.name}
+                  </p>
+                  <button className="py-[11px] pr-[12px] flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer">
+                    Know More{" "}
+                    <ArrowRightIcon
+                      width={24}
+                      height={24}
+                      color="#003399"
+                      className="max-sm:w-6"
+                    />
+                  </button>
+                </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

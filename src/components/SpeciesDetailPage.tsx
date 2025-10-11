@@ -35,7 +35,7 @@ interface SpeciesDetailPageProps {
 const SpeciesDetailPage: React.FC<SpeciesDetailPageProps> = ({
   speciesData,
 }) => {
-  const [isGeoTagged, setIsGeoTagged] = useState(false);
+  const [isGeoTagged, setIsGeoTagged] = useState(true);
 
   const handlePlantTree = () => {
     console.log(`Plant ${speciesData.name} tree`);
@@ -46,7 +46,7 @@ const SpeciesDetailPage: React.FC<SpeciesDetailPageProps> = ({
   };
 
   return (
-    <main className="mx-auto md:px-8 px-4 md:pt-8 pt-4 md:space-y-16 space-y-8 pb-32 md:pb-0">
+    <main className="max-w-7xl mx-auto md:px-8 px-4 md:pt-8 pt-4 space-y-8 md:space-y-16">
       {/* Species Hero Section */}
       <SpeciesHero
         name={speciesData.name}
