@@ -52,14 +52,14 @@ const Footer: React.FC = () => {
         {/* Links */}
         <div className="flex flex-1 gap-8">
           <div className="flex flex-col gap-4 w-full">
-            <h3 className="font-poppins font-medium text-lg text-[#e6e6e6] mb-2">
+            <h3 className="font-[poppins] font-medium text-lg text-[#e6e6e6] mb-2">
               Useful Links
             </h3>
             <ul className="flex flex-col gap-2">
               {usefulLinks.map((link, index) => (
                 <li
                   key={index}
-                  className="text-sm leading-5 font-poppins font-normal text-[#e6e6e6] hover:text-white hover:underline cursor-pointer"
+                  className="text-sm leading-5 font-[poppins] font-normal text-[#e6e6e6] hover:text-white hover:underline cursor-pointer"
                 >
                   {link}
                 </li>
@@ -68,10 +68,10 @@ const Footer: React.FC = () => {
           </div>
 
           <div className="flex flex-col gap-4 w-full">
-            <h3 className="font-poppins font-medium text-lg text-[#e6e6e6] mb-2">
+            <h3 className="font-[poppins] font-medium text-lg text-[#e6e6e6] mb-2">
               Social
             </h3>
-            <ul className="flex flex-col md:gap-3 gap-2">
+            <ul className="flex flex-col gap-2">
               <li className="flex items-center gap-4 cursor-pointer hover:text-white">
                 <div className="h-6 w-6 bg-white rounded-full flex items-center justify-center">
                   <Instagram className="h-4 w-4 text-black" />
@@ -116,19 +116,19 @@ const Footer: React.FC = () => {
       {/* Footer Bottom */}
       <div className="bg-black">
         <div className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-20 h-[95px] sm:h-[72px] px-4 mx-auto">
-          <p className="font-poppins font-medium text-white text-sm sm:text-base">
+          <p className="font-[poppins] font-medium text-white text-sm sm:text-base">
             © 2025 Heartfulness - All rights reserved
           </p>
           <div className="flex gap-6 sm:gap-12">
             <a
               href="#"
-              className="font-poppins font-medium text-white text-sm sm:text-base"
+              className="font-[poppins] font-medium text-white text-sm sm:text-base"
             >
               <span className="underline">Terms</span>
             </a>
             <a
               href="#"
-              className="font-poppins font-medium text-white text-sm sm:text-base"
+              className="font-[poppins] font-medium text-white text-sm sm:text-base"
             >
               <span className="underline">Privacy</span>
             </a>
