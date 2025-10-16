@@ -70,7 +70,7 @@ const HeroSection = () => {
         transition={{ duration: 1 }}
       />
 
-      <div className="relative w-full max-w-7xl mx-auto md:px-16 px-4 md:pt-[194px] pt-[102px]">
+      <div className="relative w-full max-w-7xl mx-auto md:px-16 px-4 md:pt-[200px] pt-[102px]">
         <motion.div
           initial={{ opacity: 0.9 }}
           animate={{ opacity: 1 }}
@@ -79,7 +79,7 @@ const HeroSection = () => {
           key={heroSlides[current].id}
           className="sm:max-w-[582px] max-w-[276px]"
         >
-          <h1 className="sm:text-[64px] font-bold text-white mb-4 text-[38px] leading-[1.2] sm:mb-6">
+          <h1 className="sm:text-[64px] font-bold text-white mb-4 text-[38px] leading-[1.2] sm:mb-8">
             {heroSlides[current].title}
           </h1>
           <button className="bg-[#003399] text-white font-bold text-base sm:py-3 py-[6px] rounded md:w-[370px] md:h-12 md:py-[11px] md:px-[22px] md:rounded-lg md:text-base md:font-bold md:leading-[26px] md:text-[#FFFFFF] max-w-[370px] w-full hover:bg-[#002080]">
