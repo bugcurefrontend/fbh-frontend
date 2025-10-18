@@ -6,7 +6,7 @@ const mockProjectData = {
   title: "Satna, NPCI",
   location: "Shivagarh, Madhya Pradesh",
   description:
-    "The Satna region has suffered greatly from extensive tree felling, rampant overgrazing, and unsustainable land practices. Witnessing this ecological decline, pressure from Climate change and erratic weather impacting communities, carbon emissions from rapid urbanization...",
+    "The Satna region has suffered greatly from extensive tree felling, rampant overgrazing, and unsustainable land practices. Witnessing this ecological decline, pressure from Climate change and erratic weather impacting communities, carbon emissions from rapid urbanization.",
   heroImageUrl:
     "https://images.unsplash.com/photo-1698869628299-5d0e570142fb?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTAwNDR8MHwxfHNlYXJjaHwyfHxmb3Jlc3QlMjBjYW5vcHklMjBhZXJpYWx8ZW58MHwwfHxncmVlbnwxNzU3NzYyMjMxfDA&ixlib=rb-4.1.0&q=85",
   heroImageAlt:
@@ -40,7 +40,7 @@ const mockProjectData = {
     totalTrees: 12000,
   },
   projectDescription:
-    "The Satna region has suffered greatly from extensive tree felling, rampant overgrazing, and unsustainable land practices. Witnessing this ecological decline, pressure from climate change and erratic weather impacting communities, carbon emissions from rapid urbanization...",
+    "The Satna region has suffered greatly from extensive tree felling, rampant overgrazing, and unsustainable land practices. Witnessing this ecological decline, pressure from climate change and erratic weather impacting communities, carbon emissions from rapid urbanization.",
   projectDetails: [
     "In 2023, the Honourable Chief Minister of Madhya Pradesh, Shri. Mohan Yadav invited FBH to afforest an initial parcel of 12 sites in Satna aggregating 650 HA. This project was kicked off in 2023 by the Dy. Chief Minister, Shri Rajendra Shukla.",
     "Reforesting these 12 sites at Satna is a 3-year project to plant progressively and green the entire 650 Ha, in collaboration with the forest departments and corporate funding.",
