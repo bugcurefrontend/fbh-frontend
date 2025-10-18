@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Info } from "lucide-react";
 import { Switch } from "./ui/switch";
 import { Button } from "./ui/button";
+import Link from "next/link";
 
 interface GeoTagToggleAndActionsProps {
   isGeoTagged: boolean;
@@ -54,37 +55,41 @@ const GeoTagToggleAndActions: React.FC<GeoTagToggleAndActionsProps> = ({
 
       {/* Action Buttons */}
       <div className={`flex ${isMobile ? "gap-3" : "gap-4"}`}>
-        <Button
-          onClick={onPlantTree}
-          className={`flex-1 bg-[#003399] hover:bg-[#002266] text-white font-bold py-3 h-12 rounded-lg uppercase ${
-            isMobile ? "text-sm gap-2" : "text-base"
-          }`}
-        >
-          PLANT A TREE
-          <Image
-            src="/images/donate.png"
-            alt="donate"
-            width={isMobile ? 20 : 24}
-            height={isMobile ? 20 : 24}
-            className=""
-          />
-        </Button>
-        <Button
-          onClick={onGiftTree}
-          variant="outline"
-          className={`flex-1 border-[1.5px] border-[#003399] font-bold py-3 h-12 rounded-lg hover:bg-gray-50 uppercase text-[#003399] hover:text-[#002266] ${
-            isMobile ? "text-sm gap-2" : "text-base"
-          }`}
-        >
-          GIFT A TREE
-          <Image
-            src="/images/gift.png"
-            alt="gift"
-            width={isMobile ? 18 : 20}
-            height={isMobile ? 18 : 20}
-            className=""
-          />
-        </Button>
+        <Link href="/plant-tree" className="w-full">
+          <Button
+            onClick={onPlantTree}
+            className={`flex-1 w-full bg-[#003399] hover:bg-[#002266] text-white font-bold py-3 h-12 rounded-lg uppercase ${
+              isMobile ? "text-sm gap-2" : "text-base"
+            }`}
+          >
+            PLANT A TREE
+            <Image
+              src="/images/donate.png"
+              alt="donate"
+              width={isMobile ? 20 : 24}
+              height={isMobile ? 20 : 24}
+              className=""
+            />
+          </Button>
+        </Link>
+        <Link href="/plant-tree" className="w-full">
+          <Button
+            onClick={onGiftTree}
+            variant="outline"
+            className={`flex-1 w-full border-gray-300 font-bold py-3 h-12 rounded-lg hover:bg-gray-50 uppercase text-[#003399] hover:text-[#002266] ${
+              isMobile ? "text-sm gap-2" : "text-base"
+            }`}
+          >
+            GIFT A TREE
+            <Image
+              src="/images/gift.png"
+              alt="gift"
+              width={isMobile ? 18 : 20}
+              height={isMobile ? 18 : 20}
+              className=""
+            />
+          </Button>
+        </Link>
       </div>
     </div>
   );
