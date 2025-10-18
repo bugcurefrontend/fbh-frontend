@@ -27,7 +27,7 @@ export function CustomNavigationMenu({
   return (
     <nav
       className={cn(
-        "relative hidden lg:flex flex-1 items-center justify-center",
+        "relative hidden md:flex flex-1 items-center justify-center",
         className
       )}
     >

@@ -67,47 +67,14 @@ export function MobileNavigation({ navigationItems }: NavigationMenuProps) {
   };
 
   return (
-    <div className="lg:hidden">
-      <div className="flex items-center justify-end gap-4">
-        <Select defaultValue="india">
-          <SelectTrigger className="border-2 py-[10px] px-[6px] rounded-[5px]">
-            <SelectValue placeholder="Country" />
-          </SelectTrigger>
-          <SelectContent align="end" side="bottom">
-            <SelectItem value="india">
-              <Image
-                src="/images/flag.png"
-                alt="ind"
-                width={24}
-                height={24}
-                className="min-w-6 min-h-6"
-              />
-              <span className="ml-1 text-sm font-normal leading-5 text-center align-middle">
-                INR
-              </span>
-            </SelectItem>
-            <SelectItem value="us">
-              <Image
-                src="/images/us.png"
-                alt="usa"
-                width={24}
-                height={24}
-                className="min-w-6 min-h-6"
-              />
-              <span className="ml-1 text-sm font-normal leading-5 text-center align-middle">
-                USD
-              </span>
-            </SelectItem>
-          </SelectContent>
-        </Select>
-        <button
-          onClick={handleMobileMenuToggle}
-          className="h-6 w-6 flex items-center justify-center"
-          aria-label="Toggle menu"
-        >
-          <MenuIcon size={24} />
-        </button>
-      </div>
+    <div className="md:hidden">
+      <button
+        onClick={handleMobileMenuToggle}
+        className="h-6 w-6 flex items-center justify-center"
+        aria-label="Toggle menu"
+      >
+        <MenuIcon size={24} />
+      </button>
       {/* Drawer */}
       {mobileMenuOpen && (
         <div

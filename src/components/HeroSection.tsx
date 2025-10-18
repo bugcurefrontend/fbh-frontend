@@ -1,20 +1,21 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import Autoplay from "embla-carousel-autoplay";
+import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { motion } from "framer-motion";
 
 const heroSlides = [
   {
     id: 1,
     title: "Putting heart back into the Earth",
     buttonText: "PLANT A TREE",
-    bgImage: "/images/hero-water-bg.avif",
+    bgImage: "/images/hero-forest-bg.png",
   },
   {
     id: 2,
     title: "Together for a Greener Future",
     buttonText: "JOIN US",
-    bgImage: "/images/hero-forest-bg.png",
+    bgImage: "/images/hero-water-bg.avif",
   },
   {
     id: 3,
@@ -25,102 +26,81 @@ const heroSlides = [
 ];
 
 const HeroSection = () => {
-  const [current, setCurrent] = useState(0);
-  const [activeButton, setActiveButton] = useState<"left" | "right">("right");
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const autoplay = useRef(Autoplay({ delay: 5000, stopOnInteraction: false }));
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [
+    autoplay.current,
+  ]);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-  const startAutoPlay = () => {
-    if (timerRef.current) clearInterval(timerRef.current);
-    timerRef.current = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % heroSlides.length);
-    }, 5000);
-  };
-
+  // sync current index when slide changes
   useEffect(() => {
-    startAutoPlay();
+    if (!emblaApi) return;
+
+    const onSelect = () => setCurrentIndex(emblaApi.selectedScrollSnap());
+    emblaApi.on("select", onSelect);
+
     return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
+      emblaApi.off("select", onSelect);
     };
-  }, []);
+  }, [emblaApi]);
 
-  const nextSlide = () => {
-    setCurrent((prev) => (prev + 1) % heroSlides.length);
-    setActiveButton("right");
-    startAutoPlay();
-  };
-
-  const prevSlide = () => {
-    setCurrent((prev) => (prev === 0 ? heroSlides.length - 1 : prev - 1));
-    setActiveButton("left");
-    startAutoPlay();
-  };
+  const scrollPrev = () => emblaApi?.scrollPrev();
+  const scrollNext = () => emblaApi?.scrollNext();
 
   return (
     <div className="md:h-[540px] h-[403px] relative overflow-hidden">
-      {/* Background with fade */}
-      <motion.div
-        key={heroSlides[current].id}
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: `linear-gradient(0deg, rgba(0, 13, 38, 0.30), rgba(0, 13, 38, 0.30)), url(${heroSlides[current].bgImage})`,
-        }}
-        initial={{ opacity: 0.9 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0.9 }}
-        transition={{ duration: 1 }}
-      />
+      {/* Carousel background */}
+      <div ref={emblaRef} className="absolute inset-0 overflow-hidden">
+        <div className="flex">
+          {heroSlides.map((slide) => (
+            <div
+              key={slide.id}
+              className="relative w-full md:h-[540px] h-[403px] flex-shrink-0 bg-cover bg-center"
+              style={{
+                backgroundImage: `linear-gradient(0deg, rgba(0,13,38,0.3), rgba(0,13,38,0.3)), url(${slide.bgImage})`,
+              }}
+            />
+          ))}
+        </div>
+      </div>
 
+      {/* Foreground content */}
       <div className="relative w-full max-w-7xl mx-auto md:px-16 px-4 md:pt-[200px] pt-[102px]">
-        <motion.div
-          initial={{ opacity: 0.9 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0.9 }}
-          transition={{ duration: 1 }}
-          key={heroSlides[current].id}
-          className="sm:max-w-[582px] max-w-[276px]"
-        >
-          <h1 className="sm:text-[64px] font-bold text-white mb-4 text-[38px] leading-[1.2] sm:mb-8">
-            {heroSlides[current].title}
+        <div className="sm:max-w-[582px] max-w-[276px] text-white transition-all duration-700">
+          <h1 className="sm:text-[64px] font-bold mb-4 text-[38px] leading-[1.2] sm:mb-8">
+            {heroSlides[currentIndex].title}
           </h1>
           <button className="bg-[#003399] text-white font-bold text-base sm:py-3 py-[6px] rounded md:w-[370px] md:h-12 md:py-[11px] md:px-[22px] md:rounded-lg md:text-base md:font-bold md:leading-[26px] md:text-[#FFFFFF] max-w-[370px] w-full hover:bg-[#002080]">
-            {heroSlides[current].buttonText}
+            {heroSlides[currentIndex].buttonText}
           </button>
-        </motion.div>
+        </div>
 
-        {/* Mobile Dots */}
+        {/* Navigation buttons */}
+        <div className="max-md:hidden absolute right-14 bottom-0 flex gap-3 z-10">
+          <button
+            onClick={scrollPrev}
+            className="border border-[#9CA3AF] md:w-[42px] md:h-[42px] rounded-full flex items-center justify-center text-[#9CA3AF] cursor-pointer"
+          >
+            <ChevronLeft />
+          </button>
+          <button
+            onClick={scrollNext}
+            className="bg-white border border-black md:w-[42px] md:h-[42px] rounded-full flex items-center justify-center cursor-pointer"
+          >
+            <ChevronRight />
+          </button>
+        </div>
+
+        {/* Mobile dots */}
         <div className="md:hidden absolute top-[334px] left-1/2 -translate-x-1/2 flex gap-3">
           {heroSlides.map((_, i) => (
             <div
               key={i}
               className={`w-2 h-2 rounded-full ${
-                i === current ? "bg-[#003399]" : "bg-white"
+                i === currentIndex ? "bg-[#003399]" : "bg-white"
               }`}
             />
           ))}
-        </div>
-
-        {/* Navigation Buttons */}
-        <div className="absolute right-16 bottom-0 sm:flex gap-3 hidden">
-          <button
-            onClick={prevSlide}
-            className={`w-[42px] h-[42px] rounded-full transition-all flex items-center justify-center ${
-              activeButton === "left"
-                ? "bg-white text-black hover:bg-white/80"
-                : "border border-white/60 text-white/80 bg-transparent hover:bg-white/20"
-            }`}
-          >
-            <ChevronLeft />
-          </button>
-          <button
-            onClick={nextSlide}
-            className={`w-[42px] h-[42px] rounded-full transition-all flex items-center justify-center ${
-              activeButton === "right"
-                ? "bg-white text-black hover:bg-white/80"
-                : "border border-white/60 text-white/80 bg-transparent hover:bg-white/20"
-            }`}
-          >
-            <ChevronRight />
-          </button>
         </div>
       </div>
     </div>

@@ -82,43 +82,10 @@ export default function Header() {
 
         {/* Desktop navigation */}
         <CustomNavigationMenu navigationItems={navigationItems} />
-        <div className="hidden lg:flex items-center justify-center gap-3">
-          <Select defaultValue="india">
-            <SelectTrigger className="border-2 py-[10px] px-[6px] rounded-[5px]">
-              <SelectValue placeholder="Country" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="india">
-                <Image
-                  src="/images/flag.png"
-                  alt="ind"
-                  width={24}
-                  height={24}
-                  className="min-w-6 min-h-6"
-                />
-                <span className="text-sm font-normal leading-5 text-center align-middle">
-                  INR
-                </span>
-              </SelectItem>
-              <SelectItem value="us">
-                <Image
-                  src="/images/us.png"
-                  alt="usa"
-                  width={24}
-                  height={24}
-                  className="min-w-6 min-h-6"
-                />
-                <span className="text-sm font-normal leading-5 text-center align-middle">
-                  USD
-                </span>
-              </SelectItem>
-            </SelectContent>
-          </Select>
 
-          <button className="uppercase text-xs font-bold px-[10px] py-3 hover:bg-[#E6EBF5] bg-white transition-colors">
-            login
-          </button>
-        </div>
+        <button className="max-md:hidden uppercase text-xs font-bold px-[10px] py-3 hover:bg-[#E6EBF5] bg-white transition-colors">
+          login
+        </button>
 
         {/* Mobile Navigation */}
         <MobileNavigation navigationItems={navigationItems} />

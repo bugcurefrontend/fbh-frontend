@@ -41,11 +41,12 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           fill
           className="object-cover rounded-t-md"
         />
+
         <div className="absolute top-4 md:left-4 left-2.5 flex gap-3">
-          <div className="bg-[#33533E8C] backdrop-blur-sm text-white text-xs font-semibold px-2 py-1 rounded flex">
+          <div className="bg-[#33533E8C] backdrop-blur-sm text-white text-xs font-semibold px-2 py-1 rounded md:text-base md:font-semibold md:leading-6 md:align-middle md:text-[#FFFFFF]">
             {formatPlantedCount(plantedCount)}
           </div>
-          <div className="bg-[#33533E8C] backdrop-blur-sm text-white text-xs font-semibold px-2 py-1 rounded">
+          <div className="bg-[#33533E8C] backdrop-blur-sm text-white text-xs font-semibold px-2 py-1 rounded md:text-base md:font-semibold md:leading-6 md:align-middle md:text-[#FFFFFF]">
             {category}
           </div>
         </div>
