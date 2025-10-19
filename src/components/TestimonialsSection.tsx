@@ -104,7 +104,7 @@ const TestimonialsSection: React.FC = () => {
               </span>
             </div>
 
-            <p className="sm:text-base text-xs font-normal sm:leading-6 leading-5 text-[#454950] md:text-base md:font-normal md:leading-6 md:text-[#454950]">
+            <p className="max-[440px]:min-h-[135px] max-[700px]:min-h-[115px] max-[440px]:text-sm max-[440px]:leading-[22px] text-[#454950]">
               {currentTestimonial.quote}
             </p>
           </div>
