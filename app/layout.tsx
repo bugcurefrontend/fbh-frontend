@@ -7,6 +7,8 @@ import {
   Roboto,
 } from "next/font/google";
 import Footer from "@/components/Footer";
+import { AuthProvider } from "@/lib/auth-context";
+import AuthWrapper from "@/components/AuthWrapper";
 
 export const metadata = {
   title: "Forests by Heartfulness",
@@ -25,6 +27,7 @@ const playfair = Playfair_Display({
 });
 const roboto = Roboto({ subsets: ["latin"], weight: ["400"] });
 
+
 export default function RootLayout({
   children,
 }: {
@@ -33,9 +36,13 @@ export default function RootLayout({
   return (
     <html lang="en" className={publicSans.className}>
       <body>
-        <Header />
-        {children}
-        <Footer />
+        <AuthProvider>
+          <AuthWrapper>
+            <Header />
+            {children}
+            <Footer />
+          </AuthWrapper>
+        </AuthProvider>
       </body>
     </html>
   );

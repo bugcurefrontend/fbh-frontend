@@ -12,8 +12,13 @@ import {
   SelectValue,
 } from "./ui/select";
 import Link from "next/link";
+import { LogOut, User } from "lucide-react";
+import { Button } from "./ui/button";
+import { useAuth } from "@/lib/auth-context";
 
 export default function Header() {
+  const { isAuthenticated, userProfile, isLoading, login, logout } = useAuth();
+
   const navigationItems = [
     {
       label: "About",
@@ -63,6 +68,28 @@ export default function Header() {
     },
   ];
 
+  if (isLoading) {
+    return (
+      <header className="sticky top-0 left-0 w-full z-50 bg-[#FFFFFF] backdrop-blur-md shadow-sm h-16">
+        <div className="max-w-7xl mx-auto h-full flex items-center justify-between px-4 sm:px-8">
+          <div className="xl:max-w-[150px] xl:w-full">
+            <Link href="/" className="w-fit">
+              <Image
+                src="/images/logo3.svg"
+                alt="logo"
+                width={57}
+                height={46}
+                priority
+                className="min-w-[57px]"
+              />
+            </Link>
+          </div>
+          <div className="w-20 h-8 bg-gray-200 animate-pulse rounded"></div>
+        </div>
+      </header>
+    );
+  }
+
   return (
     <header className="sticky top-0 left-0 w-full z-50 bg-[#FFFFFF] backdrop-blur-md shadow-sm h-16">
       <div className="max-w-7xl mx-auto h-full flex items-center justify-between px-4 sm:px-8">
@@ -83,9 +110,38 @@ export default function Header() {
         {/* Desktop navigation */}
         <CustomNavigationMenu navigationItems={navigationItems} />
 
-        <button className="max-md:hidden uppercase text-xs font-bold px-[10px] py-3 hover:bg-[#E6EBF5] bg-white transition-colors">
-          login
-        </button>
+        {/* Authentication Section */}
+        <div className="max-md:hidden">
+          {isAuthenticated ? (
+            <div className="flex items-center gap-3">
+              {/* User Info */}
+              <div className="flex items-center gap-2 px-3 py-1 bg-gray-50 rounded-full">
+                <User className="w-4 h-4 text-gray-600" />
+                <span className="text-sm font-medium text-gray-700">
+                  {userProfile?.firstName || "User"}
+                </span>
+              </div>
+
+              {/* Logout Button */}
+              <Button
+                onClick={logout}
+                variant="outline"
+                size="sm"
+                className="flex items-center gap-2 text-xs font-bold px-3 py-2 hover:bg-red-50 hover:text-red-600 hover:border-red-200"
+              >
+                <LogOut className="w-3 h-3" />
+                LOGOUT
+              </Button>
+            </div>
+          ) : (
+            <Button
+              onClick={login}
+              className="uppercase text-xs font-bold px-[10px] py-3 bg-[#003399] hover:bg-[#002266] text-white transition-colors"
+            >
+              LOGIN
+            </Button>
+          )}
+        </div>
 
         {/* Mobile Navigation */}
         <MobileNavigation navigationItems={navigationItems} />
