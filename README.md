@@ -1,4 +1,4 @@
-# Forests by Heartfulness
+# Forests by Heartfulness   
 
 A modern web application dedicated to creating a greener, more sustainable future through forest restoration and conservation.
 
