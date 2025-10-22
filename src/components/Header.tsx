@@ -123,23 +123,21 @@ export default function Header() {
               </div>
 
               {/* Logout Button */}
-              <Button
+              <button
                 onClick={logout}
-                variant="outline"
-                size="sm"
-                className="flex items-center gap-2 text-xs font-bold px-3 py-2 hover:bg-red-50 hover:text-red-600 hover:border-red-200"
+                className="flex items-center gap-2 text-xs font-bold px-[10px] py-3 hover:bg-[#E6EBF5] bg-white transition-colors"
               >
                 <LogOut className="w-3 h-3" />
                 LOGOUT
-              </Button>
+              </button>
             </div>
           ) : (
-            <Button
+            <button
               onClick={login}
-              className="uppercase text-xs font-bold px-[10px] py-3 bg-[#003399] hover:bg-[#002266] text-white transition-colors"
+              className="text-xs font-bold px-[10px] py-3 hover:bg-[#E6EBF5] bg-white transition-colors"
             >
               LOGIN
-            </Button>
+            </button>
           )}
         </div>
 
