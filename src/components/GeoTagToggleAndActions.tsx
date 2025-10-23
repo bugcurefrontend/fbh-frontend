@@ -6,6 +6,11 @@ import { Info } from "lucide-react";
 import { Switch } from "./ui/switch";
 import { Button } from "./ui/button";
 import Link from "next/link";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface GeoTagToggleAndActionsProps {
   isGeoTagged: boolean;
@@ -44,7 +49,14 @@ const GeoTagToggleAndActions: React.FC<GeoTagToggleAndActionsProps> = ({
           >
             I want my trees to be geo-tagged{isMobile ? "" : "."}
           </span>
-          <Info className="w-4 h-4 text-gray-400" />
+          <Tooltip>
+            <TooltipTrigger>
+              <Info className="w-4 h-4 text-gray-400" />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Add to library</p>
+            </TooltipContent>
+          </Tooltip>
         </div>
         <Switch
           checked={isGeoTagged}
