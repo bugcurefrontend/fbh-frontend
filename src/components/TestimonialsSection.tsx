@@ -8,7 +8,7 @@ const TestimonialsSection: React.FC = () => {
   const testimonials = [
     {
       quote:
-        "From initial setup to daily use, the experience has been flawless. It’s incredibly user-friendly and robust. This tool has become indispensable for our daily operations, providing reliable performance and insightful analytics. We couldn't be happier with our decision.",
+        "The experience has been flawless. It’s incredibly user-friendly and robust. This tool has become indispensable for our daily operations, providing reliable performance and insightful analytics. We couldn't be happier with our decision.",
       name: "Akshay Shinde",
       designation: "TIMES OF INDIA",
       src: "/images/volunteer-testimonial.png",
@@ -71,7 +71,7 @@ const TestimonialsSection: React.FC = () => {
             initial="enter"
             animate="center"
             exit="exit"
-            transition={{ duration: 0.8, ease: "easeInOut" }}
+            transition={{ duration: 0.6, ease: "easeInOut" }}
             className="rounded-xl w-full md:w-[45%] md:max-h-[40%] h-full"
           >
             <Image
@@ -79,7 +79,7 @@ const TestimonialsSection: React.FC = () => {
               alt={testimonials[current].name}
               width={493}
               height={423}
-              className="rounded-lg w-full min-h-[316px] md:min-h-[423px] h-full object-cover"
+              className="rounded-lg w-full min-h-[316px] md:min-h-[423px] max-h-[423px] h-full object-cover"
             />
           </motion.div>
         </AnimatePresence>
@@ -91,7 +91,7 @@ const TestimonialsSection: React.FC = () => {
             initial="enter"
             animate="center"
             exit="exit"
-            transition={{ duration: 0.8, ease: "easeInOut" }}
+            transition={{ duration: 0.6, ease: "easeInOut" }}
             className="max-w-full md:w-[55%] md:space-y-10 space-y-6 max-md:flex flex-col items-center text-center md:text-start"
           >
             <div className="sm:w-20 sm:h-20 w-12 h-12 flex items-center justify-center">
@@ -113,7 +113,7 @@ const TestimonialsSection: React.FC = () => {
                 </span>
               </div>
 
-              <p className="max-[440px]:min-h-[135px] max-[700px]:min-h-[115px] max-[440px]:text-sm max-[440px]:leading-[22px] text-[#454950]">
+              <p className="max-[440px]:min-h-[135px] max-[700px]:min-h-[115px] min-h-18 max-[440px]:text-sm max-[440px]:leading-[22px] text-[#454950]">
                 {testimonials[current].quote}
               </p>
             </div>
