@@ -106,7 +106,7 @@ export default function HFNAuthCallback() {
   const handleRetry = () => {
     setError(null);
     setIsLoading(true);
-    const authElement = document.querySelector("hfnauth");
+    const authElement = document.querySelector("hfn-auth");
     if (authElement) {
       (authElement as any).triggerAuth();
     }
