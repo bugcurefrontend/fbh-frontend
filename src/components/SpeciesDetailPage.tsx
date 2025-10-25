@@ -11,8 +11,6 @@ interface SpeciesDetailData {
   name: string;
   scientificName: string;
   description: string;
-  heroImageUrl: string;
-  heroImageAlt: string;
   treeSpecies: {
     id: string;
     imageUrl: string;
@@ -53,13 +51,15 @@ const SpeciesDetailPage: React.FC<SpeciesDetailPageProps> = ({
         scientificName={speciesData.scientificName}
         description={speciesData.description}
         treeSpecies={speciesData.treeSpecies}
-        heroImageUrl={speciesData.heroImageUrl}
-        heroImageAlt={speciesData.heroImageAlt}
         characteristics={speciesData.characteristics}
         isGeoTagged={isGeoTagged}
         onGeoTaggedChange={setIsGeoTagged}
         onPlantTree={handlePlantTree}
         onGiftTree={handleGiftTree}
+        heroImageUrl={speciesData.treeSpecies?.[0]?.imageUrl}
+        heroImageAlt={
+          speciesData.treeSpecies?.[0]?.imageAlt ?? speciesData.name
+        }
       />
 
       <FAQSection />

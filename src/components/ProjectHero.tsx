@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { MapPin, Share2 } from "lucide-react";
 import LandscapeIcon from "./icons/LandscapeIcon";
@@ -11,8 +11,6 @@ interface ProjectHeroProps {
   title: string;
   location: string;
   description: string;
-  heroImageUrl: string;
-  heroImageAlt: string;
   treeSpecies: Array<{
     id: string;
     imageUrl: string;
@@ -27,66 +25,125 @@ interface ProjectHeroProps {
   onGeoTaggedChange: (checked: boolean) => void;
   onPlantTree: () => void;
   onGiftTree: () => void;
+  onReadMoreClick?: () => void;
 }
 
 const ProjectHero: React.FC<ProjectHeroProps> = ({
   title,
   location,
   description,
-  heroImageUrl,
-  heroImageAlt,
   treeSpecies,
   stats,
   isGeoTagged,
   onGeoTaggedChange,
   onPlantTree,
   onGiftTree,
+  onReadMoreClick,
 }) => {
+  const [items, setItems] = useState([
+    ...treeSpecies,
+    {
+      id: "map",
+      imageUrl: "",
+      imageAlt: "Project Map",
+    },
+  ]);
+
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeImage, setActiveImage] = useState(treeSpecies[0]?.imageUrl);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % items.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [items.length]);
+
+  useEffect(() => {
+    if (items[activeIndex].id === "map") {
+      setActiveImage(""); // no image, show map
+    } else {
+      setActiveImage(items[activeIndex].imageUrl);
+    }
+  }, [activeIndex, items]);
+
   return (
     <div className="bg-white rounded-2xl overflow-hidden">
       <div className="flex flex-col lg:flex-row space-x-6 space-y-6 lg:space-y-0">
-        {/* Left side - Hero Image */}
+        {/* Left side - Hero Image / Map */}
         <div className="lg:w-[546px] w-full lg:h-[573px] relative flex-shrink-0">
           <div className="min-h-[360px] h-full w-full relative overflow-hidden rounded-lg">
-            <Image
-              src={heroImageUrl}
-              alt={heroImageAlt}
-              fill
-              className="object-cover"
-            />
+            {activeImage ? (
+              <Image
+                src={activeImage}
+                alt={items[activeIndex].imageAlt}
+                fill
+                className="object-cover transition-all duration-500"
+              />
+            ) : (
+              // Show map iframe for last thumbnail
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3709.823933!2d79.136!3d24.592!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjTCsDM1JzU1LjAiTiA3OcKwMDgnMjMuOCJF!5e0!3m2!1sen!2sin!4v1698239123456!5m2!1sen!2sin"
+                width="100%"
+                height="100%"
+                className="rounded-lg border-0 min-h-[360px] h-full"
+                allowFullScreen
+              />
+            )}
           </div>
 
-          <Image
-            src="/images/dots.png"
-            alt="dots"
-            width={48}
-            height={8}
-            className="md:hidden block mx-auto mt-4"
-          />
-
-          {/* Tree Species Thumbnails */}
-          <div className="hidden absolute bottom-6 left-6 md:flex gap-2">
-            {treeSpecies.map((species) => (
+          {/* Mobile dots */}
+          <div className="md:hidden flex justify-center mt-4 gap-2">
+            {items.map((_, i) => (
               <div
-                key={species.id}
-                className="w-[112px] h-[112px] rounded-lg overflow-hidden border border-white shadow-lg cursor-pointer"
+                key={i}
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                  i === activeIndex ? "bg-[#003399]" : "bg-gray-300"
+                }`}
+              />
+            ))}
+          </div>
+
+          {/* Desktop thumbnails */}
+          <div className="hidden absolute bottom-6 left-6 md:flex gap-2">
+            {items.map((item, i) => (
+              <div
+                key={item.id}
+                onClick={() => setActiveIndex(i)}
+                className={`w-[112px] h-[112px] rounded-lg overflow-hidden border border-white cursor-pointer shadow-lg transition-all duration-300 ${
+                  activeIndex === i ? "scale-105" : "hover:scale-105"
+                }`}
               >
-                <Image
-                  src={species.imageUrl}
-                  alt={species.imageAlt}
-                  width={112}
-                  height={112}
-                  className="object-cover w-full h-full"
-                />
+                {item.id === "map" ? (
+                  <div className="w-full h-full flex items-center justify-center ">
+                    <Image
+                      src="/images/map.png"
+                      alt="map"
+                      width={112}
+                      height={112}
+                      className="w-full min-h-full object-cover"
+                    />
+                  </div>
+                ) : (
+                  <Image
+                    src={item.imageUrl}
+                    alt={item.imageAlt}
+                    width={112}
+                    height={112}
+                    className="w-full min-h-full object-cover"
+                  />
+                )}
               </div>
             ))}
           </div>
+
+          {/* Share button (desktop) */}
           <button className="hidden absolute right-4 top-4 md:flex items-center justify-center h-12 w-12 rounded-lg text-white bg-[#003399] hover:bg-[#002266]">
             <Share2 className="w-6 h-6" />
           </button>
         </div>
 
-        {/* Right side - Project Details */}
+        {/* Right side - Project Details (unchanged) */}
         <div className="flex flex-col justify-between">
           {/* Title and Location */}
           <div className="max-md:space-y-4 relative">
@@ -102,10 +159,15 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
               </div>
             </div>
             <p className="md:mt-4 text-gray-700 md:text-base text-sm leading-6">
-              {description}{" "}
-              <span className="max-md:hidden text-[#003399] text-sm font-semibold">
+              {description}
+              <span className="md:hidden">.</span>
+              <span className="max-md:hidden">...</span>
+              <button
+                onClick={onReadMoreClick}
+                className="max-md:hidden text-[#003399] text-sm font-semibold"
+              >
                 Read More
-              </span>
+              </button>
             </p>
 
             <button className="md:hidden absolute right-0 top-2 flex items-center justify-center h-9 w-9 rounded text-white bg-[#003399] hover:bg-[#002266]">
@@ -116,8 +178,7 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
           {/* Statistics */}
           <div className="max-md:mt-2 border border-[#E4E4E4] rounded-2xl flex items-center justify-between p-6">
             <div className="text-center space-y-2 xl:space-y-4 flex-1">
-              <LandscapeIcon className="md:w-10 w-8 h-8 md:h-10  text-white mx-auto" />
-
+              <LandscapeIcon className="md:w-10 w-8 h-8 md:h-10 text-white mx-auto" />
               <div className="md:text-2xl text-lg font-bold md:font-semibold text-black">
                 {stats.treesAvailable.toLocaleString()}+
               </div>
@@ -139,6 +200,7 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
             </div>
 
             <div className="w-px md:h-[140px] h-[96px] bg-gray-300 mx-6"></div>
+
             <div className="text-center space-y-2 xl:space-y-4 flex-1">
               <div className="md:w-10 w-8 md:h-10 h-8 mx-auto">
                 <Image

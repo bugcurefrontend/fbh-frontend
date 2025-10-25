@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { Share2 } from "lucide-react";
 import GeoTagToggleAndActions from "./GeoTagToggleAndActions";
@@ -32,51 +32,106 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
   name,
   scientificName,
   description,
-  heroImageUrl,
   treeSpecies,
-  heroImageAlt,
   characteristics,
   isGeoTagged,
   onGeoTaggedChange,
   onPlantTree,
   onGiftTree,
 }) => {
+  const [items, setItems] = useState([
+    ...treeSpecies,
+    {
+      id: "map",
+      imageUrl: "",
+      imageAlt: "Project Map",
+    },
+  ]);
+
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeImage, setActiveImage] = useState(treeSpecies[0]?.imageUrl);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % items.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [items.length]);
+
+  useEffect(() => {
+    if (items[activeIndex].id === "map") {
+      setActiveImage(""); // no image, show map
+    } else {
+      setActiveImage(items[activeIndex].imageUrl);
+    }
+  }, [activeIndex, items]);
+
   return (
     <div className="bg-white rounded-2xl overflow-hidden">
       <div className="flex flex-col lg:flex-row space-x-6 space-y-6 lg:space-y-0">
         {/* Left side - Hero Image */}
         <div className="lg:w-[546px] w-full lg:h-[573px] relative flex-shrink-0">
           <div className="min-h-[360px] h-full w-full relative overflow-hidden rounded-lg">
-            <Image
-              src={heroImageUrl}
-              alt={heroImageAlt}
-              fill
-              className="object-cover"
-            />
+            {activeImage ? (
+              <Image
+                src={activeImage}
+                alt={items[activeIndex].imageAlt}
+                fill
+                className="object-cover transition-all duration-500"
+              />
+            ) : (
+              // Show map iframe for last thumbnail
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3709.823933!2d79.136!3d24.592!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjTCsDM1JzU1LjAiTiA3OcKwMDgnMjMuOCJF!5e0!3m2!1sen!2sin!4v1698239123456!5m2!1sen!2sin"
+                width="100%"
+                height="100%"
+                className="rounded-lg border-0 min-h-[360px] h-full"
+                allowFullScreen
+              />
+            )}
           </div>
 
-          <Image
-            src="/images/dots.png"
-            alt="dots"
-            width={48}
-            height={8}
-            className="md:hidden block mx-auto mt-4"
-          />
+          {/* Mobile dots */}
+          <div className="md:hidden flex justify-center mt-4 gap-2">
+            {items.map((_, i) => (
+              <div
+                key={i}
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                  i === activeIndex ? "bg-[#003399]" : "bg-gray-300"
+                }`}
+              />
+            ))}
+          </div>
 
           {/* Tree Species Thumbnails */}
           <div className="hidden absolute bottom-6 left-6 md:flex gap-2">
-            {treeSpecies.map((species) => (
+            {items.map((item, i) => (
               <div
-                key={species.id}
-                className="w-[112px] h-[112px] rounded-lg overflow-hidden border border-white shadow-lg cursor-pointer"
+                key={item.id}
+                onClick={() => setActiveIndex(i)}
+                className={`w-[112px] h-[112px] rounded-lg overflow-hidden border border-white cursor-pointer shadow-lg transition-all duration-300 ${
+                  activeIndex === i ? "scale-105" : "hover:scale-105"
+                }`}
               >
-                <Image
-                  src={species.imageUrl}
-                  alt={species.imageAlt}
-                  width={112}
-                  height={112}
-                  className="object-cover w-full min-h-full"
-                />
+                {item.id === "map" ? (
+                  <div className="w-full h-full flex items-center justify-center ">
+                    <Image
+                      src="/images/map.png"
+                      alt="map"
+                      width={112}
+                      height={112}
+                      className="w-full min-h-full object-cover"
+                    />
+                  </div>
+                ) : (
+                  <Image
+                    src={item.imageUrl}
+                    alt={item.imageAlt}
+                    width={112}
+                    height={112}
+                    className="w-full min-h-full object-cover"
+                  />
+                )}
               </div>
             ))}
           </div>

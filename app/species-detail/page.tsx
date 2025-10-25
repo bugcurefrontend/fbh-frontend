@@ -7,13 +7,10 @@ const mockSpeciesData = {
   scientificName: "Azadirachta",
   description:
     "The Neem tree (Azadirachta indica) has been revered in India for centuries as the “village pharmacy.” It is known for its exceptional medicinal properties, ability to purify air, and its role in cultural traditions. Beyond health, Neem supports soil fertility, provides shade, and sustains biodiversity, making it a vital part of ecosystems and communities alike.",
-  heroImageUrl: "/images/species-1.png",
-  heroImageAlt:
-    "Neem tree (Azadirachta indica) in natural landscape setting with clear blue sky",
   treeSpecies: [
     {
       id: "variant-1",
-      imageUrl: "/images/neem-tree.jpg",
+      imageUrl: "/images/species-1.png",
       imageAlt: "Neem tree small variant",
     },
     {
@@ -23,7 +20,7 @@ const mockSpeciesData = {
     },
     {
       id: "variant-3",
-      imageUrl: "/images/mango-tree.webp",
+      imageUrl: "/images/hero-forest-bg.png",
       imageAlt: "Neem tree in rural farmland",
     },
   ],

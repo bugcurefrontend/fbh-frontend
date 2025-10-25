@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import ProjectCard from "./ProjectCard";
 import SearchBar from "./SearchBar";
 import ProjectsPagination from "./ProjectsPagination";
@@ -9,7 +9,6 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
-  BreadcrumbPage,
   BreadcrumbSeparator,
 } from "./ui/breadcrumb";
 import Link from "next/link";
@@ -42,14 +41,25 @@ const AllProjectsPage: React.FC<AllProjectsPageProps> = ({
   initialPagination,
   initialSearchQuery = "",
 }) => {
-  const [projects] = useState<Project[]>(initialProjects);
+  // Keep original list for reference
+  const [allProjects] = useState<Project[]>(initialProjects);
+  const [searchQuery, setSearchQuery] = useState<string>(initialSearchQuery);
   const [pagination, setPagination] =
     useState<PaginationData>(initialPagination);
-  const [searchQuery, setSearchQuery] = useState<string>(initialSearchQuery);
+
+  // Filter projects when searchQuery changes
+  const filteredProjects = useMemo(() => {
+    const query = searchQuery.toLowerCase();
+    return allProjects.filter(
+      (project) =>
+        project.title.toLowerCase().includes(query) ||
+        project.location.toLowerCase().includes(query) ||
+        project.category.toLowerCase().includes(query)
+    );
+  }, [searchQuery, allProjects]);
 
   const handlePlantTree = (projectId: string) => {
     console.log(`Plant tree for project: ${projectId}`);
-    // Handle plant tree action
   };
 
   const handlePageChange = (page: number) => {
@@ -59,12 +69,10 @@ const AllProjectsPage: React.FC<AllProjectsPageProps> = ({
       hasNext: page < prev.totalPages,
       hasPrevious: page > 1,
     }));
-    // In a real app, this would trigger a new API call
   };
 
   const handleSearchChange = (query: string) => {
     setSearchQuery(query);
-    // In a real app, this would trigger a new API call with search params
   };
 
   return (
@@ -72,7 +80,7 @@ const AllProjectsPage: React.FC<AllProjectsPageProps> = ({
       <section
         className="relative h-[213px] md:h-[288px] flex items-center justify-center"
         style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1655985313952-4a182841d6e3?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTAwNDR8MHwxfHNlYXJjaHwzfHxmb3Jlc3QlMjBsYW5kc2NhcGUlMjB3aWRlfGVufDB8MHx8Z3JlZW58MTc1Nzc2MTE3M3ww&ixlib=rb-4.1.0&q=85')`,
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1655985313952-4a182841d6e3?crop=entropy&cs=srgb&fm=jpg&q=85')`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
@@ -91,7 +99,7 @@ const AllProjectsPage: React.FC<AllProjectsPageProps> = ({
           </Breadcrumb>
 
           <div className="space-y-4">
-            <h1 className="font-[Playfair_Display] text-[22px] md:text-[32px] md:leading-12 leading-[30px] font-semibold">
+            <h1 className="font-[Playfair_Display] text-[22px] md:text-[32px] font-semibold">
               All Projects
             </h1>
             <p className="md:text-lg text-[10px] md:font-bold font-semibold leading-4 md:leading-[26px] w-[85%] md:w-[70%]">
@@ -103,28 +111,35 @@ const AllProjectsPage: React.FC<AllProjectsPageProps> = ({
       </section>
 
       <main className="max-w-7xl mx-auto md:px-8 px-4 space-y-8 pb-4">
+        {/* Search */}
         <SearchBar
           value={searchQuery}
           onChange={handleSearchChange}
-          placeholder="Search by Project name..."
+          placeholder="Search a project..."
         />
 
         {/* Projects Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((project) => (
-            <Link key={project.id} href="/project-detail">
-              <ProjectCard
-                id={project.id}
-                title={project.title}
-                location={project.location}
-                plantedCount={project.plantedCount}
-                category={project.category}
-                imageUrl={project.imageUrl}
-                imageAlt={project.imageAlt}
-                onPlantTree={handlePlantTree}
-              />
-            </Link>
-          ))}
+          {filteredProjects.length > 0 ? (
+            filteredProjects.map((project) => (
+              <Link key={project.id} href="/project-detail">
+                <ProjectCard
+                  id={project.id}
+                  title={project.title}
+                  location={project.location}
+                  plantedCount={project.plantedCount}
+                  category={project.category}
+                  imageUrl={project.imageUrl}
+                  imageAlt={project.imageAlt}
+                  onPlantTree={handlePlantTree}
+                />
+              </Link>
+            ))
+          ) : (
+            <p className="text-center col-span-full text-gray-500 min-h-20 md:min-h-64 flex items-center justify-center">
+              No projects found matching "{searchQuery}"
+            </p>
+          )}
         </div>
 
         {/* Pagination */}

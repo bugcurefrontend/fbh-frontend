@@ -6,11 +6,7 @@ const mockProjectData = {
   title: "Satna, NPCI",
   location: "Shivagarh, Madhya Pradesh",
   description:
-    "The Satna region has suffered greatly from extensive tree felling, rampant overgrazing, and unsustainable land practices. Witnessing this ecological decline, pressure from Climate change and erratic weather impacting communities, carbon emissions from rapid urbanization.",
-  heroImageUrl:
-    "https://images.unsplash.com/photo-1698869628299-5d0e570142fb?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTAwNDR8MHwxfHNlYXJjaHwyfHxmb3Jlc3QlMjBjYW5vcHklMjBhZXJpYWx8ZW58MHwwfHxncmVlbnwxNzU3NzYyMjMxfDA&ixlib=rb-4.1.0&q=85",
-  heroImageAlt:
-    "Dense green forest canopy aerial view for main project hero section - Griffin Wooldridge on Unsplash",
+    "The Satna region has suffered greatly from extensive tree felling, rampant overgrazing, and unsustainable land practices. Witnessing this ecological decline, pressure from Climate change and erratic weather impacting communities, carbon emissions from rapid urbanization",
   treeSpecies: [
     {
       id: "species-1",

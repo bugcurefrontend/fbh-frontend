@@ -252,6 +252,7 @@ const DonorsTable = () => {
                             fontSize: "14px",
                             lineHeight: "22px",
                             color: "#454950",
+                            maxWidth: "160px",
                           }}
                         >
                           {donor.location}

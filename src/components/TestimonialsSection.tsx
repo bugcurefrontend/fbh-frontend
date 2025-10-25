@@ -56,6 +56,11 @@ const TestimonialsSection: React.FC = () => {
     center: { opacity: 1, x: 0 },
     exit: { opacity: 0, x: -40 },
   };
+  const imageSlideVariants = {
+    enter: { opacity: 0, x: 20 },
+    center: { opacity: 1, x: 0 },
+    exit: { opacity: 0, x: -20 },
+  };
 
   return (
     <section className="max-w-7xl mx-auto px-4 md:px-8 mt-8 md:mt-16">
@@ -67,11 +72,11 @@ const TestimonialsSection: React.FC = () => {
         <AnimatePresence mode="wait">
           <motion.div
             key={`image-${current}`}
-            variants={slideVariants}
+            variants={imageSlideVariants}
             initial="enter"
             animate="center"
             exit="exit"
-            transition={{ duration: 0.6, ease: "easeInOut" }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
             className="rounded-xl w-full md:w-[45%] md:max-h-[40%] h-full"
           >
             <Image
@@ -84,26 +89,28 @@ const TestimonialsSection: React.FC = () => {
           </motion.div>
         </AnimatePresence>
 
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={`content-${current}`}
-            variants={slideVariants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            transition={{ duration: 0.6, ease: "easeInOut" }}
-            className="max-w-full md:w-[55%] md:space-y-10 space-y-6 max-md:flex flex-col items-center text-center md:text-start"
-          >
-            <div className="sm:w-20 sm:h-20 w-12 h-12 flex items-center justify-center">
-              <QuoteIcon
-                width={77}
-                height={77}
-                color="#003399"
-                className="opacity-90"
-              />
-            </div>
+        <div
+          key={`content-${current}`}
+          className="max-w-full md:w-[55%] md:space-y-10 space-y-6 max-md:flex flex-col items-center text-center md:text-start"
+        >
+          <div className="sm:w-20 sm:h-20 w-12 h-12 flex items-center justify-center">
+            <QuoteIcon
+              width={77}
+              height={77}
+              color="#003399"
+              className="opacity-90"
+            />
+          </div>
 
-            <div className="flex flex-col gap-4">
+          <AnimatePresence mode="wait">
+            <motion.div
+              variants={slideVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{ duration: 0.6, ease: "easeInOut" }}
+              className="flex flex-col gap-4"
+            >
               <div className="flex flex-col sm:gap-1">
                 <span className="sm:text-2xl text-lg font-semibold text-[#333333] md:text-2xl md:font-semibold md:leading-9 md:align-middle">
                   {testimonials[current].designation}
@@ -116,21 +123,21 @@ const TestimonialsSection: React.FC = () => {
               <p className="max-[440px]:min-h-[135px] max-[700px]:min-h-[115px] min-h-18 max-[440px]:text-sm max-[440px]:leading-[22px] text-[#454950]">
                 {testimonials[current].quote}
               </p>
-            </div>
+            </motion.div>
+          </AnimatePresence>
 
-            <div className="flex sm:gap-3 gap-2">
-              {testimonials.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => handleDotClick(index)}
-                  className={`w-10 sm:h-2 h-1.5 rounded transition-all duration-300 ${
-                    index === current ? "bg-[#003399]" : "bg-[#e6ebf5]"
-                  }`}
-                ></button>
-              ))}
-            </div>
-          </motion.div>
-        </AnimatePresence>
+          <div className="flex sm:gap-3 gap-2">
+            {testimonials.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => handleDotClick(index)}
+                className={`w-10 sm:h-2 h-1.5 rounded transition-all duration-300 ${
+                  index === current ? "bg-[#003399]" : "bg-[#e6ebf5]"
+                }`}
+              ></button>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );

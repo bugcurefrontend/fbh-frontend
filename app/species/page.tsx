@@ -4,6 +4,9 @@ const mockSpecies = [
   { name: "Neem (Azadirachta)", image: "/images/neem-tree.jpg" },
   { name: "Banyan Tree", image: "/images/banyan-tree.avif" },
   { name: "Mango Tree", image: "/images/mango-tree.webp" },
+  { name: "Neem (Azadirachta)", image: "/images/neem-tree.jpg" },
+  { name: "Banyan Tree", image: "/images/banyan-tree.avif" },
+  { name: "Mango Tree", image: "/images/mango-tree.webp" },
 ];
 
 const mockPagination = {

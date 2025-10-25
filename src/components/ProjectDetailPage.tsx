@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import ProjectHero from "./ProjectHero";
 import ProjectTabs from "./ProjectTabs";
 import ProjectAccordion from "./ProjectAccordion";
@@ -21,8 +21,6 @@ interface ProjectDetailData {
   title: string;
   location: string;
   description: string;
-  heroImageUrl: string;
-  heroImageAlt: string;
   treeSpecies: Array<{
     id: string;
     imageUrl: string;
@@ -47,7 +45,11 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
   relatedProjects,
 }) => {
   const [isGeoTagged, setIsGeoTagged] = useState(true);
+  const overviewRef = useRef<HTMLDivElement>(null);
 
+  const handleReadMoreClick = () => {
+    overviewRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
   const handlePlantTree = () => {
     console.log(`Plant tree for project: ${projectData.id}`);
     // Handle plant tree action
@@ -75,24 +77,25 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
         title={projectData.title}
         location={projectData.location}
         description={projectData.description}
-        heroImageUrl={projectData.heroImageUrl}
-        heroImageAlt={projectData.heroImageAlt}
         treeSpecies={projectData.treeSpecies}
         stats={projectData.stats}
         isGeoTagged={isGeoTagged}
         onGeoTaggedChange={setIsGeoTagged}
         onPlantTree={handlePlantTree}
         onGiftTree={handleGiftTree}
+        onReadMoreClick={handleReadMoreClick}
       />
 
       {/* Project Tabs Section */}
-      <ProjectTabs
-        projectDescription={projectData.projectDescription}
-        projectDetails={projectData.projectDetails}
-        relatedProjects={relatedProjects}
-        onPlantTree={handleRelatedPlantTree}
-        onViewAll={handleViewAll}
-      />
+      <div ref={overviewRef}>
+        <ProjectTabs
+          projectDescription={projectData.projectDescription}
+          projectDetails={projectData.projectDetails}
+          relatedProjects={relatedProjects}
+          onPlantTree={handleRelatedPlantTree}
+          onViewAll={handleViewAll}
+        />
+      </div>
 
       <ProjectAccordion
         projectDescription={projectData.projectDescription}

@@ -4,16 +4,8 @@ import * as React from "react";
 import Image from "next/image";
 import { CustomNavigationMenu } from "./ui/navigation-menu";
 import { MobileNavigation } from "./ui/mobile-navigation";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "./ui/select";
 import Link from "next/link";
 import { LogOut, User } from "lucide-react";
-import { Button } from "./ui/button";
 import { useAuth } from "@/lib/auth-context";
 
 export default function Header() {
@@ -128,7 +120,7 @@ export default function Header() {
                 className="flex items-center gap-2 text-xs font-bold px-[10px] py-3 hover:bg-[#E6EBF5] bg-white transition-colors"
               >
                 <LogOut className="w-3 h-3" />
-                LOGOUT
+                SIGN OUT
               </button>
             </div>
           ) : (
@@ -136,7 +128,7 @@ export default function Header() {
               onClick={login}
               className="text-xs font-bold px-[10px] py-3 hover:bg-[#E6EBF5] bg-white transition-colors"
             >
-              LOGIN
+              SIGN IN
             </button>
           )}
         </div>
