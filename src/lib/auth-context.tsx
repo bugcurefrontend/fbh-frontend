@@ -96,7 +96,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         // Use HFN Auth logout function
         const { userLogout } = await import("hfnauth/main");
         const params = getAuthParams();
-        const subPath = process.env.NEXT_PUBLIC_HFN_SUBPATH || "plant-tree";
+        const subPath = process.env.NEXT_PUBLIC_HFN_SUBPATH || "";
         const res = await userLogout(params, subPath);
         
         if (!res?.error) {

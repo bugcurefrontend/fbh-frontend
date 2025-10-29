@@ -65,7 +65,7 @@ export default function HFNAuthComponent({ onUserLoggedOut }: HFNAuthComponentPr
       config={JSON.stringify(hfnAuthConfig)}
       showCancel="true"
       authType="on-demand"
-      subPath={process.env.NEXT_PUBLIC_HFN_SUBPATH || "plant-tree"}
+      subPath={process.env.NEXT_PUBLIC_HFN_SUBPATH || ""}
     />
   );
 }

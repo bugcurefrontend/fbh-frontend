@@ -10,8 +10,8 @@ export function queryHFNElement(): HFNAuthElement | null {
 
 export function getAuthParams(): AuthParams {
   return {
-    authUrl: process.env.NEXT_PUBLIC_HFN_AUTH_URL || "https://13.201.127.62",
-    realm: process.env.NEXT_PUBLIC_HFN_REALM || "your-realm",
+    authUrl: process.env.NEXT_PUBLIC_HFN_AUTH_URL || "https://hfnauth.qa.heartfulness.org",
+    realm: process.env.NEXT_PUBLIC_HFN_REALM || "heartfulness",
     client_id: process.env.NEXT_PUBLIC_HFN_CLIENT_ID || "e843d6b2-8f97-48bd-93c2-e7dcddc10448",
   };
 }

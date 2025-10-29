@@ -16,9 +16,9 @@ export default function HFNAuthCallback() {
         
         // Get SRCM profile information
         const resData = await getSRCMProfile({
-          srcmBaseURL: `${process.env.NEXT_PUBLIC_SRCM_BASE_URL || 'https://api.heartfulness.org'}/`,
+          srcmBaseURL: `${process.env.NEXT_PUBLIC_SRCM_BASE_URL || 'https://profile.srcm.net'}/`,
           xClientId: process.env.NEXT_PUBLIC_SRCM_CLIENT_ID || 'your-x-client-id',
-          queryParams: ['firstName', 'lastName', 'email'].join(','),
+          queryParams: ['user_firebase_uid', 'first_name', 'last_name', 'city_id', 'state', 'email', 'id'].join(','),
         });
 
         if (resData?.data?.results && resData.data.results.length > 0) {
@@ -27,9 +27,13 @@ export default function HFNAuthCallback() {
           // Store authentication data
           localStorage.setItem("isAuthenticated", "true");
           localStorage.setItem("userProfile", JSON.stringify({
-            firstName: userProfile.firstName || "User",
-            lastName: userProfile.lastName || "",
+            firstName: userProfile.first_name || "User",
+            lastName: userProfile.last_name || "",
             email: userProfile.email || "",
+            userId: userProfile.id || "",
+            firebaseUid: userProfile.user_firebase_uid || "",
+            cityId: userProfile.city_id || "",
+            state: userProfile.state || "",
           }));
 
           // Trigger successful authentication
@@ -93,12 +97,6 @@ export default function HFNAuthCallback() {
         setIsLoading(false);
       }
     };
-
-    // Reactivate login as per documentation
-    const el = document.querySelector("hfn-auth");
-    if (el) {
-      (el as any).triggerAuth();
-    }
 
     handleAuthentication();
   }, [router]);
