@@ -36,7 +36,11 @@ const StatisticsSection: React.FC = () => {
       icon: <Co2OffsetIcon width={40} height={40} color="#206f32" />,
       mobileIcon: <Co2OffsetIcon width={32} height={32} color="#206f32" />,
       number: "64,000+",
-      label: "Tons of CO2 Offset",
+      label: (
+        <>
+          Tons of CO<sub>2</sub> Offset
+        </>
+      ),
     },
     {
       icon: <StatesProjectsIcon width={36} height={40} color="#206f32" />,
