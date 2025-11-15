@@ -10,6 +10,24 @@ import { useAuth } from "@/lib/auth-context";
 
 export default function Header() {
   const { isAuthenticated, userProfile, isLoading, login, logout } = useAuth();
+  const [dropdownOpen, setDropdownOpen] = React.useState(false);
+  const dropdownRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setDropdownOpen(false);
+      }
+    };
+
+    if (dropdownOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [dropdownOpen]);
 
   const navigationItems = [
     {
@@ -103,26 +121,137 @@ export default function Header() {
         <CustomNavigationMenu navigationItems={navigationItems} />
 
         {/* Authentication Section */}
-        <div className="max-md:hidden">
+        <div className="max-md:hidden relative" ref={dropdownRef}>
           {isAuthenticated ? (
-            <div className="flex items-center gap-3">
-              {/* User Info */}
-              <div className="flex items-center gap-2 px-3 py-1 bg-gray-50 rounded-full">
-                <User className="w-4 h-4 text-gray-600" />
-                <span className="text-sm font-medium text-gray-700">
-                  {userProfile?.firstName || "User"}
-                </span>
-              </div>
-
-              {/* Logout Button */}
+            <>
+              {/* User Avatar Button */}
               <button
-                onClick={logout}
-                className="flex items-center gap-2 text-xs font-bold px-[10px] py-3 hover:bg-[#E6EBF5] bg-white transition-colors"
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                style={{
+                  width: '40px',
+                  height: '40px',
+                  borderRadius: '250px'
+                }}
+                className="flex items-center justify-center bg-gray-200 hover:bg-gray-300 transition-colors overflow-hidden"
               >
-                <LogOut className="w-3 h-3" />
-                SIGN OUT
+                <User className="w-5 h-5 text-gray-600" />
               </button>
-            </div>
+
+              {/* Dropdown Menu */}
+              {dropdownOpen && (
+                <div
+                  className="absolute right-0 top-full bg-white z-50"
+                  style={{
+                    width: '200px',
+                    height: '235px',
+                    marginTop: '5px',
+                    paddingTop: '16px',
+                    paddingBottom: '8px',
+                    paddingLeft: '16px',
+                    paddingRight: '16px',
+                    border: '1px solid #E4E4E4',
+                    boxShadow: '0px 21px 40px 0px #31313133',
+                    borderRadius: '0px'
+                  }}
+                >
+                  {/* User Info Section - Horizontal Layout */}
+                  <div className="flex items-center gap-3 pb-3">
+                    <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+                      <User className="w-6 h-6 text-gray-600" />
+                    </div>
+                    <div className="flex flex-col min-w-0 flex-1">
+                      <span
+                        className="font-semibold truncate"
+                        style={{
+                          fontFamily: 'Public Sans',
+                          fontWeight: 600,
+                          fontSize: '14px',
+                          lineHeight: '22px',
+                          letterSpacing: '0px',
+                          color: '#454950'
+                        }}
+                      >
+                        {userProfile?.firstName} {userProfile?.lastName}
+                      </span>
+                      <span
+                        className="truncate"
+                        style={{
+                          fontFamily: 'Public Sans',
+                          fontWeight: 600,
+                          fontSize: '12px',
+                          lineHeight: '18px',
+                          letterSpacing: '0px',
+                          color: '#94979A'
+                        }}
+                        title={userProfile?.email}
+                      >
+                        {userProfile?.email}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Menu Items */}
+                  <div className="flex flex-col gap-2 py-3">
+                    <Link
+                      href="/dashboard"
+                      className="block px-3 py-2 hover:bg-gray-50 rounded-md transition-colors"
+                      style={{
+                        fontFamily: 'Public Sans',
+                        fontWeight: 400,
+                        fontSize: '16px',
+                        lineHeight: '24px',
+                        letterSpacing: '0px',
+                        color: '#454950'
+                      }}
+                      onClick={() => setDropdownOpen(false)}
+                    >
+                      Dashboard
+                    </Link>
+                    <Link
+                      href="/my-trees"
+                      className="block px-3 py-2 hover:bg-gray-50 rounded-md transition-colors"
+                      style={{
+                        fontFamily: 'Public Sans',
+                        fontWeight: 400,
+                        fontSize: '16px',
+                        lineHeight: '24px',
+                        letterSpacing: '0px',
+                        color: '#454950'
+                      }}
+                      onClick={() => setDropdownOpen(false)}
+                    >
+                      My Trees
+                    </Link>
+
+                  {/* Sign Out Button */}
+                  <div style={{ marginLeft: '-16px', marginRight: '-16px' }}>
+                    <button
+                      onClick={() => {
+                        setDropdownOpen(false);
+                        logout();
+                      }}
+                      className="flex items-center gap-2 w-full py-2 transition-colors"
+                      style={{
+                        fontFamily: 'Public Sans',
+                        fontWeight: 500,
+                        fontSize: '16px',
+                        lineHeight: '22px',
+                        letterSpacing: '0px',
+                        color: '#F04438',
+                        paddingLeft: '28px',
+                        paddingRight: '16px'
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#E6EBF5'}
+                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                    >
+                      <span>Sign Out</span>
+                      <LogOut className="w-4 h-4" style={{ color: '#F04438' }} />
+                    </button>
+                  </div>
+                  </div>
+                </div>
+              )}
+            </>
           ) : (
             <button
               onClick={login}
@@ -134,7 +263,13 @@ export default function Header() {
         </div>
 
         {/* Mobile Navigation */}
-        <MobileNavigation navigationItems={navigationItems} />
+        <MobileNavigation
+          navigationItems={navigationItems}
+          isAuthenticated={isAuthenticated}
+          userProfile={userProfile}
+          login={login}
+          logout={logout}
+        />
       </div>
     </header>
   );

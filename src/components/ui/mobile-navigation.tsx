@@ -8,6 +8,8 @@ import {
   ChevronDownIcon,
   MenuIcon,
   LogInIcon,
+  LogOut,
+  User,
 } from "lucide-react";
 import {
   Select,
@@ -28,12 +30,29 @@ interface NavigationItem {
   href?: string;
 }
 
+interface UserProfile {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  [key: string]: any;
+}
+
 interface NavigationMenuProps {
   navigationItems: NavigationItem[];
   className?: string;
+  isAuthenticated?: boolean;
+  userProfile?: UserProfile | null;
+  login?: () => void;
+  logout?: () => void;
 }
 
-export function MobileNavigation({ navigationItems }: NavigationMenuProps) {
+export function MobileNavigation({
+  navigationItems,
+  isAuthenticated,
+  userProfile,
+  login,
+  logout
+}: NavigationMenuProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileExpandedMenu, setMobileExpandedMenu] = useState<string | null>(
     null
@@ -141,13 +160,59 @@ export function MobileNavigation({ navigationItems }: NavigationMenuProps) {
                 Contact Us
               </a>
 
-              <a
-                href="/login"
-                className="mt-2 py-3 px-4 hover:bg-gray-50 transition-colors flex items-center gap-2 !text-[#003399] font-semibold text-lg uppercase"
-              >
-                Login
-                <LogInIcon size={18} />
-              </a>
+              {/* Auth Section */}
+              {isAuthenticated ? (
+                <>
+                  <a
+                    href="/dashboard"
+                    className="flex justify-between items-center w-full px-4 py-3 hover:bg-gray-50 transition-colors font-medium text-lg uppercase"
+                    style={{
+                      color: '#090C0F'
+                    }}
+                    onClick={handleClose}
+                  >
+                    Dashboard
+                  </a>
+                  <a
+                    href="/my-trees"
+                    className="flex justify-between items-center w-full px-4 py-3 hover:bg-gray-50 transition-colors font-medium text-lg uppercase"
+                    style={{
+                      color: '#090C0F'
+                    }}
+                    onClick={handleClose}
+                  >
+                    My Trees
+                  </a>
+
+                  {/* Sign Out Button */}
+                  <button
+                    onClick={() => {
+                      handleClose();
+                      logout?.();
+                    }}
+                    className="flex items-center gap-2 w-full px-4 py-3 transition-colors font-medium text-lg uppercase"
+                    style={{
+                      color: '#F04438'
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#E6EBF5'}
+                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                  >
+                    <span>Sign Out</span>
+                    <LogOut className="w-4 h-4" style={{ color: '#F04438' }} />
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={() => {
+                    handleClose();
+                    login?.();
+                  }}
+                  className="mt-2 py-3 px-4 hover:bg-gray-50 transition-colors flex items-center gap-2 !text-[#003399] font-semibold text-lg uppercase"
+                >
+                  Login
+                  <LogInIcon size={18} />
+                </button>
+              )}
             </div>
           </div>
         </div>
