@@ -63,8 +63,14 @@ export default function HFNAuthComponent({
               });
 
               console.log("HFNAuthComponent: Profile data received:", resData);
+              console.log("HFNAuthComponent: Profile data structure check:", {
+                hasData: !!resData?.data,
+                hasFirebaseUid: !!resData?.data?.user_firebase_uid,
+                dataKeys: resData?.data ? Object.keys(resData.data) : [],
+              });
 
               if (resData?.data && resData.data.user_firebase_uid) {
+                console.log("HFNAuthComponent: ✅ Valid profile data, proceeding...");
                 const userData = resData.data;
 
                 // Store user info
@@ -86,12 +92,22 @@ export default function HFNAuthComponent({
                   apiToken: user.access_token,
                 }));
 
-                console.log("HFNAuthComponent: Authentication successful!");
+                console.log("HFNAuthComponent: ✅ Authentication successful!");
+                console.log("HFNAuthComponent: User info stored:", userInfo);
                 authEl.handleProfileAuthentication(true);
 
                 // Redirect to landing page
                 const landingPage = localStorage.getItem("landingPage") || "/";
-                window.location.href = landingPage;
+                console.log("HFNAuthComponent: Redirecting to:", landingPage);
+
+                // Small delay to ensure logs are visible
+                setTimeout(() => {
+                  window.location.href = landingPage;
+                }, 100);
+              } else {
+                console.error("HFNAuthComponent: ❌ Invalid profile data - missing firebase_uid");
+                console.error("HFNAuthComponent: Received data:", resData);
+                authEl.handleProfileAuthentication(false);
               }
 
               return true;

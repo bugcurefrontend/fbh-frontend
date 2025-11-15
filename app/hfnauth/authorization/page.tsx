@@ -5,7 +5,11 @@ import OneAuth from "@/components/OneAuth";
 
 export default function HFNAuthCallback() {
   useEffect(() => {
-    console.log("Authorization page loaded - handling OAuth callback");
+    console.log("========================================");
+    console.log("Authorization Callback Page Loaded");
+    console.log("Current URL:", window.location.href);
+    console.log("Has code param:", window.location.search.includes('code='));
+    console.log("========================================");
   }, []);
 
   return (
@@ -17,8 +21,11 @@ export default function HFNAuthCallback() {
           <h2 className="text-xl font-semibold text-gray-700 mb-2">
             Completing Authentication...
           </h2>
-          <p className="text-gray-500">
+          <p className="text-gray-500 text-sm">
             Please wait while we verify your credentials.
+          </p>
+          <p className="text-gray-400 text-xs mt-4">
+            Do not refresh or close this page.
           </p>
         </div>
       </div>

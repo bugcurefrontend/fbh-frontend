@@ -54,9 +54,15 @@ function OneAuth() {
           ],
         });
 
-        console.log("Profile data received:", resData);
+        console.log("OneAuth: Profile data received:", resData);
+        console.log("OneAuth: Profile data structure check:", {
+          hasData: !!resData?.data,
+          hasFirebaseUid: !!resData?.data?.user_firebase_uid,
+          dataKeys: resData?.data ? Object.keys(resData.data) : [],
+        });
 
         if (resData?.data && resData.data.user_firebase_uid) {
+          console.log("OneAuth: ✅ Valid profile data, proceeding...");
           const userData = resData.data;
 
           // Store user info
@@ -79,14 +85,22 @@ function OneAuth() {
             apiToken: access_token,
           }));
 
-          console.log("Authentication successful!");
+          console.log("OneAuth: ✅ Authentication successful!");
+          console.log("OneAuth: User info stored:", userInfo);
           handleAuth(true);
 
           // Redirect to landing page
           const landingPage = localStorage.getItem("landingPage") || "/";
-          router.push(landingPage);
+          console.log("OneAuth: Redirecting to:", landingPage);
+
+          // Small delay to ensure logs are visible
+          setTimeout(() => {
+            router.push(landingPage);
+          }, 100);
         } else {
-          console.warn("Firebase UID missing, retrying...");
+          console.error("OneAuth: ❌ Invalid profile data - missing firebase_uid");
+          console.error("OneAuth: Received data:", resData);
+          console.warn("OneAuth: Retrying profile fetch (attempt", apiCallCount.current, "of 3)...");
           // Retry if firebase UID is missing
           await getUserProfile({ access_token });
         }

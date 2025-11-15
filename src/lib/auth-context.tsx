@@ -77,9 +77,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         console.log("Login clicked - starting authentication flow");
 
         // Store current page as landing page for redirect after auth
+        // NEVER store the authorization callback page as landing page
         const currentPath = window.location.pathname;
-        localStorage.setItem("landingPage", currentPath);
-        console.log("Stored landing page:", currentPath);
+        const landingPage = currentPath.includes('/hfnauth/authorization') ? '/' : currentPath;
+        localStorage.setItem("landingPage", landingPage);
+        console.log("Stored landing page:", landingPage);
 
         // Wait for HFN Auth element to be available
         const authElement = queryHFNElement();
