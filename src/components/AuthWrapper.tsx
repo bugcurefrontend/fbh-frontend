@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
 import { useAuth } from "@/lib/auth-context";
 import HFNAuthComponent from "./HFNAuthComponent";
 import ErrorBoundary from "./ErrorBoundary";

@@ -3,60 +3,118 @@
 import React, { useEffect, useRef } from "react";
 import { queryHFNElement, getAuthParams } from "../lib/hfnauth";
 import type { HFNAuthElement } from "../types/hfnauth-types";
+import { actions } from "@/store/userStore";
 
 interface HFNAuthComponentProps {
   onUserLoggedOut?: () => void;
 }
 
-export default function HFNAuthComponent({ onUserLoggedOut }: HFNAuthComponentProps) {
+export default function HFNAuthComponent({
+  onUserLoggedOut,
+}: HFNAuthComponentProps) {
   const hfnAuthRef = useRef<HFNAuthElement | null>(null);
 
   useEffect(() => {
     let mounted = true;
 
-    // Dynamically import the hfnauth package and set login callback
     import("hfnauth/main")
-      .then(() => {
+      .then(async () => {
         if (!mounted) return;
-        console.log("HFN Auth package loaded successfully");
+
+        await new Promise(resolve => setTimeout(resolve, 100));
 
         const authEl = hfnAuthRef.current ?? queryHFNElement();
+
         if (authEl) {
-          authEl.loginCallback = function (res: any) {
-            if (res?.data?.access_token) {
-              localStorage.setItem("accessToken", res.data.access_token);
-              // navigate to the authorization handler
-              window.location.href = "/hfnauth/authorization";
+          authEl.loginCallback = async (response: any) => {
+            try {
+              const user = response?.data;
+
+              if (!user?.access_token) {
+                return false;
+              }
+
+              const { getMeProfile } = await import("hfnauth/main");
+              const baseUrl = `${process.env.NEXT_PUBLIC_API_URL || "https://profile.srcm.net"}/`;
+
+              const resData = await getMeProfile({
+                srcmMeUrl: baseUrl,
+                xClientId: process.env.NEXT_PUBLIC_X_CLIENT_ID || "sNoCucDYc1ok5D8HzktKJUROtXGlD49tSGIPiXzn",
+                queryParams: [
+                  "user_firebase_uid",
+                  "first_name",
+                  "last_name",
+                  "city_id",
+                  "state",
+                  "email",
+                  "id",
+                ],
+              });
+
+              if (resData?.data && resData.data.user_firebase_uid) {
+                const userData = resData.data;
+
+                const userInfo = {
+                  ...userData,
+                  firstName: userData.first_name || "User",
+                  lastName: userData.last_name || "",
+                  email: userData.email || "",
+                  userId: userData.id || "",
+                  firebaseUid: userData.user_firebase_uid || "",
+                  keycloak_user_id: userData.user_firebase_uid || "",
+                  cityId: userData.city_id || "",
+                  city: userData.city_id || {},
+                  state: userData.state || "",
+                  tokenData: { accessToken: user.access_token },
+                  apiToken: user.access_token,
+                };
+
+                await actions.setUser(userInfo);
+                authEl.handleProfileAuthentication(true);
+
+                const landingPage = localStorage.getItem("landingPage") || "/";
+                setTimeout(() => {
+                  window.location.href = landingPage;
+                }, 100);
+              } else {
+                authEl.handleProfileAuthentication(false);
+              }
+
+              return true;
+            } catch (error) {
+              authEl.handleProfileAuthentication(false);
+              return false;
             }
+          };
+
+          const handleUserLoggedOut = async (event: any) => {
+            if (event?.detail?.loggedOut && onUserLoggedOut) {
+              await onUserLoggedOut();
+            }
+          };
+
+          authEl.addEventListener(
+            "userLoggedOut",
+            handleUserLoggedOut as EventListener
+          );
+
+          return () => {
+            authEl.removeEventListener(
+              "userLoggedOut",
+              handleUserLoggedOut as EventListener
+            );
           };
         }
       })
       .catch((error) => {
-        console.error("Failed to load HFN Auth package:", error);
+        // Silent error handling
       });
-
-    // Set up event listener for logout
-    const handleUserLoggedOut = async (event: any) => {
-      if (event?.detail?.loggedOut && onUserLoggedOut) {
-        await onUserLoggedOut();
-      }
-    };
-
-    const attachEl = hfnAuthRef.current ?? queryHFNElement();
-    if (attachEl) {
-      attachEl.addEventListener("userLoggedOut", handleUserLoggedOut);
-    }
 
     return () => {
       mounted = false;
-      const el = hfnAuthRef.current ?? queryHFNElement();
-      if (el) {
-        el.removeEventListener("userLoggedOut", handleUserLoggedOut);
-      }
     };
   }, [onUserLoggedOut]);
 
-  // HFN Auth configuration
   const hfnAuthConfig = getAuthParams();
 
   return (
