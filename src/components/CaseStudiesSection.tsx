@@ -49,7 +49,7 @@ const CaseStudiesSection = () => {
   return (
     <section className="max-w-7xl mx-auto px-4 md:px-8 mt-8 md:mt-16">
       <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold sm:text-center text-[#232D26] mb-6">
-        Case Study
+        Case Studies
       </h2>
 
       {/*Desktop Carousel */}

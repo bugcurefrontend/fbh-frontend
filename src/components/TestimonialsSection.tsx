@@ -76,7 +76,7 @@ const TestimonialsSection: React.FC = () => {
             initial="enter"
             animate="center"
             exit="exit"
-            transition={{ duration: 0.4, ease: "easeInOut" }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
             className="rounded-xl w-full md:w-[45%] md:max-h-[40%] h-full"
           >
             <Image
