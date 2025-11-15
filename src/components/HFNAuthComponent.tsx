@@ -16,13 +16,20 @@ export default function HFNAuthComponent({
   useEffect(() => {
     let mounted = true;
 
+    console.log("HFNAuthComponent: Starting to load hfnauth package...");
+
     // Dynamically import the hfnauth package
     import("hfnauth/main")
       .then(async () => {
         if (!mounted) return;
         console.log("HFN Auth package loaded successfully");
 
+        // Wait a moment for the custom element to be defined
+        await new Promise(resolve => setTimeout(resolve, 100));
+
         const authEl = hfnAuthRef.current ?? queryHFNElement();
+        console.log("HFNAuthComponent: Auth element reference:", !!authEl);
+
         if (authEl) {
           // Set up login callback FIRST (before hfn-auth processes OAuth callback)
           authEl.loginCallback = async (response: any) => {
@@ -129,6 +136,16 @@ export default function HFNAuthComponent({
 
   // HFN Auth configuration
   const hfnAuthConfig = getAuthParams();
+
+  // Log configuration for debugging
+  useEffect(() => {
+    console.log("HFN Auth Configuration:", {
+      ...hfnAuthConfig,
+      subPath: process.env.NEXT_PUBLIC_HFN_SUBPATH || "(none)",
+      authType: "on-demand",
+      showCancel: true,
+    });
+  }, []);
 
   return (
     <hfn-auth

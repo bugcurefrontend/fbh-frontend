@@ -7,9 +7,17 @@ import { MobileNavigation } from "./ui/mobile-navigation";
 import Link from "next/link";
 import { LogOut, User } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
+import { logAuthDebugInfo, checkHFNAuthElement } from "@/lib/auth-debug";
 
 export default function Header() {
   const { isAuthenticated, userProfile, isLoading, login, logout } = useAuth();
+
+  // Log debug info on mount
+  React.useEffect(() => {
+    if (typeof window !== "undefined") {
+      logAuthDebugInfo();
+    }
+  }, []);
 
   const navigationItems = [
     {
@@ -125,7 +133,11 @@ export default function Header() {
             </div>
           ) : (
             <button
-              onClick={login}
+              onClick={() => {
+                console.log("Sign In button clicked");
+                checkHFNAuthElement();
+                login();
+              }}
               className="text-xs font-bold px-[10px] py-3 hover:bg-[#E6EBF5] bg-white transition-colors"
             >
               SIGN IN

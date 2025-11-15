@@ -74,15 +74,35 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const login = async () => {
     try {
       if (typeof window !== "undefined") {
+        console.log("Login clicked - starting authentication flow");
+
         // Store current page as landing page for redirect after auth
-        localStorage.setItem("landingPage", window.location.pathname);
-        
-        // Trigger HFN Auth
+        const currentPath = window.location.pathname;
+        localStorage.setItem("landingPage", currentPath);
+        console.log("Stored landing page:", currentPath);
+
+        // Wait for HFN Auth element to be available
         const authElement = queryHFNElement();
+        console.log("HFN Auth element found:", !!authElement);
+
         if (authElement) {
+          console.log("Triggering HFN Auth...");
           authElement.triggerAuth();
         } else {
-          console.error("HFN Auth element not found");
+          console.error("HFN Auth element not found - waiting and retrying...");
+
+          // Retry after a short delay to allow the element to load
+          setTimeout(() => {
+            const retryElement = queryHFNElement();
+            console.log("Retry - HFN Auth element found:", !!retryElement);
+
+            if (retryElement) {
+              console.log("Triggering HFN Auth on retry...");
+              retryElement.triggerAuth();
+            } else {
+              console.error("HFN Auth element still not found after retry. Check if HFNAuthComponent is mounted.");
+            }
+          }, 500);
         }
       }
     } catch (error) {
