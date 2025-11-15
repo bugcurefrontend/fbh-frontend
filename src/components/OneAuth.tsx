@@ -98,12 +98,18 @@ function OneAuth() {
     [router]
   );
 
-  // Set up the login callback
+  // Set up the login callback - MUST happen before package processes callback
   useEffect(() => {
     const setupLoginCallback = () => {
       const authElement = document.querySelector("hfn-auth") as any;
       if (authElement) {
         console.log("OneAuth: Setting up login callback on hfn-auth element");
+        console.log("OneAuth: Auth element methods:", Object.keys(authElement));
+        console.log("OneAuth: Auth element current state:", {
+          hasLoginCallback: !!authElement.loginCallback,
+          hasTriggerAuth: !!authElement.triggerAuth,
+          hasCheckAuthStatus: !!authElement.checkAuthStatus,
+        });
 
         authElement.loginCallback = async (response: { data: any }) => {
           try {
@@ -128,12 +134,31 @@ function OneAuth() {
         };
 
         console.log("OneAuth: Login callback successfully attached");
+
+        // CRITICAL: Manually trigger auth check if we're on the callback URL
+        if (window.location.search.includes('code=')) {
+          console.log("OneAuth: Detected OAuth callback URL, triggering auth check...");
+          // Give the hfnauth package a moment to process
+          setTimeout(() => {
+            if (typeof authElement.checkAuthStatus === 'function') {
+              authElement.checkAuthStatus();
+            } else {
+              console.warn("OneAuth: checkAuthStatus not available, trying alternative...");
+              // Try triggering the auth element to process the callback
+              authElement.triggerAuth?.();
+            }
+          }, 100);
+        }
       } else {
         console.warn("OneAuth: hfn-auth element not found, retrying in 100ms...");
         setTimeout(setupLoginCallback, 100);
       }
     };
 
+    // Try to set up callback immediately, even before package loads
+    setupLoginCallback();
+
+    // Also set up after package loads
     import("hfnauth/main")?.then(() => {
       console.log("OneAuth: hfnauth package loaded, setting up callback...");
       setupLoginCallback();
