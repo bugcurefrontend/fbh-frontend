@@ -68,6 +68,7 @@ function OneAuth() {
           };
 
           await actions.setUser(userInfo);
+          window.dispatchEvent(new Event('storage')); // Trigger auth-context refresh
           handleAuth(true);
 
           const landingPage = localStorage.getItem("landingPage") || "/";
