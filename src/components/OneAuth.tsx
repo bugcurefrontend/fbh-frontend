@@ -7,6 +7,7 @@ import { actions } from "@/store/userStore";
 function OneAuth() {
   const router = useRouter();
   const apiCallCount = useRef(0);
+  const callbackProcessed = useRef(false);
 
   const handleAuth = (status: boolean) => {
     const authElement = document.querySelector("hfn-auth") as any;
@@ -92,6 +93,7 @@ function OneAuth() {
             const user = response?.data;
 
             if (!user?.access_token) {
+              callbackProcessed.current = false;  // Reset on failure
               handleAuth(false);
               return false;
             }
@@ -100,6 +102,7 @@ function OneAuth() {
             await getUserProfile({ access_token: user.access_token });
             return true;
           } catch (error) {
+            callbackProcessed.current = false;
             handleAuth(false);
             return false;
           }
@@ -107,10 +110,14 @@ function OneAuth() {
 
         if (window.location.search.includes('code=')) {
           setTimeout(() => {
-            if (typeof authElement.checkAuthStatus === 'function') {
-              authElement.checkAuthStatus();
-            } else {
-              authElement.triggerAuth?.();
+            // Check and set flag BEFORE calling checkAuthStatus to prevent race condition
+            if (!callbackProcessed.current) {
+              callbackProcessed.current = true;  // Set immediately to block duplicate calls
+              if (typeof authElement.checkAuthStatus === 'function') {
+                authElement.checkAuthStatus();
+              } else {
+                authElement.triggerAuth?.();
+              }
             }
           }, 100);
         }
