@@ -9,15 +9,8 @@ import {
   MenuIcon,
   LogInIcon,
   LogOut,
-  User,
 } from "lucide-react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "./select";
+import CurrencySelect from "../CurrencySelect";
 
 interface subItem {
   label: string;
@@ -51,7 +44,7 @@ export function MobileNavigation({
   isAuthenticated,
   userProfile,
   login,
-  logout
+  logout,
 }: NavigationMenuProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileExpandedMenu, setMobileExpandedMenu] = useState<string | null>(
@@ -86,7 +79,8 @@ export function MobileNavigation({
   };
 
   return (
-    <div className="md:hidden">
+    <div className="md:hidden flex items-center gap-3">
+      <CurrencySelect />
       <button
         onClick={handleMobileMenuToggle}
         className="h-6 w-6 flex items-center justify-center"
@@ -167,7 +161,7 @@ export function MobileNavigation({
                     href="/dashboard"
                     className="flex justify-between items-center w-full px-4 py-3 hover:bg-gray-50 transition-colors font-medium text-lg uppercase"
                     style={{
-                      color: '#090C0F'
+                      color: "#090C0F",
                     }}
                     onClick={handleClose}
                   >
@@ -177,7 +171,7 @@ export function MobileNavigation({
                     href="/my-trees"
                     className="flex justify-between items-center w-full px-4 py-3 hover:bg-gray-50 transition-colors font-medium text-lg uppercase"
                     style={{
-                      color: '#090C0F'
+                      color: "#090C0F",
                     }}
                     onClick={handleClose}
                   >
@@ -192,13 +186,17 @@ export function MobileNavigation({
                     }}
                     className="flex items-center gap-2 w-full px-4 py-3 transition-colors font-medium text-lg uppercase"
                     style={{
-                      color: '#F04438'
+                      color: "#F04438",
                     }}
-                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#E6EBF5'}
-                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.backgroundColor = "#E6EBF5")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.backgroundColor = "transparent")
+                    }
                   >
                     <span>Sign Out</span>
-                    <LogOut className="w-4 h-4" style={{ color: '#F04438' }} />
+                    <LogOut className="w-4 h-4" style={{ color: "#F04438" }} />
                   </button>
                 </>
               ) : (

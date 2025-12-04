@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { Share2 } from "lucide-react";
+import { Share2, Trees } from "lucide-react";
 import GeoTagToggleAndActions from "./GeoTagToggleAndActions";
 
 interface SpeciesHeroProps {
@@ -70,7 +70,7 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
     <div className="bg-white rounded-2xl overflow-hidden">
       <div className="flex flex-col lg:flex-row space-x-6 space-y-6 lg:space-y-0">
         {/* Left side - Hero Image */}
-        <div className="lg:w-[546px] w-full lg:h-[573px] relative flex-shrink-0">
+        <div className="lg:w-[546px] w-full relative flex-shrink-0">
           <div className="min-h-[360px] h-full w-full relative overflow-hidden rounded-lg">
             {activeImage ? (
               <Image
@@ -141,13 +141,22 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
         </div>
 
         {/* Right side - Species Details */}
-        <div className="flex flex-col justify-between md:space-y-8">
+        <div className="flex flex-col justify-between md:gap-6">
           {/* Title and Scientific Name */}
           <div className="md:space-y-2 space-y-4 relative">
             <div className="md:space-y-2 space-y-1 flex items-center justify-between">
-              <h1 className="text-lg md:text-2xl font-semibold md:text-gray-900 text-[#333333] font-public-sans">
-                {name} ({scientificName})
-              </h1>
+              <div className="md:space-y-2 space-y-1">
+                <h1 className="text-lg md:text-2xl font-semibold md:text-gray-900 text-[#333333] font-public-sans">
+                  {name}
+                </h1>
+
+                <div className="flex items-center gap-1 text-gray-600">
+                  <Trees className="w-5.5 h-5.5" />
+                  <span className="md:text-base text-sm md:font-semibold">
+                    ({scientificName})
+                  </span>
+                </div>
+              </div>
               <button className="md:hidden flex items-center justify-center h-9 w-9 rounded text-white bg-[#003399] hover:bg-[#002266]">
                 <Share2 className="w-4 h-4" />
               </button>

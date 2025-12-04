@@ -33,12 +33,21 @@ const GeoTagToggleAndActions: React.FC<GeoTagToggleAndActionsProps> = ({
     <div
       className={
         isMobile
-          ? "md:hidden bg-white fixed bottom-0 left-0 right-0 border-t border-gray-200 shadow-lg z-50 px-4 pt-3 pb-6 space-y-4 safe-area-inset-bottom"
-          : "max-sm:hidden border border-[#E4E4E4] rounded-2xl px-4 py-6 space-y-4 bg-[#E6EBF54D]"
+          ? "md:hidden bg-white fixed bottom-0 left-0 right-0 border-t border-gray-200 shadow-lg z-50 px-4 pt-3 pb-6 safe-area-inset-bottom"
+          : "max-sm:hidden border border-[#E4E4E4] rounded-2xl px-4 py-6 bg-[#E6EBF54D]"
       }
     >
+      <h1 className="flex items-baseline gap-1">
+        <span className="font-bold text-[28px] leading-[36px] text-[#090C0F]">
+          ₹ 175 /
+        </span>
+        <span className="font-semibold text-[16px] leading-[36px] text-[#003399]">
+          Tree
+        </span>
+      </h1>
+
       {/* Geo-tagged Toggle */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between mb-4 mt-1">
         <div className="flex items-center gap-2">
           <span
             className={

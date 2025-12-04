@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import { Instagram, Linkedin } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 const Footer: React.FC = () => {
@@ -14,22 +13,50 @@ const Footer: React.FC = () => {
     "Donate",
   ];
 
+  const moreLinks = [
+    "About Us",
+    "Contact Us",
+    "Case Study",
+    "Terms & Conditions",
+    "Privacy & Policy",
+  ];
+
+  const socialLinks = [
+    {
+      name: "Instagram",
+      icon: "/images/Instagram.png",
+    },
+    {
+      name: "Facebook",
+      icon: "/images/Facebook.png",
+    },
+    {
+      name: "Linkedin",
+      icon: "/images/Linkedin.png",
+    },
+    {
+      name: "Twitter",
+      icon: "/images/Twitter.png",
+    },
+  ];
+
   const pathname = usePathname();
-  const footerClass = `bg-[#0f172a] text-[#e6e6e6] md:mt-16 mt-8 ${
+  const footerClass = `bg-[#0F172A] text-[#e6e6e6] md:mt-16 mt-8 ${
     pathname === "/project-detail" || pathname === "/species-detail"
-      ? "max-md:mb-30"
+      ? "max-md:mb-41"
       : ""
   }`;
 
   return (
     <footer className={footerClass}>
-      <div className="md:px-14 max-w-7xl mx-auto px-4 py-16 flex flex-col sm:flex-row sm:justify-between max-sm:gap-16">
+      <div className="md:px-12 max-w-7xl mx-auto px-4 py-8 md:py-16 flex flex-col md:flex-row sm:justify-between max-md:gap-8">
         <div className="flex flex-col gap-6 md:min-w-[389px] w-full sm:w-auto">
           <Image
-            src="/images/logo2.png"
+            src="/images/footer-logo.png"
             alt="Forests by Heartfulness"
-            width={65}
-            height={52}
+            width={216}
+            height={63}
+            className="max-sm:w-[170px]"
           />
           <div className="flex gap-4">
             <Image
@@ -37,102 +64,82 @@ const Footer: React.FC = () => {
               alt="Google Play"
               width={154}
               height={52}
-              className="cursor-pointer min-w-[134px] min-h-[41px] md:min-w-[154px] md:min-h-[52px]"
+              className="cursor-pointer max-sm:w-[134px] max-sm:h-[41px]"
             />
             <Image
               src="/images/app-store.png"
               alt="App Store"
               width={154}
               height={52}
-              className="cursor-pointer min-w-[134px] min-h-[41px] md:min-w-[154px] md:min-h-[52px]"
+              className="cursor-pointer max-sm:w-[134px] max-sm:h-[41px]"
             />
           </div>
         </div>
 
         {/* Links */}
-        <div className="flex flex-1 gap-8">
-          <div className="flex flex-col gap-4 w-full">
-            <h3 className="font-[poppins] font-medium text-lg text-[#e6e6e6] mb-2">
-              Useful Links
-            </h3>
-            <ul className="flex flex-col gap-2">
-              {usefulLinks.map((link, index) => (
-                <li
-                  key={index}
-                  className="text-sm leading-5 font-[poppins] font-normal text-[#e6e6e6] hover:text-white hover:underline cursor-pointer"
-                >
-                  {link}
-                </li>
-              ))}
-            </ul>
-          </div>
+        <div className="w-full flex max-md:flex-col gap-8">
+          <ul className="flex flex-col gap-4 lg:mr-10 xl:mr-17">
+            {moreLinks.map((link, index) => (
+              <li
+                key={index}
+                className="font-[poppins] text-base sm:font-medium font-semibold sm:text-lg text-[#e6e6e6] hover:text-white hover:underline cursor-pointer"
+              >
+                {link}
+              </li>
+            ))}
+          </ul>
+          <div className="flex flex-1 gap-8 w-full">
+            <div className="flex flex-col gap-4 w-full">
+              <h3 className="font-[poppins] text-base sm:font-medium font-semibold sm:text-lg text-[#e6e6e6]">
+                Useful Links
+              </h3>
+              <ul className="flex flex-col gap-2">
+                {usefulLinks.map((link, index) => (
+                  <li
+                    key={index}
+                    className="text-sm leading-5 font-[poppins] font-light text-[#e6e6e6] hover:text-white hover:underline cursor-pointer"
+                  >
+                    {link}
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-          <div className="flex flex-col gap-4 w-full">
-            <h3 className="font-[poppins] font-medium text-lg text-[#e6e6e6] mb-2">
-              Social
-            </h3>
-            <ul className="flex flex-col gap-2">
-              <li className="flex items-center gap-4 cursor-pointer hover:text-white">
-                <div className="h-6 w-6 bg-white rounded-full flex items-center justify-center">
-                  <Instagram className="h-4 w-4 text-black" />
-                </div>
-                <span className="text-sm font-normal">Instagram</span>
-              </li>
-              <li className="flex items-center gap-4 cursor-pointer hover:text-white">
-                <div className="h-6 w-6 rounded-full flex items-center justify-center">
-                  <Image
-                    src="/images/Vector.png"
-                    alt="Facebook"
-                    width={24}
-                    height={24}
-                    className=""
-                  />
-                </div>
-                <span className="text-sm font-normal">Facebook</span>
-              </li>
-              <li className="flex items-center gap-4 cursor-pointer hover:text-white">
-                <div className="h-6 w-6 bg-white rounded-full flex items-center justify-center">
-                  <Linkedin className="h-4 w-4 text-black" />
-                </div>
-                <span className="text-sm font-normal">Linkedin</span>
-              </li>
-              <li className="flex items-center gap-4 cursor-pointer hover:text-white">
-                <div className="h-6 w-6 rounded-full flex items-center justify-center">
-                  <Image
-                    src="/images/Img - Twitter_margin.png"
-                    alt="Twitter"
-                    width={24}
-                    height={24}
-                    className="object-contain"
-                  />
-                </div>
-                <span className="text-sm font-normal">Twitter</span>
-              </li>
-            </ul>
+            <div className="flex flex-col gap-4 w-full">
+              <h3 className="font-[poppins] text-base sm:font-medium font-semibold sm:text-lg text-[#e6e6e6]">
+                Social
+              </h3>
+              <ul className="flex flex-col gap-2">
+                {socialLinks.map((item, index) => (
+                  <li
+                    key={index}
+                    className="flex items-center gap-4 cursor-pointer hover:text-white"
+                  >
+                    <Image
+                      src={item.icon}
+                      alt={item.name}
+                      width={24}
+                      height={24}
+                      className="object-contain"
+                    />
+
+                    <span className="font-[poppins] text-sm font-light">
+                      {item.name}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Footer Bottom */}
       <div className="bg-black">
-        <div className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-20 h-[95px] sm:h-[72px] px-4 mx-auto">
-          <p className="font-[poppins] font-medium text-white text-sm sm:text-base">
-            © 2025 Heartfulness - All rights reserved
+        <div className="flex items-center justify-center md:h-18 h-[52px] px-4 mx-auto">
+          <p className="font-[poppins] font-medium text-white text-sm sm:text-base text-center">
+            © 2025 Heartfulness Institute | All Rights Reserved
           </p>
-          <div className="flex gap-6 sm:gap-12">
-            <a
-              href="#"
-              className="font-[poppins] font-medium text-white text-sm sm:text-base"
-            >
-              <span className="underline">Terms</span>
-            </a>
-            <a
-              href="#"
-              className="font-[poppins] font-medium text-white text-sm sm:text-base"
-            >
-              <span className="underline">Privacy</span>
-            </a>
-          </div>
         </div>
       </div>
     </footer>

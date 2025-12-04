@@ -16,17 +16,22 @@ export const metadata = {
     "Creating a greener, more sustainable future through forest restoration and conservation",
 };
 
-const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "700"] });
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["200", "300", "400", "500", "600", "700"],
+});
 const publicSans = Public_Sans({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["200", "300", "400", "500", "600", "700"],
 });
 const playfair = Playfair_Display({
   subsets: ["latin"],
-  weight: ["600", "700"],
+  weight: ["400", "500", "600", "700"],
 });
-const roboto = Roboto({ subsets: ["latin"], weight: ["400"] });
-
+const roboto = Roboto({
+  subsets: ["latin"],
+  weight: ["200", "300", "400", "500", "600", "700"],
+});
 
 export default function RootLayout({
   children,

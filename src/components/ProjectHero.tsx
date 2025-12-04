@@ -71,7 +71,7 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
     <div className="bg-white rounded-2xl overflow-hidden">
       <div className="flex flex-col lg:flex-row space-x-6 space-y-6 lg:space-y-0">
         {/* Left side - Hero Image / Map */}
-        <div className="lg:w-[546px] w-full lg:h-[573px] relative flex-shrink-0">
+        <div className="lg:w-[546px] w-full relative flex-shrink-0">
           <div className="min-h-[360px] h-full w-full relative overflow-hidden rounded-lg">
             {activeImage ? (
               <Image
@@ -144,11 +144,11 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
         </div>
 
         {/* Right side - Project Details (unchanged) */}
-        <div className="flex flex-col justify-between">
+        <div className="flex flex-col justify-between md:gap-6">
           {/* Title and Location */}
           <div className="max-md:space-y-4 relative">
             <div className="md:space-y-2 space-y-1">
-              <h1 className="text-lg md:text-2xl font-semibold text-gray-900 font-public-sans">
+              <h1 className="text-lg md:text-2xl font-semibold md:text-gray-900 text-[#333333]  font-public-sans">
                 {title}
               </h1>
               <div className="flex items-center gap-1 text-gray-600">
