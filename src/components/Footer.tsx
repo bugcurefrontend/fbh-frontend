@@ -32,7 +32,7 @@ const Footer: React.FC = () => {
     },
     {
       name: "Linkedin",
-      icon: "/images/Linkedin.png",
+      icon: "/images/link.png",
     },
     {
       name: "Twitter",
