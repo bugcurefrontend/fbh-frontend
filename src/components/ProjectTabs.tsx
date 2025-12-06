@@ -17,6 +17,14 @@ import Species from "./icons/Species";
 import RelatedProjects from "./RelatedProjects";
 import DonorsTable from "./DonorsTable";
 import Link from "next/link";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "./ui/dialog";
+import Gallery from "./Gallery";
 
 interface Project {
   id: string;
@@ -180,7 +188,28 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({
                   </div>
 
                   {/* Text */}
-                  <p className="w-[45%] max-md:text-sm">{update.text}</p>
+                  <div className="w-[45%] space-y-6">
+                    <p className=" max-md:text-sm">{update.text}</p>
+                    <Dialog>
+                      <DialogTrigger className="flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer md:font-bold md:text-xs md:leading-[18px] md:uppercase md:text-[#003399]">
+                        View all images{" "}
+                        <CircleArrowRight
+                          width={22}
+                          height={22}
+                          color="#003399"
+                          className="max-sm:w-4"
+                        />
+                      </DialogTrigger>
+                      <DialogContent className="min-w-4xl px-0">
+                        <DialogTitle className="border-b pb-2 px-4">
+                          Gallery
+                        </DialogTitle>
+                        <div className="px-4">
+                          <Gallery />
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+                  </div>
                 </div>
               </div>
             ))}

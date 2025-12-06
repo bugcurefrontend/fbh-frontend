@@ -11,7 +11,11 @@ import {
   type CarouselApi,
 } from "./ui/carousel";
 
-const Gallery: React.FC = () => {
+interface GalleryProps {
+  className?: string;
+}
+
+const Gallery: React.FC<GalleryProps> = ({ className }) => {
   const images = [
     "/images/gallery/1.png",
     "/images/gallery/2.png",
@@ -48,7 +52,9 @@ const Gallery: React.FC = () => {
   return (
     <section className="relative">
       {/* Large Image */}
-      <div className="w-full h-[361px] md:h-[400px] lg:h-[573px] relative rounded-xl overflow-hidden">
+      <div
+        className={`w-full h-[361px] md:h-[400px] relative rounded-xl overflow-hidden ${className}`}
+      >
         <Image
           src={images[selectedIndex]}
           alt={`Gallery Image ${selectedIndex + 1}`}

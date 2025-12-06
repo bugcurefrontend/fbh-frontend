@@ -84,7 +84,7 @@ const CaseStudy = () => {
           <h1 className="text-center font-[Playfair_Display] text-[22px] md:text-[32px] md:leading-12 leading-[30px] font-semibold">
             Gallery
           </h1>
-          <Gallery />
+          <Gallery className="lg:h-[573px]" />
         </div>
       </div>
     </main>
