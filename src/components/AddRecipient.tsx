@@ -1,37 +1,28 @@
 import React, { useState, useEffect } from "react";
-import { Mail, Trash2, Plus, X, SquarePen } from "lucide-react";
+import { Plus } from "lucide-react";
+import RecipientCard from "./gift-tree/RecipientCard";
+import RecipientForm from "./gift-tree/RecipientForm";
+import { Recipient, RecipientFormData } from "./gift-tree/types";
 
-interface Recipient {
-  id: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phoneNumber: string;
-  trees: number;
-  region: string;
+interface AddRecipientProps {
+  onQuantityChange?: (totalTrees: number) => void;
+  onNextStep?: () => void;
 }
 
-interface FormData {
-  selectedQuantity: number | null;
-  manualQuantity: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  region: string;
-  phoneNumber: string;
-}
-
-const AddRecipient: React.FC = () => {
+const AddRecipient: React.FC<AddRecipientProps> = ({
+  onQuantityChange,
+  onNextStep,
+}) => {
   const [recipients, setRecipients] = useState<Recipient[]>([]);
   const [showForm, setShowForm] = useState<boolean>(true);
   const [editingId, setEditingId] = useState<number | null>(null);
-  const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>(
-    {}
-  );
+  const [errors, setErrors] = useState<
+    Partial<Record<keyof RecipientFormData, string>>
+  >({});
 
   const quantities: number[] = [10, 25, 50, 100];
 
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<RecipientFormData>({
     selectedQuantity: null,
     manualQuantity: "",
     firstName: "",
@@ -50,6 +41,7 @@ const AddRecipient: React.FC = () => {
         setRecipients(parsed);
         if (parsed.length > 0) {
           setShowForm(false);
+          updateOrderSummary(parsed);
         }
       } catch (e) {
         console.error("Failed to parse stored recipients:", e);
@@ -61,10 +53,21 @@ const AddRecipient: React.FC = () => {
   useEffect(() => {
     if (recipients.length > 0) {
       localStorage.setItem("recipients", JSON.stringify(recipients));
+      updateOrderSummary(recipients);
     } else {
       localStorage.removeItem("recipients");
+      if (onQuantityChange) {
+        onQuantityChange(0);
+      }
     }
   }, [recipients]);
+
+  const updateOrderSummary = (recipientsList: Recipient[]) => {
+    const totalTrees = recipientsList.reduce((sum, r) => sum + r.trees, 0);
+    if (onQuantityChange) {
+      onQuantityChange(totalTrees);
+    }
+  };
 
   const resetForm = (): void => {
     setFormData({
@@ -91,6 +94,10 @@ const AddRecipient: React.FC = () => {
       selectedQuantity: undefined,
       manualQuantity: undefined,
     });
+    // Update order summary immediately when quantity is selected
+    if (onQuantityChange) {
+      onQuantityChange(qty);
+    }
   };
 
   const handleManualQuantityChange = (
@@ -109,10 +116,19 @@ const AddRecipient: React.FC = () => {
         selectedQuantity: undefined,
         manualQuantity: undefined,
       });
+      // Update order summary immediately when manual quantity is entered
+      if (onQuantityChange && value) {
+        onQuantityChange(parseInt(value));
+      } else if (onQuantityChange && !value) {
+        onQuantityChange(0);
+      }
     }
   };
 
-  const handleInputChange = (field: keyof FormData, value: string): void => {
+  const handleInputChange = (
+    field: keyof RecipientFormData,
+    value: string
+  ): void => {
     setFormData({
       ...formData,
       [field]: value,
@@ -142,7 +158,7 @@ const AddRecipient: React.FC = () => {
   };
 
   const validateForm = (): boolean => {
-    const newErrors: Partial<Record<keyof FormData, string>> = {};
+    const newErrors: Partial<Record<keyof RecipientFormData, string>> = {};
     let isValid = true;
 
     // Validate tree count
@@ -282,10 +298,12 @@ const AddRecipient: React.FC = () => {
   };
 
   const handleNextStep = (): void => {
-    // You can add your navigation logic here
-    console.log("Proceeding to next step with recipients:", recipients);
-    alert(`Proceeding with ${recipients.length} recipient(s) to next step!`);
-    // Example: router.push('/next-step');
+    if (onNextStep) {
+      onNextStep();
+    } else {
+      console.log("Proceeding to next step with recipients:", recipients);
+      alert(`Proceeding with ${recipients.length} recipient(s) to next step!`);
+    }
   };
 
   return (
@@ -293,47 +311,12 @@ const AddRecipient: React.FC = () => {
       {/* Recipient Cards */}
       <div className="space-y-4">
         {recipients.map((recipient) => (
-          <div
+          <RecipientCard
             key={recipient.id}
-            className="bg-white border border-gray-200 rounded-md"
-          >
-            <div className="flex justify-between items-start p-4 border-b">
-              <h3 className="text-lg font-bold text-gray-900">
-                {recipient.firstName} {recipient.lastName}
-              </h3>
-              <div className="flex gap-3">
-                <button
-                  onClick={() => handleEdit(recipient)}
-                  className="transition-colors text-sm font-medium"
-                >
-                  <SquarePen className="w-5 h-5" />
-                </button>
-                <button
-                  onClick={() => handleDelete(recipient.id)}
-                  className="text-red-500 hover:text-red-700 transition-colors"
-                >
-                  <Trash2 className="w-5 h-5" />
-                </button>
-              </div>
-            </div>
-
-            <div className="space-y-3 text-sm p-4">
-              <div className="flex justify-between">
-                <span className="text-gray-600">Email:</span>
-                <span className="text-gray-900">{recipient.email}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Phone Number:</span>
-                <span className="text-gray-900">{recipient.phoneNumber}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Number Of Trees:</span>
-                <span className="text-gray-900 font-semibold">
-                  {recipient.trees}
-                </span>
-              </div>
-            </div>
-          </div>
+            recipient={recipient}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+          />
         ))}
         {recipients.length > 0 && !showForm && (
           <button
@@ -348,187 +331,19 @@ const AddRecipient: React.FC = () => {
 
       {/* Form */}
       {showForm && (
-        <div className="border rounded-xl">
-          <div className="flex justify-between items-center border-b border-gray-200 py-4 px-6">
-            <h2 className="text-lg font-bold">
-              {editingId
-                ? "Edit Recipient"
-                : recipients.length > 0
-                ? "Add Recipient"
-                : "Recipient Details"}
-            </h2>
-            {recipients.length > 0 && (
-              <button
-                onClick={handleCancelForm}
-                className="text-gray-500 hover:text-gray-700 transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            )}
-          </div>
-
-          <div className="p-4">
-            <div className="mb-4 space-y-4">
-              {/* Tree Quantity Selection */}
-              <div className="space-y-4">
-                <p className="text-base text-gray-700 font-medium">
-                  How many trees would you like to plant?
-                </p>
-                <div className="flex gap-3 flex-wrap">
-                  {quantities.map((qty) => (
-                    <button
-                      key={qty}
-                      onClick={() => handleQuantitySelect(qty)}
-                      className={`px-6 py-2.5 rounded-md border transition-colors font-medium ${
-                        formData.selectedQuantity === qty
-                          ? "text-[#003399] border-[#003399]"
-                          : ""
-                      }`}
-                    >
-                      {qty}
-                    </button>
-                  ))}
-
-                  <input
-                    type="number"
-                    placeholder="Enter Manually"
-                    value={formData.manualQuantity}
-                    onChange={handleManualQuantityChange}
-                    min="1"
-                    className={`text-center px-4 py-2.5 border rounded-md flex-1 min-w-[140px] transition-colors ${
-                      formData.manualQuantity
-                        ? "border-[#003399] text-[#003399]"
-                        : "border-gray-300"
-                    } ${
-                      errors.selectedQuantity || errors.manualQuantity
-                        ? "border-red-500"
-                        : ""
-                    }`}
-                  />
-                </div>
-                {(errors.selectedQuantity || errors.manualQuantity) && (
-                  <p className="text-red-500 text-xs mt-1">
-                    {errors.selectedQuantity || errors.manualQuantity}
-                  </p>
-                )}
-              </div>
-
-              {/* Name Fields */}
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <label className="mb-1.5 block text-xs text-gray-700 font-semibold">
-                    First Name <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.firstName}
-                    onChange={(e) =>
-                      handleInputChange("firstName", e.target.value)
-                    }
-                    className={`w-full px-3.5 py-2.5 border rounded-lg ${
-                      errors.firstName ? "border-red-500" : ""
-                    }`}
-                    placeholder="First Name"
-                  />
-                  {errors.firstName && (
-                    <p className="text-red-500 text-xs mt-1">
-                      {errors.firstName}
-                    </p>
-                  )}
-                </div>
-                <div>
-                  <label className="mb-1.5 block text-xs text-gray-700 font-semibold">
-                    Last Name <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.lastName}
-                    onChange={(e) =>
-                      handleInputChange("lastName", e.target.value)
-                    }
-                    className={`w-full px-3.5 py-2.5 border rounded-lg ${
-                      errors.lastName ? "border-red-500" : ""
-                    }`}
-                    placeholder="Last Name"
-                  />
-                  {errors.lastName && (
-                    <p className="text-red-500 text-xs mt-1">
-                      {errors.lastName}
-                    </p>
-                  )}
-                </div>
-              </div>
-
-              {/* Email Field */}
-              <div>
-                <label className="mb-1.5 block text-xs text-gray-700 font-semibold">
-                  Email <span className="text-red-500">*</span>
-                </label>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 w-5 h-5" />
-                  <input
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) => handleInputChange("email", e.target.value)}
-                    placeholder="example@email.com"
-                    className={`w-full pl-10 pr-3.5 py-2.5 border rounded-lg ${
-                      errors.email ? "border-red-500" : ""
-                    }`}
-                  />
-                </div>
-                {errors.email && (
-                  <p className="text-red-500 text-xs mt-1">{errors.email}</p>
-                )}
-              </div>
-
-              {/* Phone Number Field */}
-              <div>
-                <label className="mb-1.5 block text-xs text-gray-700 font-semibold">
-                  Phone number <span className="text-red-500">*</span>
-                </label>
-                <div className="flex relative">
-                  <select
-                    value={formData.region}
-                    onChange={(e) =>
-                      handleInputChange("region", e.target.value)
-                    }
-                    className="absolute left-3 top-1/2 -translate-y-1/2 border-none bg-transparent p-0 pr-1 h-auto focus:ring-0 focus:outline-none text-sm font-medium z-10 cursor-pointer"
-                  >
-                    <option value="in">🇮🇳 +91</option>
-                    <option value="us">🇺🇸 +1</option>
-                    <option value="uk">🇬🇧 +44</option>
-                  </select>
-
-                  <input
-                    type="tel"
-                    value={formData.phoneNumber}
-                    onChange={(e) =>
-                      handleInputChange("phoneNumber", e.target.value)
-                    }
-                    placeholder="98765 43210"
-                    className={`pl-24 w-full px-3.5 py-2.5 border rounded-lg ${
-                      errors.phoneNumber ? "border-red-500" : ""
-                    }`}
-                  />
-                </div>
-                {errors.phoneNumber && (
-                  <p className="text-red-500 text-xs mt-1">
-                    {errors.phoneNumber}
-                  </p>
-                )}
-              </div>
-            </div>
-
-            {/* Save Button */}
-            <button
-              onClick={handleSave}
-              disabled={!isFormValid()}
-              className="w-full h-12 border-1 disabled:border-[#E8E8E9] disabled:bg-white border-[#95AAD5] text-white bg-[#003399] disabled:text-[#94979A] rounded-lg text-base font-bold hover:bg-[#013eb9] transition-colors disabled:cursor-not-allowed disabled:opacity-100"
-            >
-              {editingId ? "Update Recipient" : "Save"}
-            </button>
-          </div>
-        </div>
+        <RecipientForm
+          formData={formData}
+          errors={errors}
+          quantities={quantities}
+          editingId={editingId}
+          recipientsCount={recipients.length}
+          onInputChange={handleInputChange}
+          onQuantitySelect={handleQuantitySelect}
+          onManualQuantityChange={handleManualQuantityChange}
+          onSave={handleSave}
+          onCancel={handleCancelForm}
+          isFormValid={isFormValid()}
+        />
       )}
 
       {/* Next Button - Only show when there are recipients and form is hidden */}
