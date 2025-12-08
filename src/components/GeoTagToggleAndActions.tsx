@@ -102,7 +102,7 @@ const GeoTagToggleAndActions: React.FC<GeoTagToggleAndActionsProps> = ({
               />
             </Button>
           </Link>
-          <Link href="/plant-tree" className="w-full">
+          <Link href="/gift-tree" className="w-full">
             <Button
               onClick={onGiftTree}
               variant="outline"

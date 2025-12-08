@@ -83,7 +83,7 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
             ) : (
               // Show map iframe for last thumbnail
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3709.823933!2d79.136!3d24.592!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjTCsDM1JzU1LjAiTiA3OcKwMDgnMjMuOCJF!5e0!3m2!1sen!2sin!4v1698239123456!5m2!1sen!2sin"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3528.9814570275257!2d78.21631687473341!3d17.1752898088815!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcbc68ae81e7a79%3A0x3e82438832073e9d!2sKanha%20Shanti%20Vanam!5e1!3m2!1sen!2sin!4v1765172898898!5m2!1sen!2sin"
                 width="100%"
                 height="100%"
                 className="rounded-lg border-0 min-h-[360px] h-full"
