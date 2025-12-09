@@ -23,6 +23,7 @@ interface SpeciesSelectionDialogProps {
   isGeoTagged: boolean;
   onGeoTaggedChange: (value: boolean) => void;
   trigger: React.ReactNode;
+  availabilityMessage?: string;
 }
 
 const SpeciesSelectionDialog: React.FC<SpeciesSelectionDialogProps> = ({
@@ -32,6 +33,7 @@ const SpeciesSelectionDialog: React.FC<SpeciesSelectionDialogProps> = ({
   isGeoTagged,
   onGeoTaggedChange,
   trigger,
+  availabilityMessage,
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -81,30 +83,41 @@ const SpeciesSelectionDialog: React.FC<SpeciesSelectionDialogProps> = ({
               className={isGeoTagged ? "bg-[#003399]" : ""}
             />
           </div>
+          {availabilityMessage && (
+            <p className="text-xs text-red-500 font-medium">
+              {availabilityMessage}
+            </p>
+          )}
           <div className="mt-2 space-y-4 max-h-[400px] overflow-y-auto flex-1">
-            {speciesData.map((tree) => (
-              <div
-                key={tree.id}
-                onClick={() => onSpeciesSelect(tree.id)}
-                className={`flex items-center gap-3 p-3 rounded-xl cursor-pointer border ${
-                  selectedSpeciesId === tree.id
-                    ? "border-[#2B56AB]"
-                    : "border-gray-200"
-                }`}
-              >
-                <Image
-                  src={tree.img}
-                  alt={tree.name}
-                  width={60}
-                  height={60}
-                  className="rounded-md object-cover"
-                />
-                <div>
-                  <h4 className="font-semibold">{tree.name}</h4>
-                  <p className="text-sm text-gray-500">{tree.botanical}</p>
+            {speciesData.length === 0 ? (
+              <p className="text-sm text-red-500 font-medium">
+                No species available for this selection.
+              </p>
+            ) : (
+              speciesData.map((tree) => (
+                <div
+                  key={tree.id}
+                  onClick={() => onSpeciesSelect(tree.id)}
+                  className={`flex items-center gap-3 p-3 rounded-xl cursor-pointer border ${
+                    selectedSpeciesId === tree.id
+                      ? "border-[#2B56AB]"
+                      : "border-gray-200"
+                  }`}
+                >
+                  <Image
+                    src={tree.img}
+                    alt={tree.name}
+                    width={60}
+                    height={60}
+                    className="rounded-md object-cover"
+                  />
+                  <div>
+                    <h4 className="font-semibold">{tree.name}</h4>
+                    <p className="text-sm text-gray-500">{tree.botanical}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
           {/* Next Button */}
           <Button

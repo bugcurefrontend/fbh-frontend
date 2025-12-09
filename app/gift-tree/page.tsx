@@ -41,8 +41,7 @@ const GiftTreePage = () => {
   const [taxDetails, setTaxDetails] = useState<TaxDetails>({
     citizenship: "",
     idType: "PAN CARD",
-    panCardNumber: "",
-    aadharId: "",
+    idNumber: "",
   });
 
   const [isGeoTagged, setIsGeoTagged] = useState(true);
@@ -125,6 +124,19 @@ const GiftTreePage = () => {
   };
 
   const handleTaxDetailsChange = (field: keyof TaxDetails, value: string) => {
+    if (field === "citizenship") {
+      setTaxDetails((prev) => ({
+        ...prev,
+        citizenship: value,
+        idType: value === "Indian" ? "PAN CARD" : "PASSPORT NUMBER",
+        idNumber: "",
+      }));
+      return;
+    }
+    if (field === "idType") {
+      setTaxDetails((prev) => ({ ...prev, idType: value, idNumber: "" }));
+      return;
+    }
     setTaxDetails((prev) => ({ ...prev, [field]: value }));
   };
 
@@ -133,7 +145,9 @@ const GiftTreePage = () => {
     personalDetails.firstName.trim() !== "" &&
     personalDetails.lastName.trim() !== "" &&
     personalDetails.email?.trim() !== "" &&
-    personalDetails.phoneNumber.trim() !== "";
+    personalDetails.phoneNumber.trim() !== "" &&
+    taxDetails.citizenship.trim() !== "" &&
+    taxDetails.idNumber.trim() !== "";
 
   return (
     <div className="max-w-7xl mx-auto min-h-screen bg-white sm:px-16 xl:px-28 px-4 md:pt-8 pt-4 space-y-8">

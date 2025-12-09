@@ -9,6 +9,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { PersonalDetails } from "./types";
+import { ComboBox } from "../ui/combobox";
 
 interface PersonalDetailsSectionProps {
   personalDetails: PersonalDetails;
@@ -16,11 +17,17 @@ interface PersonalDetailsSectionProps {
     field: keyof PersonalDetails,
     value: string | boolean
   ) => void;
+  emailError?: string;
+  phoneError?: string;
+  pincodeError?: string;
 }
 
 const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
   personalDetails,
   onPersonalDetailsChange,
+  emailError,
+  phoneError,
+  pincodeError,
 }) => {
   return (
     <div className="bg-white border border-[#E8E8E9] rounded-2xl mb-8">
@@ -33,30 +40,40 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
           <div className="grid grid-cols-2 gap-8">
             <div>
               <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-                First Name
+                First Name <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
                 value={personalDetails.firstName}
-                onChange={(e) =>
-                  onPersonalDetailsChange("firstName", e.target.value)
-                }
+                onChange={(e) => {
+                  const value = e.target.value
+                    .replace(/[^A-Za-z\s'-]/g, "")
+                    .slice(0, 40);
+                  if (/^[A-Za-z\s'-]*$/.test(value)) {
+                    onPersonalDetailsChange("firstName", value);
+                  }
+                }}
+                placeholder="jason"
                 className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-lg text-[#090C0F]"
-                placeholder="Jason"
               />
             </div>
             <div>
               <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-                Last Name
+                Last Name <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
                 value={personalDetails.lastName}
-                onChange={(e) =>
-                  onPersonalDetailsChange("lastName", e.target.value)
-                }
+                onChange={(e) => {
+                  const value = e.target.value
+                    .replace(/[^A-Za-z\s'-]/g, "")
+                    .slice(0, 40);
+                  if (/^[A-Za-z\s'-]*$/.test(value)) {
+                    onPersonalDetailsChange("lastName", value);
+                  }
+                }}
                 className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-lg text-[#090C0F]"
-                placeholder="Mason"
+                placeholder="Manson"
               />
             </div>
           </div>
@@ -83,7 +100,7 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
         </div>
         <div className="">
           <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-            Email
+            Email <span className="text-red-500">*</span>
           </label>
 
           <div className="relative w-full">
@@ -91,49 +108,69 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
             <input
               type="text"
               value={personalDetails.email}
-              onChange={(e) => onPersonalDetailsChange("email", e.target.value)}
+              onChange={(e) =>
+                onPersonalDetailsChange("email", e.target.value.trimStart())
+              }
               placeholder="olivia@heartfulness.com"
               className="w-full pl-10 px-3.5 py-2.5 border border-[#D0D5DD] rounded-lg text-[#090C0F]"
             />
           </div>
+          {emailError && (
+            <p className="text-xs text-red-500 font-medium mt-1">
+              {emailError}
+            </p>
+          )}
         </div>
 
         <div className="">
           <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-            Door no, Street Address
+            Door no, Street Address <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
             value={personalDetails.doorNo}
-            onChange={(e) => onPersonalDetailsChange("doorNo", e.target.value)}
+            onChange={(e) =>
+              onPersonalDetailsChange(
+                "doorNo",
+                e.target.value.replace(/[^A-Za-z0-9\s,./#-]/g, "").slice(0, 120)
+              )
+            }
             className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-lg text-[#090C0F]"
             placeholder="Enter address"
           />
           <p className="text-[10px] text-black leading-[16px] mt-2">
             <span className=" font-bold">Note:</span> Please provide the address
-            in full, without which the organization needs to pay 30% tax onthese
-            donations.
+            in full, without which the organization needs to pay 30% tax on
+            these donations.
           </p>
         </div>
 
         <div className="grid grid-cols-2 gap-8">
           <div>
             <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-              Pincode
+              Pincode <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
               value={personalDetails.pincode}
               onChange={(e) =>
-                onPersonalDetailsChange("pincode", e.target.value)
+                onPersonalDetailsChange(
+                  "pincode",
+                  e.target.value.replace(/[^0-9]/g, "").slice(0, 10)
+                )
               }
               className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-lg text-[#090C0F]"
               placeholder="Enter Pincode"
             />
+            {pincodeError && (
+              <p className="text-xs text-red-500 font-medium mt-1">
+                {pincodeError}
+              </p>
+            )}
           </div>
           <div>
             <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-              Phone number
+              Phone number <span className="text-red-500">*</span>
             </label>
 
             <div className="flex relative w-full">
@@ -145,18 +182,24 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
                 }
               >
                 <SelectTrigger className="absolute left-3 top-1/2 -translate-y-1/2 w-auto border-none bg-transparent p-0 h-auto shadow-none focus:ring-0 focus:outline-none hover:bg-transparent">
-                  <SelectValue placeholder="IN" />
+                  <SelectValue placeholder="+91" />
                 </SelectTrigger>
 
                 <SelectContent>
-                  <SelectItem value="in">
-                    <span className="text-sm">+91</span>
+                  <SelectItem value="+91">
+                    <span className="text-sm flex items-center gap-1">
+                      🇮🇳 +91
+                    </span>
                   </SelectItem>
-                  <SelectItem value="us">
-                    <span className="text-sm">+1</span>
+                  <SelectItem value="+1">
+                    <span className="text-sm flex items-center gap-1">
+                      🇺🇸 +1
+                    </span>
                   </SelectItem>
-                  <SelectItem value="uk">
-                    <span className="text-sm">+44</span>
+                  <SelectItem value="+44">
+                    <span className="text-sm flex items-center gap-1">
+                      🇬🇧 +44
+                    </span>
                   </SelectItem>
                 </SelectContent>
               </Select>
@@ -166,19 +209,27 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
                 type="tel"
                 value={personalDetails.phoneNumber}
                 onChange={(e) =>
-                  onPersonalDetailsChange("phoneNumber", e.target.value)
+                  onPersonalDetailsChange(
+                    "phoneNumber",
+                    e.target.value.replace(/[^0-9]/g, "").slice(0, 15)
+                  )
                 }
                 placeholder="Enter phone number"
-                className="pl-16 w-full px-3.5 py-2.5 border border-[#D0D5DD] min-h-fit rounded-lg text-[#090C0F] text-base"
+                className="pl-20 w-full px-3.5 py-2.5 border border-[#D0D5DD] min-h-fit rounded-lg text-[#090C0F] text-base"
               />
             </div>
+            {phoneError && (
+              <p className="text-xs text-red-500 font-medium mt-1">
+                {phoneError}
+              </p>
+            )}
           </div>
         </div>
 
         <div className="grid grid-cols-2 gap-8">
           <div>
             <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-              Currency
+              Currency <span className="text-red-500">*</span>
             </label>
             <Select
               value={personalDetails.currency}
@@ -219,60 +270,45 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
           </div>
           <div>
             <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-              Country
+              Country <span className="text-red-500">*</span>
             </label>
-            <Select
+            <ComboBox
               value={personalDetails.country}
-              onValueChange={(value) =>
-                onPersonalDetailsChange("country", value)
-              }
-            >
-              <SelectTrigger className="w-full px-3.5 py-2.5 border border-[#D0D5DD] min-h-fit rounded-lg text-[#090C0F] text-base">
-                <SelectValue placeholder="Select Country" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="India">India</SelectItem>
-                <SelectItem value="US">US</SelectItem>
-              </SelectContent>
-            </Select>
+              onChange={(value) => onPersonalDetailsChange("country", value)}
+              options={["India", "USA", "Canada", "UK"]}
+              placeholder="Select Country"
+            />
           </div>
         </div>
 
         <div className="grid grid-cols-2 gap-8">
           <div>
             <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-              State
+              State <span className="text-red-500">*</span>
             </label>
-            <Select
+            <ComboBox
               value={personalDetails.state}
-              onValueChange={(value) => onPersonalDetailsChange("state", value)}
-            >
-              <SelectTrigger className="w-full px-3.5 py-2.5 border border-[#D0D5DD] min-h-fit rounded-lg text-[#090C0F] text-base">
-                <SelectValue placeholder="Select State" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Maharashtra">Maharashtra</SelectItem>
-                <SelectItem value="MP">MP</SelectItem>
-              </SelectContent>
-            </Select>
+              onChange={(value) => onPersonalDetailsChange("state", value)}
+              options={[
+                "Maharashtra",
+                "Madhya Pradesh",
+                "Gujarat",
+                "Karnataka",
+              ]}
+              placeholder="Select State"
+            />
           </div>
+
           <div>
             <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-              City
+              City <span className="text-red-500">*</span>
             </label>
-            <Select
+            <ComboBox
               value={personalDetails.city}
-              onValueChange={(value) => onPersonalDetailsChange("city", value)}
-            >
-              <SelectTrigger className="w-full px-3.5 py-2.5 border border-[#D0D5DD] min-h-fit rounded-lg text-[#090C0F] text-base">
-                <SelectValue placeholder="Select City" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Shivgarh">Shivgarh</SelectItem>
-                <SelectItem value="Nagpur">Nagpur</SelectItem>
-                <SelectItem value="Pune">Pune</SelectItem>
-              </SelectContent>
-            </Select>
+              onChange={(value) => onPersonalDetailsChange("city", value)}
+              options={["Nagpur", "Pune", "Mumbai", "Kolhapur", "Thane"]}
+              placeholder="Select City"
+            />
           </div>
         </div>
       </div>

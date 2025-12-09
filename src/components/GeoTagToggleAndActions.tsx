@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { Info } from "lucide-react";
 import { Switch } from "./ui/switch";
@@ -18,6 +18,8 @@ interface GeoTagToggleAndActionsProps {
   onPlantTree: () => void;
   onGiftTree: () => void;
   variant?: "desktop" | "mobile";
+  geoAvailability?: { geo: boolean; nonGeo: boolean };
+  availabilityMessage?: string;
 }
 
 const GeoTagToggleAndActions: React.FC<GeoTagToggleAndActionsProps> = ({
@@ -26,8 +28,25 @@ const GeoTagToggleAndActions: React.FC<GeoTagToggleAndActionsProps> = ({
   onPlantTree,
   onGiftTree,
   variant = "desktop",
+  geoAvailability,
+  availabilityMessage,
 }) => {
   const isMobile = variant === "mobile";
+  const [localNotice, setLocalNotice] = useState("");
+
+  const handleToggle = (checked: boolean) => {
+    if (geoAvailability) {
+      const tagKey = checked ? "geo" : "nonGeo";
+      const canToggle = geoAvailability[tagKey as keyof typeof geoAvailability];
+      if (!canToggle) {
+        const allowed = geoAvailability.geo ? "geotagged" : "non-geotagged";
+        setLocalNotice(`Only ${allowed} trees are available.`);
+        return;
+      }
+    }
+    setLocalNotice("");
+    onGeoTaggedChange(checked);
+  };
 
   return (
     <div>
@@ -78,10 +97,15 @@ const GeoTagToggleAndActions: React.FC<GeoTagToggleAndActionsProps> = ({
           </div>
           <Switch
             checked={isGeoTagged}
-            onCheckedChange={onGeoTaggedChange}
+            onCheckedChange={handleToggle}
             className={isGeoTagged ? "bg-[#003399]" : ""}
           />
         </div>
+        {(availabilityMessage || localNotice) && (
+          <p className="text-xs text-red-500 font-medium mb-2">
+            {availabilityMessage || localNotice}
+          </p>
+        )}
 
         {/* Action Buttons */}
         <div className={`flex ${isMobile ? "gap-3" : "gap-4"}`}>

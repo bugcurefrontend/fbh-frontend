@@ -22,8 +22,7 @@ export interface PersonalDetails {
 export interface TaxDetails {
   citizenship: string;
   idType: string;
-  panCardNumber: string;
-  aadharId: string;
+  idNumber: string;
 }
 
 export interface Species {
@@ -31,4 +30,5 @@ export interface Species {
   name: string;
   botanical: string;
   img: string;
+  availableTags?: Array<"geo" | "non-geo">;
 }

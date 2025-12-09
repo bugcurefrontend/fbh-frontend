@@ -11,6 +11,7 @@ interface PlantInfoCardProps {
   onSpeciesSelect: (id: number) => void;
   isGeoTagged: boolean;
   onGeoTaggedChange: (value: boolean) => void;
+  availabilityMessage?: string;
 }
 
 const PlantInfoCard: React.FC<PlantInfoCardProps> = ({
@@ -21,6 +22,7 @@ const PlantInfoCard: React.FC<PlantInfoCardProps> = ({
   onSpeciesSelect,
   isGeoTagged,
   onGeoTaggedChange,
+  availabilityMessage,
 }) => {
   const hasQuantity = selectedQuantity || manualQuantity;
 
@@ -33,16 +35,16 @@ const PlantInfoCard: React.FC<PlantInfoCardProps> = ({
       />
       <div className="flex flex-col justify-between w-full">
         <div className="flex items-center justify-between">
-          {!hasQuantity && (
+          {isGeoTagged ? (
             <div className="font-semibold max-md:text-xs bg-[#E7F8F0] text-[#12B569] px-3 py-1 rounded-md">
-              Plants are geo-tagged
+              Geo-tagged
             </div>
-          )}
-          {hasQuantity && (
+          ) : (
             <div className="font-semibold max-md:text-xs bg-[#FEF4E6] text-[#F78F08] px-3 py-1 rounded-md">
-              Plants are geo-tagged
+              Non geo-tagged
             </div>
           )}
+
           <SpeciesSelectionDialog
             speciesData={speciesData}
             selectedSpeciesId={selectedSpeciesId}
@@ -50,8 +52,14 @@ const PlantInfoCard: React.FC<PlantInfoCardProps> = ({
             isGeoTagged={isGeoTagged}
             onGeoTaggedChange={onGeoTaggedChange}
             trigger={<SquarePen color="#003399" className="cursor-pointer" />}
+            availabilityMessage={availabilityMessage}
           />
         </div>
+        {availabilityMessage && (
+          <p className="text-xs text-red-500 font-medium">
+            {availabilityMessage}
+          </p>
+        )}
         <div className="space-y-1">
           <h1 className="text-2xl text-[#090C0F] leading-9 font-semibold">
             Neem

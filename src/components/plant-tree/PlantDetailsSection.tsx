@@ -59,6 +59,7 @@ const PlantDetailsSection: React.FC<PlantDetailsSectionProps> = ({
               placeholder="Enter Manually"
               value={manualQuantity}
               onChange={onManualQuantityChange}
+              min="1"
               onFocus={onManualInputFocus}
               className={`text-center pl-4 border rounded-md w-full sm:w-[30%] placeholder:text-black truncate transition-colors ${
                 manualQuantity
