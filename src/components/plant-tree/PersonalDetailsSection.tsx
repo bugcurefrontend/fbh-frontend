@@ -37,7 +37,7 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
 
       <div className="p-4 space-y-6">
         <div className="space-y-4">
-          <div className="grid grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 gap-8">
             <div>
               <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
                 First Name <span className="text-red-500">*</span>
@@ -145,7 +145,7 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
           </p>
         </div>
 
-        <div className="grid grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 gap-8">
           <div>
             <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
               Pincode <span className="text-red-500">*</span>
@@ -226,7 +226,7 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 gap-8">
           <div>
             <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
               Currency <span className="text-red-500">*</span>
@@ -281,7 +281,7 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 gap-8">
           <div>
             <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
               State <span className="text-red-500">*</span>

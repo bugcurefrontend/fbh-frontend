@@ -1,6 +1,13 @@
 import React from "react";
 import { TaxDetails } from "./types";
 import { ComboBox } from "../ui/combobox";
+import {
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+  SelectValue,
+} from "../ui/select";
 
 interface TaxDetailsSectionProps {
   taxDetails: TaxDetails;
@@ -15,7 +22,14 @@ const TaxDetailsSection: React.FC<TaxDetailsSectionProps> = ({
 }) => {
   const idTypeOptions =
     taxDetails.citizenship === "Indian"
-      ? ["PAN CARD", "AADHAR CARD", "DRIVING LICENSE", "VOTER ID CARD"]
+      ? [
+          "PAN CARD",
+          "AADHAR CARD",
+          "DRIVING LICENSE",
+          "VOTER ID CARD",
+          "PASSPORT NUMBER",
+          "RATION CARD",
+        ]
       : ["PAN CARD", "PASSPORT NUMBER"];
 
   const formatIdValue = (rawValue: string) => {
@@ -48,7 +62,7 @@ const TaxDetailsSection: React.FC<TaxDetailsSectionProps> = ({
       </h2>
 
       <div className="p-4 space-y-6">
-        <div className="grid grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 gap-8">
           <div>
             <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
               City <span className="text-red-500">*</span>
@@ -64,21 +78,26 @@ const TaxDetailsSection: React.FC<TaxDetailsSectionProps> = ({
             <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
               ID Type <span className="text-red-500">*</span>
             </label>
-            <select
+            <Select
               value={taxDetails.idType}
-              onChange={(e) => onTaxDetailsChange("idType", e.target.value)}
-              className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-lg text-[#090C0F]"
+              onValueChange={(value) => onTaxDetailsChange("idType", value)}
             >
-              {idTypeOptions.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
+              <SelectTrigger className="w-full px-3.5 py-2.5 border border-[#D0D5DD] min-h-fit rounded-lg text-[#090C0F] text-base">
+                <SelectValue placeholder="Select ID Type" />
+              </SelectTrigger>
+
+              <SelectContent>
+                {idTypeOptions.map((option) => (
+                  <SelectItem key={option} value={option}>
+                    {option}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 gap-8">
           <div>
             <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
               {taxDetails.idType === "PAN CARD"
@@ -87,6 +106,10 @@ const TaxDetailsSection: React.FC<TaxDetailsSectionProps> = ({
                 ? "Aadhar Number"
                 : taxDetails.idType === "PASSPORT NUMBER"
                 ? "Passport Number"
+                : taxDetails.idType === "RATION CARD"
+                ? "Ration Card Number"
+                : taxDetails.idType === "DRIVING LICENSE"
+                ? "Driving License Number"
                 : "ID Number"}{" "}
               <span className="text-red-500">*</span>
             </label>
@@ -112,6 +135,24 @@ const TaxDetailsSection: React.FC<TaxDetailsSectionProps> = ({
                 {idNumberError}
               </p>
             )}
+          </div>
+          <div>
+            <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
+              Abhyasi ID/ Member ID
+              <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              value={taxDetails.abhyashiNumber}
+              onChange={(e) =>
+                onTaxDetailsChange(
+                  "abhyashiNumber",
+                  formatIdValue(e.target.value)
+                )
+              }
+              className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-lg text-[#090C0F]"
+              placeholder="Enter ID details"
+            />
           </div>
         </div>
 

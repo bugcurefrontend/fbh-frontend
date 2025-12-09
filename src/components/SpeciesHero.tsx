@@ -151,7 +151,12 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
                 </h1>
 
                 <div className="flex items-center gap-1 text-gray-600">
-                  <Trees className="w-5.5 h-5.5" />
+                  <Image
+                    src="/images/Frame.png"
+                    alt="tree"
+                    width={20}
+                    height={20}
+                  />
                   <span className="md:text-base text-sm md:font-semibold">
                     ({scientificName})
                   </span>

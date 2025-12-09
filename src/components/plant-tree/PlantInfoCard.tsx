@@ -2,6 +2,7 @@ import React from "react";
 import { SquarePen, Trees } from "lucide-react";
 import SpeciesSelectionDialog from "./SpeciesSelectionDialog";
 import { Species } from "./types";
+import Image from "next/image";
 
 interface PlantInfoCardProps {
   selectedQuantity: number | null;
@@ -37,11 +38,11 @@ const PlantInfoCard: React.FC<PlantInfoCardProps> = ({
         <div className="flex items-center justify-between">
           {isGeoTagged ? (
             <div className="font-semibold max-md:text-xs bg-[#E7F8F0] text-[#12B569] px-3 py-1 rounded-md">
-              Geo-tagged
+              Plants are Geo-tagged
             </div>
           ) : (
             <div className="font-semibold max-md:text-xs bg-[#FEF4E6] text-[#F78F08] px-3 py-1 rounded-md">
-              Non geo-tagged
+              Plants are not geo-tagged
             </div>
           )}
 
@@ -65,7 +66,7 @@ const PlantInfoCard: React.FC<PlantInfoCardProps> = ({
             Neem
           </h1>
           <div className="flex items-center gap-1 text-gray-600">
-            <Trees className="w-5.5 h-5.5" />
+            <Image src="/images/Frame.png" alt="tree" width={20} height={20} />{" "}
             <span className="md:text-base text-sm md:font-semibold">
               Azadirachta{" "}
             </span>

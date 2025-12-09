@@ -23,6 +23,7 @@ const poppins = Poppins({
 const publicSans = Public_Sans({
   subsets: ["latin"],
   weight: ["200", "300", "400", "500", "600", "700"],
+  style: ["normal", "italic"],
 });
 const playfair = Playfair_Display({
   subsets: ["latin"],

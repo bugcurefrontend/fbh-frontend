@@ -42,6 +42,7 @@ const GiftTreePage = () => {
     citizenship: "",
     idType: "PAN CARD",
     idNumber: "",
+    abhyashiNumber: "",
   });
 
   const [isGeoTagged, setIsGeoTagged] = useState(true);

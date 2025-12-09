@@ -52,6 +52,7 @@ const TreeCheckout = () => {
     citizenship: "",
     idType: "PAN CARD",
     idNumber: "",
+    abhyashiNumber: "",
   });
 
   const [isGeoTagged, setIsGeoTagged] = useState(true);

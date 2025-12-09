@@ -23,6 +23,7 @@ export interface TaxDetails {
   citizenship: string;
   idType: string;
   idNumber: string;
+  abhyashiNumber: string;
 }
 
 export interface Species {
