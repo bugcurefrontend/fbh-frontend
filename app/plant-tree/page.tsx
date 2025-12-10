@@ -8,19 +8,13 @@ import PersonalDetailsSection from "@/components/plant-tree/PersonalDetailsSecti
 import TaxDetailsSection from "@/components/plant-tree/TaxDetailsSection";
 import OrderSummary from "@/components/plant-tree/OrderSummary";
 import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import {
   OrderSummary as OrderSummaryType,
   PersonalDetails,
   TaxDetails,
   Species,
 } from "@/components/plant-tree/types";
+import { useAuth } from "@/lib/auth-context";
+import LoginDialog from "@/components/LoginDialog";
 
 const TreeCheckout = () => {
   const [step, setStep] = useState(1);
@@ -58,10 +52,9 @@ const TreeCheckout = () => {
   const [isGeoTagged, setIsGeoTagged] = useState(true);
   const [selectedSpeciesId, setSelectedSpeciesId] = useState<number>(1);
   const [availabilityMessage, setAvailabilityMessage] = useState("");
-  const [isLoginOpen, setIsLoginOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [loginEmail, setLoginEmail] = useState("");
-  const [loginOtp, setLoginOtp] = useState("");
+  const [isLoginDialogOpen, setIsLoginDialogOpen] = useState(false);
+  const [hasChosenGuest, setHasChosenGuest] = useState(false);
+  const { isAuthenticated, isLoading, login } = useAuth();
 
   const quantities = [10, 25, 50, 100];
 
@@ -189,10 +182,6 @@ const TreeCheckout = () => {
 
   const handleSaveAndNext = () => {
     if (!selectedQuantity && !manualQuantity) return;
-    // if (!isLoggedIn) {
-    //   setIsLoginOpen(true);
-    //   return;
-    // }
     setStep(2);
   };
 
@@ -323,17 +312,36 @@ const TreeCheckout = () => {
     taxDetails.idNumber.trim() !== "" &&
     idNumberValid;
 
-  const handleLoginSubmit = () => {
-    if (
-      !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(loginEmail) ||
-      loginOtp.length < 4
-    ) {
-      return;
+  // Show login dialog when page loads if user is not authenticated
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated && !hasChosenGuest) {
+      setIsLoginDialogOpen(true);
+    } else if (isAuthenticated) {
+      setIsLoginDialogOpen(false);
     }
-    setIsLoggedIn(true);
-    setIsLoginOpen(false);
-    if (selectedQuantity || manualQuantity) {
-      setStep(2);
+  }, [isLoading, isAuthenticated, hasChosenGuest]);
+
+  // Close dialog when user becomes authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      setIsLoginDialogOpen(false);
+    }
+  }, [isAuthenticated]);
+
+  const handleContinueAsGuest = () => {
+    setHasChosenGuest(true);
+    setIsLoginDialogOpen(false);
+  };
+
+  const handleSignIn = () => {
+    login();
+    setIsLoginDialogOpen(false);
+  };
+
+  const handleDialogClose = (open: boolean) => {
+    if (!open) {
+      // If dialog is being closed, treat it as continuing as guest
+      handleContinueAsGuest();
     }
   };
 
@@ -418,57 +426,12 @@ const TreeCheckout = () => {
         />
       </div>
 
-      {/* <Dialog open={isLoginOpen} onOpenChange={setIsLoginOpen}>
-        <DialogContent className="max-w-md">
-          <DialogHeader>
-            <DialogTitle>Login to continue</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4">
-            <div>
-              <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-                Email<span className="text-red-500 ml-0.5">*</span>
-              </label>
-              <input
-                type="email"
-                value={loginEmail}
-                onChange={(e) => setLoginEmail(e.target.value.trim())}
-                className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-lg text-[#090C0F]"
-                placeholder="you@example.com"
-              />
-            </div>
-            <div>
-              <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-                OTP / Password<span className="text-red-500 ml-0.5">*</span>
-              </label>
-              <input
-                type="text"
-                value={loginOtp}
-                onChange={(e) => setLoginOtp(e.target.value.trim())}
-                className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-lg text-[#090C0F]"
-                placeholder="Enter OTP"
-              />
-            </div>
-          </div>
-          <DialogFooter className="gap-2">
-            <Button
-              variant="outline"
-              onClick={() => {
-                setIsLoginOpen(false);
-                setLoginEmail("");
-                setLoginOtp("");
-              }}
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={handleLoginSubmit}
-              disabled={!loginEmail || loginOtp.length < 4}
-            >
-              Continue
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog> */}
+      <LoginDialog
+        isOpen={isLoginDialogOpen}
+        onClose={handleDialogClose}
+        onSignIn={handleSignIn}
+        onContinueAsGuest={handleContinueAsGuest}
+      />
     </div>
   );
 };

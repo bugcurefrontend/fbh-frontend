@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import ProgressSteps from "@/components/plant-tree/ProgressSteps";
 import PlantInfoCard from "@/components/plant-tree/PlantInfoCard";
 import PersonalDetailsSection from "@/components/plant-tree/PersonalDetailsSection";
@@ -14,6 +14,8 @@ import {
   TaxDetails,
   Species,
 } from "@/components/plant-tree/types";
+import { useAuth } from "@/lib/auth-context";
+import LoginDialog from "@/components/LoginDialog";
 
 const GiftTreePage = () => {
   const [step, setStep] = useState(1);
@@ -47,6 +49,9 @@ const GiftTreePage = () => {
 
   const [isGeoTagged, setIsGeoTagged] = useState(true);
   const [selectedSpeciesId, setSelectedSpeciesId] = useState<number>(1);
+  const [isLoginDialogOpen, setIsLoginDialogOpen] = useState(false);
+  const [hasChosenGuest, setHasChosenGuest] = useState(false);
+  const { isAuthenticated, isLoading, login } = useAuth();
 
   const speciesData: Species[] = [
     {
@@ -150,6 +155,39 @@ const GiftTreePage = () => {
     taxDetails.citizenship.trim() !== "" &&
     taxDetails.idNumber.trim() !== "";
 
+  // Show login dialog when page loads if user is not authenticated
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated && !hasChosenGuest) {
+      setIsLoginDialogOpen(true);
+    } else if (isAuthenticated) {
+      setIsLoginDialogOpen(false);
+    }
+  }, [isLoading, isAuthenticated, hasChosenGuest]);
+
+  // Close dialog when user becomes authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      setIsLoginDialogOpen(false);
+    }
+  }, [isAuthenticated]);
+
+  const handleContinueAsGuest = () => {
+    setHasChosenGuest(true);
+    setIsLoginDialogOpen(false);
+  };
+
+  const handleSignIn = () => {
+    login();
+    setIsLoginDialogOpen(false);
+  };
+
+  const handleDialogClose = (open: boolean) => {
+    if (!open) {
+      // If dialog is being closed, treat it as continuing as guest
+      handleContinueAsGuest();
+    }
+  };
+
   return (
     <div className="max-w-7xl mx-auto min-h-screen bg-white sm:px-16 xl:px-28 px-4 md:pt-8 pt-4 space-y-8">
       <div className="space-y-6">
@@ -159,7 +197,6 @@ const GiftTreePage = () => {
 
         <ProgressSteps currentStep={step} />
       </div>
-
       <div className="lg:flex max-lg:space-y-8 md:gap-12 xl:gap-15">
         {/* Left Section */}
         <div className="lg:w-[55%]">
@@ -215,6 +252,12 @@ const GiftTreePage = () => {
           isFormValid={isFormValid}
         />
       </div>
+      <LoginDialog
+        isOpen={isLoginDialogOpen}
+        onClose={handleDialogClose}
+        onSignIn={handleSignIn}
+        onContinueAsGuest={handleContinueAsGuest}
+      />{" "}
     </div>
   );
 };
