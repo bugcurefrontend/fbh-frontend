@@ -1,5 +1,5 @@
 import React from "react";
-import { Mail, X } from "lucide-react";
+import { Mail, Trash2, X } from "lucide-react";
 import RecipientQuantitySelector from "./RecipientQuantitySelector";
 import { RecipientFormData } from "./types";
 
@@ -43,9 +43,9 @@ const RecipientForm: React.FC<RecipientFormProps> = ({
         {recipientsCount > 0 && (
           <button
             onClick={onCancel}
-            className="text-gray-500 hover:text-gray-700 transition-colors"
+            className="text-red-500 hover:text-red-700 transition-colors"
           >
-            <X className="w-5 h-5" />
+            <Trash2 className="w-5 h-5" />
           </button>
         )}
       </div>

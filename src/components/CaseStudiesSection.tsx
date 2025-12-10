@@ -11,6 +11,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "./ui/carousel";
+import Link from "next/link";
 
 const CaseStudiesSection = () => {
   const caseStudies = [
@@ -90,16 +91,17 @@ const CaseStudiesSection = () => {
                   <p className="text-[16px] font-normal leading-[20px] text-[#454950] flex-1 line-clamp-4 md:text-base md:font-normal md:leading-6 md:text-[#454950]">
                     {study.description}
                   </p>
-
-                  <button className="flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer md:font-bold md:text-xs md:leading-[18px] md:uppercase md:text-[#003399]">
-                    Know More{" "}
-                    <ArrowRightIcon
-                      width={22}
-                      height={22}
-                      color="#003399"
-                      className="max-sm:w-4"
-                    />
-                  </button>
+                  <Link href="/case-study" className="w-fit">
+                    <button className="flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer md:font-bold md:text-xs md:leading-[18px] md:uppercase md:text-[#003399]">
+                      read More{" "}
+                      <ArrowRightIcon
+                        width={22}
+                        height={22}
+                        color="#003399"
+                        className="max-sm:w-4"
+                      />
+                    </button>
+                  </Link>
                 </div>
               </div>
             </CarouselItem>
@@ -151,16 +153,17 @@ const CaseStudiesSection = () => {
               <p className="text-[10px] font-semibold leading-[16px] text-[#595959] flex-1 line-clamp-4 md:line-clamp-4 font-[Public_Sans]">
                 {study.description}
               </p>
-
-              <button className="flex items-center gap-2 text-[#003399] font-bold text-xs leading-[18px] uppercase min-w-[0] cursor-pointer font-[Public_Sans]">
-                Read More{" "}
-                <ArrowRightIcon
-                  width={22}
-                  height={22}
-                  color="#003399"
-                  className="max-sm:w-4"
-                />
-              </button>
+              <Link href="/case-study" className="w-fit">
+                <button className="flex items-center gap-2 text-[#003399] font-bold text-xs leading-[18px] uppercase min-w-[0] cursor-pointer font-[Public_Sans]">
+                  Read More{" "}
+                  <ArrowRightIcon
+                    width={22}
+                    height={22}
+                    color="#003399"
+                    className="max-sm:w-4"
+                  />
+                </button>
+              </Link>
             </div>
           </div>
         ))}
