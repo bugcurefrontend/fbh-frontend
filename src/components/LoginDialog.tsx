@@ -30,12 +30,12 @@ const LoginDialog: React.FC<LoginDialogProps> = ({
           </DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-6">
+        <div className="space-y-3">
           <p className="text-center">
             Sign in to autofill your details and view past contributions.
           </p>
 
-          <div className="flex flex-col items-center justify-center gap-4">
+          <div className="flex flex-col items-center justify-center gap-3">
             <Button
               onClick={onSignIn}
               className="w-fit bg-[#1E40AF] hover:bg-[#1E3A8A] text-white font-semibold py-3 px-6 rounded-md"
