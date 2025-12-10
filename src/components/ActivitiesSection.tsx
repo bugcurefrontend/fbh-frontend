@@ -17,6 +17,18 @@ const ActivitiesSection: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  // Format date from "2025-12-08" to "08 DEC"
+  const formatDate = (dateString: string) => {
+    try {
+      const date = new Date(dateString);
+      const day = date.getDate().toString().padStart(2, '0');
+      const month = date.toLocaleString('en-US', { month: 'short' }).toUpperCase();
+      return `${day} ${month}`;
+    } catch (error) {
+      return dateString;
+    }
+  };
+
   useEffect(() => {
     // Load articles from build-time generated JSON file
     const fetchActivities = async () => {
@@ -85,7 +97,7 @@ const ActivitiesSection: React.FC = () => {
                   <div className="flex items-center gap-2">
                     <Calendar className="w-5 h-5" />
                     <span className="text-sm font-bold text-black md:text-sm md:font-bold md:leading-[22px] md:text-center md:align-middle md:text-[#090C0F]">
-                      {activity.date}
+                      {formatDate(activity.date)}
                     </span>
                   </div>
                   <h3 className="text-lg font-bold text-[#333333] md:text-lg md:font-bold md:leading-[26px] md:align-middle md:text-[#333333] truncate">
@@ -135,7 +147,7 @@ const ActivitiesSection: React.FC = () => {
               <div className="flex items-center gap-2">
                 <Calendar className="w-5 h-5" />
                 <span className="text-sm font-bold text-black md:text-sm md:font-bold md:leading-[22px] md:text-center md:align-middle md:text-[#090C0F]">
-                  {activity.date}
+                  {formatDate(activity.date)}
                 </span>
               </div>
               <h3 className="text-lg font-bold text-[#333333] md:text-lg md:font-bold md:leading-[26px] md:align-middle md:text-[#333333]">
