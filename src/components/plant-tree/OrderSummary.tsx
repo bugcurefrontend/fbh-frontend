@@ -1,6 +1,26 @@
+"use client";
+
 import React from "react";
+import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/button";
 import { OrderSummary as OrderSummaryType } from "./types";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
+import plantAnimation from "../../../public/images/plant.json";
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogTrigger,
+} from "../ui/alert-dialog";
+import { AlertDialogTitle } from "@radix-ui/react-alert-dialog";
+
+const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
 interface OrderSummaryProps {
   orderSummary: OrderSummaryType;
@@ -51,12 +71,38 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
       </div>
 
       {currentStep === 2 && (
-        <Button
-          disabled={!isFormValid || orderSummary.numberOfTrees === 0}
-          className="w-full h-12 border-1 disabled:border-[#E8E8E9] disabled:bg-white border-[#95AAD5] text-white bg-[#003399] disabled:text-[#94979A] rounded-lg text-base font-bold hover:bg-[#013eb9] transition-colors disabled:cursor-not-allowed disabled:opacity-100"
-        >
-          Proceed to Pay
-        </Button>
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button
+              disabled={!isFormValid || orderSummary.numberOfTrees === 0}
+              className="w-full h-12 border-1 disabled:border-[#E8E8E9] disabled:bg-white border-[#95AAD5] text-white bg-[#003399] disabled:text-[#94979A] rounded-lg text-base font-bold hover:bg-[#013eb9] transition-colors disabled:cursor-not-allowed disabled:opacity-100"
+            >
+              Proceed to Pay
+            </Button>
+          </AlertDialogTrigger>
+
+          <AlertDialogContent className="max-w-[533px] border border-[#E4E4E4] rounded-2xl dialog-pop gap-4">
+            <div className="w-[155px] h-[155px] mx-auto">
+              <Lottie animationData={plantAnimation} loop={true} />
+            </div>
+
+            <AlertDialogTitle>
+              <p className="text-2xl leading-9 font-semibold md:font-bold text-[#232D26]">
+                Please wait
+              </p>
+            </AlertDialogTitle>
+
+            <div className="space-y-3">
+              <p className="text-xl font-semibold text-[#19212C]">
+                Holding your trees and taking you to payment.
+              </p>
+              <p className="text-[#454950] font-medium">
+                Please do not refresh this page or click on browser’s back
+                button.{" "}
+              </p>
+            </div>
+          </AlertDialogContent>
+        </AlertDialog>
       )}
     </div>
   );

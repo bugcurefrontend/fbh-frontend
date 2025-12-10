@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { CircleArrowRight, Users } from "lucide-react";
+import { CircleArrowRight, Users, X } from "lucide-react";
 import {
   Accordion,
   AccordionItem,
@@ -21,7 +21,13 @@ import Update from "./icons/update";
 import Species from "./icons/Species";
 import DonorsTable from "./DonorsTable";
 import RelatedProjects from "./RelatedProjects";
-import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "./ui/dialog";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from "./ui/dialog";
 
 interface Project {
   id: string;
@@ -181,10 +187,13 @@ const ProjectAccordion: React.FC<ProjectAccordionProps> = ({
                             className="max-sm:w-4"
                           />
                         </DialogTrigger>
-                        <DialogContent className="px-0">
-                          <DialogTitle className="border-b pb-3 px-4">
-                            Gallery
-                          </DialogTitle>
+                        <DialogContent showCloseButton={false} className="px-0">
+                          <DialogTitle className="px-4">Gallery</DialogTitle>
+                          <DialogClose asChild>
+                            <button className="absolute right-4 top-4 p-2 rounded-full hover:bg-gray-100 transition">
+                              <X size={18} className="text-black" />
+                            </button>
+                          </DialogClose>
                           <div className="px-4 max-h-[600px] overflow-y-auto h-full space-y-6 pb-2">
                             {images.map((img, i) => (
                               <div

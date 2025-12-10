@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "./ui/tabs";
-import { CircleArrowRight, Users } from "lucide-react";
+import { CircleArrowRight, Users, X, XIcon } from "lucide-react";
 import Image from "next/image";
 import {
   Select,
@@ -25,6 +25,7 @@ import {
   DialogTrigger,
 } from "./ui/dialog";
 import Gallery from "./Gallery";
+import { DialogClose } from "@radix-ui/react-dialog";
 
 interface Project {
   id: string;
@@ -200,11 +201,19 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({
                           className="max-sm:w-4"
                         />
                       </DialogTrigger>
-                      <DialogContent className="min-w-4xl px-0">
-                        <DialogTitle className="border-b pb-2 px-4">
+                      <DialogContent
+                        showCloseButton={false}
+                        className="min-w-4xl px-0"
+                      >
+                        <DialogTitle className="uppercase font-bold text-2xl px-6">
                           Gallery
                         </DialogTitle>
-                        <div className="px-4">
+                        <DialogClose asChild>
+                          <button className="absolute right-5 top-5 p-2 rounded-full hover:bg-gray-100 transition">
+                            <X size={20} className="text-black" />
+                          </button>
+                        </DialogClose>
+                        <div className="px-6">
                           <Gallery />
                         </div>
                       </DialogContent>
