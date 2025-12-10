@@ -235,7 +235,7 @@ export default function Header() {
                         <button
                           onClick={() => {
                             setDropdownOpen(false);
-                            logout();
+                            logout({ redirect: true, targetPath: "/" });
                           }}
                           className="flex items-center gap-2 w-full py-2 transition-colors"
                           style={{
