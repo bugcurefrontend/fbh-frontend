@@ -30,17 +30,35 @@ const ActivitiesSection: React.FC = () => {
   };
 
   useEffect(() => {
-    // Load articles from build-time generated JSON file
+    // Load articles from build-time generated JSON file with API fallback
     const fetchActivities = async () => {
       try {
+        // Try to load from build-time generated JSON first
         const response = await fetch('/data/articles.json');
-        if (!response.ok) {
-          throw new Error('Failed to load articles data');
+        if (response.ok) {
+          const data = await response.json();
+          if (data && data.length > 0) {
+            setActivities(data);
+            setLoading(false);
+            return;
+          }
         }
-        const data = await response.json();
-        setActivities(data);
+
+        // Fallback: If JSON doesn't exist or is empty, fetch from API
+        console.log('Falling back to API fetch...');
+        const { getArticles } = await import('@/lib/api');
+        const apiData = await getArticles();
+        setActivities(apiData);
       } catch (error) {
         console.error("Failed to load activities:", error);
+        // Try API as last resort
+        try {
+          const { getArticles } = await import('@/lib/api');
+          const apiData = await getArticles();
+          setActivities(apiData);
+        } catch (apiError) {
+          console.error("API fallback also failed:", apiError);
+        }
       } finally {
         setLoading(false);
       }
