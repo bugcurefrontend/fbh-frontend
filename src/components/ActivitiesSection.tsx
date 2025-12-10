@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { Calendar } from "lucide-react";
 
@@ -10,40 +10,32 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "./ui/carousel";
+import { Article } from "@/types/article";
 
 const ActivitiesSection: React.FC = () => {
-  const activities = [
-    {
-      date: "15 JAN",
-      title: "Gym Facilities for practitioners",
-      description:
-        "Kanha Gym is equipped with world-class fitness facilities. Gym offers the options to workout pla…",
-      image: "/images/gym-facilities.png",
-    },
-    {
-      date: "15 JAN",
-      title: "Kanha Sports Centre inaugurated",
-      description:
-        "An Kanha Sports Centre at Kanha Shanti Vanam, established by the Ministry of Sports, Khelo India, …",
-      image: "/images/sports-centre.jpg",
-    },
-    {
-      date: "15 JAN",
-      title: "Talent Identification, Physical Literacy key to",
-      description:
-        "India's Chief National Badminton Coach Pullela Gopichand says…",
-      image: "/images/badminton-coach.jpg",
-    },
-    {
-      date: "15 JAN",
-      title: "Gym Facilities for practitioners",
-      description:
-        "Kanha Gym is equipped with world-class fitness facilities. Gym offers the options to workout pla…",
-      image: "/images/gym-facilities.png",
-    },
-  ];
-
+  const [activities, setActivities] = useState<Article[]>([]);
+  const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    // Load articles from build-time generated JSON file
+    const fetchActivities = async () => {
+      try {
+        const response = await fetch('/data/articles.json');
+        if (!response.ok) {
+          throw new Error('Failed to load articles data');
+        }
+        const data = await response.json();
+        setActivities(data);
+      } catch (error) {
+        console.error("Failed to load activities:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchActivities();
+  }, []);
 
   const totalSlides = activities.length;
   const visibleSlides = 3;
