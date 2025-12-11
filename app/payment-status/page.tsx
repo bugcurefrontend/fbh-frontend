@@ -44,9 +44,9 @@ const PaymentStatusUI: React.FC = () => {
         </div>
 
         {/* Payment Status Card */}
-        <div className="text-center">
+        <div className="text-center flex items-center justify-center">
           {status === "success" ? (
-            <>
+            <div className="py-12 md:px-16 px-4 border-[#12B569] border rounded-xl">
               {/* Success State */}
               <div className="inline-flex items-center justify-center w-25 h-25 animate-bounce">
                 <Image
@@ -57,9 +57,15 @@ const PaymentStatusUI: React.FC = () => {
                 />
               </div>
 
-              <h1 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold sm:text-center text-[#232D26] mb-6 md:text-[32px] md:font-semibold md:leading-[48px] md:align-middle md:text-[#232D26]">
+              <h1 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold sm:text-center text-[#232D26] md:text-[32px] md:font-semibold md:leading-[48px] md:align-middle md:text-[#232D26]">
                 Payment Successful!
               </h1>
+
+              <div className="py-2 w-fit mx-auto px-4 my-6 rounded-md bg-[#E7F8F0]">
+                <p className="font-bold md:text-xl leading-9 text-green-700">
+                  Reference Number: SF-1656798
+                </p>
+              </div>
 
               <p className="text-[#454950] font-semibold md:text-2xl md:leading-9">
                 Your tree is now planted for a greener tomorrow. <br />
@@ -73,9 +79,9 @@ const PaymentStatusUI: React.FC = () => {
                 Go to Dashboard
                 <ArrowRightCircle className="w-5 h-5" />
               </button>
-            </>
+            </div>
           ) : (
-            <>
+            <div className="py-12 md:px-16 px-4 border-[#F04438] border rounded-xl">
               {/* Failed State */}
               <div className="inline-flex items-center justify-center w-20 h-20 animate-bounce">
                 <Image
@@ -90,6 +96,12 @@ const PaymentStatusUI: React.FC = () => {
                 Payment Failed! <br />
                 Donation did not succeed
               </h1>
+
+              <div className="w-fit mx-auto py-2 px-4 my-6 rounded-md bg-[#FEEDEC]">
+                <p className="font-bold md:text-xl leading-9 text-[#F04438]">
+                  Reference Number: SF-1656798
+                </p>
+              </div>
 
               <p className="text-[#F04438] font-medium md:text-2xl md:leading-9 mb-4">
                 Please check you bank/card account. If money is debited,
@@ -109,7 +121,7 @@ const PaymentStatusUI: React.FC = () => {
                 <RefreshCw className="w-5 h-5" />
                 Try again
               </button>
-            </>
+            </div>
           )}
         </div>
       </div>

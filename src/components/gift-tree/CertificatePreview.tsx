@@ -13,7 +13,7 @@ const CertificatePreview: React.FC = () => {
     <Dialog>
       <DialogTrigger asChild>
         <div
-          className="h-[109px] bg-gray-100 rounded-xl mb-8 flex items-center justify-center bg-cover bg-center relative overflow-hidden cursor-pointer"
+          className="h-[109px] border border-[#94979A] bg-gray-100 rounded-xl mb-8 flex items-center justify-center bg-cover bg-center relative overflow-hidden cursor-pointer"
           style={{
             backgroundImage: "url('/images/blur-certificate.png')",
           }}

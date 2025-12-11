@@ -148,7 +148,7 @@ export default function Header() {
                     className="absolute right-0 top-full bg-white z-50"
                     style={{
                       width: "200px",
-                      height: "235px",
+                      height: "220px",
                       marginTop: "5px",
                       paddingTop: "16px",
                       paddingBottom: "8px",
@@ -160,7 +160,20 @@ export default function Header() {
                     }}
                   >
                     {/* User Info Section - Horizontal Layout */}
-                    <div className="flex items-center gap-3 pb-3">
+                    <Link
+                      href="/account"
+                      className="hover:bg-gray-50 rounded-md transition-colors flex items-center justify-center gap-2"
+                      style={{
+                        fontFamily: "Public Sans",
+                        fontWeight: 400,
+                        fontSize: "16px",
+                        lineHeight: "24px",
+                        letterSpacing: "0px",
+                        color: "#454950",
+                      }}
+                      onClick={() => setDropdownOpen(false)}
+                      // className="flex items-center gap-3 pb-3"
+                    >
                       <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
                         <User className="w-6 h-6 text-gray-600" />
                       </div>
@@ -193,7 +206,7 @@ export default function Header() {
                           {userProfile?.email}
                         </span>
                       </div>
-                    </div>
+                    </Link>
 
                     {/* Menu Items */}
                     <div className="flex flex-col gap-2 py-3">
