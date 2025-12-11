@@ -6,6 +6,12 @@ import RelatedSpecies from "./RelatedSpecies";
 import FAQSection from "./FAQSection";
 import GeoTagToggleAndActions from "./GeoTagToggleAndActions";
 
+interface FAQ {
+  id: string;
+  question: string;
+  answer: string;
+}
+
 interface SpeciesDetailData {
   id: string;
   name: string;
@@ -21,6 +27,7 @@ interface SpeciesDetailData {
     oxygenReleased: string;
     height: string;
   };
+  faqs: FAQ[];
   benefits: string[];
   growthInfo: string[];
   environmentalImpact: string[];
@@ -62,8 +69,8 @@ const SpeciesDetailPage: React.FC<SpeciesDetailPageProps> = ({
         }
       />
 
-      <FAQSection />
-      <RelatedSpecies />
+      <FAQSection faqs={speciesData.faqs} />
+      <RelatedSpecies currentSpeciesId={speciesData.id} />
 
       {/* Mobile Sticky Actions */}
       <GeoTagToggleAndActions

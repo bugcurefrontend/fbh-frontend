@@ -1,55 +1,142 @@
-import SpeciesDetailPage from "../../src/components/SpeciesDetailPage";
+"use client";
 
-// Mock data for species detail
-const mockSpeciesData = {
-  id: "neem-azadirachta",
-  name: "Neem",
-  scientificName: "Azadirachta",
-  description:
-    "The Neem tree (Azadirachta indica) has been revered in India for centuries as the “village pharmacy.” It is known for its exceptional medicinal properties, ability to purify air, and its role in cultural traditions. Beyond health, Neem supports soil fertility, provides shade, and sustains biodiversity, making it a vital part of ecosystems and communities alike.",
-  treeSpecies: [
-    {
-      id: "variant-1",
-      imageUrl: "/images/species-1.png",
-      imageAlt: "Neem tree small variant",
-    },
-    {
-      id: "variant-2",
-      imageUrl: "/images/banyan-tree.avif",
-      imageAlt: "Neem tree landscape view",
-    },
-    {
-      id: "variant-3",
-      imageUrl: "/images/hero-forest-bg.png",
-      imageAlt: "Neem tree in rural farmland",
-    },
-  ],
+import { useEffect, useState, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
+import SpeciesDetailPage from "../../src/components/SpeciesDetailPage";
+import { getSpeciesById } from "../../src/lib/api";
+import { SpeciesSimplified } from "../../src/types/species";
+
+interface FAQ {
+  id: string;
+  question: string;
+  answer: string;
+}
+
+interface SpeciesDetailData {
+  id: string;
+  name: string;
+  scientificName: string;
+  description: string;
+  treeSpecies: {
+    id: string;
+    imageUrl: string;
+    imageAlt: string;
+  }[];
   characteristics: {
-    lifespan: "15+ yrs",
-    oxygenReleased: "330+",
-    mdHeight: "Up to 20m",
-    height: "20m",
-  },
-  benefits: [
-    "Natural pesticide properties help protect crops and reduce chemical usage",
-    "Medicinal properties provide natural healthcare solutions for communities",
-    "Fast-growing nature makes it ideal for quick environmental restoration",
-    "Drought-resistant qualities make it suitable for arid and semi-arid regions",
-  ],
-  growthInfo: [
-    "Grows well in tropical and subtropical climates",
-    "Requires minimal water once established, making it drought-tolerant",
-    "Prefers well-drained soil but can adapt to various soil types",
-    "Can be grown from seeds or saplings with high survival rates",
-  ],
-  environmentalImpact: [
-    "Releases significant amounts of oxygen, improving air quality",
-    "Provides habitat and food for various bird species and insects",
-    "Helps prevent soil erosion with its extensive root system",
-    "Acts as a natural carbon sink, helping mitigate climate change",
-  ],
-};
+    lifespan: string;
+    oxygenReleased: string;
+    height: string;
+  };
+  faqs: FAQ[];
+  benefits: string[];
+  growthInfo: string[];
+  environmentalImpact: string[];
+}
+
+function transformToDetailData(species: SpeciesSimplified): SpeciesDetailData {
+  // Transform images array to treeSpecies format
+  const treeSpecies = species.images.map((img, index) => ({
+    id: `${species.documentId}-image-${index}`,
+    imageUrl: img.url,
+    imageAlt: `${species.name} - Image ${index + 1}`,
+  }));
+
+  // Transform FAQs to include id field
+  const faqs = species.faqs.map((faq, index) => ({
+    id: `faq-${index + 1}`,
+    question: faq.question,
+    answer: faq.answer,
+  }));
+
+  return {
+    id: species.documentId,
+    name: species.name,
+    scientificName: species.scientificName,
+    description: species.description,
+    treeSpecies,
+    characteristics: {
+      lifespan: species.lifespan,
+      oxygenReleased: species.oxygenReleased,
+      height: species.maxHeight,
+    },
+    faqs,
+    benefits: [],
+    growthInfo: [],
+    environmentalImpact: [],
+  };
+}
+
+function SpeciesDetailContent() {
+  const searchParams = useSearchParams();
+  const speciesId = searchParams.get("id");
+
+  const [speciesData, setSpeciesData] = useState<SpeciesDetailData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchSpeciesDetail = async () => {
+      if (!speciesId) {
+        setError("No species ID provided");
+        setLoading(false);
+        return;
+      }
+
+      try {
+        setLoading(true);
+        const species = await getSpeciesById(speciesId);
+
+        if (!species) {
+          setError("Species not found");
+          setLoading(false);
+          return;
+        }
+
+        const transformedData = transformToDetailData(species);
+        setSpeciesData(transformedData);
+      } catch (err) {
+        console.error("Error fetching species:", err);
+        setError("Failed to load species details");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSpeciesDetail();
+  }, [speciesId]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-gray-500 text-lg">Loading species details...</p>
+      </div>
+    );
+  }
+
+  if (error || !speciesData) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <p className="text-red-500 text-lg">{error || "Species not found"}</p>
+          <a href="/species" className="text-blue-600 underline">
+            Back to All Species
+          </a>
+        </div>
+      </div>
+    );
+  }
+
+  return <SpeciesDetailPage speciesData={speciesData} />;
+}
 
 export default function SpeciesPage() {
-  return <SpeciesDetailPage speciesData={mockSpeciesData} />;
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-gray-500 text-lg">Loading species details...</p>
+      </div>
+    }>
+      <SpeciesDetailContent />
+    </Suspense>
+  );
 }
