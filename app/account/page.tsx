@@ -13,8 +13,10 @@ import {
   Receipt,
   Navigation,
   CircleQuestionMark,
+  LayoutDashboard,
 } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const stats = [
   {
@@ -97,27 +99,6 @@ const donations = [
   },
 ];
 
-const trees = [
-  {
-    id: 1,
-    name: "Mango Tree",
-    plantedOn: "Jan 6, 2024",
-    projectName: "Kerala, Prakasam",
-    treeCode: "DB3RPPF",
-    status: "ALIVE",
-    statusTone: "#0B9D58",
-  },
-  {
-    id: 2,
-    name: "Mango Tree",
-    plantedOn: "Jan 6, 2024",
-    projectName: "Kerala, Prakasam",
-    treeCode: "DB3RPPF",
-    status: "DEAD",
-    statusTone: "#EF4444",
-  },
-];
-
 const AccountPage = () => {
   const { isAuthenticated, isLoading, userProfile, login } = useAuth();
   const displayName =
@@ -127,9 +108,13 @@ const AccountPage = () => {
 
   if (isLoading) {
     return (
-      <main className="bg-[#F9FAFB]">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-          <div className="h-16 w-40 bg-gray-200 animate-pulse rounded-lg" />
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 md:pt-8 pt-4">
+        <div className="flex items-center space-x-4">
+          <Skeleton className="h-12 w-12 rounded-full" />
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-[250px]" />
+            <Skeleton className="h-4 w-[200px]" />
+          </div>
         </div>
       </main>
     );
@@ -139,7 +124,7 @@ const AccountPage = () => {
     return (
       <main className="bg-[#F9FAFB]">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 flex flex-col items-center gap-4 text-center">
-          <p className="text-xl font-semibold text-[#111827]">
+          <p className="text-2xl font-semibold text-[#111827]">
             Please sign in to view your account.
           </p>
           <p className="text-sm text-[#4B5563] max-w-xl">
@@ -182,7 +167,7 @@ const AccountPage = () => {
               value="dashboard"
               className="flex items-center gap-2 px-1 pb-[18px] pt-4 text-sm font-semibold text-[#6B7280] border-b-2 border-transparent rounded-none data-[state=active]:text-[#003399] data-[state=active]:border-[#003399]"
             >
-              <Leaf className="w-6 h-6" />
+              <LayoutDashboard className="w-6 h-6" />
               <span className="font-bold text-base">Dashboard</span>{" "}
             </TabsTrigger>
             <TabsTrigger
@@ -242,16 +227,109 @@ const AccountPage = () => {
         </TabsContent>
 
         <TabsContent value="donations" className="pt-6 space-y-4">
-          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+          <div className="grid gap-4 sm:gap-6 sm:grid-cols-2">
             {donations.map((donation) => (
               <div
                 key={donation.id}
-                className="bg-white border border-gray-200 rounded-2xl p-4 flex flex-col gap-4"
+                className="bg-white border border-[#E6E6E6] rounded-2xl"
               >
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2.5 sm:px-6 px-3 py-4 border-b border-[#E5E7EB]">
+                  <div
+                    className="h-8 w-8 rounded-full flex items-center justify-center"
+                    style={{ backgroundColor: `${donation.accent}1A` }}
+                  >
+                    <Trees
+                      className="w-5 h-5"
+                      style={{ color: donation.accent }}
+                    />
+                  </div>
+                  <p className="sm:text-2xl text-xl font-semibold text-[#111827] leading-5.5">
+                    {donation.name}
+                  </p>
+                </div>
+
+                <div className="sm:p-6 p-3 space-y-6">
+                  <div className="flex gap-3 justify-between items-center font-semibold text-[#94979A]">
+                    <div className="space-y-4 w-fit">
+                      <div className="sm:space-y-2">
+                        <h1>Reference No.</h1>
+                        <p className="text-lg font-bold text-[#19212C]">
+                          {donation.reference}
+                        </p>
+                      </div>
+                      <div className="sm:space-y-2">
+                        <h1> Donation For</h1>
+                        <Badge
+                          className="text-[10px] font-semibold border-0 items-center justify-center flex rounded-full w-16 h-8"
+                          style={{
+                            backgroundColor: `${donation.accent}1A`,
+                            color: donation.accent,
+                          }}
+                        >
+                          {donation.donationFor}
+                        </Badge>
+                      </div>
+                    </div>
+
+                    <div className="space-y-4 w-fit">
+                      <div className="sm:space-y-2">
+                        <h1>Trees Planted</h1>
+                        <p className="text-lg font-bold text-[#19212C]">
+                          {donation.trees}
+                        </p>
+                      </div>
+
+                      <div className="sm:space-y-2">
+                        <h1> Date</h1>
+
+                        <p className="text-lg font-bold text-[#19212C]">
+                          {donation.date}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between gap-2">
+                    <Button className="bg-[#003399] hover:bg-[#062d7b] text-white font-semibold h-11 px-5 py-3 rounded-md w-[50%] gap-1">
+                      <Download className="w-4 h-4" />
+                      <span className="max-md:hidden">Download</span>Certificate
+                    </Button>
+                    <Button
+                      variant="outline"
+                      className="border-[#003399] text-[#003399] font-semibold h-11 px-5 py-3 rounded-md w-[50%] gap-1"
+                    >
+                      See Receipt
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </TabsContent>
+
+        <TabsContent value="trees" className="pt-6 space-y-4">
+          <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
+            <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden">
+              <div className="min-h-[360px] h-full w-full relative overflow-hidden rounded-lg">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3528.9814570275257!2d78.21631687473341!3d17.1752898088815!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcbc68ae81e7a79%3A0x3e82438832073e9d!2sKanha%20Shanti%20Vanam!5e1!3m2!1sen!2sin!4v1765172898898!5m2!1sen!2sin"
+                  width="100%"
+                  height="100%"
+                  className="rounded-lg border-0 min-h-[360px] h-full"
+                  allowFullScreen
+                />
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-4">
+              {donations.slice(0, 2).map((donation) => (
+                <div
+                  key={donation.id}
+                  className="bg-white border border-[#E6E6E6] rounded-2xl"
+                >
+                  <div className="flex items-center gap-2.5 sm:px-6 px-3 py-4 border-b border-[#E5E7EB]">
                     <div
-                      className="h-10 w-10 rounded-full flex items-center justify-center"
+                      className="h-8 w-8 rounded-full flex items-center justify-center"
                       style={{ backgroundColor: `${donation.accent}1A` }}
                     >
                       <Trees
@@ -259,165 +337,66 @@ const AccountPage = () => {
                         style={{ color: donation.accent }}
                       />
                     </div>
-                    <div>
-                      <p className="text-base font-bold text-[#111827] leading-6">
-                        {donation.name}
-                      </p>
-                      <p className="text-xs text-[#6B7280]">
-                        Reference No. {donation.reference}
-                      </p>
-                    </div>
-                  </div>
-                  <Badge
-                    className="text-[10px] font-semibold border-0 px-3 py-1 rounded-full"
-                    style={{
-                      backgroundColor: `${donation.accent}1A`,
-                      color: donation.accent,
-                    }}
-                  >
-                    {donation.donationFor}
-                  </Badge>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3 text-sm text-[#4B5563]">
-                  <div>
-                    <p className="text-xs text-[#9CA3AF]">Trees Planted</p>
-                    <p className="font-semibold text-[#111827]">
-                      {donation.trees}
+                    <p className="sm:text-2xl text-xl font-semibold text-[#111827] leading-5.5">
+                      {donation.name}
                     </p>
                   </div>
-                  <div>
-                    <p className="text-xs text-[#9CA3AF]">Date</p>
-                    <p className="font-semibold text-[#111827]">
-                      {donation.date}
-                    </p>
-                  </div>
-                </div>
 
-                <div className="flex flex-wrap gap-2">
-                  <Button className="bg-[#003399] text-white text-xs font-semibold h-auto px-4 py-2 rounded-md">
-                    <Download className="w-4 h-4" />
-                    Download Certificate
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="border-[#D1D5DB] text-[#111827] text-xs font-semibold h-auto px-4 py-2 rounded-md"
-                  >
-                    <Receipt className="w-4 h-4" />
-                    See Receipt
-                  </Button>
-                </div>
-              </div>
-            ))}
-          </div>
+                  <div className="sm:p-6 p-3 space-y-6">
+                    <div className="flex gap-3 justify-between items-center font-semibold text-[#94979A]">
+                      <div className="space-y-4 w-fit">
+                        <div className="sm:space-y-2">
+                          <h1>Reference No.</h1>
+                          <p className="text-lg font-bold text-[#19212C]">
+                            {donation.reference}
+                          </p>
+                        </div>
+                        <div className="sm:space-y-2">
+                          <h1> Donation For</h1>
+                          <Badge
+                            className="text-[10px] font-semibold border-0 items-center justify-center flex rounded-full w-16 h-8"
+                            style={{
+                              backgroundColor: `${donation.accent}1A`,
+                              color: donation.accent,
+                            }}
+                          >
+                            {donation.donationFor}
+                          </Badge>
+                        </div>
+                      </div>
 
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between text-sm text-[#6B7280]">
-            <div className="flex items-center gap-2">
-              <span className="text-[#111827] font-semibold">6</span>
-              <span>records</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <Button
-                variant="ghost"
-                className="h-8 px-3 text-[#111827] hover:bg-gray-100 rounded-md"
-              >
-                Previous
-              </Button>
-              {[1, 2, 3, 4, 5, 6].map((page) => (
-                <Button
-                  key={page}
-                  variant={page === 2 ? "outline" : "ghost"}
-                  className={`h-8 w-8 rounded-md ${
-                    page === 2
-                      ? "border-[#003399] text-[#003399]"
-                      : "text-[#111827] hover:bg-gray-100"
-                  }`}
-                >
-                  {page}
-                </Button>
-              ))}
-              <Button
-                variant="ghost"
-                className="h-8 px-3 text-[#111827] hover:bg-gray-100 rounded-md"
-              >
-                Next
-              </Button>
-            </div>
-          </div>
-        </TabsContent>
+                      <div className="space-y-4 w-fit">
+                        <div className="sm:space-y-2">
+                          <h1>Trees Planted</h1>
+                          <p className="text-lg font-bold text-[#19212C]">
+                            {donation.trees}
+                          </p>
+                        </div>
 
-        <TabsContent value="trees" className="pt-6 space-y-4">
-          <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
-            <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden">
-              <div className="relative h-[260px] sm:h-[320px]">
-                <Image
-                  src="/images/map.png"
-                  alt="Map showing tree locations"
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 60vw"
-                  priority
-                />
-              </div>
-            </div>
+                        <div className="sm:space-y-2">
+                          <h1> Date</h1>
 
-            <div className="flex flex-col gap-4">
-              {trees.map((tree) => (
-                <div
-                  key={tree.id}
-                  className="bg-white border border-gray-200 rounded-2xl p-4 space-y-3"
-                >
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <p className="text-base font-bold text-[#111827]">
-                        {tree.name}
-                      </p>
-                      <p className="text-xs text-[#6B7280]">
-                        Planted On{" "}
-                        <span className="font-semibold"> {tree.plantedOn}</span>
-                      </p>
-                      <p className="text-xs text-[#6B7280]">
-                        Project Name:{" "}
-                        <span className="font-semibold">
-                          {tree.projectName}
-                        </span>
-                      </p>
-                      <p className="text-xs text-[#6B7280] flex items-center gap-1">
-                        <MapPin className="w-3 h-3" />
-                        {tree.projectName}
-                      </p>
+                          <p className="text-lg font-bold text-[#19212C]">
+                            {donation.date}
+                          </p>
+                        </div>
+                      </div>
                     </div>
-                    <Badge
-                      className="text-[10px] font-semibold px-3 py-1 rounded-full border-0"
-                      style={{
-                        backgroundColor: `${tree.statusTone}1A`,
-                        color: tree.statusTone,
-                      }}
-                    >
-                      {tree.status}
-                    </Badge>
-                  </div>
 
-                  <div className="flex items-center justify-between text-sm text-[#111827]">
-                    <span className="font-semibold">
-                      Tree Code: {tree.treeCode}
-                    </span>
-                  </div>
-
-                  <div className="flex flex-wrap gap-2">
-                    <Button
-                      variant="outline"
-                      className="border-[#003399] text-[#003399] text-xs font-semibold h-auto px-4 py-2 rounded-md"
-                    >
-                      <Navigation className="w-4 h-4" />
-                      Get Directions
-                    </Button>
-                    <Button
-                      variant="outline"
-                      className="text-[#003399] border-[#D1D5DB] text-xs font-semibold h-auto px-4 py-2 rounded-md"
-                    >
-                      View Updates
-                    </Button>
+                    <div className="flex items-center justify-between gap-2">
+                      <Button className="bg-[#003399] hover:bg-[#062d7b] text-white font-semibold h-11 px-5 py-3 rounded-md w-[50%] gap-1">
+                        <span className="max-md:hidden">Get</span>
+                        Direction
+                        <Navigation className="w-4 h-4" />
+                      </Button>
+                      <Button
+                        variant="outline"
+                        className="border-[#003399] text-[#003399] font-semibold h-11 px-5 py-3 rounded-md w-[50%] gap-1"
+                      >
+                        <span className="max-md:hidden">View</span>
+                        Update
+                      </Button>
+                    </div>
                   </div>
                 </div>
               ))}
