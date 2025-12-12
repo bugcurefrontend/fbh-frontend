@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import Image from "next/image";
 import SearchBar from "./SearchBar";
 import ProjectsPagination from "./ProjectsPagination";
@@ -13,11 +13,8 @@ import {
   BreadcrumbSeparator,
 } from "./ui/breadcrumb";
 import Link from "next/link";
-
-interface Species {
-  name: string;
-  image: string;
-}
+import { SpeciesSimplified } from "@/types/species";
+import { generateSlug } from "@/lib/slug";
 
 interface PaginationData {
   currentPage: number;
@@ -27,50 +24,94 @@ interface PaginationData {
 }
 
 interface AllSpeciesPageProps {
-  initialSpecies: Species[];
-  initialPagination: PaginationData;
+  initialSpecies?: SpeciesSimplified[];
+  initialPagination?: PaginationData;
   initialSearchQuery?: string;
 }
 
-// Sample data
-const speciesData: Species[] = [
-  { name: "Neem (Azadirachta)", image: "/images/neem-tree.jpg" },
-  { name: "Banyan Tree", image: "/images/banyan-tree.avif" },
-  { name: "Mango Tree", image: "/images/mango-tree.webp" },
-  { name: "Banyan Tree", image: "/images/banyan-tree.avif" },
-  { name: "Mango Tree", image: "/images/mango-tree.webp" },
-  { name: "Neem (Azadirachta)", image: "/images/neem-tree.jpg" },
-];
+const ITEMS_PER_PAGE = 9;
 
 const AllSpeciesPage: React.FC<AllSpeciesPageProps> = ({
   initialSpecies,
   initialPagination,
   initialSearchQuery = "",
 }) => {
-  // Use provided species or fallback to default data
-  const [allSpecies] = useState<Species[]>(initialSpecies || speciesData);
+  const [allSpecies, setAllSpecies] = useState<SpeciesSimplified[]>(initialSpecies || []);
+  const [loading, setLoading] = useState(!initialSpecies);
   const [searchQuery, setSearchQuery] = useState<string>(initialSearchQuery);
-  const [pagination, setPagination] =
-    useState<PaginationData>(initialPagination);
+  const [currentPage, setCurrentPage] = useState(initialPagination?.currentPage || 1);
+
+  useEffect(() => {
+    if (initialSpecies) return; // Skip if data already provided
+
+    const fetchSpecies = async () => {
+      try {
+        // Try static pre-built data first
+        const response = await fetch('/data/species.json');
+        if (response.ok) {
+          const data = await response.json();
+          if (data && data.length > 0) {
+            setAllSpecies(data);
+            setLoading(false);
+            return;
+          }
+        }
+
+        // Fallback to API
+        const { getSpecies } = await import('@/lib/api');
+        const apiData = await getSpecies();
+        setAllSpecies(apiData);
+      } catch (error) {
+        console.error("Failed to load species:", error);
+        try {
+          const { getSpecies } = await import('@/lib/api');
+          const apiData = await getSpecies();
+          setAllSpecies(apiData);
+        } catch (apiError) {
+          console.error("API fallback also failed:", apiError);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSpecies();
+  }, [initialSpecies]);
 
   const handlePageChange = (page: number) => {
-    setPagination((prev) => ({
-      ...prev,
-      currentPage: page,
-      hasNext: page < prev.totalPages,
-      hasPrevious: page > 1,
-    }));
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleSearchChange = (query: string) => {
     setSearchQuery(query);
+    setCurrentPage(1); // Reset to first page on search
   };
 
   // 🔍 Filter species based on search query
   const filteredSpecies = useMemo(() => {
     const query = searchQuery.toLowerCase();
-    return allSpecies.filter((item) => item.name.toLowerCase().includes(query));
+    return allSpecies.filter((item) =>
+      item.name.toLowerCase().includes(query) ||
+      item.scientificName.toLowerCase().includes(query)
+    );
   }, [searchQuery, allSpecies]);
+
+  // 📄 Paginate filtered species
+  const paginatedSpecies = useMemo(() => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const endIndex = startIndex + ITEMS_PER_PAGE;
+    return filteredSpecies.slice(startIndex, endIndex);
+  }, [filteredSpecies, currentPage]);
+
+  // Calculate pagination data
+  const totalPages = Math.ceil(filteredSpecies.length / ITEMS_PER_PAGE);
+  const pagination: PaginationData = {
+    currentPage,
+    totalPages,
+    hasNext: currentPage < totalPages,
+    hasPrevious: currentPage > 1,
+  };
 
   return (
     <div className="min-h-screen bg-white space-y-8">
@@ -124,49 +165,61 @@ const AllSpeciesPage: React.FC<AllSpeciesPageProps> = ({
           placeholder="Search a species..."
         />
 
-        {/* Species Grid */}
-        <div className="mt-6 gap-6 md:gap-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 items-center">
-          {filteredSpecies.length > 0 ? (
-            filteredSpecies.map((item, index) => (
-              <Link key={index} href="/species-detail">
-                <div className="flex-1 min-w-0 border border-gray-200 rounded-xl flex-shrink-0 hover:shadow-md transition-all duration-200">
-                  <div className="overflow-hidden w-full md:p-4 p-2">
-                    <Image
-                      src={item.image}
-                      alt={item.name}
-                      width={350}
-                      height={194}
-                      className="w-full object-cover rounded-lg max-h-[194px]"
-                    />
-                  </div>
-                  <div className="p-4 pt-2 flex justify-between items-center">
-                    <p className="text-lg font-bold text-black truncate md:text-lg md:font-bold md:text-[#19212C]">
-                      {item.name}
-                    </p>
-                    <button className="mr-4 flex items-center gap-2 text-[#003399] font-bold text-xs uppercase cursor-pointer">
-                      Know More
-                      <ArrowRightIcon width={22} height={22} color="#003399" />
-                    </button>
-                  </div>
-                </div>
-              </Link>
-            ))
-          ) : (
-            <p className="text-center col-span-full min-h-20 md:min-h-64 flex items-center justify-center text-gray-500">
-              No species found matching "{searchQuery}"
-            </p>
-          )}
-        </div>
+        {loading ? (
+          <div className="text-center py-12">
+            <p className="text-gray-500">Loading species...</p>
+          </div>
+        ) : (
+          <>
+            {/* Species Grid */}
+            <div className="mt-6 gap-6 md:gap-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 items-center">
+              {paginatedSpecies.length > 0 ? (
+                paginatedSpecies.map((item) => (
+                  <Link key={item.documentId} href={`/species/${generateSlug(item.name)}`}>
+                    <div className="flex-1 min-w-0 border border-gray-200 rounded-xl flex-shrink-0 hover:shadow-md transition-all duration-200">
+                      <div className="overflow-hidden w-full md:p-4 p-2">
+                        <Image
+                          src={item.image}
+                          alt={item.name}
+                          width={350}
+                          height={194}
+                          className="w-full object-cover rounded-lg max-h-[194px]"
+                        />
+                      </div>
+                      <div className="p-4 pt-2 flex justify-between items-center">
+                        <p className="text-lg font-bold text-black truncate md:text-lg md:font-bold md:text-[#19212C]">
+                          {item.name}
+                        </p>
+                        <button className="mr-4 flex items-center gap-2 text-[#003399] font-bold text-xs uppercase cursor-pointer">
+                          Know More
+                          <ArrowRightIcon width={22} height={22} color="#003399" />
+                        </button>
+                      </div>
+                    </div>
+                  </Link>
+                ))
+              ) : (
+                <p className="text-center col-span-full min-h-20 md:min-h-64 flex items-center justify-center text-gray-500">
+                  {searchQuery
+                    ? `No species found matching "${searchQuery}"`
+                    : "No species available at the moment."}
+                </p>
+              )}
+            </div>
 
-        {/* Pagination */}
-        <ProjectsPagination
-          currentPage={pagination.currentPage}
-          totalPages={pagination.totalPages}
-          hasNext={pagination.hasNext}
-          hasPrevious={pagination.hasPrevious}
-          onPageChange={handlePageChange}
-          className="pt-5"
-        />
+            {/* Pagination */}
+            {filteredSpecies.length > ITEMS_PER_PAGE && (
+              <ProjectsPagination
+                currentPage={pagination.currentPage}
+                totalPages={pagination.totalPages}
+                hasNext={pagination.hasNext}
+                hasPrevious={pagination.hasPrevious}
+                onPageChange={handlePageChange}
+                className="pt-5"
+              />
+            )}
+          </>
+        )}
       </main>
     </div>
   );

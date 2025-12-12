@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import ArrowRightIcon from "./icons/ArrowRightIcon";
 import {
@@ -10,18 +10,50 @@ import {
   CarouselPrevious,
 } from "./ui/carousel";
 import Link from "next/link";
+import { SpeciesSimplified } from "@/types/species";
+import { generateSlug } from "@/lib/slug";
 
 const SpeciesSection: React.FC = () => {
-  const species = [
-    { name: "Neem (Azadirachta)", image: "/images/neem-tree.jpg" },
-    { name: "Banyan Tree", image: "/images/banyan-tree.avif" },
-    { name: "Mango Tree", image: "/images/mango-tree.webp" },
-    { name: "Neem (Azadirachta)", image: "/images/neem-tree.jpg" },
-    { name: "Banyan Tree", image: "/images/banyan-tree.avif" },
-    { name: "Mango Tree", image: "/images/mango-tree.webp" },
-  ];
-
+  const [species, setSpecies] = useState<SpeciesSimplified[]>([]);
+  const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const fetchSpecies = async () => {
+      try {
+        // Try static pre-built data first (performance optimization)
+        const response = await fetch('/data/species.json');
+        if (response.ok) {
+          const data = await response.json();
+          if (data && data.length > 0) {
+            setSpecies(data);
+            setLoading(false);
+            return;
+          }
+        }
+
+        // Fallback to API if static data unavailable
+        console.log('Falling back to API fetch...');
+        const { getSpecies } = await import('@/lib/api');
+        const apiData = await getSpecies();
+        setSpecies(apiData);
+      } catch (error) {
+        console.error("Failed to load species:", error);
+        // Second fallback - try API again
+        try {
+          const { getSpecies } = await import('@/lib/api');
+          const apiData = await getSpecies();
+          setSpecies(apiData);
+        } catch (apiError) {
+          console.error("API fallback also failed:", apiError);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSpecies();
+  }, []);
 
   const totalSlides = species.length;
   const visibleSlides = 3;
@@ -30,6 +62,26 @@ const SpeciesSection: React.FC = () => {
       ? 100
       : ((currentIndex + visibleSlides) / totalSlides) * 100;
 
+  if (loading) {
+    return (
+      <section className="max-w-7xl mx-auto px-4 md:px-8 relative mt-8 md:mt-16">
+        <div className="text-center py-12">
+          <p className="text-gray-500">Loading species...</p>
+        </div>
+      </section>
+    );
+  }
+
+  if (species.length === 0) {
+    return (
+      <section className="max-w-7xl mx-auto px-4 md:px-8 relative mt-8 md:mt-16">
+        <div className="text-center py-12">
+          <p className="text-gray-500">No species available at the moment.</p>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="max-w-7xl mx-auto px-4 md:px-8 relative mt-8 md:mt-16">
       {/* Header */}
@@ -37,9 +89,11 @@ const SpeciesSection: React.FC = () => {
         <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold mx-auto sm:mx-0 text-black md:text-[32px] md:font-semibold md:leading-[48px] md:align-middle md:text-[#090C0F]">
           Species
         </h2>
-        <button className="absolute right-0 top-4 text-[#003399] font-bold text-xs uppercase md:font-bold md:text-xs md:leading-[18px] md:text-center md:align-middle md:uppercase md:text-[#003399]">
-          View All
-        </button>
+        <Link href="/species">
+          <button className="absolute right-0 top-4 text-[#003399] font-bold text-xs uppercase md:font-bold md:text-xs md:leading-[18px] md:text-center md:align-middle md:uppercase md:text-[#003399]">
+            View All
+          </button>
+        </Link>
       </div>
 
       {/*Desktop Carousel */}
@@ -54,12 +108,12 @@ const SpeciesSection: React.FC = () => {
         }}
       >
         <CarouselContent className="-ml-8">
-          {species.map((item, idx) => (
+          {species.map((item) => (
             <CarouselItem
-              key={idx}
+              key={item.documentId}
               className="basis-1/1 sm:basis-1/2 lg:basis-1/3 pl-8"
             >
-              <Link href="/species-detail">
+              <Link href={`/species/${generateSlug(item.name)}`}>
                 <div className="flex-1 min-w-0 border border-gray-200 rounded-xl flex-shrink-0">
                   <div className="overflow-hidden w-full md:p-4 p-2">
                     <Image
@@ -105,8 +159,8 @@ const SpeciesSection: React.FC = () => {
       {/* Mobile Carousel */}
       <div className="sm:hidden mb-6 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         <div className="flex gap-4 pb-2 w-max">
-          {species.map((item, idx) => (
-            <Link key={idx} href="/species-detail">
+          {species.map((item) => (
+            <Link key={item.documentId} href={`/species/${generateSlug(item.name)}`}>
               <div className="flex-1 min-w-[314px] max-w-[314px] border border-gray-200 rounded-xl flex-shrink-0 overflow-hidden">
                 <div className="pt-3 px-3">
                   <Image
