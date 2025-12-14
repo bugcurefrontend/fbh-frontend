@@ -4,32 +4,48 @@ import Autoplay from "embla-carousel-autoplay";
 import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
+import { HeroContentSimplified } from "@/types/hero-content";
 
-const heroSlides = [
-  {
-    id: 1,
-    title: "Putting heart back into the Earth",
-    buttonText: "PLANT A TREE",
-    bgImage: "/images/hero-forest-bg.png",
-    href: "/plant-tree",
-  },
-  {
-    id: 2,
-    title: "Together for a Greener Future",
-    buttonText: "JOIN US",
-    bgImage: "/images/hero-water-bg.avif",
-    href: "/join-us",
-  },
-  {
-    id: 3,
-    title: "One Tree Can Change the World",
-    buttonText: "DONATE NOW",
-    bgImage: "/images/hero-girls-bg.avif",
-    href: "/gift-tree",
-  },
-];
+interface HeroSectionProps {
+  heroContents?: HeroContentSimplified[];
+}
 
-const HeroSection = () => {
+const HeroSection: React.FC<HeroSectionProps> = ({ heroContents }) => {
+  // Fallback to static data if no hero contents from API
+  const fallbackSlides = [
+    {
+      id: 1,
+      title: "Putting heart back into the Earth",
+      buttonText: "PLANT A TREE",
+      bgImage: "/images/hero-forest-bg.png",
+      href: "/plant-tree",
+    },
+    {
+      id: 2,
+      title: "Together for a Greener Future",
+      buttonText: "JOIN US",
+      bgImage: "/images/hero-water-bg.avif",
+      href: "/join-us",
+    },
+    {
+      id: 3,
+      title: "One Tree Can Change the World",
+      buttonText: "DONATE NOW",
+      bgImage: "/images/hero-girls-bg.avif",
+      href: "/gift-tree",
+    },
+  ];
+
+  // Use API data if available, otherwise use fallback
+  const heroSlides = heroContents && heroContents.length > 0
+    ? heroContents.map((hc) => ({
+        id: hc.id,
+        title: hc.title,
+        buttonText: hc.buttonText,
+        bgImage: hc.bgImage,
+        href: hc.buttonUrl,
+      }))
+    : fallbackSlides;
   const autoplay = useRef(Autoplay({ delay: 5000, stopOnInteraction: false }));
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [
     autoplay.current,

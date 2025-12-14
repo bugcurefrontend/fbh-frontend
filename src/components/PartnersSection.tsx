@@ -2,9 +2,14 @@
 import React from "react";
 import Image from "next/image";
 import { InfiniteMovingCards } from "./ui/infinite-moving-cards";
+import { PartnerSimplified } from "@/types/partner";
 
-const PartnersSection: React.FC = () => {
-  const partners = [
+interface PartnersSectionProps {
+  partners?: PartnerSimplified[];
+}
+
+const PartnersSection: React.FC<PartnersSectionProps> = ({ partners: apiPartners }) => {
+  const fallbackPartners = [
     { name: "Google", logo: "/images/partners/google1.png" },
     { name: "Accenture", logo: "/images/partners/accenture.png" },
     { name: "Amazon", logo: "/images/partners/amazon.png" },
@@ -17,7 +22,7 @@ const PartnersSection: React.FC = () => {
     { name: "MPG", logo: "/images/partners/mp.png" },
   ];
 
-  const mobilePartners = [
+  const fallbackMobilePartners = [
     { name: "Samsung", logo: "/images/partners/samsung.png" },
     { name: "Google", logo: "/images/partners/google1.png" },
     { name: "Amazon", logo: "/images/partners/amazon.png" },
@@ -25,6 +30,15 @@ const PartnersSection: React.FC = () => {
     { name: "FedEX", logo: "/images/partners/fedex.png" },
     { name: "HubSpot", logo: "/images/partners/hubSpot.png" },
   ];
+
+  // Use API data if available, otherwise use fallback
+  const partners = apiPartners && apiPartners.length > 0
+    ? apiPartners.map((p) => ({ name: p.name, logo: p.logo }))
+    : fallbackPartners;
+
+  const mobilePartners = apiPartners && apiPartners.length > 0
+    ? apiPartners.slice(0, 6).map((p) => ({ name: p.name, logo: p.logo }))
+    : fallbackMobilePartners;
 
   const items = partners.map((partner) => ({
     id: partner.name,

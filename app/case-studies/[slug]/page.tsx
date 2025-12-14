@@ -1,3 +1,5 @@
+import { notFound } from "next/navigation";
+import { Metadata } from "next";
 import Gallery from "@/components/Gallery";
 import PartnersSection from "@/components/PartnersSection";
 import {
@@ -8,14 +10,63 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { MapPin, Share2 } from "lucide-react";
+import { fetchAllPartners } from "@/services/partners";
+import {
+  fetchCaseStudyBySlug,
+  fetchCaseStudySlugs,
+} from "@/services/case-studies";
 
-const CaseStudy = () => {
+interface CaseStudyPageProps {
+  params: Promise<{ slug: string }>;
+}
+
+// Generate static paths for all case studies
+export async function generateStaticParams() {
+  const slugs = await fetchCaseStudySlugs();
+  return slugs;
+}
+
+// Generate metadata for SEO
+export async function generateMetadata({
+  params,
+}: CaseStudyPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const caseStudy = await fetchCaseStudyBySlug(slug);
+
+  if (!caseStudy) {
+    return {
+      title: "Case Study Not Found",
+    };
+  }
+
+  return {
+    title: `${caseStudy.title} - Case Study | Forests by Heartfulness`,
+    description: caseStudy.description?.substring(0, 160) || "",
+  };
+}
+
+export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
+  const { slug } = await params;
+  const [caseStudy, partners] = await Promise.all([
+    fetchCaseStudyBySlug(slug),
+    fetchAllPartners(),
+  ]);
+
+  if (!caseStudy) {
+    notFound();
+  }
+
+  // Use first media image as hero background, fallback to default
+  const heroImage =
+    caseStudy.image ||
+    "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTAwNDR8MHwxfHNlYXJjaHwxfHxmb3Jlc3QlMjB0cmVlcyUyMG5hdHVyZXxlbnwwfDB8fGdyZWVufDE3NTc3NjExNzB8MA&ixlib=rb-4.1.0&q=85";
+
   return (
     <main className="min-h-screen bg-white space-y-8">
       <section
         className="relative h-[213px] md:h-[288px] flex items-center justify-center"
         style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTAwNDR8MHwxfHNlYXJjaHwxfHxmb3Jlc3QlMjB0cmVlcyUyMG5hdHVyZXxlbnwwfDB8fGdyZWVufDE3NTc3NjExNzB8MA&ixlib=rb-4.1.0&q=85')`,
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('${heroImage}')`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
@@ -32,19 +83,21 @@ const CaseStudy = () => {
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbLink href="/satna">Satna, NPCI</BreadcrumbLink>
+                <BreadcrumbLink href={`/case-studies/${slug}`}>
+                  {caseStudy.title}
+                </BreadcrumbLink>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
 
           <div className="space-y-2">
             <h1 className="font-[Playfair_Display] text-[22px] md:text-[32px] md:leading-12 leading-[30px] font-semibold">
-              Satna, NPCI
+              {caseStudy.title}
             </h1>
             <div className="flex items-center gap-1 md:text-lg text-[10px] md:font-bold font-semibold leading-4 md:leading-[26px]">
               <MapPin className="w-4 h-4 md:w-6 md:h-6" />
               <span className="md:text-xl md:leading-[30px] text-base md:font-bold">
-                Madhya Pradesh
+                {caseStudy.address}
               </span>
             </div>
           </div>
@@ -60,26 +113,13 @@ const CaseStudy = () => {
             Overview
           </h1>
           <p className="max-md:hidden text-[#454950] max-md:text-sm">
-            Lorem ipsum dolor sit amet consectetur. Nibh porta dui fermentum in
-            facilisi sed. Pellentesque lectus proin gravida in. Malesuada etiam
-            viverra ut auctor semper lacinia. Eu dictum odio eu quam integer
-            placerat posuere. Faucibus pellentesque sit in porttitor adipiscing
-            a. Lectus nascetur proin volutpat senectus. Molestie ultricies eu eu
-            amet tellus fames. Id tellus volutpat quisque enim turpis nisi. Sed
-            malesuada scelerisque etiam quis. Duis vel felis sit scelerisque
-            tincidunt venenatis. Turpis suspendisse porttitor et lacinia pretium
-            tincidunt odio orci hendrerit.
+            {caseStudy.description}
           </p>
           <p className="md:hidden text-[#454950] text-sm">
-            The Neem tree (Azadirachta indica) has been revered in India for
-            centuries as the “village pharmacy.” It is known for its exceptional
-            medicinal properties, ability to purify air, and its role in
-            cultural traditions. Beyond health, Neem supports soil fertility,
-            provides shade, and sustains biodiversity, making it a vital part of
-            ecosystems and communities alike.
+            {caseStudy.description}
           </p>
         </div>
-        <PartnersSection />
+        <PartnersSection partners={partners} />
         <div className="space-y-6 md:px-8 px-4">
           <h1 className="text-center font-[Playfair_Display] text-[22px] md:text-[32px] md:leading-12 leading-[30px] font-semibold">
             Gallery
@@ -89,5 +129,4 @@ const CaseStudy = () => {
       </div>
     </main>
   );
-};
-export default CaseStudy;
+}

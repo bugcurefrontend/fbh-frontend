@@ -12,9 +12,15 @@ import {
   CarouselPrevious,
 } from "./ui/carousel";
 import Link from "next/link";
+import { CaseStudySimplified } from "@/types/case-study";
 
-const CaseStudiesSection = () => {
-  const caseStudies = [
+interface CaseStudiesSectionProps {
+  caseStudies?: CaseStudySimplified[];
+}
+
+const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({ caseStudies: apiCaseStudies }) => {
+  // Fallback to static data if no case studies from API
+  const fallbackCaseStudies = [
     {
       title: "Satna, CoNPCI",
       subtitle: "Madhya Pradesh",
@@ -37,6 +43,17 @@ const CaseStudiesSection = () => {
       image: "/images/case-study-field.png",
     },
   ];
+
+  // Use API data if available, otherwise use fallback
+  const caseStudies = apiCaseStudies && apiCaseStudies.length > 0
+    ? apiCaseStudies.map((cs) => ({
+        title: cs.title,
+        subtitle: cs.address,
+        description: cs.description,
+        image: cs.image,
+        slug: cs.title.toLowerCase().trim().replace(/[()]/g, "").replace(/[^\w\s-]/g, "").replace(/\s+/g, "-").replace(/-+/g, "-").replace(/^-+|-+$/g, ""),
+      }))
+    : fallbackCaseStudies.map((cs) => ({ ...cs, slug: "case-study" }));
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -91,7 +108,7 @@ const CaseStudiesSection = () => {
                   <p className="text-[16px] font-normal leading-[20px] text-[#454950] flex-1 line-clamp-4 md:text-base md:font-normal md:leading-6 md:text-[#454950]">
                     {study.description}
                   </p>
-                  <Link href="/case-study" className="w-fit">
+                  <Link href={`/case-studies/${study.slug}`} className="w-fit">
                     <button className="flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer md:font-bold md:text-xs md:leading-[18px] md:uppercase md:text-[#003399]">
                       read More{" "}
                       <ArrowRightIcon
@@ -153,7 +170,7 @@ const CaseStudiesSection = () => {
               <p className="text-[10px] font-semibold leading-[16px] text-[#595959] flex-1 line-clamp-4 md:line-clamp-4 font-[Public_Sans]">
                 {study.description}
               </p>
-              <Link href="/case-study" className="w-fit">
+              <Link href={`/case-studies/${study.slug}`} className="w-fit">
                 <button className="flex items-center gap-2 text-[#003399] font-bold text-xs leading-[18px] uppercase min-w-[0] cursor-pointer font-[Public_Sans]">
                   Read More{" "}
                   <ArrowRightIcon

@@ -7,19 +7,28 @@ import ProjectsSection from "../src/components/ProjectsSection";
 import ActivitiesSection from "../src/components/ActivitiesSection";
 import TestimonialsSection from "../src/components/TestimonialsSection";
 import CaseStudiesSection from "../src/components/CaseStudiesSection";
+import { fetchAllPartners } from "@/services/partners";
+import { fetchAllCaseStudies } from "@/services/case-studies";
+import { fetchAllHeroContents } from "@/services/hero-content";
 
-export default function Home() {
+export default async function Home() {
+  const [partners, caseStudies, heroContents] = await Promise.all([
+    fetchAllPartners(),
+    fetchAllCaseStudies(),
+    fetchAllHeroContents(),
+  ]);
+
   return (
     <main className="min-h-screen">
-      <HeroSection />
+      <HeroSection heroContents={heroContents} />
       <StatisticsSection />
       <AboutSection />
-      <PartnersSection />
+      <PartnersSection partners={partners} />
       <SpeciesSection />
       <ProjectsSection />
       <ActivitiesSection />
       <TestimonialsSection />
-      <CaseStudiesSection />
+      <CaseStudiesSection caseStudies={caseStudies} />
     </main>
   );
 }
