@@ -67,6 +67,7 @@ export interface Species {
   faq5_question: string;
   faq5_answer: string;
   deleted: boolean;
+  popular: boolean; // Popular species shown on landing page
   images: SpeciesImage[];
   trees: any[]; // Can be typed more specifically if needed
   projects: any[]; // Can be typed more specifically if needed
@@ -87,6 +88,7 @@ export interface SpeciesSimplified {
   images: SpeciesImage[]; // Full image array
   faqs: FAQ[];
   deleted: boolean;
+  popular: boolean; // Popular species shown on landing page
   createdAt: string;
   updatedAt: string;
 }

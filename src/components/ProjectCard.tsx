@@ -53,10 +53,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       </div>
       <div className="px-2.5 md:px-4 pt-4 pb-4 md:pb-6 md:pt-4 flex flex-col md:gap-6 gap-4">
         <div className="flex justify-between items-center">
-          <p className="md:font-bold font-semibold md:text-lg md:text-[#4C4748] text-[#19212C] truncate">
+          <p className="md:font-bold font-semibold md:text-lg md:text-[#4C4748] text-[#19212C] truncate flex-1 min-w-0">
             {title}
           </p>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-shrink-0 ml-2">
             <LocationPinIcon width={13} height={16} color="#63676C" />
             <span className="text-base font-semibold md:text-[#4C4748] text-[#19212C]">
               {location}

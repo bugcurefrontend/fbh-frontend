@@ -1,27 +1,53 @@
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import SpeciesDetailPage from "../../../src/components/SpeciesDetailPage";
-import { SpeciesSimplified } from "../../../src/types/species";
-import { findSpeciesBySlug, generateSlug } from "../../../src/lib/slug";
-import fs from "fs";
-import path from "path";
+import { fetchAllSpecies, fetchSpeciesBySlug, generateSlug } from "@/services/species";
+import { SpeciesSimplified } from "@/types/species";
 
-// Generate static paths at build time
-export async function generateStaticParams() {
+type Params = { slug: string };
+
+/**
+ * Generate static paths at build time
+ * Fetches all species from Strapi API and generates slugs
+ */
+export async function generateStaticParams(): Promise<Params[]> {
   try {
-    const speciesPath = path.join(process.cwd(), 'public/data/species.json');
-
-    if (fs.existsSync(speciesPath)) {
-      const species = JSON.parse(fs.readFileSync(speciesPath, 'utf8'));
-      return species.map((s: SpeciesSimplified) => ({
-        slug: generateSlug(s.name),
-      }));
-    }
-
-    return [];
+    const species = await fetchAllSpecies();
+    return species.map((s: SpeciesSimplified) => ({
+      slug: generateSlug(s.name),
+    }));
   } catch (error) {
-    console.error('Error generating static params:', error);
+    console.error("Error generating static params:", error);
     return [];
   }
+}
+
+/**
+ * Generate metadata for SEO
+ */
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<Params>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const species = await fetchSpeciesBySlug(slug);
+
+  if (!species) {
+    return {
+      title: "Species Not Found",
+    };
+  }
+
+  return {
+    title: `${species.name} - FBH`,
+    description: species.description?.slice(0, 160) || `Learn about ${species.name}`,
+    openGraph: {
+      title: species.name,
+      description: species.description?.slice(0, 160),
+      images: species.image ? [{ url: species.image }] : [],
+    },
+  };
 }
 
 interface FAQ {
@@ -85,32 +111,19 @@ function transformToDetailData(species: SpeciesSimplified): SpeciesDetailData {
 }
 
 export default async function SpeciesSlugPage({
-  params
+  params,
 }: {
-  params: Promise<{ slug: string }>
+  params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
 
-  try {
-    // Try to read from static JSON file
-    const speciesPath = path.join(process.cwd(), 'public/data/species.json');
-    let allSpecies: SpeciesSimplified[] = [];
+  // Fetch species from Strapi API
+  const species = await fetchSpeciesBySlug(slug);
 
-    if (fs.existsSync(speciesPath)) {
-      allSpecies = JSON.parse(fs.readFileSync(speciesPath, 'utf8'));
-    }
-
-    // Find species by slug
-    const species = findSpeciesBySlug(allSpecies, slug);
-
-    if (!species) {
-      notFound();
-    }
-
-    const transformedData = transformToDetailData(species);
-    return <SpeciesDetailPage speciesData={transformedData} />;
-  } catch (error) {
-    console.error("Error loading species:", error);
+  if (!species) {
     notFound();
   }
+
+  const transformedData = transformToDetailData(species);
+  return <SpeciesDetailPage speciesData={transformedData} />;
 }

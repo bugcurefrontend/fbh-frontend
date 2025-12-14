@@ -14,7 +14,7 @@ import {
 } from "./ui/breadcrumb";
 import Link from "next/link";
 import { SpeciesSimplified } from "@/types/species";
-import { generateSlug } from "@/lib/slug";
+import { generateSlug } from "@/services/species";
 
 interface PaginationData {
   currentPage: number;
@@ -42,40 +42,22 @@ const AllSpeciesPage: React.FC<AllSpeciesPageProps> = ({
   const [currentPage, setCurrentPage] = useState(initialPagination?.currentPage || 1);
 
   useEffect(() => {
-    if (initialSpecies) return; // Skip if data already provided
+    if (initialSpecies && initialSpecies.length > 0) return; // Skip if data already provided
 
-    const fetchSpecies = async () => {
+    const loadSpecies = async () => {
       try {
-        // Try static pre-built data first
-        const response = await fetch('/data/species.json');
-        if (response.ok) {
-          const data = await response.json();
-          if (data && data.length > 0) {
-            setAllSpecies(data);
-            setLoading(false);
-            return;
-          }
-        }
-
-        // Fallback to API
-        const { getSpecies } = await import('@/lib/api');
-        const apiData = await getSpecies();
+        // Fetch from API using the service
+        const { fetchAllSpecies } = await import('@/services/species');
+        const apiData = await fetchAllSpecies();
         setAllSpecies(apiData);
       } catch (error) {
         console.error("Failed to load species:", error);
-        try {
-          const { getSpecies } = await import('@/lib/api');
-          const apiData = await getSpecies();
-          setAllSpecies(apiData);
-        } catch (apiError) {
-          console.error("API fallback also failed:", apiError);
-        }
       } finally {
         setLoading(false);
       }
     };
 
-    fetchSpecies();
+    loadSpecies();
   }, [initialSpecies]);
 
   const handlePageChange = (page: number) => {

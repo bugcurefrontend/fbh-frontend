@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { CircleArrowRight, Users, X } from "lucide-react";
 import {
   Accordion,
@@ -39,52 +40,31 @@ interface Project {
   imageAlt: string;
 }
 
+interface ProjectUpdateUI {
+  id: number;
+  month: string;
+  date: string;
+  year: number;
+  images: string[];
+  text: string;
+}
+
+interface ProjectSpeciesUI {
+  id: string;
+  name: string;
+  image: string;
+  slug: string;
+}
+
 interface ProjectAccordionProps {
   projectDescription: string;
   projectDetails: string[];
   relatedProjects: Project[];
   onPlantTree: (projectId: string) => void;
   onViewAll: () => void;
+  projectUpdates?: ProjectUpdateUI[];
+  projectSpecies?: ProjectSpeciesUI[];
 }
-
-const updates = [
-  {
-    id: 1,
-    month: "July 2025",
-    images: [
-      "https://images.unsplash.com/photo-1600196895335-5fb111df31a5?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTAwNDR8MHwxfHNlYXJjaHwxfHxmb3Jlc3QlMjB0cmVlcyUyMG5hdHVyZXxlbnwwfDB8fGdyZWVufDE3NTc3NjExNzB8MA&ixlib=rb-4.1.0&q=85",
-      "https://images.unsplash.com/photo-1568943542306-bf5807bdc38c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTAwNDR8MHwxfHNlYXJjaHwxfHxtb3VudGFpbiUyMGZvcmVzdCUyMGV2ZXJncmVlbnxlbnwwfDB8fGdyZWVufDE3NTc3NjExNzB8MA&ixlib=rb-4.1.0&q=85",
-    ],
-    text: "In 2023, the Honourable Chief Minister of Madhya Pradesh, Shri. Mohan Yadav invited FBH to afforest an initial parcel of 12 sites in Satna aggregating 650 HA. This project was kicked off in 2023 by the Dy. Chief Minister, Shri Rajendra Shukla.",
-  },
-  {
-    id: 2,
-    month: "July 2025",
-    images: [
-      "https://images.unsplash.com/photo-1600196895335-5fb111df31a5?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTAwNDR8MHwxfHNlYXJjaHwxfHxmb3Jlc3QlMjB0cmVlcyUyMG5hdHVyZXxlbnwwfDB8fGdyZWVufDE3NTc3NjExNzB8MA&ixlib=rb-4.1.0&q=85",
-      "https://images.unsplash.com/photo-1568943542306-bf5807bdc38c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTAwNDR8MHwxfHNlYXJjaHwxfHxtb3VudGFpbiUyMGZvcmVzdCUyMGV2ZXJncmVlbnxlbnwwfDB8fGdyZWVufDE3NTc3NjExNzB8MA&ixlib=rb-4.1.0&q=85",
-    ],
-    text: "Lorem ipsum dolor sit amet consectetur. Suspendisse tortor cras vitae ultrices. Magna amet scelerisque pellentesque penatibus ullamcorper lacinia nisl ante.",
-  },
-];
-
-const species = [
-  { name: "Neem (Azadirachta)", image: "/images/neem-tree.jpg" },
-  { name: "Banyan Tree", image: "/images/banyan-tree.avif" },
-  { name: "Mango Tree", image: "/images/mango-tree.webp" },
-];
-
-const images = [
-  "https://images.unsplash.com/photo-1600196895335-5fb111df31a5?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTAwNDR8MHwxfHNlYXJjaHwxfHxmb3Jlc3QlMjB0cmVlcyUyMG5hdHVyZXxlbnwwfDB8fGdyZWVufDE3NTc3NjExNzB8MA&ixlib=rb-4.1.0&q=85",
-  "https://images.unsplash.com/photo-1568943542306-bf5807bdc38c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTAwNDR8MHwxfHNlYXJjaHwxfHxtb3VudGFpbiUyMGZvcmVzdCUyMGV2ZXJncmVlbnxlbnwwfDB8fGdyZWVufDE3NTc3NjExNzB8MA&ixlib=rb-4.1.0&q=85",
-  "https://images.unsplash.com/photo-1506744038136-46273834b3fb?crop=entropy&cs=tinysrgb&fm=jpg&ixid=M3w3NTAwNDR8MHwxfHNlYXJjaHwxfHxmb3Jlc3QlMjB0cmVlcyUyMG5hdHVyZXxlbnwwfDB8fGdyZWVufDE3NTc3NjExNzB8MA&ixlib=rb-4.1.0&q=85",
-  "https://images.unsplash.com/photo-1600196895335-5fb111df31a5?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTAwNDR8MHwxfHNlYXJjaHwxfHxmb3Jlc3QlMjB0cmVlcyUyMG5hdHVyZXxlbnwwfDB8fGdyZWVufDE3NTc3NjExNzB8MA&ixlib=rb-4.1.0&q=85",
-  "https://images.unsplash.com/photo-1568943542306-bf5807bdc38c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTAwNDR8MHwxfHNlYXJjaHwxfHxtb3VudGFpbiUyMGZvcmVzdCUyMGV2ZXJncmVlbnxlbnwwfDB8fGdyZWVufDE3NTc3NjExNzB8MA&ixlib=rb-4.1.0&q=85",
-  "https://images.unsplash.com/photo-1506744038136-46273834b3fb?crop=entropy&cs=tinysrgb&fm=jpg&ixid=M3w3NTAwNDR8MHwxfHNlYXJjaHwxfHxmb3Jlc3QlMjB0cmVlcyUyMG5hdHVyZXxlbnwwfDB8fGdyZWVufDE3NTc3NjExNzB8MA&ixlib=rb-4.1.0&q=85",
-  "https://images.unsplash.com/photo-1600196895335-5fb111df31a5?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTAwNDR8MHwxfHNlYXJjaHwxfHxmb3Jlc3QlMjB0cmVlcyUyMG5hdHVyZXxlbnwwfDB8fGdyZWVufDE3NTc3NjExNzB8MA&ixlib=rb-4.1.0&q=85",
-  "https://images.unsplash.com/photo-1568943542306-bf5807bdc38c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTAwNDR8MHwxfHNlYXJjaHwxfHxtb3VudGFpbiUyMGZvcmVzdCUyMGV2ZXJncmVlbnxlbnwwfDB8fGdyZWVufDE3NTc3NjExNzB8MA&ixlib=rb-4.1.0&q=85",
-  "https://images.unsplash.com/photo-1506744038136-46273834b3fb?crop=entropy&cs=tinysrgb&fm=jpg&ixid=M3w3NTAwNDR8MHwxfHNlYXJjaHwxfHxmb3Jlc3QlMjB0cmVlcyUyMG5hdHVyZXxlbnwwfDB8fGdyZWVufDE3NTc3NjExNzB8MA&ixlib=rb-4.1.0&q=85",
-];
 
 const ProjectAccordion: React.FC<ProjectAccordionProps> = ({
   projectDescription,
@@ -92,7 +72,19 @@ const ProjectAccordion: React.FC<ProjectAccordionProps> = ({
   relatedProjects,
   onPlantTree,
   onViewAll,
+  projectUpdates = [],
+  projectSpecies = [],
 }) => {
+  // Get unique years from updates for the dropdown
+  const years = Array.from(new Set(projectUpdates.map((u) => u.year))).sort((a, b) => b - a);
+  const [selectedYear, setSelectedYear] = React.useState<string>(
+    years.length > 0 ? years[0].toString() : new Date().getFullYear().toString()
+  );
+
+  // Filter updates by selected year
+  const filteredUpdates = projectUpdates.filter(
+    (u) => u.year.toString() === selectedYear
+  );
   return (
     <div className="w-full md:hidden">
       <Accordion type="single" collapsible className="w-full space-y-2">
@@ -138,83 +130,93 @@ const ProjectAccordion: React.FC<ProjectAccordionProps> = ({
           </AccordionTrigger>
           <AccordionContent className="py-3">
             <div className="w-full mx-auto space-y-6 relative">
-              <Select defaultValue="2025">
-                <SelectTrigger className="absolute top-0 right-0 gap-3 hover:rounded rounded border-2 max-h-6 px-3">
-                  <SelectValue placeholder="Year" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="2025">2025</SelectItem>
-                  <SelectItem value="2024">2024</SelectItem>
-                  <SelectItem value="2023">2023</SelectItem>
-                </SelectContent>
-              </Select>
-              {updates.map((update) => (
-                <div key={update.id} className="space-y-3">
-                  <h3 className="font-semibold text-base text-[#454950]">
-                    {update.month}
-                  </h3>
+              {years.length > 0 && (
+                <Select value={selectedYear} onValueChange={setSelectedYear}>
+                  <SelectTrigger className="absolute top-0 right-0 gap-3 hover:rounded rounded border-2 max-h-6 px-3">
+                    <SelectValue placeholder="Year" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {years.map((year) => (
+                      <SelectItem key={year} value={year.toString()}>
+                        {year}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+              {filteredUpdates.length === 0 ? (
+                <p className="text-gray-500 text-center py-4">No updates available for this year.</p>
+              ) : (
+                filteredUpdates.map((update) => (
+                  <div key={update.id} className="space-y-3">
+                    <h3 className="font-semibold text-base text-[#454950]">
+                      {update.month}
+                    </h3>
 
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3 items-center">
-                    {/* Images */}
-                    <div className="grid grid-cols-2 gap-3 col-span-2">
-                      {update.images.map((img, i) => (
-                        <div
-                          key={i}
-                          className="relative w-full h-31 md:h-48 lg:h-60 rounded-lg overflow-hidden"
-                        >
-                          <Image
-                            src={img}
-                            alt={`Update image ${i + 1}`}
-                            fill
-                            className="object-cover"
-                          />
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="space-y-2">
-                      {/* Text */}
-                      <p className="text-xs text-[#454950] leading-[18px]">
-                        {update.text}
-                      </p>
-                      <Dialog>
-                        <DialogTrigger className="flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer md:font-bold md:text-xs md:leading-[18px] md:uppercase md:text-[#003399]">
-                          View all images{" "}
-                          <CircleArrowRight
-                            width={22}
-                            height={22}
-                            color="#003399"
-                            className="max-sm:w-4"
-                          />
-                        </DialogTrigger>
-                        <DialogContent showCloseButton={false} className="px-0">
-                          <DialogTitle className="px-4">Gallery</DialogTitle>
-                          <DialogClose asChild>
-                            <button className="absolute right-4 top-4 p-2 rounded-full hover:bg-gray-100 transition">
-                              <X size={18} className="text-black" />
-                            </button>
-                          </DialogClose>
-                          <div className="px-4 max-h-[600px] overflow-y-auto h-full space-y-6 pb-2">
-                            {images.map((img, i) => (
-                              <div
-                                key={i}
-                                className="relative w-full h-44 sm:h-52 md:h-60 rounded-xl overflow-hidden"
-                              >
-                                <Image
-                                  src={img}
-                                  alt="img"
-                                  fill
-                                  className="object-cover"
-                                />
-                              </div>
-                            ))}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 items-center">
+                      {/* Images */}
+                      <div className="grid grid-cols-2 gap-3 col-span-2">
+                        {update.images.slice(0, 2).map((img, i) => (
+                          <div
+                            key={i}
+                            className="relative w-full h-31 md:h-48 lg:h-60 rounded-lg overflow-hidden"
+                          >
+                            <Image
+                              src={img}
+                              alt={`Update image ${i + 1}`}
+                              fill
+                              className="object-cover"
+                            />
                           </div>
-                        </DialogContent>
-                      </Dialog>
+                        ))}
+                      </div>
+
+                      <div className="space-y-2">
+                        {/* Text */}
+                        <p className="text-xs text-[#454950] leading-[18px]">
+                          {update.text}
+                        </p>
+                        {update.images.length > 0 && (
+                          <Dialog>
+                            <DialogTrigger className="flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer md:font-bold md:text-xs md:leading-[18px] md:uppercase md:text-[#003399]">
+                              View all images{" "}
+                              <CircleArrowRight
+                                width={22}
+                                height={22}
+                                color="#003399"
+                                className="max-sm:w-4"
+                              />
+                            </DialogTrigger>
+                            <DialogContent showCloseButton={false} className="px-0">
+                              <DialogTitle className="px-4">Gallery</DialogTitle>
+                              <DialogClose asChild>
+                                <button className="absolute right-4 top-4 p-2 rounded-full hover:bg-gray-100 transition">
+                                  <X size={18} className="text-black" />
+                                </button>
+                              </DialogClose>
+                              <div className="px-4 max-h-[600px] overflow-y-auto h-full space-y-6 pb-2">
+                                {update.images.map((img, i) => (
+                                  <div
+                                    key={i}
+                                    className="relative w-full h-44 sm:h-52 md:h-60 rounded-xl overflow-hidden"
+                                  >
+                                    <Image
+                                      src={img}
+                                      alt={`Update image ${i + 1}`}
+                                      fill
+                                      className="object-cover"
+                                    />
+                                  </div>
+                                ))}
+                              </div>
+                            </DialogContent>
+                          </Dialog>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))
+              )}
             </div>
           </AccordionContent>
         </AccordionItem>
@@ -228,31 +230,36 @@ const ProjectAccordion: React.FC<ProjectAccordionProps> = ({
             </div>
           </AccordionTrigger>
           <AccordionContent className="py-3 gap-4 grid grid-cols-1 sm:grid-cols-2 items-center">
-            {species.map((item, index) => (
-              <div
-                key={index}
-                className="flex-1 min-w-0 border border-gray-200 rounded-xl flex-shrink-0"
-              >
-                <div className="overflow-hidden w-full md:p-4 p-2">
-                  <Image
-                    src={item.image}
-                    alt={item.name}
-                    width={350}
-                    height={160}
-                    className="w-full rounded-lg max-h-[160px] object-cover"
-                  />
-                </div>
-                <div className="px-4 pt-2 pb-4 space-y-2">
-                  <p className="text-base truncate font-semibold md:leading-[26px] md:align-middle text-[#19212C]">
-                    {item.name}
-                  </p>
-                  <button className="pt-2 flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer">
-                    Know More
-                    <CircleArrowRight width={22} height={22} color="#003399" />
-                  </button>
-                </div>
-              </div>
-            ))}
+            {projectSpecies.length === 0 ? (
+              <p className="text-gray-500 text-center py-4 col-span-2">No species available for this project.</p>
+            ) : (
+              projectSpecies.map((item) => (
+                <Link
+                  key={item.id}
+                  href={`/species/${item.slug}`}
+                  className="flex-1 min-w-0 border border-gray-200 rounded-xl flex-shrink-0"
+                >
+                  <div className="overflow-hidden w-full md:p-4 p-2">
+                    <Image
+                      src={item.image || "/images/placeholder-species.jpg"}
+                      alt={item.name}
+                      width={350}
+                      height={160}
+                      className="w-full rounded-lg max-h-[160px] object-cover"
+                    />
+                  </div>
+                  <div className="px-4 pt-2 pb-4 space-y-2">
+                    <p className="text-base truncate font-semibold md:leading-[26px] md:align-middle text-[#19212C]">
+                      {item.name}
+                    </p>
+                    <button className="pt-2 flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer">
+                      Know More
+                      <CircleArrowRight width={22} height={22} color="#003399" />
+                    </button>
+                  </div>
+                </Link>
+              ))
+            )}
           </AccordionContent>
         </AccordionItem>
 

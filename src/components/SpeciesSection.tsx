@@ -11,7 +11,7 @@ import {
 } from "./ui/carousel";
 import Link from "next/link";
 import { SpeciesSimplified } from "@/types/species";
-import { generateSlug } from "@/lib/slug";
+import { generateSlug } from "@/services/species";
 
 const SpeciesSection: React.FC = () => {
   const [species, setSpecies] = useState<SpeciesSimplified[]>([]);
@@ -19,40 +19,27 @@ const SpeciesSection: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    const fetchSpecies = async () => {
+    const loadSpecies = async () => {
       try {
-        // Try static pre-built data first (performance optimization)
-        const response = await fetch('/data/species.json');
-        if (response.ok) {
-          const data = await response.json();
-          if (data && data.length > 0) {
-            setSpecies(data);
-            setLoading(false);
-            return;
-          }
-        }
+        const { fetchAllSpecies } = await import('@/services/species');
+        const allSpecies = await fetchAllSpecies();
 
-        // Fallback to API if static data unavailable
-        console.log('Falling back to API fetch...');
-        const { getSpecies } = await import('@/lib/api');
-        const apiData = await getSpecies();
-        setSpecies(apiData);
+        // Sort: Popular species first, then non-popular
+        const sorted = [...allSpecies].sort((a, b) => {
+          if (a.popular && !b.popular) return -1;
+          if (!a.popular && b.popular) return 1;
+          return 0;
+        });
+
+        setSpecies(sorted);
       } catch (error) {
         console.error("Failed to load species:", error);
-        // Second fallback - try API again
-        try {
-          const { getSpecies } = await import('@/lib/api');
-          const apiData = await getSpecies();
-          setSpecies(apiData);
-        } catch (apiError) {
-          console.error("API fallback also failed:", apiError);
-        }
       } finally {
         setLoading(false);
       }
     };
 
-    fetchSpecies();
+    loadSpecies();
   }, []);
 
   const totalSlides = species.length;

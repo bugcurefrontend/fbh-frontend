@@ -12,6 +12,7 @@ import {
   BreadcrumbSeparator,
 } from "./ui/breadcrumb";
 import Link from "next/link";
+import { generateProjectSlug } from "@/services/projects";
 
 interface Project {
   id: string;
@@ -122,7 +123,7 @@ const AllProjectsPage: React.FC<AllProjectsPageProps> = ({
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredProjects.length > 0 ? (
             filteredProjects.map((project) => (
-              <Link key={project.id} href="/project-detail">
+              <Link key={project.id} href={`/projects/${generateProjectSlug(project.title)}`}>
                 <ProjectCard
                   id={project.id}
                   title={project.title}

@@ -5,7 +5,7 @@ import ArrowRightIcon from "./icons/ArrowRightIcon";
 import Link from "next/link";
 import Image from "next/image";
 import { SpeciesSimplified } from "@/types/species";
-import { generateSlug } from "@/lib/slug";
+import { generateSlug } from "@/services/species";
 
 interface RelatedSpeciesProps {
   currentSpeciesId?: string;
@@ -20,28 +20,31 @@ const RelatedSpecies: React.FC<RelatedSpeciesProps> = ({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchRelatedSpecies = async () => {
+    const loadRelatedSpecies = async () => {
       try {
-        // Try static data first
-        const response = await fetch('/data/species.json');
-        let allSpecies: SpeciesSimplified[] = [];
+        const { fetchAllSpecies } = await import('@/services/species');
+        const allSpecies = await fetchAllSpecies();
 
-        if (response.ok) {
-          allSpecies = await response.json();
-        } else {
-          // Fallback to API
-          const { getSpecies } = await import('@/lib/api');
-          allSpecies = await getSpecies();
-        }
-
-        // Filter out current species and get random ones
+        // Filter out current species
         const filtered = allSpecies.filter(s => s.documentId !== currentSpeciesId);
 
-        // Shuffle and take limited number
-        const shuffled = filtered.sort(() => Math.random() - 0.5);
-        const related = shuffled.slice(0, limit);
+        // Separate popular and non-popular
+        const popular = filtered.filter(s => s.popular);
+        const nonPopular = filtered.filter(s => !s.popular);
 
-        setSpecies(related);
+        // Take popular first, fill remaining with non-popular
+        const result: SpeciesSimplified[] = [];
+
+        // Add popular species (up to limit)
+        result.push(...popular.slice(0, limit));
+
+        // If not enough popular, fill with non-popular
+        if (result.length < limit) {
+          const remaining = limit - result.length;
+          result.push(...nonPopular.slice(0, remaining));
+        }
+
+        setSpecies(result);
       } catch (error) {
         console.error("Failed to load related species:", error);
       } finally {
@@ -49,7 +52,7 @@ const RelatedSpecies: React.FC<RelatedSpeciesProps> = ({
       }
     };
 
-    fetchRelatedSpecies();
+    loadRelatedSpecies();
   }, [currentSpeciesId, limit]);
 
   if (loading || species.length === 0) {

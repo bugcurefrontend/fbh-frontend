@@ -5,6 +5,7 @@ import Image from "next/image";
 import { MapPin } from "lucide-react";
 import Link from "next/link";
 import ProjectCard from "./ProjectCard";
+import { generateProjectSlug } from "@/services/projects";
 
 interface Project {
   id: string;
@@ -34,15 +35,15 @@ const RelatedProjects: React.FC<RelatedProjectsProps> = ({
         <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold mx-auto sm:mx-0 text-black md:text-[32px] md:font-semibold md:leading-[48px] md:align-middle md:text-[#090C0F]">
           Explore other projects{" "}
         </h2>
-        <button className="absolute right-0 top-4 text-[#003399] font-bold text-xs uppercase md:font-bold md:text-xs md:leading-[18px] md:text-center md:align-middle md:uppercase md:text-[#003399]">
+        <Link href="/projects" className="absolute right-0 top-4 text-[#003399] font-bold text-xs uppercase md:font-bold md:text-xs md:leading-[18px] md:text-center md:align-middle md:uppercase md:text-[#003399]">
           View All
-        </button>
+        </Link>
       </div>
 
       {/* Desktop Grid */}
       <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-6">
         {projects.map((project) => (
-          <Link key={project.id} href="/project-detail">
+          <Link key={project.id} href={`/projects/${generateProjectSlug(project.title)}`}>
             <ProjectCard
               id={project.id}
               title={project.title}
@@ -61,8 +62,9 @@ const RelatedProjects: React.FC<RelatedProjectsProps> = ({
       <div className="sm:hidden overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         <div className="flex gap-4 pb-2 w-max">
           {projects.map((project, idx) => (
-            <div
+            <Link
               key={idx}
+              href={`/projects/${generateProjectSlug(project.title)}`}
               className="flex-1 min-w-[314px] max-w-[314px] border border-gray-200 rounded-xl flex-shrink-0 overflow-hidden"
             >
               <div className="relative h-52">
@@ -107,7 +109,7 @@ const RelatedProjects: React.FC<RelatedProjectsProps> = ({
                   />{" "}
                 </button>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

@@ -16,6 +16,22 @@ interface Project {
   imageAlt: string;
 }
 
+interface ProjectUpdateUI {
+  id: number;
+  month: string;
+  date: string;
+  year: number;
+  images: string[];
+  text: string;
+}
+
+interface ProjectSpeciesUI {
+  id: string;
+  name: string;
+  image: string;
+  slug: string;
+}
+
 interface ProjectDetailData {
   id: string;
   title: string;
@@ -38,11 +54,15 @@ interface ProjectDetailData {
 interface ProjectDetailPageProps {
   projectData: ProjectDetailData;
   relatedProjects: Project[];
+  projectUpdates?: ProjectUpdateUI[];
+  projectSpecies?: ProjectSpeciesUI[];
 }
 
 const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
   projectData,
   relatedProjects,
+  projectUpdates = [],
+  projectSpecies = [],
 }) => {
   const [isGeoTagged, setIsGeoTagged] = useState(true);
   const overviewRef = useRef<HTMLDivElement>(null);
@@ -94,6 +114,8 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
           relatedProjects={relatedProjects}
           onPlantTree={handleRelatedPlantTree}
           onViewAll={handleViewAll}
+          projectUpdates={projectUpdates}
+          projectSpecies={projectSpecies}
         />
       </div>
 
@@ -103,6 +125,8 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
         relatedProjects={relatedProjects}
         onPlantTree={handleRelatedPlantTree}
         onViewAll={handleViewAll}
+        projectUpdates={projectUpdates}
+        projectSpecies={projectSpecies}
       />
 
       {/* Mobile Sticky Actions */}
