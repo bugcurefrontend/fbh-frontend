@@ -62,6 +62,55 @@ export async function generateMetadata({
 }
 
 /**
+ * Parse Strapi rich text blocks recursively
+ * Handles paragraphs, headings, lists, and list items
+ */
+function parseRichTextBlock(block: any): string {
+  if (!block) return "";
+
+  // Extract text from children
+  const getChildrenText = (children: any[]): string => {
+    if (!children || !Array.isArray(children)) return "";
+    return children.map((child: any) => {
+      if (child.text !== undefined) return child.text;
+      if (child.children) return getChildrenText(child.children);
+      return "";
+    }).join("");
+  };
+
+  // Handle different block types
+  switch (block.type) {
+    case "paragraph":
+      return getChildrenText(block.children);
+
+    case "heading":
+      return `\n${getChildrenText(block.children)}\n`;
+
+    case "list":
+      // Handle list items
+      if (block.children && Array.isArray(block.children)) {
+        return block.children
+          .map((item: any) => {
+            const text = getChildrenText(item.children);
+            return `• ${text}`;
+          })
+          .join("\n");
+      }
+      return "";
+
+    case "list-item":
+      return `• ${getChildrenText(block.children)}`;
+
+    default:
+      // Fallback for unknown types
+      if (block.children) {
+        return getChildrenText(block.children);
+      }
+      return "";
+  }
+}
+
+/**
  * Transform API project to ProjectDetailPage format
  */
 function transformToDetailData(project: ProjectSimplified) {
@@ -70,15 +119,11 @@ function transformToDetailData(project: ProjectSimplified) {
   if (typeof project.description === "string") {
     descriptionText = project.description;
   } else if (Array.isArray(project.description)) {
-    // Handle Strapi rich text blocks
+    // Handle Strapi rich text blocks with full support for all block types
     descriptionText = project.description
-      .map((block: any) => {
-        if (block.children) {
-          return block.children.map((child: any) => child.text || "").join("");
-        }
-        return "";
-      })
-      .join("\n");
+      .map((block: any) => parseRichTextBlock(block))
+      .filter((text: string) => text.trim() !== "")
+      .join("\n\n");
   }
 
   // Transform species images

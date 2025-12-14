@@ -158,17 +158,17 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
                 </span>
               </div>
             </div>
-            <p className="md:mt-4 text-gray-700 md:text-base text-sm leading-6">
-              {description}
-              <span className="md:hidden">.</span>
-              <span className="max-md:hidden">...</span>
+            <div className="md:mt-4 text-gray-700 md:text-base text-sm leading-6">
+              <p className="line-clamp-4">
+                {description}
+              </p>
               <button
                 onClick={onReadMoreClick}
-                className="max-md:hidden text-[#003399] text-sm font-semibold"
+                className="max-md:hidden text-[#003399] text-sm font-semibold mt-1"
               >
                 Read More
               </button>
-            </p>
+            </div>
 
             <button className="md:hidden absolute right-0 top-2 flex items-center justify-center h-9 w-9 rounded text-white bg-[#003399] hover:bg-[#002266]">
               <Share2 className="w-4 h-4" />

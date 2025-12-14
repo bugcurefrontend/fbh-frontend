@@ -124,7 +124,7 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({
               Project Description:
             </h3>
             <div className="space-y-4 text-[#454950]">
-              <p className="font-public-sans">{projectDescription}</p>
+              <div className="font-public-sans whitespace-pre-line">{projectDescription}</div>
               {projectDetails.map((detail, index) => (
                 <p key={index} className="font-inter">
                   {detail}
