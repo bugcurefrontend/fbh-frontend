@@ -5,4 +5,6 @@ export interface Article {
   description: string;
   image: string; // Image URL
   date: string;
+  url: string; // External URL to article
+  deleted: boolean;
 }

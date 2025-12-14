@@ -39,13 +39,17 @@ export const fetchAllArticles = cache(async (): Promise<Article[]> => {
       currentPage++;
     } while (currentPage <= totalPages);
 
-    return allArticles.map((item: any) => ({
-      id: item.id,
-      title: item.title || item.attributes?.title || "",
-      description: item.description || item.attributes?.description || "",
-      image: item.image?.url || item.attributes?.image?.data?.attributes?.url || "",
-      date: item.date || item.attributes?.date || new Date().toISOString(),
-    }));
+    return allArticles
+      .filter((item: any) => !item.deleted)
+      .map((item: any) => ({
+        id: item.id,
+        title: item.title || item.attributes?.title || "",
+        description: item.description || item.attributes?.description || "",
+        image: item.image?.url || item.attributes?.image?.data?.attributes?.url || "",
+        date: item.date || item.attributes?.date || new Date().toISOString(),
+        url: item.url || item.attributes?.url || "",
+        deleted: item.deleted || false,
+      }));
   } catch (error) {
     console.error("Error fetching articles:", error);
     return [];

@@ -3,12 +3,17 @@ import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import QuoteIcon from "./icons/QuoteIcon";
+import { TestimonialSimplified } from "@/types/testimonial";
 
-const TestimonialsSection: React.FC = () => {
-  const testimonials = [
+interface TestimonialsSectionProps {
+  testimonials?: TestimonialSimplified[];
+}
+
+const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ testimonials: apiTestimonials }) => {
+  const fallbackTestimonials = [
     {
       quote:
-        "The experience has been flawless. It’s incredibly user-friendly and robust. This tool has become indispensable for our daily operations, providing reliable performance and insightful analytics. We couldn't be happier with our decision.",
+        "The experience has been flawless. It's incredibly user-friendly and robust. This tool has become indispensable for our daily operations, providing reliable performance and insightful analytics. We couldn't be happier with our decision.",
       name: "Akshay Shinde",
       designation: "TIMES OF INDIA",
       src: "/images/volunteer-testimonial.png",
@@ -28,6 +33,16 @@ const TestimonialsSection: React.FC = () => {
       src: "/images/t-1.webp",
     },
   ];
+
+  // Use API data if available, otherwise use fallback
+  const testimonials = apiTestimonials && apiTestimonials.length > 0
+    ? apiTestimonials.map((t) => ({
+        quote: t.quote,
+        name: t.name,
+        designation: t.designation,
+        src: t.src,
+      }))
+    : fallbackTestimonials;
 
   const [current, setCurrent] = useState(0);
   const timerRef = useRef<NodeJS.Timeout | null>(null);

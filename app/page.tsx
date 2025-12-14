@@ -10,24 +10,28 @@ import CaseStudiesSection from "../src/components/CaseStudiesSection";
 import { fetchAllPartners } from "@/services/partners";
 import { fetchAllCaseStudies } from "@/services/case-studies";
 import { fetchAllHeroContents } from "@/services/hero-content";
+import { fetchAllTestimonials } from "@/services/testimonials";
+import { fetchAllMetrics } from "@/services/metrics";
 
 export default async function Home() {
-  const [partners, caseStudies, heroContents] = await Promise.all([
+  const [partners, caseStudies, heroContents, testimonials, metrics] = await Promise.all([
     fetchAllPartners(),
     fetchAllCaseStudies(),
     fetchAllHeroContents(),
+    fetchAllTestimonials(),
+    fetchAllMetrics(),
   ]);
 
   return (
     <main className="min-h-screen">
       <HeroSection heroContents={heroContents} />
-      <StatisticsSection />
+      <StatisticsSection metrics={metrics} />
       <AboutSection />
       <PartnersSection partners={partners} />
       <SpeciesSection />
       <ProjectsSection />
       <ActivitiesSection />
-      <TestimonialsSection />
+      <TestimonialsSection testimonials={testimonials} />
       <CaseStudiesSection caseStudies={caseStudies} />
     </main>
   );
