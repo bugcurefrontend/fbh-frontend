@@ -70,6 +70,7 @@ interface SpeciesDetailData {
     lifespan: string;
     oxygenReleased: string;
     height: string;
+    mdHeight: string;
   };
   faqs: FAQ[];
   benefits: string[];
@@ -102,6 +103,7 @@ function transformToDetailData(species: SpeciesSimplified): SpeciesDetailData {
       lifespan: species.lifespan,
       oxygenReleased: species.oxygenReleased,
       height: species.maxHeight,
+      mdHeight: species.maxHeight,
     },
     faqs,
     benefits: [],

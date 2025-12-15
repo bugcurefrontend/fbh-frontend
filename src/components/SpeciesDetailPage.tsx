@@ -26,6 +26,7 @@ interface SpeciesDetailData {
     lifespan: string;
     oxygenReleased: string;
     height: string;
+    mdHeight: string;
   };
   faqs: FAQ[];
   benefits: string[];
