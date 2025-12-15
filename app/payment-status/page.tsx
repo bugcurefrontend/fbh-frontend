@@ -2,20 +2,13 @@
 import React, { useState } from "react";
 import { RefreshCw, ArrowRightCircle } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 type PaymentStatus = "success" | "failed";
 
 const PaymentStatusUI: React.FC = () => {
   const [status, setStatus] = useState<PaymentStatus>("success");
-
-  const handleDashboard = () => {
-    console.log("Navigate to dashboard");
-  };
-
-  const handleTryAgain = () => {
-    console.log("Try payment again");
-  };
-
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="w-full">
@@ -72,13 +65,14 @@ const PaymentStatusUI: React.FC = () => {
                 Thank you for making a difference!
               </p>
 
-              <button
-                onClick={handleDashboard}
-                className="mt-6 inline-flex items-center gap-2 bg-[#003399] hover:bg-blue-800 text-white font-semibold px-5 py-3 rounded-lg transition-colors shadow-md hover:shadow-lg"
-              >
-                Go to Dashboard
-                <ArrowRightCircle className="w-5 h-5" />
-              </button>
+              <Link href="/" className="mt-8 inline-block">
+                <Button
+                  className={`flex-1 bg-[#003399] hover:bg-[#002266] text-white font-bold w-[207px] h-12 rounded-lg`}
+                >
+                  Go to Dashboard
+                  <ArrowRightCircle className="w-5 h-5" />
+                </Button>
+              </Link>
             </div>
           ) : (
             <div className="py-12 md:px-16 px-4 border-[#F04438] border rounded-xl">
@@ -114,13 +108,14 @@ const PaymentStatusUI: React.FC = () => {
                 Use the below button to navigate to home
               </p>
 
-              <button
-                onClick={handleTryAgain}
-                className="inline-flex items-center gap-2  text-[#003399] font-semibold"
-              >
-                <RefreshCw className="w-5 h-5" />
-                Try again
-              </button>
+              <Link href="/" className="inline-block">
+                <Button
+                  className={`flex-1 bg-[#003399] hover:bg-[#002266] text-white font-bold w-[207px] h-12 rounded-lg`}
+                >
+                  Go to Home Page
+                  <ArrowRightCircle className="w-5 h-5" />
+                </Button>
+              </Link>
             </div>
           )}
         </div>

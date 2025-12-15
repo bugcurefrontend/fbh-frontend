@@ -2,8 +2,9 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Download, Trees } from "lucide-react";
+import { Trees } from "lucide-react";
 import { donations } from "./mock-data";
+import DownloadCertificate from "@/components/DownloadCertiifcate";
 
 export const DonationsTab = () => {
   return (
@@ -68,10 +69,7 @@ export const DonationsTab = () => {
               </div>
 
               <div className="flex items-center justify-between gap-2">
-                <Button className="bg-[#003399] hover:bg-[#062d7b] text-white font-semibold h-11 px-5 py-3 rounded-md w-[50%] gap-1">
-                  <Download className="w-4 h-4" />
-                  <span className="max-md:hidden">Download</span>Certificate
-                </Button>
+                <DownloadCertificate />
                 <Button
                   variant="outline"
                   className="border-[#003399] text-[#003399] font-semibold h-11 px-5 py-3 rounded-md w-[50%] gap-1"

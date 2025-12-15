@@ -5,11 +5,11 @@ import Image from "next/image";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import {
-  Trees,
-  Receipt,
   CircleQuestionMark,
-  LayoutDashboard,
   Headset,
+  PanelsTopLeft,
+  TreePine,
+  HandHeart,
 } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 import { AccountPageSkeleton } from "./AccountPageSkeleton";
@@ -22,7 +22,7 @@ const AccountPage = () => {
   const { isAuthenticated, isLoading, userProfile, login } = useAuth();
   const displayName =
     userProfile?.firstName || userProfile?.lastName
-      ? `${userProfile?.firstName ?? ""} ${userProfile?.lastName ?? ""}`.trim()
+      ? `${userProfile?.firstName ?? ""}`.trim()
       : "";
 
   if (isLoading) {
@@ -58,21 +58,21 @@ const AccountPage = () => {
               value="dashboard"
               className="flex items-center gap-2 px-1 pb-[18px] pt-4 text-sm font-semibold text-[#6B7280] border-b-2 border-transparent rounded-none data-[state=active]:text-[#003399] data-[state=active]:border-[#003399]"
             >
-              <LayoutDashboard className="w-6 h-6" />
+              <PanelsTopLeft className="w-6 h-6" />
               <span className="font-bold text-base">Dashboard</span>{" "}
             </TabsTrigger>
             <TabsTrigger
               value="donations"
               className="flex items-center gap-2 px-1 pb-[18px] pt-4 text-sm font-semibold text-[#6B7280] border-b-2 border-transparent rounded-none data-[state=active]:text-[#003399] data-[state=active]:border-[#003399]"
             >
-              <Receipt className="w-6 h-6" />
+              <HandHeart className="w-6 h-6" />
               <span className="font-bold text-base">Donation History</span>
             </TabsTrigger>
             <TabsTrigger
               value="trees"
               className="flex items-center gap-2 px-1 pb-[18px] pt-4 text-sm font-semibold text-[#6B7280] border-b-2 border-transparent rounded-none data-[state=active]:text-[#003399] data-[state=active]:border-[#003399]"
             >
-              <Trees className="w-6 h-6" />
+              <TreePine className="w-6 h-6" />
               <span className="font-bold text-base">My Trees</span>
             </TabsTrigger>
             <Button
