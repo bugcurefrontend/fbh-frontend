@@ -1,11 +1,11 @@
 "use client";
 
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 interface LoginDialogProps {
   isOpen: boolean;
@@ -20,16 +20,13 @@ const LoginDialog: React.FC<LoginDialogProps> = ({
   onSignIn,
 }) => {
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent
-        showCloseButton={false}
-        className="max-w-[533px] border border-[#E4E4E4] rounded-2xl dialog-pop gap-4"
-      >
-        <DialogHeader>
-          <DialogTitle className="text-2xl leading-9 text-center font-semibold md:font-bold text-[#232D26]">
+    <AlertDialog open={isOpen} onOpenChange={onClose}>
+      <AlertDialogContent className="max-w-[533px] border border-[#E4E4E4] rounded-2xl dialog-pop gap-4">
+        <AlertDialogHeader>
+          <AlertDialogTitle className="text-2xl leading-9 text-center font-semibold md:font-bold text-[#232D26]">
             BEFORE YOU PROCEED...
-          </DialogTitle>
-        </DialogHeader>
+          </AlertDialogTitle>
+        </AlertDialogHeader>
 
         <div className="space-y-6 flex flex-col items-center">
           <p className="text-center text-xl text-[#090C0F">
@@ -43,8 +40,8 @@ const LoginDialog: React.FC<LoginDialogProps> = ({
             LOG-IN / SIGN-UP{" "}
           </button>
         </div>
-      </DialogContent>
-    </Dialog>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 };
 

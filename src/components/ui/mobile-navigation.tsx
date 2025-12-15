@@ -36,7 +36,7 @@ interface NavigationMenuProps {
   isAuthenticated?: boolean;
   userProfile?: UserProfile | null;
   login?: () => void;
-  logout?: () => void;
+  onSignOut?: () => void;
 }
 
 export function MobileNavigation({
@@ -44,7 +44,7 @@ export function MobileNavigation({
   isAuthenticated,
   userProfile,
   login,
-  logout,
+  onSignOut,
 }: NavigationMenuProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileExpandedMenu, setMobileExpandedMenu] = useState<string | null>(
@@ -192,7 +192,7 @@ export function MobileNavigation({
                   <button
                     onClick={() => {
                       handleClose();
-                      logout?.();
+                      onSignOut?.();
                     }}
                     className="flex items-center gap-2 w-full px-4 py-3 transition-colors font-medium text-lg uppercase"
                     style={{

@@ -21,17 +21,13 @@ const SpeciesSection: React.FC = () => {
   useEffect(() => {
     const loadSpecies = async () => {
       try {
-        const { fetchAllSpecies } = await import('@/services/species');
+        const { fetchAllSpecies } = await import("@/services/species");
         const allSpecies = await fetchAllSpecies();
 
-        // Sort: Popular species first, then non-popular
-        const sorted = [...allSpecies].sort((a, b) => {
-          if (a.popular && !b.popular) return -1;
-          if (!a.popular && b.popular) return 1;
-          return 0;
-        });
+        // Filter for popular species
+        const popularSpecies = allSpecies.filter((s) => s.popular);
 
-        setSpecies(sorted);
+        setSpecies(popularSpecies);
       } catch (error) {
         console.error("Failed to load species:", error);
       } finally {
@@ -147,7 +143,10 @@ const SpeciesSection: React.FC = () => {
       <div className="sm:hidden mb-6 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         <div className="flex gap-4 pb-2 w-max">
           {species.map((item) => (
-            <Link key={item.documentId} href={`/species/${generateSlug(item.name)}`}>
+            <Link
+              key={item.documentId}
+              href={`/species/${generateSlug(item.name)}`}
+            >
               <div className="flex-1 min-w-[314px] max-w-[314px] border border-gray-200 rounded-xl flex-shrink-0 overflow-hidden">
                 <div className="pt-3 px-3">
                   <Image

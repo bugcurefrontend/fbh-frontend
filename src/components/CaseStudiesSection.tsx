@@ -18,7 +18,9 @@ interface CaseStudiesSectionProps {
   caseStudies?: CaseStudySimplified[];
 }
 
-const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({ caseStudies: apiCaseStudies }) => {
+const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({
+  caseStudies: apiCaseStudies,
+}) => {
   // Fallback to static data if no case studies from API
   const fallbackCaseStudies = [
     {
@@ -45,15 +47,23 @@ const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({ caseStudies: ap
   ];
 
   // Use API data if available, otherwise use fallback
-  const caseStudies = apiCaseStudies && apiCaseStudies.length > 0
-    ? apiCaseStudies.map((cs) => ({
-        title: cs.title,
-        subtitle: cs.address,
-        description: cs.description,
-        image: cs.image,
-        slug: cs.title.toLowerCase().trim().replace(/[()]/g, "").replace(/[^\w\s-]/g, "").replace(/\s+/g, "-").replace(/-+/g, "-").replace(/^-+|-+$/g, ""),
-      }))
-    : fallbackCaseStudies.map((cs) => ({ ...cs, slug: "case-study" }));
+  const caseStudies =
+    apiCaseStudies && apiCaseStudies.length > 0
+      ? apiCaseStudies.map((cs) => ({
+          title: cs.title,
+          subtitle: cs.address,
+          description: cs.description,
+          image: cs.image,
+          slug: cs.title
+            .toLowerCase()
+            .trim()
+            .replace(/[()]/g, "")
+            .replace(/[^\w\s-]/g, "")
+            .replace(/\s+/g, "-")
+            .replace(/-+/g, "-")
+            .replace(/^-+|-+$/g, ""),
+        }))
+      : fallbackCaseStudies.map((cs) => ({ ...cs, slug: "case-study" }));
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -105,7 +115,7 @@ const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({ caseStudies: ap
                     </p>
                   </div>
 
-                  <p className="text-[16px] font-normal leading-[20px] text-[#454950] flex-1 line-clamp-4 md:text-base md:font-normal md:leading-6 md:text-[#454950]">
+                  <p className="text-[16px] font-normal leading-[20px] text-[#454950] md:text-base md:font-normal md:leading-6 md:text-[#454950] line-clamp-7">
                     {study.description}
                   </p>
                   <Link href={`/case-studies/${study.slug}`} className="w-fit">

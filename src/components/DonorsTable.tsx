@@ -8,7 +8,7 @@ interface Donor {
   name: string;
   location: string;
   date: string;
-  donationType: "For Self" | "For Gifting";
+  donationType: "Self" | "Gifting";
   treesPlanted: number;
   avatar?: string;
 }
@@ -19,7 +19,7 @@ const donorsData: Donor[] = [
     name: "Olivia Rhye",
     location: "Prakasam",
     date: "Jan 6, 2024",
-    donationType: "For Self",
+    donationType: "Self",
     treesPlanted: 177,
     avatar: "/images/profile.png",
   },
@@ -28,7 +28,7 @@ const donorsData: Donor[] = [
     name: "Phoenix Baker",
     location: "Anantapur",
     date: "Jan 6, 2024",
-    donationType: "For Gifting",
+    donationType: "Gifting",
     treesPlanted: 994,
   },
   {
@@ -36,7 +36,7 @@ const donorsData: Donor[] = [
     name: "Lana Steiner",
     location: "Chittoor",
     date: "Jan 6, 2024",
-    donationType: "For Self",
+    donationType: "Self",
     treesPlanted: 492,
     avatar: "/images/profile.png",
   },
@@ -45,7 +45,7 @@ const donorsData: Donor[] = [
     name: "Anonymous",
     location: "Anonymous",
     date: "Jan 5, 2024",
-    donationType: "For Gifting",
+    donationType: "Gifting",
     treesPlanted: 447,
   },
   {
@@ -53,7 +53,7 @@ const donorsData: Donor[] = [
     name: "Candice Wu",
     location: "Srikakulam",
     date: "Jan 5, 2024",
-    donationType: "For Self",
+    donationType: "Self",
     treesPlanted: 583,
     avatar: "/images/profile.png",
   },
@@ -62,7 +62,7 @@ const donorsData: Donor[] = [
     name: "Natali Craig",
     location: "Vizianagaram",
     date: "Jan 5, 2024",
-    donationType: "For Gifting",
+    donationType: "Gifting",
     treesPlanted: 357,
     avatar: "/images/profile.png",
   },
@@ -71,7 +71,7 @@ const donorsData: Donor[] = [
     name: "Drew Cano",
     location: "Sri Potti Sriramulu Nellore",
     date: "Jan 4, 2024",
-    donationType: "For Self",
+    donationType: "Self",
     treesPlanted: 196,
     avatar: "/images/profile.png",
   },
@@ -80,7 +80,7 @@ const donorsData: Donor[] = [
     name: "Orlando Diggs",
     location: "YSR Kadapa",
     date: "Jan 3, 2024",
-    donationType: "For Self",
+    donationType: "Self",
     treesPlanted: 540,
     avatar: "/images/profile.png",
   },
@@ -89,7 +89,7 @@ const donorsData: Donor[] = [
     name: "Andi Lane",
     location: "Krishna",
     date: "Jan 3, 2024",
-    donationType: "For Self",
+    donationType: "Self",
     treesPlanted: 738,
     avatar: "/images/profile.png",
   },
@@ -98,7 +98,7 @@ const donorsData: Donor[] = [
     name: "Kate Morrison",
     location: "West Godavari",
     date: "Jan 3, 2024",
-    donationType: "For Self",
+    donationType: "Self",
     treesPlanted: 561,
     avatar: "/images/profile.png",
   },
@@ -275,8 +275,8 @@ const DonorsTable = () => {
                   </td>
                   <td className="py-3.5 px-3.5">
                     <span
-                      className={`inline-flex px-2 py-1 rounded-full ${
-                        donor.donationType === "For Self"
+                      className={`inline-flex uppercase px-2 py-1 rounded-full ${
+                        donor.donationType === "Self"
                           ? "bg-green-100"
                           : "bg-orange-100"
                       }`}
@@ -287,9 +287,7 @@ const DonorsTable = () => {
                         lineHeight: "18px",
                         letterSpacing: "0px",
                         color:
-                          donor.donationType === "For Self"
-                            ? "#12B569"
-                            : "#F78F08",
+                          donor.donationType === "Self" ? "#12B569" : "#F78F08",
                         textAlign: "center",
                       }}
                     >

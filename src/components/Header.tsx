@@ -5,20 +5,32 @@ import Image from "next/image";
 import { CustomNavigationMenu } from "./ui/navigation-menu";
 import { MobileNavigation } from "./ui/mobile-navigation";
 import Link from "next/link";
-import { LogOut, User } from "lucide-react";
+import { LogOut, TriangleAlert, User, X } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 import CurrencySelect from "./CurrencySelect";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 export default function Header() {
   const { isAuthenticated, userProfile, isLoading, login, logout } = useAuth();
   const [dropdownOpen, setDropdownOpen] = React.useState(false);
   const dropdownRef = React.useRef<HTMLDivElement>(null);
-
+  const [showSignOutAlert, setShowSignOutAlert] = React.useState(false);
   React.useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
         dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
+        !dropdownRef.current.contains(event.target as Node) &&
+        // Do not close if clicking inside an open alert dialog
+        !(event.target as HTMLElement).closest('[role="alertdialog"]')
       ) {
         setDropdownOpen(false);
       }
@@ -137,9 +149,18 @@ export default function Header() {
                     height: "40px",
                     borderRadius: "250px",
                   }}
-                  className="flex items-center justify-center bg-gray-200 hover:bg-gray-300 transition-colors overflow-hidden"
+                  className="relative flex items-center justify-center bg-gray-200 hover:bg-gray-300 transition-colors overflow-hidden"
                 >
-                  <User className="w-5 h-5 text-gray-600" />
+                  {userProfile?.picture ? (
+                    <Image
+                      src={userProfile.picture}
+                      alt={userProfile.name || "User profile picture"}
+                      fill
+                      className="object-cover"
+                    />
+                  ) : (
+                    <User className="w-5 h-5 text-gray-600" />
+                  )}
                 </button>
 
                 {/* Dropdown Menu */}
@@ -174,8 +195,17 @@ export default function Header() {
                       onClick={() => setDropdownOpen(false)}
                       // className="flex items-center gap-3 pb-3"
                     >
-                      <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
-                        <User className="w-6 h-6 text-gray-600" />
+                      <div className="relative flex-shrink-0 w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+                        {userProfile?.picture ? (
+                          <Image
+                            src={userProfile.picture}
+                            alt={userProfile.name || "User profile picture"}
+                            fill
+                            className="object-cover"
+                          />
+                        ) : (
+                          <User className="w-6 h-6 text-gray-600" />
+                        )}
                       </div>
                       <div className="flex flex-col min-w-0 flex-1">
                         <span
@@ -246,10 +276,7 @@ export default function Header() {
                         style={{ marginLeft: "-16px", marginRight: "-16px" }}
                       >
                         <button
-                          onClick={() => {
-                            setDropdownOpen(false);
-                            logout({ redirect: true, targetPath: "/" });
-                          }}
+                          onClick={() => setShowSignOutAlert(true)}
                           className="flex items-center gap-2 w-full py-2 transition-colors"
                           style={{
                             fontFamily: "Public Sans",
@@ -290,6 +317,44 @@ export default function Header() {
             )}
           </div>
         </div>
+        <AlertDialog open={showSignOutAlert} onOpenChange={setShowSignOutAlert}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle
+                className="flex items-center justify-between
+              uppercase font-bold text-2xl mb-6"
+              >
+                <div className="flex items-center gap-2">
+                  <TriangleAlert className="text-yellow-600 w-5 h-5" />
+                  Confirmation
+                </div>
+                <button
+                  onClick={() => setShowSignOutAlert(false)}
+                  className="p-1 rounded-full hover:bg-gray-100 transition"
+                >
+                  <X size={20} className="text-black" />
+                </button>
+              </AlertDialogTitle>
+              <AlertDialogDescription className="text-black">
+                Are you sure you want to sign out?
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogAction
+                onClick={() => {
+                  setDropdownOpen(false);
+                  logout({ redirect: true, targetPath: "/" });
+                }}
+                className="bg-[#003399] hover:bg-[#032d80]"
+              >
+                Sign Out
+              </AlertDialogAction>
+              <AlertDialogCancel onClick={() => setDropdownOpen(false)}>
+                Cancel
+              </AlertDialogCancel>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
 
         {/* Mobile Navigation */}
         <MobileNavigation
@@ -297,7 +362,7 @@ export default function Header() {
           isAuthenticated={isAuthenticated}
           userProfile={userProfile}
           login={login}
-          logout={logout}
+          onSignOut={() => setShowSignOutAlert(true)}
         />
       </div>
     </header>

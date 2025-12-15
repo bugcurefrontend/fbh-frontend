@@ -41,17 +41,18 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
 }) => {
   const [items, setItems] = useState([
     ...treeSpecies,
-    {
-      id: "map",
-      imageUrl: "",
-      imageAlt: "Project Map",
-    },
+    // Removed map functionality
   ]);
 
   const [activeIndex, setActiveIndex] = useState(0);
-  const [activeImage, setActiveImage] = useState(treeSpecies[0]?.imageUrl);
+  const [activeImage, setActiveImage] = useState(
+    treeSpecies.length > 0 ? treeSpecies[0].imageUrl : ""
+  );
 
   useEffect(() => {
+    if (items.length === 0) {
+      return; // Prevent division by zero if items is empty
+    }
     const interval = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % items.length);
     }, 5000);
@@ -59,11 +60,13 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
   }, [items.length]);
 
   useEffect(() => {
-    if (items[activeIndex].id === "map") {
-      setActiveImage(""); // no image, show map
-    } else {
+    if (items.length > 0 && activeIndex < items.length) {
       setActiveImage(items[activeIndex].imageUrl);
+    } else {
+      setActiveImage(""); // No images or invalid index
     }
+    // Reset activeIndex if it goes out of bounds after items change
+    if (activeIndex >= items.length && items.length > 0) setActiveIndex(0);
   }, [activeIndex, items]);
 
   return (
@@ -72,22 +75,18 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
         {/* Left side - Hero Image */}
         <div className="lg:w-[546px] w-full relative flex-shrink-0">
           <div className="min-h-[360px] h-full w-full relative overflow-hidden rounded-lg">
-            {activeImage ? (
+            {activeImage && items.length > 0 ? (
               <Image
                 src={activeImage}
-                alt={items[activeIndex].imageAlt}
+                alt={items[activeIndex]?.imageAlt || "Species image"}
                 fill
                 className="object-cover transition-all duration-500"
               />
             ) : (
-              // Show map iframe for last thumbnail
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3709.823933!2d79.136!3d24.592!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjTCsDM1JzU1LjAiTiA3OcKwMDgnMjMuOCJF!5e0!3m2!1sen!2sin!4v1698239123456!5m2!1sen!2sin"
-                width="100%"
-                height="100%"
-                className="rounded-lg border-0 min-h-[360px] h-full"
-                allowFullScreen
-              />
+              // Placeholder if no image is available
+              <div className="w-full h-full flex items-center justify-center bg-gray-100 text-gray-400">
+                <Trees className="w-16 h-16 text-gray-300" />
+              </div>
             )}
           </div>
 
@@ -113,25 +112,13 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
                   activeIndex === i ? "scale-105" : "hover:scale-105"
                 }`}
               >
-                {item.id === "map" ? (
-                  <div className="w-full h-full flex items-center justify-center ">
-                    <Image
-                      src="/images/map.png"
-                      alt="map"
-                      width={112}
-                      height={112}
-                      className="w-full min-h-full object-cover"
-                    />
-                  </div>
-                ) : (
-                  <Image
-                    src={item.imageUrl}
-                    alt={item.imageAlt}
-                    width={112}
-                    height={112}
-                    className="w-full min-h-full object-cover"
-                  />
-                )}
+                <Image
+                  src={item.imageUrl}
+                  alt={item.imageAlt}
+                  width={112}
+                  height={112}
+                  className="w-full min-h-full object-cover"
+                />
               </div>
             ))}
           </div>
@@ -158,7 +145,7 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
                     height={20}
                   />
                   <span className="md:text-base text-sm md:font-semibold">
-                    ({scientificName})
+                    {scientificName}
                   </span>
                 </div>
               </div>
@@ -166,7 +153,7 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
                 <Share2 className="w-4 h-4" />
               </button>
             </div>
-            <p className="text-gray-700 md:text-base text-sm leading-6">
+            <p className="text-gray-700 md:text-base text-sm leading-6 line-clamp-5">
               {description}
             </p>
           </div>
