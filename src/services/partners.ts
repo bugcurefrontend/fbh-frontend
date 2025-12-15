@@ -52,6 +52,14 @@ export const fetchAllPartners = cache(async (): Promise<PartnerSimplified[]> => 
       currentPage++;
     } while (currentPage <= totalPages);
 
+    // Log raw image sizes from Strapi
+    console.log("Partners logos from Strapi:", allPartners.map(p => ({
+      name: p.name,
+      logo: p.logo?.url,
+      width: p.logo?.width,
+      height: p.logo?.height,
+    })));
+
     // Transform to simplified format
     return allPartners.map((partner: SupportingPartner) => transformPartner(partner));
   } catch (error) {

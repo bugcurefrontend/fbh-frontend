@@ -1,10 +1,12 @@
 "use client";
-import React, { useState, useEffect } from "react";
+
+import React from "react";
 import Image from "next/image";
 import LocationPinIcon from "./icons/LocationPinIcon";
 import Link from "next/link";
 import ProjectCard from "./ProjectCard";
 import { generateProjectSlug } from "@/services/projects";
+import { ProjectSimplified } from "@/types/project";
 
 interface Project {
   id: string;
@@ -16,37 +18,21 @@ interface Project {
   imageAlt: string;
 }
 
-const ProjectsSection: React.FC = () => {
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [loading, setLoading] = useState(true);
+interface ProjectsSectionProps {
+  projects: ProjectSimplified[];
+}
 
-  useEffect(() => {
-    const loadProjects = async () => {
-      try {
-        const { fetchLandingProjects } = await import("@/services/projects");
-        const apiData = await fetchLandingProjects(6);
-
-        // Transform API data to match existing UI structure
-        const transformedProjects: Project[] = apiData.map((p) => ({
-          id: p.documentId,
-          title: p.name,
-          location: p.address,
-          plantedCount: p.plantedCount,
-          category: p.archetype,
-          imageUrl: p.thumbnail || "/images/test2.jpg",
-          imageAlt: `${p.name} - ${p.archetype}`,
-        }));
-
-        setProjects(transformedProjects);
-      } catch (error) {
-        console.error("Failed to load projects:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadProjects();
-  }, []);
+const ProjectsSection: React.FC<ProjectsSectionProps> = ({ projects: apiProjects }) => {
+  // Transform API data to match existing UI structure
+  const projects: Project[] = apiProjects.map((p) => ({
+    id: p.documentId,
+    title: p.name,
+    location: p.address,
+    plantedCount: p.plantedCount,
+    category: p.archetype,
+    imageUrl: p.thumbnail || "/images/test2.jpg",
+    imageAlt: `${p.name} - ${p.archetype}`,
+  }));
 
   const handlePlantTree = (projectId: string) => {
     console.log(`Plant tree for project: ${projectId}`);
@@ -59,16 +45,6 @@ const ProjectsSection: React.FC = () => {
     }
     return `${count}+ planted`;
   };
-
-  if (loading) {
-    return (
-      <section className="max-w-7xl mx-auto px-4 md:px-8 mt-8 md:mt-16">
-        <div className="text-center py-12">
-          <p className="text-gray-500">Loading projects...</p>
-        </div>
-      </section>
-    );
-  }
 
   if (projects.length === 0) {
     return (

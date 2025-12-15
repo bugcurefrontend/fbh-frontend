@@ -1,5 +1,6 @@
 "use client";
-import React, { useState, useEffect } from "react";
+
+import React, { useState } from "react";
 import Image from "next/image";
 import { Calendar } from "lucide-react";
 
@@ -12,9 +13,11 @@ import {
 } from "./ui/carousel";
 import { Article } from "@/types/article";
 
-const ActivitiesSection: React.FC = () => {
-  const [activities, setActivities] = useState<Article[]>([]);
-  const [loading, setLoading] = useState(true);
+interface ActivitiesSectionProps {
+  activities: Article[];
+}
+
+const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({ activities }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   // Format date from "2025-12-08" to "08 DEC"
@@ -28,22 +31,6 @@ const ActivitiesSection: React.FC = () => {
       return dateString;
     }
   };
-
-  useEffect(() => {
-    const loadActivities = async () => {
-      try {
-        const { fetchAllArticles } = await import('@/services/articles');
-        const apiData = await fetchAllArticles();
-        setActivities(apiData);
-      } catch (error) {
-        console.error("Failed to load activities:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadActivities();
-  }, []);
 
   const totalSlides = activities.length;
   const visibleSlides = 3;

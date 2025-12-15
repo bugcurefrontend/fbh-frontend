@@ -1,5 +1,6 @@
 "use client";
-import React, { useState, useEffect } from "react";
+
+import React, { useState } from "react";
 import Image from "next/image";
 import ArrowRightIcon from "./icons/ArrowRightIcon";
 import {
@@ -13,30 +14,12 @@ import Link from "next/link";
 import { SpeciesSimplified } from "@/types/species";
 import { generateSlug } from "@/services/species";
 
-const SpeciesSection: React.FC = () => {
-  const [species, setSpecies] = useState<SpeciesSimplified[]>([]);
-  const [loading, setLoading] = useState(true);
+interface SpeciesSectionProps {
+  species: SpeciesSimplified[];
+}
+
+const SpeciesSection: React.FC<SpeciesSectionProps> = ({ species }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-
-  useEffect(() => {
-    const loadSpecies = async () => {
-      try {
-        const { fetchAllSpecies } = await import("@/services/species");
-        const allSpecies = await fetchAllSpecies();
-
-        // Filter for popular species
-        const popularSpecies = allSpecies.filter((s) => s.popular);
-
-        setSpecies(popularSpecies);
-      } catch (error) {
-        console.error("Failed to load species:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadSpecies();
-  }, []);
 
   const totalSlides = species.length;
   const visibleSlides = 3;
@@ -44,16 +27,6 @@ const SpeciesSection: React.FC = () => {
     ((currentIndex + visibleSlides) / totalSlides) * 100 > 100
       ? 100
       : ((currentIndex + visibleSlides) / totalSlides) * 100;
-
-  if (loading) {
-    return (
-      <section className="max-w-7xl mx-auto px-4 md:px-8 relative mt-8 md:mt-16">
-        <div className="text-center py-12">
-          <p className="text-gray-500">Loading species...</p>
-        </div>
-      </section>
-    );
-  }
 
   if (species.length === 0) {
     return (

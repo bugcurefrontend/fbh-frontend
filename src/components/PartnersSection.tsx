@@ -47,9 +47,9 @@ const PartnersSection: React.FC<PartnersSectionProps> = ({ partners: apiPartners
         <Image
           src={partner.logo}
           alt={partner.name}
-          width={160}
-          height={100}
-          className="object-contain max-w-[80px] max-h-[30px] sm:max-h-[50px] sm:max-w-[120px] w-fit h-fit"
+          width={300}
+          height={150}
+          className="object-contain max-w-[120px] max-h-[50px] sm:max-h-[80px] sm:max-w-[180px] w-fit h-fit"
         />
       </div>
     ),
@@ -74,9 +74,9 @@ const PartnersSection: React.FC<PartnersSectionProps> = ({ partners: apiPartners
               <Image
                 src={partner.logo}
                 alt={partner.name}
-                width={70}
-                height={24}
-                className="object-contain max-w-[70px] max-h-[24px]"
+                width={300}
+                height={150}
+                className="object-contain max-w-[100px] max-h-[50px]"
               />
             </div>
           ))}

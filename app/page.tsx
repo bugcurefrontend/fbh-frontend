@@ -12,14 +12,20 @@ import { fetchAllCaseStudies } from "@/services/case-studies";
 import { fetchAllHeroContents } from "@/services/hero-content";
 import { fetchAllTestimonials } from "@/services/testimonials";
 import { fetchAllMetrics } from "@/services/metrics";
+import { fetchLandingProjects } from "@/services/projects";
+import { fetchPopularSpecies } from "@/services/species";
+import { fetchAllArticles } from "@/services/articles";
 
 export default async function Home() {
-  const [partners, caseStudies, heroContents, testimonials, metrics] = await Promise.all([
+  const [partners, caseStudies, heroContents, testimonials, metrics, projects, species, articles] = await Promise.all([
     fetchAllPartners(),
     fetchAllCaseStudies(),
     fetchAllHeroContents(),
     fetchAllTestimonials(),
     fetchAllMetrics(),
+    fetchLandingProjects(6),
+    fetchPopularSpecies(),
+    fetchAllArticles(),
   ]);
 
   return (
@@ -28,9 +34,9 @@ export default async function Home() {
       <StatisticsSection metrics={metrics} />
       <AboutSection />
       <PartnersSection partners={partners} />
-      <SpeciesSection />
-      <ProjectsSection />
-      <ActivitiesSection />
+      <SpeciesSection species={species} />
+      <ProjectsSection projects={projects} />
+      <ActivitiesSection activities={articles} />
       <TestimonialsSection testimonials={testimonials} />
       <CaseStudiesSection caseStudies={caseStudies} />
     </main>
