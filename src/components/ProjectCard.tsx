@@ -59,7 +59,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           <div className="flex items-center gap-2 flex-shrink-0 ml-2">
             <LocationPinIcon width={13} height={16} color="#63676C" />
             <span className="text-base font-semibold md:text-[#4C4748] text-[#19212C]">
-              {location}
+              {location.split(" ")[0].replace(/,$/, "")}
             </span>
           </div>
         </div>
