@@ -26,6 +26,7 @@ interface ProjectHeroProps {
   onPlantTree: () => void;
   onGiftTree: () => void;
   onReadMoreClick?: () => void;
+  mapCode: string;
 }
 
 const ProjectHero: React.FC<ProjectHeroProps> = ({
@@ -39,6 +40,7 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
   onPlantTree,
   onGiftTree,
   onReadMoreClick,
+  mapCode,
 }) => {
   const [items, setItems] = useState([
     ...treeSpecies,
@@ -80,15 +82,20 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
                 fill
                 className="object-cover transition-all duration-500"
               />
-            ) : (
+            ) : mapCode ? (
               // Show map iframe for last thumbnail
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3528.9814570275257!2d78.21631687473341!3d17.1752898088815!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcbc68ae81e7a79%3A0x3e82438832073e9d!2sKanha%20Shanti%20Vanam!5e1!3m2!1sen!2sin!4v1765172898898!5m2!1sen!2sin"
+                src={`https://www.google.com/maps/embed?pb=${mapCode}`}
                 width="100%"
                 height="100%"
                 className="rounded-lg border-0 min-h-[360px] h-full"
                 allowFullScreen
               />
+            ) : (
+              // Fallback when no map code
+              <div className="w-full h-full flex items-center justify-center bg-gray-100 text-gray-400 min-h-[360px]">
+                <span>Map not available</span>
+              </div>
             )}
           </div>
 

@@ -18,6 +18,7 @@ function transformSpecies(species: Species): SpeciesSimplified {
     { question: species.faq3_question, answer: species.faq3_answer },
     { question: species.faq4_question, answer: species.faq4_answer },
     { question: species.faq5_question, answer: species.faq5_answer },
+    { question: species.faq6_question || "", answer: species.faq6_answer || "" },
   ].filter((faq) => faq.question && faq.answer);
 
   return {

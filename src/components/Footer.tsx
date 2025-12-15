@@ -2,43 +2,67 @@
 import React from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { FooterMenuItem } from "@/types/footer-menu";
+import { SocialLinkSimplified } from "@/types/social-link";
+import { UsefulLinkItem } from "@/types/useful-link";
 
-const Footer: React.FC = () => {
-  const usefulLinks = [
-    "Heartfulness Institute",
-    "Kanha Shanti Vanam",
-    "Daaji.org",
-    "Heartfulness Magazine",
-    "One Daily Thought",
-    "Donate",
+interface FooterProps {
+  menuItems?: FooterMenuItem[];
+  socialLinks?: SocialLinkSimplified;
+  usefulLinks?: UsefulLinkItem[];
+}
+
+const Footer: React.FC<FooterProps> = ({ menuItems, socialLinks, usefulLinks }) => {
+  // Fallback useful links
+  const fallbackUsefulLinks: UsefulLinkItem[] = [
+    { label: "Heartfulness Institute", url: "#" },
+    { label: "Kanha Shanti Vanam", url: "#" },
+    { label: "Daaji.org", url: "#" },
+    { label: "Heartfulness Magazine", url: "#" },
+    { label: "One Daily Thought", url: "#" },
+    { label: "Donate", url: "#" },
   ];
 
-  const moreLinks = [
-    "About Us",
-    "Contact Us",
-    "Case Study",
-    "Terms & Conditions",
-    "Privacy & Policy",
+  const usefulLinksArray = usefulLinks && usefulLinks.length > 0 ? usefulLinks : fallbackUsefulLinks;
+
+  // Fallback if no menu items from Strapi
+  const fallbackLinks = [
+    { label: "About Us", url: "/about" },
+    { label: "Contact Us", url: "/contact" },
+    { label: "Case Study", url: "/case-studies" },
+    { label: "Terms & Conditions", url: "/terms" },
+    { label: "Privacy & Policy", url: "/privacy" },
   ];
 
-  const socialLinks = [
+  const moreLinks = menuItems && menuItems.length > 0 ? menuItems : fallbackLinks;
+
+  // Build social links array from props or use fallback
+  const socialLinksArray = [
     {
       name: "Instagram",
       icon: "/images/Instagram.png",
+      url: socialLinks?.instagram || "#",
     },
     {
       name: "Facebook",
       icon: "/images/Facebook.png",
+      url: socialLinks?.facebook || "#",
     },
     {
       name: "Linkedin",
       icon: "/images/link.png",
+      url: socialLinks?.linkedin || "#",
     },
     {
-      name: "Twitter",
+      name: "X",
       icon: "/images/Twitter.png",
+      url: socialLinks?.x || "#",
     },
   ];
+
+  // App store links
+  const appStoreUrl = socialLinks?.appstore || "#";
+  const playStoreUrl = socialLinks?.playstore || "#";
 
   const pathname = usePathname();
   const footerClass = `bg-[#0F172A] text-[#e6e6e6] md:mt-16 mt-8 ${
@@ -59,20 +83,24 @@ const Footer: React.FC = () => {
             className="max-sm:w-[170px]"
           />
           <div className="flex gap-4">
-            <Image
-              src="/images/g-play.png"
-              alt="Google Play"
-              width={154}
-              height={52}
-              className="cursor-pointer max-sm:w-[134px] max-sm:h-[41px]"
-            />
-            <Image
-              src="/images/app-store.png"
-              alt="App Store"
-              width={154}
-              height={52}
-              className="cursor-pointer max-sm:w-[134px] max-sm:h-[41px]"
-            />
+            <a href={playStoreUrl} target="_blank" rel="noopener noreferrer">
+              <Image
+                src="/images/g-play.png"
+                alt="Google Play"
+                width={154}
+                height={52}
+                className="cursor-pointer max-sm:w-[134px] max-sm:h-[41px]"
+              />
+            </a>
+            <a href={appStoreUrl} target="_blank" rel="noopener noreferrer">
+              <Image
+                src="/images/app-store.png"
+                alt="App Store"
+                width={154}
+                height={52}
+                className="cursor-pointer max-sm:w-[134px] max-sm:h-[41px]"
+              />
+            </a>
           </div>
         </div>
 
@@ -84,7 +112,9 @@ const Footer: React.FC = () => {
                 key={index}
                 className="font-[poppins] text-base sm:font-medium font-semibold sm:text-lg text-[#e6e6e6] hover:text-white hover:underline cursor-pointer"
               >
-                {link}
+                <a href={link.url} target="_blank" rel="noopener noreferrer">
+                  {link.label}
+                </a>
               </li>
             ))}
           </ul>
@@ -94,12 +124,14 @@ const Footer: React.FC = () => {
                 Useful Links
               </h3>
               <ul className="flex flex-col gap-2">
-                {usefulLinks.map((link, index) => (
+                {usefulLinksArray.map((link, index) => (
                   <li
                     key={index}
                     className="text-sm leading-5 font-[poppins] font-light text-[#e6e6e6] hover:text-white hover:underline cursor-pointer"
                   >
-                    {link}
+                    <a href={link.url} target="_blank" rel="noopener noreferrer">
+                      {link.label}
+                    </a>
                   </li>
                 ))}
               </ul>
@@ -110,22 +142,28 @@ const Footer: React.FC = () => {
                 Social
               </h3>
               <ul className="flex flex-col gap-2">
-                {socialLinks.map((item, index) => (
+                {socialLinksArray.map((item, index) => (
                   <li
                     key={index}
                     className="flex items-center gap-4 cursor-pointer hover:text-white"
                   >
-                    <Image
-                      src={item.icon}
-                      alt={item.name}
-                      width={24}
-                      height={24}
-                      className="object-contain"
-                    />
-
-                    <span className="font-[poppins] text-sm font-light">
-                      {item.name}
-                    </span>
+                    <a
+                      href={item.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-4"
+                    >
+                      <Image
+                        src={item.icon}
+                        alt={item.name}
+                        width={24}
+                        height={24}
+                        className="object-contain"
+                      />
+                      <span className="font-[poppins] text-sm font-light">
+                        {item.name}
+                      </span>
+                    </a>
                   </li>
                 ))}
               </ul>

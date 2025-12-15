@@ -49,6 +49,7 @@ interface ProjectDetailData {
   };
   projectDescription: string;
   projectDetails: string[];
+  mapCode: string;
 }
 
 interface ProjectDetailPageProps {
@@ -104,6 +105,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
         onPlantTree={handlePlantTree}
         onGiftTree={handleGiftTree}
         onReadMoreClick={handleReadMoreClick}
+        mapCode={projectData.mapCode}
       />
 
       {/* Project Tabs Section */}

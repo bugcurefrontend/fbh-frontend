@@ -157,6 +157,7 @@ function transformToDetailData(project: ProjectSimplified) {
     },
     projectDescription: descriptionText,
     projectDetails: [], // Could be populated from project_updates
+    mapCode: project.mapCode,
   };
 }
 

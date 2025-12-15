@@ -66,6 +66,8 @@ export interface Species {
   faq4_answer: string;
   faq5_question: string;
   faq5_answer: string;
+  faq6_question?: string;
+  faq6_answer?: string;
   deleted: boolean;
   popular: boolean; // Popular species shown on landing page
   images: SpeciesImage[];
