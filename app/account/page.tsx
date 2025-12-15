@@ -12,11 +12,11 @@ import {
   HandHeart,
 } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
-import { AccountPageSkeleton } from "./AccountPageSkeleton";
-import { SignInPrompt } from "./SignInPrompt";
-import { DashboardTab } from "./DashboardTab";
-import { DonationsTab } from "./DonationsTab";
-import { TreesTab } from "./TreesTab";
+import { AccountPageSkeleton } from "../../src/components/account/AccountPageSkeleton";
+import { SignInPrompt } from "../../src/components/account/SignInPrompt";
+import { DashboardTab } from "../../src/components/account/DashboardTab";
+import { DonationsTab } from "../../src/components/account/DonationsTab";
+import { TreesTab } from "../../src/components/account/TreesTab";
 
 const AccountPage = () => {
   const { isAuthenticated, isLoading, userProfile, login } = useAuth();
