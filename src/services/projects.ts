@@ -27,6 +27,7 @@ function transformProject(project: Project): ProjectSimplified {
     archetype: project.archetype || "",
     thumbnail: project.thumbnail?.url || project.images?.[0]?.url || "",
     images: project.images || [],
+    videoThumbnail: project.video_thumbnail?.url || null,
     videoUrl: project.video_url,
     description: project.description,
     address: project.address || "",
@@ -70,6 +71,7 @@ export const fetchAllProjects = cache(async (): Promise<ProjectSimplified[]> => 
         populate: {
           thumbnail: { populate: "*" },
           images: { populate: "*" },
+          video_thumbnail: { populate: "*" },
           tree_counts: { populate: "*" },
           species: { populate: "*" },
           project_updates: { populate: "*" },
@@ -111,6 +113,7 @@ export async function fetchLandingProjects(limit: number = 6): Promise<ProjectSi
       populate: {
         thumbnail: { populate: "*" },
         images: { populate: "*" },
+        video_thumbnail: { populate: "*" },
         tree_counts: { populate: "*" },
       },
       filters: {
@@ -160,6 +163,7 @@ export async function fetchProjectById(
       populate: {
         thumbnail: { populate: "*" },
         images: { populate: "*" },
+        video_thumbnail: { populate: "*" },
         tree_counts: { populate: "*" },
         species: { populate: "*" },
         project_updates: { populate: "*" },

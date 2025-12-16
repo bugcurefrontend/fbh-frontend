@@ -44,8 +44,9 @@ const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
           name: t.name,
           designation: t.designation,
           src: t.src,
+          videoUrl: t.videoUrl,
         }))
-      : fallbackTestimonials;
+      : fallbackTestimonials.map((t) => ({ ...t, videoUrl: null }));
 
   const [current, setCurrent] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
@@ -101,7 +102,7 @@ const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
             animate="center"
             exit="exit"
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="rounded-xl w-full md:w-[45%] md:max-h-[40%] h-full"
+            className="rounded-xl w-full md:w-[45%] md:max-h-[40%] h-full relative"
           >
             <Image
               src={testimonials[current].src}
@@ -110,6 +111,25 @@ const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
               height={423}
               className="rounded-lg w-full min-h-[316px] md:min-h-[423px] max-h-[423px] h-full object-cover"
             />
+            {/* Play Button Overlay - show if videoUrl exists */}
+            {testimonials[current].videoUrl && (
+              <div
+                className="absolute inset-0 flex items-center justify-center cursor-pointer rounded-lg"
+                onClick={() => {
+                  window.open(testimonials[current].videoUrl!, "_blank", "noopener,noreferrer");
+                }}
+              >
+                <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center shadow-lg hover:bg-white hover:scale-110 transition-all duration-200">
+                  <svg
+                    className="w-7 h-7 text-[#003399] ml-1"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </div>
+              </div>
+            )}
           </motion.div>
         </AnimatePresence>
 

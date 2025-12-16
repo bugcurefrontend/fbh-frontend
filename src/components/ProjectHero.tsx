@@ -28,6 +28,8 @@ interface ProjectHeroProps {
   onGiftTree: () => void;
   onReadMoreClick?: () => void;
   mapCode: string;
+  videoThumbnail?: string | null;
+  videoUrl?: string | null;
 }
 
 const ProjectHero: React.FC<ProjectHeroProps> = ({
@@ -42,15 +44,33 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
   onGiftTree,
   onReadMoreClick,
   mapCode,
+  videoThumbnail,
+  videoUrl,
 }) => {
-  const [items, setItems] = useState([
-    ...treeSpecies,
-    {
+  // Build items array: species images + video thumbnail (if exists) + map
+  const buildItems = () => {
+    const baseItems = [...treeSpecies];
+
+    // Add video thumbnail if both thumbnail and url exist
+    if (videoThumbnail && videoUrl) {
+      baseItems.push({
+        id: "video",
+        imageUrl: videoThumbnail,
+        imageAlt: "Project Video",
+      });
+    }
+
+    // Add map at the end
+    baseItems.push({
       id: "map",
       imageUrl: "",
       imageAlt: "Project Map",
-    },
-  ]);
+    });
+
+    return baseItems;
+  };
+
+  const [items, setItems] = useState(buildItems());
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [activeImage, setActiveImage] = useState(treeSpecies[0]?.imageUrl);
@@ -168,7 +188,14 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
               {items.map((item, i) => (
                 <div
                   key={item.id}
-                  onClick={() => setActiveIndex(i)}
+                  onClick={() => {
+                    // If video thumbnail clicked, open video in new tab
+                    if (item.id === "video" && videoUrl) {
+                      window.open(videoUrl, "_blank", "noopener,noreferrer");
+                    } else {
+                      setActiveIndex(i);
+                    }
+                  }}
                   className={`w-[112px] h-[112px] flex-shrink-0 rounded-lg overflow-hidden border-2 cursor-pointer shadow-lg transition-all duration-300 ${
                     activeIndex === i
                       ? "border-[#003399] scale-105"
@@ -184,6 +211,28 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
                         height={112}
                         className="w-full min-h-full object-cover"
                       />
+                    </div>
+                  ) : item.id === "video" ? (
+                    <div className="relative w-full h-full">
+                      <Image
+                        src={item.imageUrl}
+                        alt={item.imageAlt}
+                        width={112}
+                        height={112}
+                        className="w-full min-h-full object-cover"
+                      />
+                      {/* Play Button Overlay */}
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                        <div className="w-10 h-10 bg-white/90 rounded-full flex items-center justify-center shadow-lg">
+                          <svg
+                            className="w-5 h-5 text-[#003399] ml-0.5"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path d="M8 5v14l11-7z" />
+                          </svg>
+                        </div>
+                      </div>
                     </div>
                   ) : (
                     <Image
