@@ -18,7 +18,9 @@ const formatNumber = (value: number): string => {
   return value.toLocaleString() + "+";
 };
 
-const StatisticsSection: React.FC<StatisticsSectionProps> = ({ metrics: apiMetrics }) => {
+const StatisticsSection: React.FC<StatisticsSectionProps> = ({
+  metrics: apiMetrics,
+}) => {
   const fallbackTopRowStats = [
     {
       icon: <LandscapeIcon width={40} height={40} color="#206f32" />,
@@ -86,7 +88,7 @@ const StatisticsSection: React.FC<StatisticsSectionProps> = ({ metrics: apiMetri
 
   return (
     <div className="px-4 max-w-7xl md:px-14 mx-auto mb-6 md:mb-4">
-      <div className="border border-[#E4E4E4] relative -top-4.5 sm:top-[-48px] z-10 bg-white rounded-lg sm:rounded-[16px] shadow-[0_8px_32px_rgba(133,133,133,0.1)] p-5 sm:p-8 flex flex-col gap-8 sm:gap-16 sm:mx-auto sm:max-w-[1400px]">
+      <div className="border border-[#E4E4E4] relative -top-4.5 sm:top-[-48px] z-10 bg-white rounded-lg sm:rounded-[16px] shadow-[0_12px_24px_-4px_rgba(133,133,133,0.12)] p-5 sm:p-8 flex flex-col gap-8 sm:gap-16 sm:mx-auto sm:max-w-[1400px]">
         {/* Desktop Layout */}
         <div className="hidden sm:flex flex-col gap-14">
           {topRowStats.length > 0 && (
@@ -138,39 +140,44 @@ const StatisticsSection: React.FC<StatisticsSectionProps> = ({ metrics: apiMetri
 
         {/* Mobile Layout - Dynamic rows of 2 items each */}
         <div className="flex flex-col sm:hidden gap-12">
-          {Array.from({ length: Math.ceil(apiStats.length / 2) }).map((_, rowIdx) => {
-            const leftItem = apiStats[rowIdx * 2];
-            const rightItem = apiStats[rowIdx * 2 + 1];
-            return (
-              <div key={rowIdx} className="flex justify-between items-center gap-4">
-                {leftItem && (
-                  <div className="flex flex-col items-center gap-3 text-center flex-1">
-                    <div className="w-8 h-8 flex items-center justify-center">
-                      {leftItem.mobileIcon}
+          {Array.from({ length: Math.ceil(apiStats.length / 2) }).map(
+            (_, rowIdx) => {
+              const leftItem = apiStats[rowIdx * 2];
+              const rightItem = apiStats[rowIdx * 2 + 1];
+              return (
+                <div
+                  key={rowIdx}
+                  className="flex justify-between items-center gap-4"
+                >
+                  {leftItem && (
+                    <div className="flex flex-col items-center gap-3 text-center flex-1">
+                      <div className="w-8 h-8 flex items-center justify-center">
+                        {leftItem.mobileIcon}
+                      </div>
+                      <p className="text-2xl font-bold">{leftItem.number}</p>
+                      <p className="text-xs max-[500px]:w-20 font-semibold text-[#454950]">
+                        {leftItem.label}
+                      </p>
                     </div>
-                    <p className="text-2xl font-bold">{leftItem.number}</p>
-                    <p className="text-xs max-[500px]:w-20 font-semibold text-[#454950]">
-                      {leftItem.label}
-                    </p>
-                  </div>
-                )}
-                {leftItem && rightItem && (
-                  <div className="h-[96px] w-[0.5px] bg-[#D1D5DB] rounded"></div>
-                )}
-                {rightItem && (
-                  <div className="flex flex-col items-center gap-3 text-center flex-1">
-                    <div className="w-8 h-8 flex items-center justify-center">
-                      {rightItem.mobileIcon}
+                  )}
+                  {leftItem && rightItem && (
+                    <div className="h-[96px] w-[0.5px] bg-[#D1D5DB] rounded"></div>
+                  )}
+                  {rightItem && (
+                    <div className="flex flex-col items-center gap-3 text-center flex-1">
+                      <div className="w-8 h-8 flex items-center justify-center">
+                        {rightItem.mobileIcon}
+                      </div>
+                      <p className="text-2xl font-bold">{rightItem.number}</p>
+                      <p className="text-xs font-semibold text-[#454950]">
+                        {rightItem.label}
+                      </p>
                     </div>
-                    <p className="text-2xl font-bold">{rightItem.number}</p>
-                    <p className="text-xs font-semibold text-[#454950]">
-                      {rightItem.label}
-                    </p>
-                  </div>
-                )}
-              </div>
-            );
-          })}
+                  )}
+                </div>
+              );
+            }
+          )}
         </div>
       </div>
     </div>

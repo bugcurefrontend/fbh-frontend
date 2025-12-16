@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -13,24 +14,26 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 import { AccountPageSkeleton } from "../../src/components/account/AccountPageSkeleton";
-import { SignInPrompt } from "../../src/components/account/SignInPrompt";
 import { DashboardTab } from "../../src/components/account/DashboardTab";
 import { DonationsTab } from "../../src/components/account/DonationsTab";
 import { TreesTab } from "../../src/components/account/TreesTab";
 
 const AccountPage = () => {
-  const { isAuthenticated, isLoading, userProfile, login } = useAuth();
+  const { isAuthenticated, isLoading, userProfile } = useAuth();
+  const router = useRouter();
   const displayName =
     userProfile?.firstName || userProfile?.lastName
       ? `${userProfile?.firstName ?? ""}`.trim()
       : "";
 
-  if (isLoading) {
-    return <AccountPageSkeleton />;
-  }
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      router.push("/");
+    }
+  }, [isLoading, isAuthenticated, router]);
 
-  if (!isAuthenticated) {
-    return <SignInPrompt login={login} />;
+  if (isLoading || !isAuthenticated) {
+    return <AccountPageSkeleton />;
   }
 
   return (

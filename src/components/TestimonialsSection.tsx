@@ -9,7 +9,9 @@ interface TestimonialsSectionProps {
   testimonials?: TestimonialSimplified[];
 }
 
-const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ testimonials: apiTestimonials }) => {
+const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
+  testimonials: apiTestimonials,
+}) => {
   const fallbackTestimonials = [
     {
       quote:
@@ -35,35 +37,38 @@ const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ testimonials:
   ];
 
   // Use API data if available, otherwise use fallback
-  const testimonials = apiTestimonials && apiTestimonials.length > 0
-    ? apiTestimonials.map((t) => ({
-        quote: t.quote,
-        name: t.name,
-        designation: t.designation,
-        src: t.src,
-      }))
-    : fallbackTestimonials;
+  const testimonials =
+    apiTestimonials && apiTestimonials.length > 0
+      ? apiTestimonials.map((t) => ({
+          quote: t.quote,
+          name: t.name,
+          designation: t.designation,
+          src: t.src,
+        }))
+      : fallbackTestimonials;
 
   const [current, setCurrent] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const startAutoPlay = () => {
     if (timerRef.current) clearInterval(timerRef.current);
     timerRef.current = setInterval(() => {
       setCurrent((prev) => (prev + 1) % testimonials.length);
-    }, 5000);
+    }, 5000); // Autoplay interval
+  };
+
+  const stopAutoPlay = () => {
+    if (timerRef.current) clearInterval(timerRef.current);
   };
 
   useEffect(() => {
-    startAutoPlay();
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-    };
-  }, []);
+    if (!isHovered) startAutoPlay();
+    return () => stopAutoPlay();
+  }, [current, isHovered]);
 
   const handleDotClick = (index: number) => {
     setCurrent(index);
-    startAutoPlay();
   };
 
   const slideVariants = {
@@ -83,7 +88,11 @@ const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ testimonials:
         Testimonials
       </h2>
 
-      <div className="overflow-hidden border border-[#e4e4e4] p-4 rounded-2xl flex flex-col md:flex-row sm:gap-16 gap-6 items-center justify-between">
+      <div
+        className="overflow-hidden border border-[#e4e4e4] p-4 rounded-2xl flex flex-col md:flex-row sm:gap-16 gap-6 items-center justify-between"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
         <AnimatePresence mode="wait">
           <motion.div
             key={`image-${current}`}

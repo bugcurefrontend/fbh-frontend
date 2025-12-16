@@ -48,48 +48,23 @@ export default function Header() {
   const navigationItems = [
     {
       label: "About",
-      sub: [
-        { label: "Our Mission & Vision", href: "/about/mission-vision" },
-        { label: "Meet The Team", href: "/about/team" },
-        { label: "FAQs", href: "/about/faqs" },
-      ],
+      sub: [{ label: "Our Mission & Vision", href: "/about-us" }],
     },
-    {
-      label: "How it works",
-      sub: [
-        { label: "Process", href: "/how-it-works/process" },
-        { label: "Keystone Projects", href: "/how-it-works/keystone-projects" },
-        { label: "Project Archetypes", href: "/how-it-works/archetypes" },
-      ],
-    },
+
     {
       label: "Projects",
-      sub: [
-        { label: "All Projects", href: "/projects" },
-        { label: "Featured", href: "/projects/featured" },
-        { label: "Completed", href: "/projects/completed" },
-      ],
+      sub: [{ label: "All Projects", href: "/projects" }],
     },
     {
       label: "Species",
-      sub: [
-        { label: "Tree Species", href: "/species" },
-        { label: "Plant Database", href: "/species/database" },
-      ],
+      sub: [{ label: "All Species", href: "/species" }],
     },
-    {
-      label: "Get involved",
-      sub: [
-        { label: "Volunteer", href: "/get-involved/volunteer" },
-        { label: "Partner With Us", href: "/get-involved/partner" },
-        { label: "Events", href: "/get-involved/events" },
-      ],
-    },
+
     {
       label: "Plant for a cause",
       sub: [
-        { label: "Donate", href: "/cause/donate" },
-        { label: "Corporate Gifting", href: "/cause/corporate-gifting" },
+        { label: "Donate", href: "/plant-tree" },
+        { label: "Corporate Gifting", href: "/gift-tree" },
       ],
     },
   ];

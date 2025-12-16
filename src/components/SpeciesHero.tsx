@@ -2,8 +2,9 @@
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { Share2, Trees } from "lucide-react";
+import { Trees } from "lucide-react";
 import GeoTagToggleAndActions from "./GeoTagToggleAndActions";
+import ShareButton from "../../app/case-studies/[slug]/ShareButton";
 
 interface SpeciesHeroProps {
   name: string;
@@ -122,9 +123,7 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
               </div>
             ))}
           </div>
-          <button className="hidden absolute right-4 top-4 md:flex items-center justify-center h-12 w-12 rounded-lg text-white bg-[#003399] hover:bg-[#002266]">
-            <Share2 className="w-6 h-6" />
-          </button>
+          <ShareButton className="right-4 top-4 max-md:hidden" />
         </div>
 
         {/* Right side - Species Details */}
@@ -149,9 +148,7 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
                   </span>
                 </div>
               </div>
-              <button className="md:hidden flex items-center justify-center h-9 w-9 rounded text-white bg-[#003399] hover:bg-[#002266]">
-                <Share2 className="w-4 h-4" />
-              </button>
+              <ShareButton className="md:hidden right-0" />
             </div>
             <p className="text-gray-700 md:text-base text-sm leading-6 line-clamp-5">
               {description}

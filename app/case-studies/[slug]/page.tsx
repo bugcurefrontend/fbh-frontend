@@ -9,12 +9,13 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { MapPin, Share2 } from "lucide-react";
+import { MapPin } from "lucide-react";
 import { fetchAllPartners } from "@/services/partners";
 import {
   fetchCaseStudyBySlug,
   fetchCaseStudySlugs,
 } from "@/services/case-studies";
+import ShareButton from "./ShareButton";
 
 interface CaseStudyPageProps {
   params: Promise<{ slug: string }>;
@@ -102,9 +103,7 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
             </div>
           </div>
         </div>
-        <button className="flex items-center justify-center absolute md:bottom-17 bottom-13 right-4 md:right-43 md:h-12 md:w-12 h-8 w-8 rounded md:rounded-[8px] text-white bg-[#003399] hover:bg-[#002266]">
-          <Share2 strokeWidth={1.5} className="md:w-6 w-4.5 md:h-6 h-4.5" />
-        </button>
+        <ShareButton className="md:bottom-17 bottom-13 right-4 md:right-43" />
       </section>
 
       <div className="max-w-7xl mx-auto md:space-y-12 space-y-8">

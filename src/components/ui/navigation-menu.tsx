@@ -37,7 +37,7 @@ export function CustomNavigationMenu({
         ))}
         <li>
           <a
-            href="#"
+            href="/contact-us"
             className="group inline-flex items-center justify-center bg-background p-2 uppercase text-xs font-bold leading-[18px] text-center align-middle text-[#19212C] rounded-none hover:bg-[#E6EBF5] transition-colors"
           >
             Contact us

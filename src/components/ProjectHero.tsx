@@ -2,10 +2,11 @@
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { MapPin, Share2 } from "lucide-react";
+import { MapPin } from "lucide-react";
 import LandscapeIcon from "./icons/LandscapeIcon";
 import TreeSpeciesIcon from "./icons/TreeSpeciesIcon";
 import GeoTagToggleAndActions from "./GeoTagToggleAndActions";
+import ShareButton from "../../app/case-studies/[slug]/ShareButton";
 
 interface ProjectHeroProps {
   title: string;
@@ -144,10 +145,7 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
             ))}
           </div>
 
-          {/* Share button (desktop) */}
-          <button className="hidden absolute right-4 top-4 md:flex items-center justify-center h-12 w-12 rounded-lg text-white bg-[#003399] hover:bg-[#002266]">
-            <Share2 className="w-6 h-6" />
-          </button>
+          <ShareButton className="max-md:hidden right-4 top-4" />
         </div>
 
         {/* Right side - Project Details (unchanged) */}
@@ -166,9 +164,7 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
               </div>
             </div>
             <div className="md:mt-4 text-gray-700 md:text-base text-sm leading-6 relative">
-              <p className="line-clamp-4">
-                {description}
-              </p>
+              <p className="line-clamp-4">{description}</p>
               <button
                 onClick={onReadMoreClick}
                 className="max-md:hidden text-[#003399] text-sm font-semibold absolute bottom-0 right-0 bg-white pl-1"
@@ -177,9 +173,7 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
               </button>
             </div>
 
-            <button className="md:hidden absolute right-0 top-2 flex items-center justify-center h-9 w-9 rounded text-white bg-[#003399] hover:bg-[#002266]">
-              <Share2 className="w-4 h-4" />
-            </button>
+            <ShareButton className="md:hidden right-0 top-3" />
           </div>
 
           {/* Statistics */}
