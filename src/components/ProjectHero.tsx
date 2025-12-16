@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Image from "next/image";
-import { MapPin } from "lucide-react";
+import { MapPin, ChevronLeft, ChevronRight } from "lucide-react";
 import LandscapeIcon from "./icons/LandscapeIcon";
 import TreeSpeciesIcon from "./icons/TreeSpeciesIcon";
 import GeoTagToggleAndActions from "./GeoTagToggleAndActions";
@@ -54,6 +54,29 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [activeImage, setActiveImage] = useState(treeSpecies[0]?.imageUrl);
+  const sliderRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  const checkScrollButtons = () => {
+    if (sliderRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = sliderRef.current;
+      setCanScrollLeft(scrollLeft > 0);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 5);
+    }
+  };
+
+  const scrollLeft = () => {
+    if (sliderRef.current) {
+      sliderRef.current.scrollBy({ left: -120, behavior: "smooth" });
+    }
+  };
+
+  const scrollRight = () => {
+    if (sliderRef.current) {
+      sliderRef.current.scrollBy({ left: 120, behavior: "smooth" });
+    }
+  };
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -69,6 +92,15 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
       setActiveImage(items[activeIndex].imageUrl);
     }
   }, [activeIndex, items]);
+
+  useEffect(() => {
+    checkScrollButtons();
+    const slider = sliderRef.current;
+    if (slider) {
+      slider.addEventListener("scroll", checkScrollButtons);
+      return () => slider.removeEventListener("scroll", checkScrollButtons);
+    }
+  }, []);
 
   return (
     <div className="bg-white rounded-2xl overflow-hidden">
@@ -112,37 +144,72 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
             ))}
           </div>
 
-          {/* Desktop thumbnails */}
-          <div className="hidden absolute bottom-6 left-6 md:flex gap-2">
-            {items.map((item, i) => (
-              <div
-                key={item.id}
-                onClick={() => setActiveIndex(i)}
-                className={`w-[112px] h-[112px] rounded-lg overflow-hidden border border-white cursor-pointer shadow-lg transition-all duration-300 ${
-                  activeIndex === i ? "scale-105" : "hover:scale-105"
-                }`}
-              >
-                {item.id === "map" ? (
-                  <div className="w-full h-full flex items-center justify-center ">
+          {/* Desktop thumbnails - horizontal slider with arrows */}
+          <div className="hidden absolute bottom-6 left-6 right-6 md:flex items-center gap-2">
+            {/* Left Arrow */}
+            <button
+              onClick={scrollLeft}
+              className={`flex-shrink-0 w-8 h-8 rounded-full bg-white/90 shadow-lg flex items-center justify-center transition-all duration-300 ${
+                canScrollLeft
+                  ? "opacity-100 hover:bg-white cursor-pointer"
+                  : "opacity-50 cursor-not-allowed"
+              }`}
+              disabled={!canScrollLeft}
+            >
+              <ChevronLeft className="w-5 h-5 text-[#003399]" />
+            </button>
+
+            {/* Thumbnails Container */}
+            <div
+              ref={sliderRef}
+              className="flex gap-2 overflow-x-auto flex-1"
+              style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+            >
+              {items.map((item, i) => (
+                <div
+                  key={item.id}
+                  onClick={() => setActiveIndex(i)}
+                  className={`w-[112px] h-[112px] flex-shrink-0 rounded-lg overflow-hidden border-2 cursor-pointer shadow-lg transition-all duration-300 ${
+                    activeIndex === i
+                      ? "border-[#003399] scale-105"
+                      : "border-white hover:scale-105"
+                  }`}
+                >
+                  {item.id === "map" ? (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <Image
+                        src="/images/map.png"
+                        alt="map"
+                        width={112}
+                        height={112}
+                        className="w-full min-h-full object-cover"
+                      />
+                    </div>
+                  ) : (
                     <Image
-                      src="/images/map.png"
-                      alt="map"
+                      src={item.imageUrl}
+                      alt={item.imageAlt}
                       width={112}
                       height={112}
                       className="w-full min-h-full object-cover"
                     />
-                  </div>
-                ) : (
-                  <Image
-                    src={item.imageUrl}
-                    alt={item.imageAlt}
-                    width={112}
-                    height={112}
-                    className="w-full min-h-full object-cover"
-                  />
-                )}
-              </div>
-            ))}
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Right Arrow */}
+            <button
+              onClick={scrollRight}
+              className={`flex-shrink-0 w-8 h-8 rounded-full bg-white/90 shadow-lg flex items-center justify-center transition-all duration-300 ${
+                canScrollRight
+                  ? "opacity-100 hover:bg-white cursor-pointer"
+                  : "opacity-50 cursor-not-allowed"
+              }`}
+              disabled={!canScrollRight}
+            >
+              <ChevronRight className="w-5 h-5 text-[#003399]" />
+            </button>
           </div>
 
           <ShareButton className="max-md:hidden right-4 top-4" />
