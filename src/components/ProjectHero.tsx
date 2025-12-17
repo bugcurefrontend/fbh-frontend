@@ -147,13 +147,21 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
   }, []);
 
   useEffect(() => {
-    checkScrollButtons();
+    // Check scroll buttons after a short delay to ensure proper rendering
+    const timer = setTimeout(() => {
+      checkScrollButtons();
+    }, 100);
+
     const slider = sliderRef.current;
     if (slider) {
       slider.addEventListener("scroll", checkScrollButtons);
-      return () => slider.removeEventListener("scroll", checkScrollButtons);
+      return () => {
+        clearTimeout(timer);
+        slider.removeEventListener("scroll", checkScrollButtons);
+      };
     }
-  }, []);
+    return () => clearTimeout(timer);
+  }, [items]);
 
   return (
     <div className="bg-white rounded-2xl overflow-hidden" ref={heroRef}>
@@ -215,12 +223,8 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
             )}
           </div>
 
-          {/* Mobile dots (shows on hover when video is playing) */}
-          <div className={`justify-center mt-4 gap-2 transition-all duration-300 ${
-            videoPlaying
-              ? "flex md:hidden opacity-0 group-hover/container:opacity-100"
-              : "flex md:hidden"
-          }`}>
+          {/* Mobile dots (shows on hover) */}
+          <div className="flex md:hidden justify-center mt-4 gap-2 transition-all duration-300 opacity-0 group-hover/container:opacity-100">
             {items.map((_, i) => (
               <div
                 key={i}
@@ -231,31 +235,28 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
             ))}
           </div>
 
-          {/* Desktop thumbnails - horizontal slider with arrows (shows on hover when video is playing) */}
-          <div className={`absolute bottom-6 left-6 right-6 items-center gap-2 transition-all duration-300 ${
-            videoPlaying
-              ? "hidden md:flex opacity-0 group-hover/container:opacity-100 translate-y-4 group-hover/container:translate-y-0"
-              : "hidden md:flex"
-          }`}>
-            {/* Left Arrow */}
-            <button
-              onClick={scrollLeft}
-              className={`flex-shrink-0 w-8 h-8 rounded-full bg-white/90 shadow-lg flex items-center justify-center transition-all duration-300 ${
-                canScrollLeft
-                  ? "opacity-100 hover:bg-white cursor-pointer"
-                  : "opacity-50 cursor-not-allowed"
-              }`}
-              disabled={!canScrollLeft}
-            >
-              <ChevronLeft className="w-5 h-5 text-[#003399]" />
-            </button>
+          {/* Desktop thumbnails - horizontal slider with arrows inside (shows on hover) */}
+          <div className="absolute bottom-6 left-6 right-6 transition-all duration-300 hidden md:block opacity-0 group-hover/container:opacity-100 translate-y-4 group-hover/container:translate-y-0">
+            <div className="relative">
+              {/* Left Arrow - inside */}
+              <button
+                onClick={scrollLeft}
+                className={`absolute left-2 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-white/90 shadow-lg flex items-center justify-center transition-all duration-300 ${
+                  canScrollLeft
+                    ? "opacity-100 hover:bg-white cursor-pointer"
+                    : "opacity-0 pointer-events-none"
+                }`}
+                disabled={!canScrollLeft}
+              >
+                <ChevronLeft className="w-5 h-5 text-[#003399]" />
+              </button>
 
-            {/* Thumbnails Container */}
-            <div
-              ref={sliderRef}
-              className="flex gap-2 overflow-x-auto flex-1"
-              style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-            >
+              {/* Thumbnails Container */}
+              <div
+                ref={sliderRef}
+                className="flex gap-2 overflow-x-auto"
+                style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+              >
               {items.map((item, i) => (
                 <div
                   key={item.id}
@@ -264,14 +265,14 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
                     setActiveIndex(i);
                     setVideoPlaying(false); // Always reset - user must click main view to play
                   }}
-                  className={`w-[112px] h-[112px] flex-shrink-0 rounded-lg overflow-hidden border-2 cursor-pointer shadow-lg transition-all duration-300 ${
+                  className={`w-[112px] h-[112px] flex-shrink-0 rounded-lg overflow-hidden border-2 cursor-pointer ${
                     activeIndex === i
-                      ? "border-[#003399] scale-105"
-                      : "border-white hover:scale-105"
+                      ? "border-[#003399]"
+                      : "border-white"
                   }`}
                 >
-                  {item.id === "map" ? (
-                    <div className="w-full h-full flex items-center justify-center">
+                  <div className="relative w-full h-full">
+                    {item.id === "map" ? (
                       <Image
                         src="/images/map.png"
                         alt="map"
@@ -279,40 +280,35 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
                         height={112}
                         className="w-full min-h-full object-cover"
                       />
-                    </div>
-                  ) : item.id === "video" ? (
-                    <Image
-                      src={item.imageUrl}
-                      alt={item.imageAlt}
-                      width={112}
-                      height={112}
-                      className="w-full min-h-full object-cover"
-                    />
-                  ) : (
-                    <Image
-                      src={item.imageUrl}
-                      alt={item.imageAlt}
-                      width={112}
-                      height={112}
-                      className="w-full min-h-full object-cover"
-                    />
-                  )}
+                    ) : (
+                      <Image
+                        src={item.imageUrl}
+                        alt={item.imageAlt}
+                        width={112}
+                        height={112}
+                        className="w-full min-h-full object-cover"
+                      />
+                    )}
+                    {/* Shadow gradient at bottom of each thumbnail */}
+                    <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-black/70 via-black/30 to-transparent pointer-events-none"></div>
+                  </div>
                 </div>
               ))}
-            </div>
+              </div>
 
-            {/* Right Arrow */}
-            <button
-              onClick={scrollRight}
-              className={`flex-shrink-0 w-8 h-8 rounded-full bg-white/90 shadow-lg flex items-center justify-center transition-all duration-300 ${
-                canScrollRight
-                  ? "opacity-100 hover:bg-white cursor-pointer"
-                  : "opacity-50 cursor-not-allowed"
-              }`}
-              disabled={!canScrollRight}
-            >
-              <ChevronRight className="w-5 h-5 text-[#003399]" />
-            </button>
+              {/* Right Arrow - inside */}
+              <button
+                onClick={scrollRight}
+                className={`absolute right-2 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-white/90 shadow-lg flex items-center justify-center transition-all duration-300 ${
+                  canScrollRight
+                    ? "opacity-100 hover:bg-white cursor-pointer"
+                    : "opacity-0 pointer-events-none"
+                }`}
+                disabled={!canScrollRight}
+              >
+                <ChevronRight className="w-5 h-5 text-[#003399]" />
+              </button>
+            </div>
           </div>
 
           <ShareButton className="max-md:hidden right-4 top-4" />
