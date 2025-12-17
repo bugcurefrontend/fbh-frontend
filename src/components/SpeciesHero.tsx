@@ -27,6 +27,8 @@ interface SpeciesHeroProps {
   onGeoTaggedChange: (checked: boolean) => void;
   onPlantTree: () => void;
   onGiftTree: () => void;
+  videoThumbnail?: string | null;
+  videoUrl?: string | null;
 }
 
 const SpeciesHero: React.FC<SpeciesHeroProps> = ({
@@ -39,16 +41,32 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
   onGeoTaggedChange,
   onPlantTree,
   onGiftTree,
+  videoThumbnail,
+  videoUrl,
 }) => {
-  const [items, setItems] = useState([
-    ...treeSpecies,
-    // Removed map functionality
-  ]);
+  // Build items array: species images + video thumbnail (if exists)
+  const buildItems = () => {
+    const baseItems = [...treeSpecies];
 
+    // Add video thumbnail if both thumbnail and url exist
+    if (videoThumbnail && videoUrl) {
+      baseItems.push({
+        id: "video",
+        imageUrl: videoThumbnail,
+        imageAlt: "Species Video",
+      });
+    }
+
+    return baseItems;
+  };
+
+  const [items, setItems] = useState(buildItems());
   const [activeIndex, setActiveIndex] = useState(0);
   const [activeImage, setActiveImage] = useState(
     treeSpecies.length > 0 ? treeSpecies[0].imageUrl : ""
   );
+  const [videoPlaying, setVideoPlaying] = useState(false);
+  const heroRef = useRef<HTMLDivElement>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -73,19 +91,27 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
     }
   };
 
+  // Auto-rotate only when video is not playing
   useEffect(() => {
-    if (items.length === 0) {
-      return; // Prevent division by zero if items is empty
-    }
+    if (videoPlaying) return; // Don't auto-rotate when video is playing
+    if (items.length === 0) return; // Prevent division by zero if items is empty
+
     const interval = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % items.length);
     }, 5000);
     return () => clearInterval(interval);
-  }, [items.length]);
+  }, [items.length, videoPlaying]);
 
+  // Update active image when index changes
   useEffect(() => {
     if (items.length > 0 && activeIndex < items.length) {
-      setActiveImage(items[activeIndex].imageUrl);
+      if (items[activeIndex].id === "video") {
+        setActiveImage(items[activeIndex].imageUrl);
+        // Don't reset videoPlaying here - let the click handler control it
+      } else {
+        setActiveImage(items[activeIndex].imageUrl);
+        setVideoPlaying(false); // Reset video playing only when switching to non-video items
+      }
     } else {
       setActiveImage(""); // No images or invalid index
     }
@@ -93,22 +119,83 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
     if (activeIndex >= items.length && items.length > 0) setActiveIndex(0);
   }, [activeIndex, items]);
 
+  // Intersection observer to stop video when scrolling away
   useEffect(() => {
-    checkScrollButtons();
+    const heroSection = heroRef.current;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) {
+          setVideoPlaying(false); // Stop video when out of view
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    if (heroSection) {
+      observer.observe(heroSection);
+    }
+
+    return () => {
+      if (heroSection) {
+        observer.unobserve(heroSection);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    // Check scroll buttons after a short delay to ensure proper rendering
+    const timer = setTimeout(() => {
+      checkScrollButtons();
+    }, 100);
+
     const slider = sliderRef.current;
     if (slider) {
       slider.addEventListener("scroll", checkScrollButtons);
-      return () => slider.removeEventListener("scroll", checkScrollButtons);
+      return () => {
+        clearTimeout(timer);
+        slider.removeEventListener("scroll", checkScrollButtons);
+      };
     }
-  }, []);
+    return () => clearTimeout(timer);
+  }, [items]);
 
   return (
-    <div className="bg-white rounded-2xl overflow-hidden">
+    <div className="bg-white rounded-2xl overflow-hidden" ref={heroRef}>
       <div className="flex flex-col lg:flex-row space-x-6 space-y-6 lg:space-y-0">
-        {/* Left side - Hero Image */}
-        <div className="lg:w-[546px] w-full relative flex-shrink-0">
-          <div className="min-h-[360px] h-full w-full relative overflow-hidden rounded-lg">
-            {activeImage && items.length > 0 ? (
+        {/* Left side - Hero Image / Video */}
+        <div className="lg:w-[546px] w-full relative flex-shrink-0 group/container">
+          <div
+            className="min-h-[360px] h-full w-full relative overflow-hidden rounded-lg cursor-pointer"
+            onClick={() => {
+              // Only trigger video play when clicking on video item
+              if (items[activeIndex]?.id === "video" && videoUrl && !videoPlaying) {
+                setVideoPlaying(true);
+              }
+            }}
+          >
+            {/* Show video player when video is selected and playing */}
+            {items[activeIndex]?.id === "video" && videoPlaying && videoUrl ? (
+              videoUrl.includes("youtube.com") || videoUrl.includes("youtu.be") ? (
+                <iframe
+                  src={`${videoUrl.includes("embed") ? videoUrl : videoUrl.replace("watch?v=", "embed/").replace("youtu.be/", "youtube.com/embed/")}?autoplay=1`}
+                  className="w-full h-full min-h-[360px]"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                />
+              ) : (
+                <video
+                  src={videoUrl}
+                  className="w-full h-full object-cover min-h-[360px]"
+                  controls
+                  autoPlay
+                  playsInline
+                  preload="auto"
+                >
+                  Your browser does not support the video tag.
+                </video>
+              )
+            ) : activeImage && items.length > 0 ? (
               <Image
                 src={activeImage}
                 alt={items[activeIndex]?.imageAlt || "Species image"}
@@ -117,14 +204,14 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
               />
             ) : (
               // Placeholder if no image is available
-              <div className="w-full h-full flex items-center justify-center bg-gray-100 text-gray-400">
+              <div className="w-full h-full flex items-center justify-center bg-gray-100 text-gray-400 min-h-[360px]">
                 <Trees className="w-16 h-16 text-gray-300" />
               </div>
             )}
           </div>
 
-          {/* Mobile dots */}
-          <div className="md:hidden flex justify-center mt-4 gap-2">
+          {/* Mobile dots (shows on hover) */}
+          <div className="flex md:hidden justify-center mt-4 gap-2 transition-all duration-300 opacity-0 group-hover/container:opacity-100">
             {items.map((_, i) => (
               <div
                 key={i}
@@ -135,62 +222,72 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
             ))}
           </div>
 
-          {/* Tree Species Thumbnails - horizontal slider with arrows */}
-          <div className="hidden absolute bottom-6 left-6 right-6 md:flex items-center gap-2">
-            {/* Left Arrow */}
-            <button
-              onClick={scrollLeft}
-              className={`flex-shrink-0 w-8 h-8 rounded-full bg-white/90 shadow-lg flex items-center justify-center transition-all duration-300 ${
-                canScrollLeft
-                  ? "opacity-100 hover:bg-white cursor-pointer"
-                  : "opacity-50 cursor-not-allowed"
-              }`}
-              disabled={!canScrollLeft}
-            >
-              <ChevronLeft className="w-5 h-5 text-[#003399]" />
-            </button>
+          {/* Desktop thumbnails - horizontal slider with arrows inside (shows on hover) */}
+          <div className="absolute bottom-6 left-6 right-6 transition-all duration-300 hidden md:block opacity-0 group-hover/container:opacity-100 translate-y-4 group-hover/container:translate-y-0">
+            <div className="relative">
+              {/* Left Arrow - inside */}
+              <button
+                onClick={scrollLeft}
+                className={`absolute left-2 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-white/90 shadow-lg flex items-center justify-center transition-all duration-300 ${
+                  canScrollLeft
+                    ? "opacity-100 hover:bg-white cursor-pointer"
+                    : "opacity-0 pointer-events-none"
+                }`}
+                disabled={!canScrollLeft}
+              >
+                <ChevronLeft className="w-5 h-5 text-[#003399]" />
+              </button>
 
-            {/* Thumbnails Container */}
-            <div
-              ref={sliderRef}
-              className="flex gap-2 overflow-x-auto flex-1"
-              style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-            >
-              {items.map((item, i) => (
-                <div
-                  key={item.id}
-                  onClick={() => setActiveIndex(i)}
-                  className={`w-[112px] h-[112px] flex-shrink-0 rounded-lg overflow-hidden border-2 cursor-pointer shadow-lg transition-all duration-300 ${
-                    activeIndex === i
-                      ? "border-[#003399] scale-105"
-                      : "border-white hover:scale-105"
-                  }`}
-                >
-                  <Image
-                    src={item.imageUrl}
-                    alt={item.imageAlt}
-                    width={112}
-                    height={112}
-                    className="w-full min-h-full object-cover"
-                  />
-                </div>
-              ))}
+              {/* Thumbnails Container */}
+              <div
+                ref={sliderRef}
+                className="flex gap-2 overflow-x-auto"
+                style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+              >
+                {items.map((item, i) => (
+                  <div
+                    key={item.id}
+                    onClick={() => {
+                      setActiveIndex(i);
+                      setVideoPlaying(false); // Always reset - user must click main view to play
+                    }}
+                    className={`w-[112px] h-[112px] flex-shrink-0 rounded-lg overflow-hidden border-2 cursor-pointer ${
+                      activeIndex === i
+                        ? "border-[#003399]"
+                        : "border-white"
+                    }`}
+                  >
+                    <div className="relative w-full h-full">
+                      <Image
+                        src={item.imageUrl}
+                        alt={item.imageAlt}
+                        width={112}
+                        height={112}
+                        className="w-full min-h-full object-cover"
+                      />
+                      {/* Shadow gradient at bottom of each thumbnail */}
+                      <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-black/70 via-black/30 to-transparent pointer-events-none"></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Right Arrow - inside */}
+              <button
+                onClick={scrollRight}
+                className={`absolute right-2 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-white/90 shadow-lg flex items-center justify-center transition-all duration-300 ${
+                  canScrollRight
+                    ? "opacity-100 hover:bg-white cursor-pointer"
+                    : "opacity-0 pointer-events-none"
+                }`}
+                disabled={!canScrollRight}
+              >
+                <ChevronRight className="w-5 h-5 text-[#003399]" />
+              </button>
             </div>
-
-            {/* Right Arrow */}
-            <button
-              onClick={scrollRight}
-              className={`flex-shrink-0 w-8 h-8 rounded-full bg-white/90 shadow-lg flex items-center justify-center transition-all duration-300 ${
-                canScrollRight
-                  ? "opacity-100 hover:bg-white cursor-pointer"
-                  : "opacity-50 cursor-not-allowed"
-              }`}
-              disabled={!canScrollRight}
-            >
-              <ChevronRight className="w-5 h-5 text-[#003399]" />
-            </button>
           </div>
-          <ShareButton className="right-4 top-4 max-md:hidden" />
+
+          <ShareButton className="max-md:hidden right-4 top-4" />
         </div>
 
         {/* Right side - Species Details */}

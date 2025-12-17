@@ -50,7 +50,9 @@ const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
 
   const [current, setCurrent] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const [videoPlaying, setVideoPlaying] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const sectionRef = useRef<HTMLElement>(null);
 
   const startAutoPlay = () => {
     if (timerRef.current) clearInterval(timerRef.current);
@@ -64,12 +66,42 @@ const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
   };
 
   useEffect(() => {
-    if (!isHovered) startAutoPlay();
+    if (!isHovered && !videoPlaying) startAutoPlay();
+    else stopAutoPlay();
     return () => stopAutoPlay();
-  }, [current, isHovered]);
+  }, [current, isHovered, videoPlaying]);
+
+  // Reset video when switching testimonials
+  useEffect(() => {
+    setVideoPlaying(false);
+  }, [current]);
+
+  // Intersection observer to stop video when scrolling away
+  useEffect(() => {
+    const section = sectionRef.current;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) {
+          setVideoPlaying(false);
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    if (section) {
+      observer.observe(section);
+    }
+
+    return () => {
+      if (section) {
+        observer.unobserve(section);
+      }
+    };
+  }, []);
 
   const handleDotClick = (index: number) => {
     setCurrent(index);
+    setVideoPlaying(false);
   };
 
   const slideVariants = {
@@ -84,7 +116,7 @@ const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
   };
 
   return (
-    <section className="max-w-7xl mx-auto px-4 md:px-8 mt-8 md:mt-16">
+    <section ref={sectionRef} className="max-w-7xl mx-auto px-4 md:px-8 mt-8 md:mt-16">
       <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold sm:text-center text-[#232D26] mb-6 md:text-[32px] md:font-semibold md:leading-[48px] md:align-middle md:text-[#232D26]">
         Testimonials
       </h2>
@@ -94,44 +126,73 @@ const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={`image-${current}`}
-            variants={imageSlideVariants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="rounded-xl w-full md:w-[45%] md:max-h-[40%] h-full relative"
-          >
-            <Image
-              src={testimonials[current].src}
-              alt={testimonials[current].name}
-              width={493}
-              height={423}
-              className="rounded-lg w-full min-h-[316px] md:min-h-[423px] max-h-[423px] h-full object-cover"
-            />
-            {/* Play Button Overlay - show if videoUrl exists */}
-            {testimonials[current].videoUrl && (
-              <div
-                className="absolute inset-0 flex items-center justify-center cursor-pointer rounded-lg"
-                onClick={() => {
-                  window.open(testimonials[current].videoUrl!, "_blank", "noopener,noreferrer");
-                }}
+        <div
+          className={`rounded-xl w-full md:w-[45%] md:max-h-[40%] h-full relative overflow-hidden ${testimonials[current].videoUrl && !videoPlaying ? 'cursor-pointer' : ''}`}
+          onClick={(e) => {
+            e.stopPropagation();
+            if (testimonials[current].videoUrl && !videoPlaying) {
+              setVideoPlaying(true);
+            }
+          }}
+        >
+          {/* Show embedded video when playing */}
+          {videoPlaying && testimonials[current].videoUrl ? (
+            testimonials[current].videoUrl!.includes("youtube.com") || testimonials[current].videoUrl!.includes("youtu.be") ? (
+              <iframe
+                src={`${testimonials[current].videoUrl!.includes("embed") ? testimonials[current].videoUrl : testimonials[current].videoUrl!.replace("watch?v=", "embed/").replace("youtu.be/", "youtube.com/embed/")}?autoplay=1`}
+                className="w-full min-h-[316px] md:min-h-[423px] max-h-[423px] h-full rounded-lg"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              />
+            ) : (
+              <video
+                src={testimonials[current].videoUrl!}
+                className="w-full min-h-[316px] md:min-h-[423px] max-h-[423px] h-full object-cover rounded-lg"
+                controls
+                autoPlay
+                playsInline
+                preload="auto"
               >
-                <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center shadow-lg hover:bg-white hover:scale-110 transition-all duration-200">
-                  <svg
-                    className="w-7 h-7 text-[#003399] ml-1"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M8 5v14l11-7z" />
-                  </svg>
-                </div>
-              </div>
-            )}
-          </motion.div>
-        </AnimatePresence>
+                Your browser does not support the video tag.
+              </video>
+            )
+          ) : (
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={`image-${current}`}
+                variants={imageSlideVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+                className="relative"
+              >
+                <Image
+                  src={testimonials[current].src}
+                  alt={testimonials[current].name}
+                  width={493}
+                  height={423}
+                  className="rounded-lg w-full min-h-[316px] md:min-h-[423px] max-h-[423px] h-full object-cover"
+                />
+                {/* Play Button Overlay - show if videoUrl exists */}
+                {testimonials[current].videoUrl && (
+                  <div className="absolute inset-0 flex items-center justify-center rounded-lg pointer-events-none">
+                    <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center shadow-lg">
+                      <svg
+                        className="w-7 h-7 text-[#003399] ml-1"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                    </div>
+                  </div>
+                )}
+              </motion.div>
+            </AnimatePresence>
+          )}
+        </div>
 
         <div
           key={`content-${current}`}

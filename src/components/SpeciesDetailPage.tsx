@@ -32,6 +32,8 @@ interface SpeciesDetailData {
   benefits: string[];
   growthInfo: string[];
   environmentalImpact: string[];
+  videoThumbnail?: string | null;
+  videoUrl?: string | null;
 }
 
 interface SpeciesDetailPageProps {
@@ -68,6 +70,8 @@ const SpeciesDetailPage: React.FC<SpeciesDetailPageProps> = ({
         heroImageAlt={
           speciesData.treeSpecies?.[0]?.imageAlt ?? speciesData.name
         }
+        videoThumbnail={speciesData.videoThumbnail}
+        videoUrl={speciesData.videoUrl}
       />
 
       <FAQSection faqs={speciesData.faqs} />

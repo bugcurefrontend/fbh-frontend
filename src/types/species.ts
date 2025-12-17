@@ -71,6 +71,8 @@ export interface Species {
   deleted: boolean;
   popular: boolean; // Popular species shown on landing page
   images: SpeciesImage[];
+  video_thumbnail?: SpeciesImage | null;
+  video_url?: string | null;
   trees: any[]; // Can be typed more specifically if needed
   projects: any[]; // Can be typed more specifically if needed
   tree_counts: any[]; // Can be typed more specifically if needed
@@ -88,6 +90,8 @@ export interface SpeciesSimplified {
   maxHeight: string;
   image: string; // Main image URL
   images: SpeciesImage[]; // Full image array
+  videoThumbnail: string | null; // Video thumbnail URL
+  videoUrl: string | null; // Video URL
   faqs: FAQ[];
   deleted: boolean;
   popular: boolean; // Popular species shown on landing page

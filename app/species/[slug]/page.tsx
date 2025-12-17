@@ -76,6 +76,8 @@ interface SpeciesDetailData {
   benefits: string[];
   growthInfo: string[];
   environmentalImpact: string[];
+  videoThumbnail?: string | null;
+  videoUrl?: string | null;
 }
 
 function transformToDetailData(species: SpeciesSimplified): SpeciesDetailData {
@@ -109,6 +111,8 @@ function transformToDetailData(species: SpeciesSimplified): SpeciesDetailData {
     benefits: [],
     growthInfo: [],
     environmentalImpact: [],
+    videoThumbnail: species.videoThumbnail,
+    videoUrl: species.videoUrl,
   };
 }
 

@@ -32,6 +32,8 @@ function transformSpecies(species: Species): SpeciesSimplified {
     maxHeight: species.max_height,
     image: species.images[0]?.url || "",
     images: species.images,
+    videoThumbnail: species.video_thumbnail?.url || null,
+    videoUrl: species.video_url || null,
     faqs,
     deleted: species.deleted,
     popular: species.popular || false,
