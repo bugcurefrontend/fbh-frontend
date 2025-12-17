@@ -74,6 +74,8 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [activeImage, setActiveImage] = useState(treeSpecies[0]?.imageUrl);
+  const [videoPlaying, setVideoPlaying] = useState(false);
+  const heroRef = useRef<HTMLDivElement>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -98,20 +100,51 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
     }
   };
 
+  // Auto-rotate only when video is not playing
   useEffect(() => {
+    if (videoPlaying) return; // Don't auto-rotate when video is playing
+
     const interval = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % items.length);
     }, 5000);
     return () => clearInterval(interval);
-  }, [items.length]);
+  }, [items.length, videoPlaying]);
 
+  // Update active image when index changes
   useEffect(() => {
     if (items[activeIndex].id === "map") {
       setActiveImage(""); // no image, show map
+    } else if (items[activeIndex].id === "video") {
+      setActiveImage(items[activeIndex].imageUrl);
+      // Don't reset videoPlaying here - let the click handler control it
     } else {
       setActiveImage(items[activeIndex].imageUrl);
+      setVideoPlaying(false); // Reset video playing only when switching to non-video items
     }
   }, [activeIndex, items]);
+
+  // Intersection observer to stop video when scrolling away
+  useEffect(() => {
+    const heroSection = heroRef.current;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) {
+          setVideoPlaying(false); // Stop video when out of view
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    if (heroSection) {
+      observer.observe(heroSection);
+    }
+
+    return () => {
+      if (heroSection) {
+        observer.unobserve(heroSection);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     checkScrollButtons();
@@ -123,18 +156,64 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
   }, []);
 
   return (
-    <div className="bg-white rounded-2xl overflow-hidden">
+    <div className="bg-white rounded-2xl overflow-hidden" ref={heroRef}>
       <div className="flex flex-col lg:flex-row space-x-6 space-y-6 lg:space-y-0">
-        {/* Left side - Hero Image / Map */}
+        {/* Left side - Hero Image / Map / Video */}
         <div className="lg:w-[546px] w-full relative flex-shrink-0">
-          <div className="min-h-[360px] h-full w-full relative overflow-hidden rounded-lg">
-            {activeImage ? (
-              <Image
-                src={activeImage}
-                alt={items[activeIndex].imageAlt}
-                fill
-                className="object-cover transition-all duration-500"
-              />
+          <div
+            className="min-h-[360px] h-full w-full relative overflow-hidden rounded-lg cursor-pointer"
+            onClick={() => {
+              // Only trigger video play when clicking on video item
+              if (items[activeIndex].id === "video" && videoUrl && !videoPlaying) {
+                setVideoPlaying(true);
+              }
+            }}
+          >
+            {/* Show video player when video is selected and playing */}
+            {items[activeIndex].id === "video" && videoPlaying && videoUrl ? (
+              videoUrl.includes("youtube.com") || videoUrl.includes("youtu.be") ? (
+                <iframe
+                  src={`${videoUrl.includes("embed") ? videoUrl : videoUrl.replace("watch?v=", "embed/").replace("youtu.be/", "youtube.com/embed/")}?autoplay=1`}
+                  className="w-full h-full min-h-[360px]"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                />
+              ) : (
+                <video
+                  src={videoUrl}
+                  className="w-full h-full object-cover min-h-[360px]"
+                  controls
+                  autoPlay
+                  playsInline
+                  preload="auto"
+                >
+                  Your browser does not support the video tag.
+                </video>
+              )
+            ) : activeImage ? (
+              <>
+                <Image
+                  src={activeImage}
+                  alt={items[activeIndex].imageAlt}
+                  fill
+                  className="object-cover transition-all duration-500"
+                />
+                {/* Play button overlay for video thumbnail */}
+                {items[activeIndex].id === "video" && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                    <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
+                      <svg
+                        className="w-8 h-8 text-[#003399] ml-1"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                    </div>
+                  </div>
+                )}
+              </>
             ) : mapCode ? (
               // Show map iframe for last thumbnail
               <iframe
@@ -189,11 +268,13 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
                 <div
                   key={item.id}
                   onClick={() => {
-                    // If video thumbnail clicked, open video in new tab
+                    // If video thumbnail clicked, select it and start playing
                     if (item.id === "video" && videoUrl) {
-                      window.open(videoUrl, "_blank", "noopener,noreferrer");
+                      setActiveIndex(i);
+                      setVideoPlaying(true);
                     } else {
                       setActiveIndex(i);
+                      setVideoPlaying(false);
                     }
                   }}
                   className={`w-[112px] h-[112px] flex-shrink-0 rounded-lg overflow-hidden border-2 cursor-pointer shadow-lg transition-all duration-300 ${
