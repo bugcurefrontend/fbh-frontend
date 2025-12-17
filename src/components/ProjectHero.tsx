@@ -159,7 +159,7 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
     <div className="bg-white rounded-2xl overflow-hidden" ref={heroRef}>
       <div className="flex flex-col lg:flex-row space-x-6 space-y-6 lg:space-y-0">
         {/* Left side - Hero Image / Map / Video */}
-        <div className="lg:w-[546px] w-full relative flex-shrink-0">
+        <div className="lg:w-[546px] w-full relative flex-shrink-0 group/container">
           <div
             className="min-h-[360px] h-full w-full relative overflow-hidden rounded-lg cursor-pointer"
             onClick={() => {
@@ -192,28 +192,12 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
                 </video>
               )
             ) : activeImage ? (
-              <>
-                <Image
-                  src={activeImage}
-                  alt={items[activeIndex].imageAlt}
-                  fill
-                  className="object-cover transition-all duration-500"
-                />
-                {/* Play button overlay for video thumbnail */}
-                {items[activeIndex].id === "video" && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-                    <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
-                      <svg
-                        className="w-8 h-8 text-[#003399] ml-1"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path d="M8 5v14l11-7z" />
-                      </svg>
-                    </div>
-                  </div>
-                )}
-              </>
+              <Image
+                src={activeImage}
+                alt={items[activeIndex].imageAlt}
+                fill
+                className="object-cover transition-all duration-500"
+              />
             ) : mapCode ? (
               // Show map iframe for last thumbnail
               <iframe
@@ -231,8 +215,12 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
             )}
           </div>
 
-          {/* Mobile dots */}
-          <div className="md:hidden flex justify-center mt-4 gap-2">
+          {/* Mobile dots (shows on hover when video is playing) */}
+          <div className={`justify-center mt-4 gap-2 transition-all duration-300 ${
+            videoPlaying
+              ? "flex md:hidden opacity-0 group-hover/container:opacity-100"
+              : "flex md:hidden"
+          }`}>
             {items.map((_, i) => (
               <div
                 key={i}
@@ -243,8 +231,12 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
             ))}
           </div>
 
-          {/* Desktop thumbnails - horizontal slider with arrows */}
-          <div className="hidden absolute bottom-6 left-6 right-6 md:flex items-center gap-2">
+          {/* Desktop thumbnails - horizontal slider with arrows (shows on hover when video is playing) */}
+          <div className={`absolute bottom-6 left-6 right-6 items-center gap-2 transition-all duration-300 ${
+            videoPlaying
+              ? "hidden md:flex opacity-0 group-hover/container:opacity-100 translate-y-4 group-hover/container:translate-y-0"
+              : "hidden md:flex"
+          }`}>
             {/* Left Arrow */}
             <button
               onClick={scrollLeft}
@@ -268,14 +260,9 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
                 <div
                   key={item.id}
                   onClick={() => {
-                    // If video thumbnail clicked, select it and start playing
-                    if (item.id === "video" && videoUrl) {
-                      setActiveIndex(i);
-                      setVideoPlaying(true);
-                    } else {
-                      setActiveIndex(i);
-                      setVideoPlaying(false);
-                    }
+                    // Select the item (video thumbnail will show first, click main view to play)
+                    setActiveIndex(i);
+                    setVideoPlaying(false); // Always reset - user must click main view to play
                   }}
                   className={`w-[112px] h-[112px] flex-shrink-0 rounded-lg overflow-hidden border-2 cursor-pointer shadow-lg transition-all duration-300 ${
                     activeIndex === i
@@ -294,27 +281,13 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
                       />
                     </div>
                   ) : item.id === "video" ? (
-                    <div className="relative w-full h-full">
-                      <Image
-                        src={item.imageUrl}
-                        alt={item.imageAlt}
-                        width={112}
-                        height={112}
-                        className="w-full min-h-full object-cover"
-                      />
-                      {/* Play Button Overlay */}
-                      <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-                        <div className="w-10 h-10 bg-white/90 rounded-full flex items-center justify-center shadow-lg">
-                          <svg
-                            className="w-5 h-5 text-[#003399] ml-0.5"
-                            fill="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path d="M8 5v14l11-7z" />
-                          </svg>
-                        </div>
-                      </div>
-                    </div>
+                    <Image
+                      src={item.imageUrl}
+                      alt={item.imageAlt}
+                      width={112}
+                      height={112}
+                      className="w-full min-h-full object-cover"
+                    />
                   ) : (
                     <Image
                       src={item.imageUrl}
