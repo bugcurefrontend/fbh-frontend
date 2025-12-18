@@ -7,6 +7,7 @@ import {
   generateProjectSlug,
 } from "@/services/projects";
 import { generateSlug as generateSpeciesSlug } from "@/services/species";
+import { fetchPlantRate } from "@/services/plant-rate";
 import { ProjectSimplified, ProjectUpdate } from "@/types/project";
 
 type Params = { slug: string };
@@ -234,15 +235,16 @@ export default async function ProjectSlugPage({
 }) {
   const { slug } = await params;
 
-  // Fetch project from Strapi API
-  const project = await fetchProjectBySlug(slug);
+  // Fetch project, all projects, and plant rate from Strapi API
+  const [project, allProjects, plantRate] = await Promise.all([
+    fetchProjectBySlug(slug),
+    fetchAllProjects(),
+    fetchPlantRate(),
+  ]);
 
   if (!project) {
     notFound();
   }
-
-  // Fetch all projects for related section
-  const allProjects = await fetchAllProjects();
 
   const projectData = transformToDetailData(project);
   const relatedProjects = transformToRelatedProjects(
@@ -258,6 +260,8 @@ export default async function ProjectSlugPage({
       relatedProjects={relatedProjects}
       projectUpdates={projectUpdates}
       projectSpecies={projectSpecies}
+      geotaggedRate={plantRate?.geotagged_rate}
+      nonGeotaggedRate={plantRate?.non_geotagged_rate}
     />
   );
 }

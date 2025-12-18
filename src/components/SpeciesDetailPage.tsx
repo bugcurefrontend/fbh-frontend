@@ -38,10 +38,14 @@ interface SpeciesDetailData {
 
 interface SpeciesDetailPageProps {
   speciesData: SpeciesDetailData;
+  geotaggedRate?: number;
+  nonGeotaggedRate?: number;
 }
 
 const SpeciesDetailPage: React.FC<SpeciesDetailPageProps> = ({
   speciesData,
+  geotaggedRate,
+  nonGeotaggedRate,
 }) => {
   const [isGeoTagged, setIsGeoTagged] = useState(true);
 
@@ -72,6 +76,8 @@ const SpeciesDetailPage: React.FC<SpeciesDetailPageProps> = ({
         }
         videoThumbnail={speciesData.videoThumbnail}
         videoUrl={speciesData.videoUrl}
+        geotaggedRate={geotaggedRate}
+        nonGeotaggedRate={nonGeotaggedRate}
       />
 
       <FAQSection faqs={speciesData.faqs} />
@@ -84,6 +90,8 @@ const SpeciesDetailPage: React.FC<SpeciesDetailPageProps> = ({
         onPlantTree={handlePlantTree}
         onGiftTree={handleGiftTree}
         variant="mobile"
+        geotaggedRate={geotaggedRate}
+        nonGeotaggedRate={nonGeotaggedRate}
       />
     </main>
   );

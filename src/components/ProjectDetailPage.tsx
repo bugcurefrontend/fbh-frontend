@@ -59,6 +59,8 @@ interface ProjectDetailPageProps {
   relatedProjects: Project[];
   projectUpdates?: ProjectUpdateUI[];
   projectSpecies?: ProjectSpeciesUI[];
+  geotaggedRate?: number;
+  nonGeotaggedRate?: number;
 }
 
 const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
@@ -66,6 +68,8 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
   relatedProjects,
   projectUpdates = [],
   projectSpecies = [],
+  geotaggedRate,
+  nonGeotaggedRate,
 }) => {
   const [isGeoTagged, setIsGeoTagged] = useState(true);
   const overviewRef = useRef<HTMLDivElement>(null);
@@ -110,6 +114,8 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
         mapCode={projectData.mapCode}
         videoThumbnail={projectData.videoThumbnail}
         videoUrl={projectData.videoUrl}
+        geotaggedRate={geotaggedRate}
+        nonGeotaggedRate={nonGeotaggedRate}
       />
 
       {/* Project Tabs Section */}
@@ -142,6 +148,8 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
         onPlantTree={handlePlantTree}
         onGiftTree={handleGiftTree}
         variant="mobile"
+        geotaggedRate={geotaggedRate}
+        nonGeotaggedRate={nonGeotaggedRate}
       />
     </main>
   );

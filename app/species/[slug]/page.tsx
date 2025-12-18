@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import SpeciesDetailPage from "../../../src/components/SpeciesDetailPage";
 import { fetchAllSpecies, fetchSpeciesBySlug, generateSlug } from "@/services/species";
+import { fetchPlantRate } from "@/services/plant-rate";
 import { SpeciesSimplified } from "@/types/species";
 
 type Params = { slug: string };
@@ -123,13 +124,22 @@ export default async function SpeciesSlugPage({
 }) {
   const { slug } = await params;
 
-  // Fetch species from Strapi API
-  const species = await fetchSpeciesBySlug(slug);
+  // Fetch species and plant rate from Strapi API
+  const [species, plantRate] = await Promise.all([
+    fetchSpeciesBySlug(slug),
+    fetchPlantRate(),
+  ]);
 
   if (!species) {
     notFound();
   }
 
   const transformedData = transformToDetailData(species);
-  return <SpeciesDetailPage speciesData={transformedData} />;
+  return (
+    <SpeciesDetailPage
+      speciesData={transformedData}
+      geotaggedRate={plantRate?.geotagged_rate}
+      nonGeotaggedRate={plantRate?.non_geotagged_rate}
+    />
+  );
 }

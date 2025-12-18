@@ -30,6 +30,8 @@ interface ProjectHeroProps {
   mapCode: string;
   videoThumbnail?: string | null;
   videoUrl?: string | null;
+  geotaggedRate?: number;
+  nonGeotaggedRate?: number;
 }
 
 const ProjectHero: React.FC<ProjectHeroProps> = ({
@@ -46,6 +48,8 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
   mapCode,
   videoThumbnail,
   videoUrl,
+  geotaggedRate,
+  nonGeotaggedRate,
 }) => {
   // Build items array: species images + video thumbnail (if exists) + map
   const buildItems = () => {
@@ -394,6 +398,8 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
             onPlantTree={onPlantTree}
             onGiftTree={onGiftTree}
             variant="desktop"
+            geotaggedRate={geotaggedRate}
+            nonGeotaggedRate={nonGeotaggedRate}
           />
         </div>
       </div>

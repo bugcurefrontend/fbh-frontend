@@ -29,6 +29,8 @@ interface SpeciesHeroProps {
   onGiftTree: () => void;
   videoThumbnail?: string | null;
   videoUrl?: string | null;
+  geotaggedRate?: number;
+  nonGeotaggedRate?: number;
 }
 
 const SpeciesHero: React.FC<SpeciesHeroProps> = ({
@@ -43,6 +45,8 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
   onGiftTree,
   videoThumbnail,
   videoUrl,
+  geotaggedRate,
+  nonGeotaggedRate,
 }) => {
   // Build items array: species images + video thumbnail (if exists)
   const buildItems = () => {
@@ -388,6 +392,8 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
             onPlantTree={onPlantTree}
             onGiftTree={onGiftTree}
             variant="desktop"
+            geotaggedRate={geotaggedRate}
+            nonGeotaggedRate={nonGeotaggedRate}
           />
         </div>
       </div>
