@@ -50,6 +50,8 @@ interface ProjectDetailData {
   projectDescription: string;
   projectDetails: string[];
   mapCode: string;
+  videoThumbnail?: string | null;
+  videoUrl?: string | null;
 }
 
 interface ProjectDetailPageProps {
@@ -106,6 +108,8 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
         onGiftTree={handleGiftTree}
         onReadMoreClick={handleReadMoreClick}
         mapCode={projectData.mapCode}
+        videoThumbnail={projectData.videoThumbnail}
+        videoUrl={projectData.videoUrl}
       />
 
       {/* Project Tabs Section */}

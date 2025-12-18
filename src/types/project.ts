@@ -45,6 +45,7 @@ export interface Project {
   archetype: string;
   thumbnail: ProjectImage | null;
   images: ProjectImage[];
+  video_thumbnail: ProjectImage | null;
   video_url: string | null;
   description: any; // Rich text blocks
   address: string;
@@ -66,6 +67,7 @@ export interface ProjectSimplified {
   archetype: string;
   thumbnail: string; // URL
   images: ProjectImage[];
+  videoThumbnail: string | null; // Video thumbnail URL
   videoUrl: string | null;
   description: any;
   address: string;
