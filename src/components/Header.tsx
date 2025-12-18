@@ -216,7 +216,7 @@ export default function Header() {
                     {/* Menu Items */}
                     <div className="flex flex-col gap-2 py-3">
                       <Link
-                        href="/dashboard"
+                        href="/account"
                         className="block px-3 py-2 hover:bg-gray-50 rounded-md transition-colors"
                         style={{
                           fontFamily: "Public Sans",

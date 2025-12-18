@@ -168,7 +168,7 @@ export function MobileNavigation({
                     Profile
                   </a>
                   <a
-                    href="/dashboard"
+                    href="/account"
                     className="flex justify-between items-center w-full px-4 py-3 hover:bg-gray-50 transition-colors font-medium text-lg uppercase"
                     style={{
                       color: "#090C0F",
