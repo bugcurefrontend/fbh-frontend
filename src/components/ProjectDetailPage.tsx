@@ -5,6 +5,8 @@ import ProjectHero from "./ProjectHero";
 import ProjectTabs from "./ProjectTabs";
 import ProjectAccordion from "./ProjectAccordion";
 import GeoTagToggleAndActions from "./GeoTagToggleAndActions";
+import { useCurrency } from "./CurrencySelect";
+import { PlantRates } from "@/types/plant-rate";
 
 interface Project {
   id: string;
@@ -59,8 +61,7 @@ interface ProjectDetailPageProps {
   relatedProjects: Project[];
   projectUpdates?: ProjectUpdateUI[];
   projectSpecies?: ProjectSpeciesUI[];
-  geotaggedRate?: number;
-  nonGeotaggedRate?: number;
+  plantRates: PlantRates;
 }
 
 const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
@@ -68,11 +69,16 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
   relatedProjects,
   projectUpdates = [],
   projectSpecies = [],
-  geotaggedRate,
-  nonGeotaggedRate,
+  plantRates,
 }) => {
   const [isGeoTagged, setIsGeoTagged] = useState(true);
   const overviewRef = useRef<HTMLDivElement>(null);
+  const { currency, currencySymbol } = useCurrency();
+
+  // Get rates based on selected currency
+  const currentRate = plantRates[currency];
+  const geotaggedRate = currentRate?.geotagged_rate;
+  const nonGeotaggedRate = currentRate?.non_geotagged_rate;
 
   const handleReadMoreClick = () => {
     overviewRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -116,6 +122,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
         videoUrl={projectData.videoUrl}
         geotaggedRate={geotaggedRate}
         nonGeotaggedRate={nonGeotaggedRate}
+        currencySymbol={currencySymbol}
       />
 
       {/* Project Tabs Section */}
@@ -150,6 +157,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
         variant="mobile"
         geotaggedRate={geotaggedRate}
         nonGeotaggedRate={nonGeotaggedRate}
+        currencySymbol={currencySymbol}
       />
     </main>
   );

@@ -32,6 +32,7 @@ interface ProjectHeroProps {
   videoUrl?: string | null;
   geotaggedRate?: number;
   nonGeotaggedRate?: number;
+  currencySymbol?: string;
 }
 
 const ProjectHero: React.FC<ProjectHeroProps> = ({
@@ -50,6 +51,7 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
   videoUrl,
   geotaggedRate,
   nonGeotaggedRate,
+  currencySymbol = "₹",
 }) => {
   // Build items array: species images + video thumbnail (if exists) + map
   const buildItems = () => {
@@ -400,6 +402,7 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
             variant="desktop"
             geotaggedRate={geotaggedRate}
             nonGeotaggedRate={nonGeotaggedRate}
+            currencySymbol={currencySymbol}
           />
         </div>
       </div>

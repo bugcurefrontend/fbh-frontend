@@ -22,6 +22,7 @@ interface GeoTagToggleAndActionsProps {
   availabilityMessage?: string;
   geotaggedRate?: number;
   nonGeotaggedRate?: number;
+  currencySymbol?: string;
 }
 
 const GeoTagToggleAndActions: React.FC<GeoTagToggleAndActionsProps> = ({
@@ -34,6 +35,7 @@ const GeoTagToggleAndActions: React.FC<GeoTagToggleAndActionsProps> = ({
   availabilityMessage,
   geotaggedRate = 175,
   nonGeotaggedRate = 175,
+  currencySymbol = "₹",
 }) => {
   const isMobile = variant === "mobile";
   const [localNotice, setLocalNotice] = useState("");
@@ -63,7 +65,7 @@ const GeoTagToggleAndActions: React.FC<GeoTagToggleAndActionsProps> = ({
       >
         <h1 className="flex items-baseline gap-1">
           <span className="font-bold text-[28px] leading-[36px] text-[#090C0F]">
-            ₹ {isGeoTagged ? geotaggedRate : nonGeotaggedRate} /
+            {currencySymbol} {isGeoTagged ? geotaggedRate : nonGeotaggedRate} /
           </span>
           <span className="font-semibold text-[16px] leading-[36px] text-[#003399]">
             Tree

@@ -31,6 +31,7 @@ interface SpeciesHeroProps {
   videoUrl?: string | null;
   geotaggedRate?: number;
   nonGeotaggedRate?: number;
+  currencySymbol?: string;
 }
 
 const SpeciesHero: React.FC<SpeciesHeroProps> = ({
@@ -47,6 +48,7 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
   videoUrl,
   geotaggedRate,
   nonGeotaggedRate,
+  currencySymbol = "₹",
 }) => {
   // Build items array: species images + video thumbnail (if exists)
   const buildItems = () => {
@@ -394,6 +396,7 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
             variant="desktop"
             geotaggedRate={geotaggedRate}
             nonGeotaggedRate={nonGeotaggedRate}
+            currencySymbol={currencySymbol}
           />
         </div>
       </div>

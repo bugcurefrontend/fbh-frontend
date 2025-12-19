@@ -12,6 +12,11 @@ export interface PlantRate {
   deleted: boolean;
 }
 
+export interface PlantRates {
+  INR: PlantRate | null;
+  USD: PlantRate | null;
+}
+
 export interface PlantRateResponse {
   data: PlantRate[];
   meta: {

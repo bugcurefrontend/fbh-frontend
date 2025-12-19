@@ -5,6 +5,8 @@ import SpeciesHero from "./SpeciesHero";
 import RelatedSpecies from "./RelatedSpecies";
 import FAQSection from "./FAQSection";
 import GeoTagToggleAndActions from "./GeoTagToggleAndActions";
+import { useCurrency } from "./CurrencySelect";
+import { PlantRates } from "@/types/plant-rate";
 
 interface FAQ {
   id: string;
@@ -38,16 +40,20 @@ interface SpeciesDetailData {
 
 interface SpeciesDetailPageProps {
   speciesData: SpeciesDetailData;
-  geotaggedRate?: number;
-  nonGeotaggedRate?: number;
+  plantRates: PlantRates;
 }
 
 const SpeciesDetailPage: React.FC<SpeciesDetailPageProps> = ({
   speciesData,
-  geotaggedRate,
-  nonGeotaggedRate,
+  plantRates,
 }) => {
   const [isGeoTagged, setIsGeoTagged] = useState(true);
+  const { currency, currencySymbol } = useCurrency();
+
+  // Get rates based on selected currency
+  const currentRate = plantRates[currency];
+  const geotaggedRate = currentRate?.geotagged_rate;
+  const nonGeotaggedRate = currentRate?.non_geotagged_rate;
 
   const handlePlantTree = () => {
     console.log(`Plant ${speciesData.name} tree`);
@@ -78,6 +84,7 @@ const SpeciesDetailPage: React.FC<SpeciesDetailPageProps> = ({
         videoUrl={speciesData.videoUrl}
         geotaggedRate={geotaggedRate}
         nonGeotaggedRate={nonGeotaggedRate}
+        currencySymbol={currencySymbol}
       />
 
       <FAQSection faqs={speciesData.faqs} />
@@ -92,6 +99,7 @@ const SpeciesDetailPage: React.FC<SpeciesDetailPageProps> = ({
         variant="mobile"
         geotaggedRate={geotaggedRate}
         nonGeotaggedRate={nonGeotaggedRate}
+        currencySymbol={currencySymbol}
       />
     </main>
   );

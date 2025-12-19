@@ -5,7 +5,7 @@
 
 import { cache } from "react";
 import { fetchAPI } from "./api";
-import { PlantRate } from "@/types/plant-rate";
+import { PlantRate, PlantRates } from "@/types/plant-rate";
 
 /**
  * Fetch plant rates from Strapi API
@@ -32,6 +32,44 @@ export const fetchPlantRate = cache(async (): Promise<PlantRate | null> => {
   } catch (error) {
     console.error("Error fetching plant rate:", error);
     return null;
+  }
+});
+
+/**
+ * Fetch all plant rates (INR and USD) from Strapi API
+ * Returns both currency rates for client-side currency switching
+ */
+export const fetchAllPlantRates = cache(async (): Promise<PlantRates> => {
+  try {
+    const data = await fetchAPI("/plant-rates", {
+      filters: {
+        deleted: { $eq: false },
+      },
+      pagination: {
+        page: 1,
+        pageSize: 10,
+      },
+    });
+
+    const rates: PlantRates = {
+      INR: null,
+      USD: null,
+    };
+
+    if (data.data && Array.isArray(data.data)) {
+      data.data.forEach((rate: PlantRate) => {
+        if (rate.currency_code === "INR") {
+          rates.INR = rate;
+        } else if (rate.currency_code === "USD") {
+          rates.USD = rate;
+        }
+      });
+    }
+
+    return rates;
+  } catch (error) {
+    console.error("Error fetching plant rates:", error);
+    return { INR: null, USD: null };
   }
 });
 
