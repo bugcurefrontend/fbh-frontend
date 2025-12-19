@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import SpeciesDetailPage from "../../../src/components/SpeciesDetailPage";
 import { fetchAllSpecies, fetchSpeciesBySlug, generateSlug } from "@/services/species";
@@ -136,9 +137,11 @@ export default async function SpeciesSlugPage({
 
   const transformedData = transformToDetailData(species);
   return (
-    <SpeciesDetailPage
-      speciesData={transformedData}
-      plantRates={plantRates}
-    />
+    <Suspense fallback={<div>Loading...</div>}>
+      <SpeciesDetailPage
+        speciesData={transformedData}
+        plantRates={plantRates}
+      />
+    </Suspense>
   );
 }
