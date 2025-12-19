@@ -49,12 +49,21 @@ const DreamTeam = ({}) => {
 
   return (
     <section className="px-4 md:px-8 mt-8 md:mt-16">
-      <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold sm:text-center text-[#232D26] mb-6">
+      <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold text-center text-[#232D26] mb-6">
         Meet the Dream Team
       </h2>
 
       {/*Desktop Carousel */}
-      <Carousel className="max-sm:hidden" opts={{ align: "start" }}>
+      <Carousel
+        className="max-sm:hidden"
+        opts={{ align: "start" }}
+        setApi={(api) => {
+          if (!api) return;
+          api.on("select", () => {
+            setCurrentIndex(api.selectedScrollSnap());
+          });
+        }}
+      >
         <CarouselContent className="-ml-4">
           {dreamTeam.map((team, idx) => (
             <CarouselItem key={idx} className="basis-1/1 sm:basis-1/2 pl-4">
@@ -114,18 +123,18 @@ const DreamTeam = ({}) => {
       </Carousel>
 
       {/*Mobile*/}
-      <div className="flex sm:hidden flex-col gap-6 mb-6 items-center">
+      <div className="flex flex-col sm:hidden">
         {dreamTeam.map((team, idx) => (
           <div
             key={idx}
-            className="w-full rounded-[9px] border border-[#e4e4e4] flex flex-row p-3 gap-3.5 shadow-none items-center"
+            className="w-full rounded-[9px] border border-[#e4e4e4] flex flex-col p-3 gap-3.5 shadow-none items-center"
           >
             <Image
               src={team.image}
               alt={team.title}
-              height={170}
-              width={140}
-              className="rounded-sm object-cover min-h-[173px]"
+              height={218}
+              width={319}
+              className="rounded-sm object-cover bg-top max-h-[218px] w-full"
             />
 
             <div className="space-y-3">
@@ -138,9 +147,18 @@ const DreamTeam = ({}) => {
                 </p>
               </div>
 
-              <p className="text-[10px] font-semibold leading-[16px] text-[#595959] flex-1 line-clamp-4 md:line-clamp-4 font-[Public_Sans]">
-                {team.description}
-              </p>
+              <div className="space-y-2">
+                <p className="text-[10px] font-semibold leading-[16px] text-[#595959] flex-1 line-clamp-4 md:line-clamp-4 font-[Public_Sans]">
+                  {team.description}
+                </p>
+
+                <div className="h-[1px] w-full bg-[#E5EBF5]" />
+
+                <div className="flex gap-4 text-[#003399]">
+                  <Linkedin size={24} className="cursor-pointer" />{" "}
+                  <Mail size={24} className="cursor-pointer" />
+                </div>
+              </div>
             </div>
           </div>
         ))}

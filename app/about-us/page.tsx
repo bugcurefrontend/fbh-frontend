@@ -17,7 +17,7 @@ export default async function page() {
         className="relative h-[213px] md:h-[288px] flex items-center justify-center"
         style={{
           backgroundImage: ` url('/images/about-us.png')`,
-          backgroundSize: "contain",
+          backgroundSize: "cover",
           backgroundPosition: "top",
         }}
       >

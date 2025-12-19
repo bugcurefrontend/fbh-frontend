@@ -5,7 +5,7 @@ const OurOrigin = () => {
     <main className="md:space-y-16 space-y-8">
       <div className="flex max-md:flex-col-reverse md:gap-8 gap-4 items-center justify-center">
         <div className="p-4 md:space-y-6 space-y-3 w-full h-auto md:w-[46%] xl:w-[588px]">
-          <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold text-black md:text-[32px] md:font-semibold md:leading-[48px] md:align-middle md:text-[#090C0F]">
+          <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold text-black md:text-[32px] md:font-semibold md:leading-[48px] max-md:text-center md:text-[#090C0F]">
             Our Origin
           </h2>
           <p className="text-[#454950] leading-6 max-md:text-sm">

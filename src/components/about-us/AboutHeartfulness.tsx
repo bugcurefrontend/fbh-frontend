@@ -13,7 +13,7 @@ const AboutHeartfulness = () => {
       <div className="grid md:grid-cols-2 items-start md:gap-10 gap-4">
         {/* Left Content */}
         <div className="flex flex-col justify-between h-full md:px-4 md:py-2 max-md:space-y-2">
-          <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold text-black md:text-[32px] md:font-semibold md:leading-[48px] md:align-middle md:text-[#090C0F]">
+          <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold text-black md:text-[32px] md:font-semibold md:leading-[48px] max-md:text-center md:text-[#090C0F]">
             About Heartfulness
           </h2>
           <p className="text-[#454950] leading-6 max-md:text-sm">
