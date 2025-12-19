@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import ProjectDetailPage from "../../../src/components/ProjectDetailPage";
 import {
@@ -255,12 +256,14 @@ export default async function ProjectSlugPage({
   const projectSpecies = transformProjectSpecies(project.species);
 
   return (
-    <ProjectDetailPage
-      projectData={projectData}
-      relatedProjects={relatedProjects}
-      projectUpdates={projectUpdates}
-      projectSpecies={projectSpecies}
-      plantRates={plantRates}
-    />
+    <Suspense fallback={<div>Loading...</div>}>
+      <ProjectDetailPage
+        projectData={projectData}
+        relatedProjects={relatedProjects}
+        projectUpdates={projectUpdates}
+        projectSpecies={projectSpecies}
+        plantRates={plantRates}
+      />
+    </Suspense>
   );
 }
