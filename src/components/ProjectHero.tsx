@@ -178,16 +178,27 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
             className="min-h-[360px] h-full w-full relative overflow-hidden rounded-lg cursor-pointer"
             onClick={() => {
               // Only trigger video play when clicking on video item
-              if (items[activeIndex].id === "video" && videoUrl && !videoPlaying) {
+              if (
+                items[activeIndex].id === "video" &&
+                videoUrl &&
+                !videoPlaying
+              ) {
                 setVideoPlaying(true);
               }
             }}
           >
             {/* Show video player when video is selected and playing */}
             {items[activeIndex].id === "video" && videoPlaying && videoUrl ? (
-              videoUrl.includes("youtube.com") || videoUrl.includes("youtu.be") ? (
+              videoUrl.includes("youtube.com") ||
+              videoUrl.includes("youtu.be") ? (
                 <iframe
-                  src={`${videoUrl.includes("embed") ? videoUrl : videoUrl.replace("watch?v=", "embed/").replace("youtu.be/", "youtube.com/embed/")}?autoplay=1`}
+                  src={`${
+                    videoUrl.includes("embed")
+                      ? videoUrl
+                      : videoUrl
+                          .replace("watch?v=", "embed/")
+                          .replace("youtu.be/", "youtube.com/embed/")
+                  }?autoplay=1`}
                   className="w-full h-full min-h-[360px]"
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -263,43 +274,41 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
                 className="flex gap-2 overflow-x-auto"
                 style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
               >
-              {items.map((item, i) => (
-                <div
-                  key={item.id}
-                  onClick={() => {
-                    // Select the item (video thumbnail will show first, click main view to play)
-                    setActiveIndex(i);
-                    setVideoPlaying(false); // Always reset - user must click main view to play
-                  }}
-                  className={`w-[112px] h-[112px] flex-shrink-0 rounded-lg overflow-hidden border-2 cursor-pointer ${
-                    activeIndex === i
-                      ? "border-[#003399]"
-                      : "border-white"
-                  }`}
-                >
-                  <div className="relative w-full h-full">
-                    {item.id === "map" ? (
-                      <Image
-                        src="/images/map.png"
-                        alt="map"
-                        width={112}
-                        height={112}
-                        className="w-full min-h-full object-cover"
-                      />
-                    ) : (
-                      <Image
-                        src={item.imageUrl}
-                        alt={item.imageAlt}
-                        width={112}
-                        height={112}
-                        className="w-full min-h-full object-cover"
-                      />
-                    )}
-                    {/* Shadow gradient at bottom of each thumbnail */}
-                    <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-black/70 via-black/30 to-transparent pointer-events-none"></div>
+                {items.map((item, i) => (
+                  <div
+                    key={item.id}
+                    onClick={() => {
+                      // Select the item (video thumbnail will show first, click main view to play)
+                      setActiveIndex(i);
+                      setVideoPlaying(false); // Always reset - user must click main view to play
+                    }}
+                    className={`w-[112px] h-[112px] flex-shrink-0 rounded-lg overflow-hidden border-2 cursor-pointer ${
+                      activeIndex === i ? "border-[#003399]" : "border-white"
+                    }`}
+                  >
+                    <div className="relative w-full h-full">
+                      {item.id === "map" ? (
+                        <Image
+                          src="/images/map.png"
+                          alt="map"
+                          width={112}
+                          height={112}
+                          className="w-full min-h-full object-cover"
+                        />
+                      ) : (
+                        <Image
+                          src={item.imageUrl}
+                          alt={item.imageAlt}
+                          width={112}
+                          height={112}
+                          className="w-full min-h-full object-cover"
+                        />
+                      )}
+                      {/* Shadow gradient at bottom of each thumbnail */}
+                      <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-black/70 via-black/30 to-transparent pointer-events-none"></div>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
               </div>
 
               {/* Right Arrow - inside */}
@@ -353,7 +362,7 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
             <div className="text-center space-y-2 xl:space-y-4 flex-1">
               <LandscapeIcon className="md:w-10 w-8 h-8 md:h-10 text-white mx-auto" />
               <div className="md:text-2xl text-lg font-bold md:font-semibold text-black">
-                {stats.treesAvailable.toLocaleString()}+
+                {stats.treesAvailable.toLocaleString()}
               </div>
               <div className="md:text-base text-xs text-gray-600">
                 Trees <br className="md:hidden" /> Available
@@ -365,7 +374,7 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
             <div className="text-center space-y-2 xl:space-y-4 flex-1">
               <TreeSpeciesIcon className="md:w-10 w-8 h-8 md:h-10 mx-auto" />
               <div className="md:text-2xl text-lg font-bold md:font-semibold text-black">
-                {stats.treesPlanted.toLocaleString()}+
+                {stats.treesPlanted.toLocaleString()}
               </div>
               <div className="md:text-base text-xs text-gray-600">
                 Trees <br className="md:hidden" /> Planted
@@ -385,7 +394,7 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
                 />
               </div>
               <div className="md:text-2xl text-lg font-bold md:font-semibold text-black">
-                {stats.totalTrees.toLocaleString()}+
+                {stats.totalTrees.toLocaleString()}
               </div>
               <div className="md:text-base text-xs text-gray-600">
                 Total <br className="md:hidden" /> Trees

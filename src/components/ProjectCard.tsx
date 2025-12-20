@@ -29,7 +29,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
     if (count >= 1000) {
       return `${Math.floor(count / 1000)}k+ planted`;
     }
-    return `${count}+ planted`;
+    return `${count} planted`;
   };
 
   return (
@@ -43,12 +43,14 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         />
 
         <div className="absolute top-4 md:left-4 left-2.5 flex gap-3">
-          <div className="backdrop-blur-[22px] text-white text-xs font-semibold px-2 py-1 rounded md:text-base md:font-semibold md:leading-6 md:align-middle md:text-[#FFFFFF]">
+          <div className="bg-[#006161] shadow-[0_20px_40px_-4px_rgba(133,133,133,0.12)] text-white text-xs font-semibold px-4 py-1 rounded-full md:text-base md:font-semibold md:leading-6 md:align-middle md:text-[#FFFFFF] capitalize">
             {formatPlantedCount(plantedCount)}
           </div>
-          <div className="backdrop-blur-[22px] text-white text-xs font-semibold px-2 py-1 rounded md:text-base md:font-semibold md:leading-6 md:align-middle md:text-[#FFFFFF]">
-            {category}
-          </div>
+          {category && (
+            <div className="bg-[#006161] shadow-[0_20px_40px_-4px_rgba(133,133,133,0.12)] text-white text-xs font-semibold px-4 py-1 rounded-full md:text-base md:font-semibold md:leading-6 md:align-middle md:text-[#FFFFFF] capitalize">
+              {category}
+            </div>
+          )}
         </div>
       </div>
       <div className="px-2.5 md:px-4 pt-4 pb-4 md:pb-6 md:pt-4 flex flex-col md:gap-6 gap-4">
