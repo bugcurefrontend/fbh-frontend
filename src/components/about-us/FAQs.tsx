@@ -3,6 +3,13 @@
 import { Minus, Plus } from "lucide-react";
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 
 const faqData = [
   {
@@ -11,15 +18,15 @@ const faqData = [
     faqs: [
       {
         id: "pc-1",
-        question: "How can I participate in tree plantation drives?",
+        question: "How can individuals contribute or volunteer?",
         answer:
-          "You can participate by registering as a volunteer on our website. We regularly post updates about upcoming plantation drives in different locations. Simply sign up for an event that suits your schedule and location.",
+          "You can adopt trees, volunteer at nurseries, join or organize plantation drives, identify land, support fundraising, and help monitor saplings.​",
       },
       {
         id: "pc-2",
-        question: "What kind of contributions can I make?",
+        question: "How to start a plantation drive near you?",
         answer:
-          "You can contribute in several ways: by volunteering your time for plantation drives, donating to fund our projects, or by helping us spread the word on social media. Every contribution, big or small, makes a difference.",
+          "Secure land permissions, gather resources, source saplings (preferably from FBH nurseries), prepare the site, plant, and water regularly. FBH can offer guidance.​",
       },
     ],
   },
@@ -29,9 +36,15 @@ const faqData = [
     faqs: [
       {
         id: "pm-1",
-        question: "What types of trees do you plant?",
+        question: "Where and when are trees planted?",
         answer:
-          "We focus on planting native and indigenous tree species that are well-suited to the local climate and soil conditions. This helps in restoring the natural ecosystem and supporting local biodiversity.",
+          "Plantations happen during monsoon and late winter on farms, public lands, and homes. Each sapling is geo-tagged for tracking.​",
+      },
+      {
+        id: "pm-2",
+        question: "How are saplings monitored after planting?",
+        answer:
+          "FBH monitors saplings with assigned caregivers and local NGO support, tracking their growth for at least a year. An app is being developed for geo-tagging.​",
       },
     ],
   },
@@ -41,9 +54,15 @@ const faqData = [
     faqs: [
       {
         id: "di-1",
-        question: "How is my donation used?",
+        question: "Can donors select tree species or location?",
         answer:
-          "Your donation is used to procure saplings, tools, and other necessary resources for our plantation drives. A portion of the funds also goes towards monitoring the planted trees to ensure their survival and growth.",
+          "FBH chooses species based on local ecology. Donors can't pick an exact tree or spot but may support specific drives as options develop.​",
+      },
+      {
+        id: "di-2",
+        question: "Are donations tax-deductible?",
+        answer:
+          "Yes, donations are eligible for tax benefits under FBH's charitable status.​",
       },
     ],
   },
@@ -51,17 +70,35 @@ const faqData = [
 
 const FAQs = () => {
   const [openItem, setOpenItem] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState(faqData[0].value);
 
   const toggleItem = (itemId: string) => {
     setOpenItem(openItem === itemId ? null : itemId);
   };
   return (
-    <main className="px-4 md:px-8 overflow-hidden max-sm:hidden">
+    <main className="px-4 md:px-8 overflow-hidden">
       <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold sm:text-center text-[#232D26] mb-6">
         FAQs
       </h2>
-      <Tabs defaultValue={faqData[0].value}>
-        <div className="w-fit mx-auto border-b px-4 border-gray-200">
+      <Tabs value={activeTab} onValueChange={setActiveTab}>
+        <div className="md:hidden mb-6 space-y-1.5">
+          <h3 className="text-[#19212C] font-medium text-sm leading-5">
+            Category
+          </h3>
+          <Select value={activeTab} onValueChange={setActiveTab}>
+            <SelectTrigger className="w-full h-12 hover:rounded-md border-[#95AAD5] rounded-md text-[#003399] font-bold">
+              <SelectValue placeholder="Select category" />
+            </SelectTrigger>
+            <SelectContent className="rounded-md hover:rounded-md">
+              {faqData.map((tab) => (
+                <SelectItem key={tab.value} value={tab.value}>
+                  {tab.title}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="hidden md:block w-fit mx-auto border-b px-4 border-gray-200">
           <TabsList className="flex bg-transparent p-0 h-auto w-full justify-start gap-8">
             {faqData.map((tab) => (
               <TabsTrigger
@@ -76,7 +113,7 @@ const FAQs = () => {
         </div>
 
         {faqData.map((tab) => (
-          <TabsContent key={tab.value} value={tab.value} className="pt-6">
+          <TabsContent key={tab.value} value={tab.value} className="md:pt-6">
             <div className="space-y-6">
               {tab.faqs.map((faq) => (
                 <div
@@ -85,7 +122,7 @@ const FAQs = () => {
                 >
                   <button
                     onClick={() => toggleItem(faq.id)}
-                    className="w-full flex items-center justify-between text-left hover:bg-gray-50 transition-colors p-6"
+                    className="w-full flex items-center justify-between text-left hover:bg-gray-50 transition-colors md:p-6 p-3"
                   >
                     <span className="text-[#454950] md:text-lg text-sm md:font-bold font-semibold leading-relaxed">
                       {faq.question}
@@ -94,18 +131,18 @@ const FAQs = () => {
                       {openItem === faq.id ? (
                         <Minus
                           strokeWidth={2}
-                          className="w-6 h-6 text-[#63676C]"
+                          className="w-4 md:w-6 h-4 md:h-6 text-[#63676C]"
                         />
                       ) : (
                         <Plus
                           strokeWidth={2}
-                          className="w-6 h-6 text-[#63676C]"
+                          className="w-4 md:w-6 h-4 md:h-6 text-[#63676C]"
                         />
                       )}
                     </div>
                   </button>
                   {openItem === faq.id && (
-                    <p className="text-[#454950] max-md:text-sm px-6 pb-6">
+                    <p className="text-[#454950] max-md:text-sm md:px-6 px-3 md:pb-6 pb-3">
                       {faq.answer}
                     </p>
                   )}

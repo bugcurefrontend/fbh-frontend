@@ -1,25 +1,21 @@
-import { Sprout, Leaf, Bird, Trees } from "lucide-react";
+import { Star } from "lucide-react";
 import Image from "next/image";
 
 const KanhaShantiVanam = () => {
   const features = [
     {
-      icon: Sprout,
       title: "Native Species",
       description: "Over 100+ indigenous tree species",
     },
     {
-      icon: Leaf,
       title: "Biodiversity",
       description: "Home to diverse flora and fauna",
     },
     {
-      icon: Bird,
       title: "Wildlife Habitat",
       description: "Sanctuary for local wildlife",
     },
     {
-      icon: Trees,
       title: "Eco-Tourism",
       description: "Sustainable tourism destination",
     },
@@ -54,7 +50,6 @@ const KanhaShantiVanam = () => {
         {/* Features Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 md:gap-6 border-[#E4E4E4] border rounded-xl">
           {features.map((feature, index) => {
-            const Icon = feature.icon;
             return (
               <div
                 key={index}
@@ -62,11 +57,8 @@ const KanhaShantiVanam = () => {
               >
                 {/* Icon with circle background */}
                 <div className="flex justify-center">
-                  <div className="w-10 h-10 rounded-full bg-green-100 border border-green-300 flex items-center justify-center">
-                    <Icon
-                      className="w-6 h-6 text-green-800"
-                      strokeWidth={1.5}
-                    />
+                  <div className="w-10 h-10 rounded-full bg-[#9DE1C2] border-[2.5px] border-[#76D5A9] flex items-center justify-center">
+                    <Star className="w-6 h-6 text-[#007A3F]" fill="#007A3F" />
                   </div>
                 </div>
 
