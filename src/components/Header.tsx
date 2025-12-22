@@ -48,7 +48,10 @@ export default function Header() {
   const navigationItems = [
     {
       label: "About",
-      sub: [{ label: "Our Mission & Vision", href: "/about-us" }],
+      sub: [
+        { label: "Our Mission & Vision", href: "/about-us" },
+        { label: "Meet The Team", href: "/team" },
+      ],
     },
 
     {

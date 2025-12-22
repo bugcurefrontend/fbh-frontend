@@ -1,5 +1,4 @@
 import AboutHeartfulness from "@/components/about-us/AboutHeartfulness";
-import DreamTeam from "@/components/about-us/DreamTeam";
 import FAQs from "@/components/about-us/FAQs";
 import KanhaShantiVanam from "@/components/about-us/KanhaShantiVanam";
 import JourneyTimeline from "@/components/about-us/OurJourny";
@@ -33,10 +32,7 @@ export default async function page() {
         <AboutHeartfulness />
       </section>
       <KanhaShantiVanam />
-      <section className="max-w-7xl mx-auto md:space-y-16 space-y-8">
-        <DreamTeam />
-        <FAQs />
-      </section>
+      <FAQs />
     </main>
   );
 }
