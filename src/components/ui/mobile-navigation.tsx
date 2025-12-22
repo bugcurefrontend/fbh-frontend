@@ -148,7 +148,7 @@ export function MobileNavigation({
                 </div>
               ))}
               <a
-                href="/contact"
+                href="/contact-us"
                 className="flex justify-between items-center w-full px-4 py-3 hover:bg-gray-50 transition-colors font-medium text-lg text-#090C0F uppercase"
               >
                 Contact Us

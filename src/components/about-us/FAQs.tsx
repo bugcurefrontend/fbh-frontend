@@ -77,7 +77,7 @@ const FAQs = () => {
   };
   return (
     <main className="px-4 md:px-8 overflow-hidden">
-      <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold sm:text-center text-[#232D26] mb-6">
+      <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold text-center text-[#232D26] mb-6">
         FAQs
       </h2>
       <Tabs value={activeTab} onValueChange={setActiveTab}>
