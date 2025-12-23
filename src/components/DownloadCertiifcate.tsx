@@ -114,7 +114,7 @@ const DownloadCertificate: React.FC = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <div className="flex cursor-pointer gap-2 items-center justify-center bg-[#003399] hover:bg-[#062d7b] text-white font-semibold h-11 px-5 py-3 rounded-md w-[50%]">
+        <div className="flex cursor-pointer gap-2 items-center justify-center bg-[#003399] hover:bg-[#062d7b] text-white font-semibold h-11 px-5 py-3 rounded-md w-full sm:w-[50%]">
           <span className="max-md:hidden">Download</span>Certificate
           <Download className="w-4 h-4" />
         </div>

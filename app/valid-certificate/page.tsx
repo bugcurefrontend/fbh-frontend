@@ -99,7 +99,7 @@ const page = () => {
   const ITEMS_PER_PAGE = 5;
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [valid, setValid] = useState(false);
+  const [valid, setValid] = useState(true);
 
   const totalPages = Math.ceil(tableData.length / ITEMS_PER_PAGE);
 
@@ -164,7 +164,7 @@ const page = () => {
             Your Planted Trees
           </h1>
 
-          <div className="w-full flex md:flex-row flex-col gap-4 md:min-h-[473px] md:max-h-[473px]">
+          <div className="w-full flex md:flex-row flex-col gap-4">
             <Image
               src="/images/map.png"
               alt="map"
@@ -223,6 +223,18 @@ const page = () => {
                         color: "#454950",
                       }}
                     >
+                      Updates
+                    </th>
+                    <th
+                      className="w-[20%] py-3 px-6 text-xs font-medium"
+                      style={{
+                        fontFamily: "Poppins, sans-serif",
+                        fontWeight: 500,
+                        fontSize: "12px",
+                        lineHeight: "18px",
+                        color: "#454950",
+                      }}
+                    >
                       Directions
                     </th>
                   </tr>
@@ -231,7 +243,7 @@ const page = () => {
                   {currentData.map((donor, index) => (
                     <tr key={startIndex + index}>
                       <td
-                        className="h-18 text-center px-3.5"
+                        className="h-18 text-center px-3.5 truncate"
                         style={{
                           fontFamily: "'Public Sans', sans-serif",
                           fontWeight: 600,
@@ -245,7 +257,7 @@ const page = () => {
 
                       <td className="text-center h-18 px-3.5">
                         <div
-                          className="w-[256px]"
+                          className="truncate"
                           style={{
                             fontFamily: "'Public Sans', sans-serif",
                             fontWeight: 600,
@@ -260,6 +272,7 @@ const page = () => {
 
                       <td className="text-center h-18 px-3.5">
                         <div
+                          className="truncate"
                           style={{
                             fontFamily: "'Public Sans', sans-serif",
                             fontWeight: 600,
@@ -272,7 +285,7 @@ const page = () => {
                         </div>
                       </td>
                       <td className="text-center h-18 px-3.5">
-                        <div
+                        <button
                           style={{
                             fontFamily: "'Public Sans', sans-serif",
                             fontWeight: 700,
@@ -281,8 +294,21 @@ const page = () => {
                             color: "#003399",
                           }}
                         >
-                          <button>click here</button>
-                        </div>
+                          View
+                        </button>
+                      </td>
+                      <td className="text-center h-18 px-3.5">
+                        <button
+                          style={{
+                            fontFamily: "'Public Sans', sans-serif",
+                            fontWeight: 700,
+                            fontSize: "14px",
+                            lineHeight: "22px",
+                            color: "#003399",
+                          }}
+                        >
+                          click here
+                        </button>
                       </td>
                     </tr>
                   ))}

@@ -9,14 +9,12 @@ import {
   CircleQuestionMark,
   Headset,
   PanelsTopLeft,
-  TreePine,
   HandHeart,
 } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 import { AccountPageSkeleton } from "../../src/components/account/AccountPageSkeleton";
 import { DashboardTab } from "../../src/components/account/DashboardTab";
 import { DonationsTab } from "../../src/components/account/DonationsTab";
-import { TreesTab } from "../../src/components/account/TreesTab";
 
 const AccountPage = () => {
   const { isAuthenticated, isLoading, userProfile } = useAuth();
@@ -71,13 +69,7 @@ const AccountPage = () => {
               <HandHeart className="w-6 h-6" />
               <span className="font-bold text-base">Donation History</span>
             </TabsTrigger>
-            <TabsTrigger
-              value="trees"
-              className="flex items-center gap-2 px-1 pb-[18px] pt-4 text-sm font-semibold text-[#6B7280] border-b-2 border-transparent rounded-none data-[state=active]:text-[#003399] data-[state=active]:border-[#003399]"
-            >
-              <TreePine className="w-6 h-6" />
-              <span className="font-bold text-base">My Trees</span>
-            </TabsTrigger>
+
             <Button
               variant="outline"
               className="border-[#0D824B] hover:text-[#097442] text-[#0D824B] max-sm:hidden font-semibold h-9 px-4 py-2 rounded-md ml-auto"
@@ -97,10 +89,6 @@ const AccountPage = () => {
 
         <TabsContent value="donations">
           <DonationsTab />
-        </TabsContent>
-
-        <TabsContent value="trees">
-          <TreesTab />
         </TabsContent>
       </Tabs>
     </main>
