@@ -1,27 +1,15 @@
+import { Metadata } from "next";
 import AllSpeciesPage from "../../src/components/AllSpeciesPage";
+import { fetchAllSpecies } from "@/services/species";
 
-const mockSpecies = [
-  { name: "Neem (Azadirachta)", image: "/images/neem-tree.jpg" },
-  { name: "Banyan Tree", image: "/images/banyan-tree.avif" },
-  { name: "Mango Tree", image: "/images/mango-tree.webp" },
-  { name: "Neem (Azadirachta)", image: "/images/neem-tree.jpg" },
-  { name: "Banyan Tree", image: "/images/banyan-tree.avif" },
-  { name: "Mango Tree", image: "/images/mango-tree.webp" },
-];
-
-const mockPagination = {
-  currentPage: 1,
-  totalPages: 8,
-  hasNext: true,
-  hasPrevious: false,
+export const metadata: Metadata = {
+  title: "All Species - FBH",
+  description: "Explore our collection of tree species, each with unique environmental, cultural, and medicinal value.",
 };
 
-export default function SpeciesPage() {
-  return (
-    <AllSpeciesPage
-      initialSpecies={mockSpecies}
-      initialPagination={mockPagination}
-      initialSearchQuery=""
-    />
-  );
+export default async function SpeciesPage() {
+  // Fetch species data at build time from Strapi API
+  const species = await fetchAllSpecies();
+
+  return <AllSpeciesPage initialSpecies={species} />;
 }

@@ -28,7 +28,7 @@ const AboutSection: React.FC = () => {
           human and nature.
         </p>
 
-        <Link href="/about" className="w-fit">
+        <Link href="/about-us" className="w-fit">
           <button className="flex items-center gap-2 text-[#003399] font-bold text-xs uppercase cursor-pointer md:font-bold md:text-xs md:leading-[18px] md:uppercase md:text-[#003399]">
             Know More{" "}
             <ArrowRightIcon

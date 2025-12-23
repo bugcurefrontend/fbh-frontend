@@ -1,8 +1,14 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { queryHFNElement, getAuthParams } from './hfnauth';
-import { actions } from '@/store/userStore';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
+import { queryHFNElement, getAuthParams } from "./hfnauth";
+import { actions } from "@/store/userStore";
 
 interface UserProfile {
   firstName?: string;
@@ -16,8 +22,13 @@ interface AuthContextType {
   userProfile: UserProfile | null;
   isLoading: boolean;
   login: () => void;
-  logout: () => Promise<void>;
+  logout: (options?: LogoutOptions) => Promise<void>;
   refreshAuthStatus: () => void;
+}
+
+interface LogoutOptions {
+  redirect?: boolean;
+  targetPath?: string;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -25,7 +36,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };
@@ -71,7 +82,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       if (typeof window !== "undefined") {
         const currentPath = window.location.pathname;
-        const landingPage = currentPath.includes('/hfnauth/authorization') ? '/' : currentPath;
+        const landingPage = currentPath.includes("/hfnauth/authorization")
+          ? "/"
+          : currentPath;
         localStorage.setItem("landingPage", landingPage);
 
         const authElement = queryHFNElement();
@@ -92,7 +105,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  const logout = async () => {
+  const logout = async (options: LogoutOptions = {}) => {
+    const shouldRedirect = options.redirect ?? false;
     try {
       if (typeof window !== "undefined") {
         const { userLogout } = await import("hfnauth/main");
@@ -105,7 +119,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           localStorage.removeItem("landingPage");
           setIsAuthenticated(false);
           setUserProfile(null);
-          window.location.href = "/";
+          if (shouldRedirect) {
+            const redirectPath =
+              options.targetPath ||
+              localStorage.getItem("landingPage") ||
+              window.location.pathname ||
+              "/";
+            window.location.href = redirectPath;
+          }
         }
       }
     } catch (error) {
@@ -113,7 +134,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       localStorage.removeItem("landingPage");
       setIsAuthenticated(false);
       setUserProfile(null);
-      window.location.href = "/";
+      if (typeof window !== "undefined" && shouldRedirect) {
+        const redirectPath =
+          options.targetPath ||
+          localStorage.getItem("landingPage") ||
+          window.location.pathname ||
+          "/";
+        window.location.href = redirectPath;
+      }
     }
   };
 
@@ -140,7 +168,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     if (isAuthenticated) {
       const minutesEnv = process.env.NEXT_PUBLIC_TOKEN_REFRESH_INTERVAL;
       const minutes = minutesEnv ? parseInt(minutesEnv, 10) : 30;
-      const safeMinutes = Number.isFinite(minutes) && minutes > 0 ? minutes : 30;
+      const safeMinutes =
+        Number.isFinite(minutes) && minutes > 0 ? minutes : 30;
       const intervalMs = safeMinutes * 60 * 1000;
 
       const interval = setInterval(refreshTokenIfNeeded, intervalMs);
@@ -157,9 +186,5 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     refreshAuthStatus,
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

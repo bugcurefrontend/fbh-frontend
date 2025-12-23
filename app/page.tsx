@@ -7,19 +7,38 @@ import ProjectsSection from "../src/components/ProjectsSection";
 import ActivitiesSection from "../src/components/ActivitiesSection";
 import TestimonialsSection from "../src/components/TestimonialsSection";
 import CaseStudiesSection from "../src/components/CaseStudiesSection";
+import { fetchAllPartners } from "@/services/partners";
+import { fetchAllCaseStudies } from "@/services/case-studies";
+import { fetchAllHeroContents } from "@/services/hero-content";
+import { fetchAllTestimonials } from "@/services/testimonials";
+import { fetchAllMetrics } from "@/services/metrics";
+import { fetchLandingProjects } from "@/services/projects";
+import { fetchPopularSpecies } from "@/services/species";
+import { fetchAllArticles } from "@/services/articles";
 
-export default function Home() {
+export default async function Home() {
+  const [partners, caseStudies, heroContents, testimonials, metrics, projects, species, articles] = await Promise.all([
+    fetchAllPartners(),
+    fetchAllCaseStudies(),
+    fetchAllHeroContents(),
+    fetchAllTestimonials(),
+    fetchAllMetrics(),
+    fetchLandingProjects(6),
+    fetchPopularSpecies(),
+    fetchAllArticles(),
+  ]);
+
   return (
     <main className="min-h-screen">
-      <HeroSection />
-      <StatisticsSection />
+      <HeroSection heroContents={heroContents} />
+      <StatisticsSection metrics={metrics} />
       <AboutSection />
-      <PartnersSection />
-      <SpeciesSection />
-      <ProjectsSection />
-      <ActivitiesSection />
-      <TestimonialsSection />
-      <CaseStudiesSection />
+      <PartnersSection partners={partners} />
+      <SpeciesSection species={species} />
+      <ProjectsSection projects={projects} />
+      <ActivitiesSection activities={articles} />
+      <TestimonialsSection testimonials={testimonials} />
+      <CaseStudiesSection caseStudies={caseStudies} />
     </main>
   );
 }

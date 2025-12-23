@@ -1,20 +1,49 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
 import { ChevronDown } from "lucide-react";
 
-const currencies = [
+export type CurrencyCode = "INR" | "USD";
+
+const currencies: { code: CurrencyCode; flag: string }[] = [
   { code: "INR", flag: "/images/flag.png" },
   { code: "USD", flag: "/images/us.png" },
 ];
 
+/**
+ * Hook to get and set currency from URL search params
+ * Default: INR
+ */
+export function useCurrency() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const currency = (searchParams.get("currency") as CurrencyCode) || "INR";
+  const currencySymbol = currency === "INR" ? "₹" : "$";
+
+  const setCurrency = useCallback(
+    (newCurrency: CurrencyCode) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("currency", newCurrency);
+      router.push(`${pathname}?${params.toString()}`, { scroll: false });
+    },
+    [searchParams, router, pathname]
+  );
+
+  return { currency, currencySymbol, setCurrency };
+}
+
 export default function CurrencySelect() {
-  const [selected, setSelected] = useState(currencies[0]);
+  const { currency, setCurrency } = useCurrency();
   const [open, setOpen] = useState(false);
 
-  const handleSelect = (currency: any) => {
-    setSelected(currency);
+  const selected = currencies.find((c) => c.code === currency) || currencies[0];
+
+  const handleSelect = (currencyOption: (typeof currencies)[0]) => {
+    setCurrency(currencyOption.code);
     setOpen(false);
   };
 

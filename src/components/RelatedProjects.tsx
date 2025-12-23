@@ -5,6 +5,7 @@ import Image from "next/image";
 import { MapPin } from "lucide-react";
 import Link from "next/link";
 import ProjectCard from "./ProjectCard";
+import { generateProjectSlug } from "@/services/projects";
 
 interface Project {
   id: string;
@@ -34,15 +35,21 @@ const RelatedProjects: React.FC<RelatedProjectsProps> = ({
         <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold mx-auto sm:mx-0 text-black md:text-[32px] md:font-semibold md:leading-[48px] md:align-middle md:text-[#090C0F]">
           Explore other projects{" "}
         </h2>
-        <button className="absolute right-0 top-4 text-[#003399] font-bold text-xs uppercase md:font-bold md:text-xs md:leading-[18px] md:text-center md:align-middle md:uppercase md:text-[#003399]">
+        <Link
+          href="/projects"
+          className="absolute right-0 top-4 text-[#003399] font-bold text-xs uppercase md:font-bold md:text-xs md:leading-[18px] md:text-center md:align-middle md:uppercase md:text-[#003399]"
+        >
           View All
-        </button>
+        </Link>
       </div>
 
       {/* Desktop Grid */}
       <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-6">
         {projects.map((project) => (
-          <Link key={project.id} href="/project-detail">
+          <Link
+            key={project.id}
+            href={`/projects/${generateProjectSlug(project.title)}`}
+          >
             <ProjectCard
               id={project.id}
               title={project.title}
@@ -61,8 +68,9 @@ const RelatedProjects: React.FC<RelatedProjectsProps> = ({
       <div className="sm:hidden overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         <div className="flex gap-4 pb-2 w-max">
           {projects.map((project, idx) => (
-            <div
+            <Link
               key={idx}
+              href={`/projects/${generateProjectSlug(project.title)}`}
               className="flex-1 min-w-[314px] max-w-[314px] border border-gray-200 rounded-xl flex-shrink-0 overflow-hidden"
             >
               <div className="relative h-52">
@@ -74,14 +82,16 @@ const RelatedProjects: React.FC<RelatedProjectsProps> = ({
                 />
 
                 <div className="absolute top-4 left-4 flex gap-1">
-                  <div className="bg-[#33533E8C] backdrop-blur-sm text-white text-xs font-semibold px-2 py-1 rounded md:text-base md:font-semibold md:leading-6 md:align-middle md:text-[#FFFFFF]">
+                  <div className="bg-[#006161] shadow-[0_20px_40px_-4px_rgba(133,133,133,0.12)] text-white text-xs font-semibold px-2 py-1 rounded-full md:text-base md:font-semibold md:leading-6 md:align-middle md:text-[#FFFFFF] capitalize">
                     {project.plantedCount >= 100
                       ? "100+ planted"
-                      : `${project.plantedCount}+ planted`}
+                      : `${project.plantedCount} planted`}
                   </div>
-                  <div className="bg-[#33533E8C] backdrop-blur-sm text-white text-xs font-semibold px-2 py-1 rounded md:text-base md:font-semibold md:leading-6 md:align-middle md:text-[#FFFFFF]">
-                    {project.category}
-                  </div>
+                  {project.category && (
+                    <div className="bg-[#006161] shadow-[0_20px_40px_-4px_rgba(133,133,133,0.12)] text-white text-xs font-semibold px-2 py-1 rounded-full md:text-base md:font-semibold md:leading-6 md:align-middle md:text-[#FFFFFF] capitalize">
+                      {project.category}
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="px-2 py-3 flex flex-col gap-6">
@@ -92,7 +102,7 @@ const RelatedProjects: React.FC<RelatedProjectsProps> = ({
                   <div className="flex items-center gap-2">
                     <MapPin width={13} height={16} color="#19212c" />
                     <span className="text-base font-semibold text-black md:text-base md:font-semibold md:leading-6 md:align-middle md:text-[#19212C]">
-                      {project.location}
+                      {project.location.split(" ")[0].replace(/,$/, "")}
                     </span>
                   </div>
                 </div>
@@ -107,7 +117,7 @@ const RelatedProjects: React.FC<RelatedProjectsProps> = ({
                   />{" "}
                 </button>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

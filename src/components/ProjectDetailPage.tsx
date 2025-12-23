@@ -5,6 +5,8 @@ import ProjectHero from "./ProjectHero";
 import ProjectTabs from "./ProjectTabs";
 import ProjectAccordion from "./ProjectAccordion";
 import GeoTagToggleAndActions from "./GeoTagToggleAndActions";
+import { useCurrency } from "./CurrencySelect";
+import { PlantRates } from "@/types/plant-rate";
 
 interface Project {
   id: string;
@@ -14,6 +16,22 @@ interface Project {
   category: string;
   imageUrl: string;
   imageAlt: string;
+}
+
+interface ProjectUpdateUI {
+  id: number;
+  month: string;
+  date: string;
+  year: number;
+  images: string[];
+  text: string;
+}
+
+interface ProjectSpeciesUI {
+  id: string;
+  name: string;
+  image: string;
+  slug: string;
 }
 
 interface ProjectDetailData {
@@ -33,19 +51,34 @@ interface ProjectDetailData {
   };
   projectDescription: string;
   projectDetails: string[];
+  mapCode: string;
+  videoThumbnail?: string | null;
+  videoUrl?: string | null;
 }
 
 interface ProjectDetailPageProps {
   projectData: ProjectDetailData;
   relatedProjects: Project[];
+  projectUpdates?: ProjectUpdateUI[];
+  projectSpecies?: ProjectSpeciesUI[];
+  plantRates: PlantRates;
 }
 
 const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
   projectData,
   relatedProjects,
+  projectUpdates = [],
+  projectSpecies = [],
+  plantRates,
 }) => {
   const [isGeoTagged, setIsGeoTagged] = useState(true);
   const overviewRef = useRef<HTMLDivElement>(null);
+  const { currency, currencySymbol } = useCurrency();
+
+  // Get rates based on selected currency
+  const currentRate = plantRates[currency];
+  const geotaggedRate = currentRate?.geotagged_rate;
+  const nonGeotaggedRate = currentRate?.non_geotagged_rate;
 
   const handleReadMoreClick = () => {
     overviewRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -84,6 +117,12 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
         onPlantTree={handlePlantTree}
         onGiftTree={handleGiftTree}
         onReadMoreClick={handleReadMoreClick}
+        mapCode={projectData.mapCode}
+        videoThumbnail={projectData.videoThumbnail}
+        videoUrl={projectData.videoUrl}
+        geotaggedRate={geotaggedRate}
+        nonGeotaggedRate={nonGeotaggedRate}
+        currencySymbol={currencySymbol}
       />
 
       {/* Project Tabs Section */}
@@ -94,6 +133,8 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
           relatedProjects={relatedProjects}
           onPlantTree={handleRelatedPlantTree}
           onViewAll={handleViewAll}
+          projectUpdates={projectUpdates}
+          projectSpecies={projectSpecies}
         />
       </div>
 
@@ -103,6 +144,8 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
         relatedProjects={relatedProjects}
         onPlantTree={handleRelatedPlantTree}
         onViewAll={handleViewAll}
+        projectUpdates={projectUpdates}
+        projectSpecies={projectSpecies}
       />
 
       {/* Mobile Sticky Actions */}
@@ -112,6 +155,9 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
         onPlantTree={handlePlantTree}
         onGiftTree={handleGiftTree}
         variant="mobile"
+        geotaggedRate={geotaggedRate}
+        nonGeotaggedRate={nonGeotaggedRate}
+        currencySymbol={currencySymbol}
       />
     </main>
   );

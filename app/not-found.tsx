@@ -54,32 +54,6 @@ export default function Custom404() {
             Explore Projects
           </a>
         </div>
-
-        {/* Environmental Message */}
-        <div className="bg-green-50 rounded-2xl p-6 border border-green-100">
-          <h3 className="text-lg font-semibold text-green-800 mb-2">
-            While You're Here...
-          </h3>
-          <p className="text-green-700 mb-4">
-            Did you know that every page visit helps us track our environmental
-            impact? Even this 404 page contributes to our mission of making the
-            web greener.
-          </p>
-          <div className="flex items-center justify-center space-x-8 text-sm text-green-600">
-            <div className="text-center">
-              <div className="font-bold text-lg">10,000+</div>
-              <div>Trees Planted</div>
-            </div>
-            <div className="text-center">
-              <div className="font-bold text-lg">330+</div>
-              <div>Active Partners</div>
-            </div>
-            <div className="text-center">
-              <div className="font-bold text-lg">80+</div>
-              <div>Countries Reached</div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );

@@ -9,6 +9,9 @@ import {
 import Footer from "@/components/Footer";
 import { AuthProvider } from "@/lib/auth-context";
 import AuthWrapper from "@/components/AuthWrapper";
+import { fetchFooterMenu } from "@/services/footer-menu";
+import { fetchSocialLinks } from "@/services/social-link";
+import { fetchUsefulLinks } from "@/services/useful-link";
 
 export const metadata = {
   title: "Forests by Heartfulness",
@@ -23,6 +26,7 @@ const poppins = Poppins({
 const publicSans = Public_Sans({
   subsets: ["latin"],
   weight: ["200", "300", "400", "500", "600", "700"],
+  style: ["normal", "italic"],
 });
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -33,11 +37,17 @@ const roboto = Roboto({
   weight: ["200", "300", "400", "500", "600", "700"],
 });
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const [footerMenu, socialLinks, usefulLinks] = await Promise.all([
+    fetchFooterMenu(),
+    fetchSocialLinks(),
+    fetchUsefulLinks(),
+  ]);
+
   return (
     <html lang="en" className={publicSans.className}>
       <body>
@@ -45,7 +55,11 @@ export default function RootLayout({
           <AuthWrapper>
             <Header />
             {children}
-            <Footer />
+            <Footer
+              menuItems={footerMenu.items}
+              socialLinks={socialLinks}
+              usefulLinks={usefulLinks.items}
+            />
           </AuthWrapper>
         </AuthProvider>
       </body>

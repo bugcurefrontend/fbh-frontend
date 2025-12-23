@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState } from "react";
 import Image from "next/image";
 import { Calendar } from "lucide-react";
@@ -10,40 +11,26 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "./ui/carousel";
+import { Article } from "@/types/article";
 
-const ActivitiesSection: React.FC = () => {
-  const activities = [
-    {
-      date: "15 JAN",
-      title: "Gym Facilities for practitioners",
-      description:
-        "Kanha Gym is equipped with world-class fitness facilities. Gym offers the options to workout pla…",
-      image: "/images/gym-facilities.png",
-    },
-    {
-      date: "15 JAN",
-      title: "Kanha Sports Centre inaugurated",
-      description:
-        "An Kanha Sports Centre at Kanha Shanti Vanam, established by the Ministry of Sports, Khelo India, …",
-      image: "/images/sports-centre.jpg",
-    },
-    {
-      date: "15 JAN",
-      title: "Talent Identification, Physical Literacy key to",
-      description:
-        "India's Chief National Badminton Coach Pullela Gopichand says…",
-      image: "/images/badminton-coach.jpg",
-    },
-    {
-      date: "15 JAN",
-      title: "Gym Facilities for practitioners",
-      description:
-        "Kanha Gym is equipped with world-class fitness facilities. Gym offers the options to workout pla…",
-      image: "/images/gym-facilities.png",
-    },
-  ];
+interface ActivitiesSectionProps {
+  activities: Article[];
+}
 
+const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({ activities }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Format date from "2025-12-08" to "08 DEC"
+  const formatDate = (dateString: string) => {
+    try {
+      const date = new Date(dateString);
+      const day = date.getDate().toString().padStart(2, '0');
+      const month = date.toLocaleString('en-US', { month: 'short' }).toUpperCase();
+      return `${day} ${month}`;
+    } catch (error) {
+      return dateString;
+    }
+  };
 
   const totalSlides = activities.length;
   const visibleSlides = 3;
@@ -59,9 +46,6 @@ const ActivitiesSection: React.FC = () => {
         <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold mx-auto sm:mx-0 text-black md:text-[32px] md:font-semibold md:leading-[48px] md:align-middle md:text-[#090C0F]">
           FBH Activities
         </h2>
-        <button className="absolute right-0 top-4 text-[#003399] font-bold text-xs uppercase md:font-bold md:text-xs md:leading-[18px] md:text-center md:align-middle md:uppercase md:text-[#003399]">
-          View All
-        </button>
       </div>
 
       {/*Desktop Carousel */}
@@ -81,29 +65,34 @@ const ActivitiesSection: React.FC = () => {
               key={idx}
               className="basis-1/1 sm:basis-1/2 lg:basis-1/3 pl-8"
             >
-              <div className="flex-1 h-full min-w-0 border border-gray-200 rounded-xl flex-shrink-0 overflow-hidden">
-                <Image
-                  src={activity.image}
-                  alt={activity.title}
-                  width={350}
-                  height={194}
-                  className="w-full max-h-48 object-cover"
-                />
-                <div className="p-6 flex flex-col gap-2">
-                  <div className="flex items-center gap-2">
-                    <Calendar className="w-5 h-5" />
-                    <span className="text-sm font-bold text-black md:text-sm md:font-bold md:leading-[22px] md:text-center md:align-middle md:text-[#090C0F]">
-                      {activity.date}
-                    </span>
+              <a href={activity.url} target="_blank" rel="noopener noreferrer">
+                <div className="flex-1 h-full min-w-0 border border-gray-200 rounded-xl flex-shrink-0 overflow-hidden cursor-pointer hover:shadow-lg transition-shadow">
+                  <Image
+                    src={activity.image}
+                    alt={activity.title}
+                    width={350}
+                    height={194}
+                    className="w-full max-h-48 object-cover"
+                  />
+                  <div className="p-6 flex flex-col gap-2">
+                    <div className="flex items-center gap-2">
+                      <Calendar className="w-5 h-5" />
+                      <span className="text-sm font-bold text-black md:text-sm md:font-bold md:leading-[22px] md:text-center md:align-middle md:text-[#090C0F]">
+                        {formatDate(activity.date)}
+                      </span>
+                    </div>
+                    <h3 className="text-lg font-bold text-[#333333] md:text-lg md:font-bold md:leading-[26px] md:align-middle md:text-[#333333] truncate">
+                      {activity.title}
+                    </h3>
+                    <p className="text-sm font-normal text-gray-600 md:text-sm md:font-normal md:leading-[21px] md:align-middle md:text-[#595959]">
+                      {activity.description.length > 80
+                        ? `${activity.description.substring(0, 80)}...`
+                        : activity.description}{" "}
+                      <span className="text-[#003399] font-bold text-xs">Read More</span>
+                    </p>
                   </div>
-                  <h3 className="text-lg font-bold text-[#333333] md:text-lg md:font-bold md:leading-[26px] md:align-middle md:text-[#333333] truncate">
-                    {activity.title}
-                  </h3>
-                  <p className="text-sm font-normal text-gray-600 md:text-sm md:font-normal md:leading-[21px] md:align-middle md:text-[#595959] line-clamp-2">
-                    {activity.description}
-                  </p>
                 </div>
-              </div>
+              </a>
             </CarouselItem>
           ))}
         </CarouselContent>
@@ -128,32 +117,39 @@ const ActivitiesSection: React.FC = () => {
       {/*Mobile Carousel */}
       <div className="flex sm:hidden justify-center gap-5 flex-col md:flex-row mb-4">
         {activities.map((activity, idx) => (
-          <div
+          <a
             key={idx}
-            className="flex-1 min-w-0 border border-gray-200 rounded-xl flex-shrink-0 overflow-hidden"
+            href={activity.url}
+            target="_blank"
+            rel="noopener noreferrer"
           >
-            <Image
-              src={activity.image}
-              alt={activity.title}
-              width={350}
-              height={194}
-              className="w-full max-h-40 object-cover"
-            />
-            <div className="px-3 py-4 flex flex-col gap-2">
-              <div className="flex items-center gap-2">
-                <Calendar className="w-5 h-5" />
-                <span className="text-sm font-bold text-black md:text-sm md:font-bold md:leading-[22px] md:text-center md:align-middle md:text-[#090C0F]">
-                  {activity.date}
-                </span>
+            <div className="flex-1 min-w-0 border border-gray-200 rounded-xl flex-shrink-0 overflow-hidden">
+              <Image
+                src={activity.image}
+                alt={activity.title}
+                width={350}
+                height={194}
+                className="w-full max-h-40 object-cover"
+              />
+              <div className="px-3 py-4 flex flex-col gap-2">
+                <div className="flex items-center gap-2">
+                  <Calendar className="w-5 h-5" />
+                  <span className="text-sm font-bold text-black md:text-sm md:font-bold md:leading-[22px] md:text-center md:align-middle md:text-[#090C0F]">
+                    {formatDate(activity.date)}
+                  </span>
+                </div>
+                <h3 className="text-lg font-bold text-[#333333] md:text-lg md:font-bold md:leading-[26px] md:align-middle md:text-[#333333]">
+                  {activity.title}
+                </h3>
+                <p className="text-sm font-normal text-gray-600 md:text-sm md:font-normal md:leading-[21px] md:align-middle md:text-[#595959]">
+                  {activity.description.length > 80
+                    ? `${activity.description.substring(0, 80)}...`
+                    : activity.description}{" "}
+                  <span className="text-[#003399] font-bold text-xs">Read More</span>
+                </p>
               </div>
-              <h3 className="text-lg font-bold text-[#333333] md:text-lg md:font-bold md:leading-[26px] md:align-middle md:text-[#333333]">
-                {activity.title}
-              </h3>
-              <p className="text-sm font-normal text-gray-600 md:text-sm md:font-normal md:leading-[21px] md:align-middle md:text-[#595959]">
-                {activity.description}
-              </p>
             </div>
-          </div>
+          </a>
         ))}
       </div>
     </section>

@@ -2,9 +2,14 @@
 import React from "react";
 import Image from "next/image";
 import { InfiniteMovingCards } from "./ui/infinite-moving-cards";
+import { PartnerSimplified } from "@/types/partner";
 
-const PartnersSection: React.FC = () => {
-  const partners = [
+interface PartnersSectionProps {
+  partners?: PartnerSimplified[];
+}
+
+const PartnersSection: React.FC<PartnersSectionProps> = ({ partners: apiPartners }) => {
+  const fallbackPartners = [
     { name: "Google", logo: "/images/partners/google1.png" },
     { name: "Accenture", logo: "/images/partners/accenture.png" },
     { name: "Amazon", logo: "/images/partners/amazon.png" },
@@ -17,7 +22,7 @@ const PartnersSection: React.FC = () => {
     { name: "MPG", logo: "/images/partners/mp.png" },
   ];
 
-  const mobilePartners = [
+  const fallbackMobilePartners = [
     { name: "Samsung", logo: "/images/partners/samsung.png" },
     { name: "Google", logo: "/images/partners/google1.png" },
     { name: "Amazon", logo: "/images/partners/amazon.png" },
@@ -26,6 +31,15 @@ const PartnersSection: React.FC = () => {
     { name: "HubSpot", logo: "/images/partners/hubSpot.png" },
   ];
 
+  // Use API data if available, otherwise use fallback
+  const partners = apiPartners && apiPartners.length > 0
+    ? apiPartners.map((p) => ({ name: p.name, logo: p.logo }))
+    : fallbackPartners;
+
+  const mobilePartners = apiPartners && apiPartners.length > 0
+    ? apiPartners.slice(0, 6).map((p) => ({ name: p.name, logo: p.logo }))
+    : fallbackMobilePartners;
+
   const items = partners.map((partner) => ({
     id: partner.name,
     quote: (
@@ -33,9 +47,9 @@ const PartnersSection: React.FC = () => {
         <Image
           src={partner.logo}
           alt={partner.name}
-          width={160}
-          height={100}
-          className="object-contain max-w-[80px] max-h-[30px] sm:max-h-[50px] sm:max-w-[120px] w-fit h-fit"
+          width={300}
+          height={150}
+          className="object-contain max-w-[120px] max-h-[50px] sm:max-h-[80px] sm:max-w-[180px] w-fit h-fit"
         />
       </div>
     ),
@@ -60,9 +74,9 @@ const PartnersSection: React.FC = () => {
               <Image
                 src={partner.logo}
                 alt={partner.name}
-                width={70}
-                height={24}
-                className="object-contain max-w-[70px] max-h-[24px]"
+                width={300}
+                height={150}
+                className="object-contain max-w-[100px] max-h-[50px]"
               />
             </div>
           ))}

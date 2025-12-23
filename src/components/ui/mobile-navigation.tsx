@@ -36,7 +36,7 @@ interface NavigationMenuProps {
   isAuthenticated?: boolean;
   userProfile?: UserProfile | null;
   login?: () => void;
-  logout?: () => void;
+  onSignOut?: () => void;
 }
 
 export function MobileNavigation({
@@ -44,7 +44,7 @@ export function MobileNavigation({
   isAuthenticated,
   userProfile,
   login,
-  logout,
+  onSignOut,
 }: NavigationMenuProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileExpandedMenu, setMobileExpandedMenu] = useState<string | null>(
@@ -148,7 +148,7 @@ export function MobileNavigation({
                 </div>
               ))}
               <a
-                href="/contact"
+                href="/contact-us"
                 className="flex justify-between items-center w-full px-4 py-3 hover:bg-gray-50 transition-colors font-medium text-lg text-#090C0F uppercase"
               >
                 Contact Us
@@ -158,7 +158,17 @@ export function MobileNavigation({
               {isAuthenticated ? (
                 <>
                   <a
-                    href="/dashboard"
+                    href="/account"
+                    className="flex justify-between items-center w-full px-4 py-3 hover:bg-gray-50 transition-colors font-medium text-lg uppercase"
+                    style={{
+                      color: "#090C0F",
+                    }}
+                    onClick={handleClose}
+                  >
+                    Profile
+                  </a>
+                  <a
+                    href="/account"
                     className="flex justify-between items-center w-full px-4 py-3 hover:bg-gray-50 transition-colors font-medium text-lg uppercase"
                     style={{
                       color: "#090C0F",
@@ -182,7 +192,7 @@ export function MobileNavigation({
                   <button
                     onClick={() => {
                       handleClose();
-                      logout?.();
+                      onSignOut?.();
                     }}
                     className="flex items-center gap-2 w-full px-4 py-3 transition-colors font-medium text-lg uppercase"
                     style={{
