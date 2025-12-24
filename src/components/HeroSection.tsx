@@ -37,15 +37,16 @@ const HeroSection: React.FC<HeroSectionProps> = ({ heroContents }) => {
   ];
 
   // Use API data if available, otherwise use fallback
-  const heroSlides = heroContents && heroContents.length > 0
-    ? heroContents.map((hc) => ({
-        id: hc.id,
-        title: hc.title,
-        buttonText: hc.buttonText,
-        bgImage: hc.bgImage,
-        href: hc.buttonUrl,
-      }))
-    : fallbackSlides;
+  const heroSlides =
+    heroContents && heroContents.length > 0
+      ? heroContents.map((hc) => ({
+          id: hc.id,
+          title: hc.title,
+          buttonText: hc.buttonText,
+          bgImage: hc.bgImage,
+          href: hc.buttonUrl,
+        }))
+      : fallbackSlides;
   const autoplay = useRef(Autoplay({ delay: 5000, stopOnInteraction: false }));
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [
     autoplay.current,
@@ -102,13 +103,13 @@ const HeroSection: React.FC<HeroSectionProps> = ({ heroContents }) => {
       <div className="max-md:hidden absolute right-45 bottom-28 flex gap-3 z-10">
         <button
           onClick={scrollPrev}
-          className="border border-[#9CA3AF] md:w-[42px] md:h-[42px] rounded-full flex items-center justify-center text-[#9CA3AF] cursor-pointer"
+          className="bg-white md:w-[42px] md:h-[42px] rounded-full flex items-center justify-center text-[#B7B9BB] cursor-pointer"
         >
           <ChevronLeft />
         </button>
         <button
           onClick={scrollNext}
-          className="bg-white border border-black md:w-[42px] md:h-[42px] rounded-full flex items-center justify-center cursor-pointer"
+          className="bg-[#003399] text-white md:w-[42px] md:h-[42px] rounded-full flex items-center justify-center cursor-pointer"
         >
           <ChevronRight />
         </button>
