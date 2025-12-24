@@ -10,6 +10,10 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { Donation } from "@/components/account/types";
+import { donations } from "@/components/account/mock-data";
+import { TreeUpdate } from "@/components/account/TreeUpdate";
+import Map from "@/components/Map";
 
 interface Data {
   treeCode: number | string;
@@ -107,6 +111,15 @@ const page = () => {
   const endIndex = startIndex + ITEMS_PER_PAGE;
 
   const currentData = tableData.slice(startIndex, endIndex);
+  const [selectedTree, setSelectedTree] = useState<Donation | null>(null);
+
+  if (selectedTree) {
+    return (
+      <div className="max-w-7xl mx-auto md:px-8 px-4  pt-6">
+        <TreeUpdate tree={selectedTree} onBack={() => setSelectedTree(null)} />
+      </div>
+    );
+  }
 
   return (
     <main className="max-w-7xl mx-auto md:px-8 px-4 mt-8">
@@ -165,15 +178,11 @@ const page = () => {
           </h1>
 
           <div className="w-full flex md:flex-row flex-col gap-4">
-            <Image
-              src="/images/map.png"
-              alt="map"
-              width={512}
-              height={473}
-              className="h-full rounded-xl"
-            />
+            <div className="bg-white border md:w-[40%] border-gray-200 rounded-2xl overflow-hidden">
+              <Map />
+            </div>
 
-            <div className="w-full h-full bg-white shadow-sm rounded-[12px] border border-gray-200 overflow-hidden max-md:overflow-x-scroll justify-between flex flex-col">
+            <div className="w-[60%] h-full bg-white shadow-sm rounded-[12px] border border-gray-200 overflow-hidden max-md:overflow-x-scroll justify-between flex flex-col">
               <table className="w-full">
                 <thead className="border-b border-gray-200">
                   <tr>
@@ -286,6 +295,7 @@ const page = () => {
                       </td>
                       <td className="text-center h-18 px-3.5">
                         <button
+                          onClick={() => setSelectedTree(donations[index])}
                           style={{
                             fontFamily: "'Public Sans', sans-serif",
                             fontWeight: 700,

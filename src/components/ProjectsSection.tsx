@@ -102,13 +102,13 @@ const ProjectsSection: React.FC<ProjectsSectionProps> = ({
               key={idx}
               href={`/projects/${generateProjectSlug(project.title)}`}
             >
-              <div className="flex-1 min-w-[314px] max-w-[314px] border border-gray-200 rounded-xl flex-shrink-0 overflow-hidden">
-                <div className="relative h-52">
+              <div className="flex-1 max-w-[314px] max-h-[264px] border border-gray-200 rounded-xl flex-shrink-0 overflow-hidden">
+                <div className="relative h-[160px]">
                   <Image
                     src={project.imageUrl}
                     alt={project.imageAlt}
                     fill
-                    className="object-cover rounded-t-[16px]"
+                    className="object-cover rounded-t-[16px] max-h-[160px]"
                   />
                   <div className="absolute top-4 left-4 flex gap-1">
                     <div className="bg-[#006161] shadow-[0_20px_40px_-4px_rgba(133,133,133,0.12)] text-white text-xs font-semibold px-2 py-1 rounded-full md:text-base md:font-semibold md:leading-6 md:align-middle md:text-[#FFFFFF] capitalize">
@@ -129,11 +129,11 @@ const ProjectsSection: React.FC<ProjectsSectionProps> = ({
                     <div className="flex items-center gap-2 flex-shrink-0 ml-2">
                       <LocationPinIcon width={13} height={16} color="#19212c" />
                       <span className="font-semibold md:font-semibold md:leading-6 md:align-middle text-[#19212C]">
-                        {project.location}
+                        {project.location.split(" ")[0].replace(/,$/, "")}
                       </span>
                     </div>
                   </div>
-                  <button className="bg-[#003399] text-white font-bold text-base py-2 rounded-[8px] w-full hover:bg-[#002080] gap-2 flex items-center justify-center md:font-bold md:text-base md:leading-[26px] md:text-[#FFFFFF]">
+                  <button className="bg-[#003399] h-[36px] text-white font-bold text-base py-2 rounded-[8px] w-full hover:bg-[#002080] gap-2 flex items-center justify-center md:font-bold md:text-base md:leading-[26px] md:text-[#FFFFFF]">
                     PLANT A TREE
                     <Image
                       src="/images/donate.png"

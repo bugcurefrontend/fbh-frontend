@@ -37,7 +37,7 @@ const AccountPage = () => {
   return (
     <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 md:pt-8 pt-4">
       <div className="flex items-center gap-3">
-        <div className="h-14 w-14 rounded-full overflow-hidden bg-gray-100">
+        <div className="h-[35px] w-[35px] sm:h-14 sm:w-14 rounded-full overflow-hidden bg-gray-100">
           <Image
             src="/images/profile.png"
             alt="Profile"
@@ -47,14 +47,14 @@ const AccountPage = () => {
           />
         </div>
 
-        <p className="text-lg sm:text-2xl font-semibold text-[#232D26]">
+        <p className="font-[Playfair_Display] text-lg sm:text-2xl font-semibold text-[#232D26]">
           Hello, {displayName}!
         </p>
       </div>
 
       <Tabs defaultValue="dashboard" className="mt-6 relative">
-        <div className="border-b border-gray-200 overflow-x-auto">
-          <TabsList className="items-center justify-start w-full bg-transparent h-auto p-0 sm:gap-10 gap-4 min-w-fit">
+        <div className="border-b border-gray-200">
+          <TabsList className="items-center min-[400px]:justify-start w-full bg-transparent h-auto p-0 sm:gap-10 gap-4 min-w-fit">
             <TabsTrigger
               value="dashboard"
               className="flex items-center gap-2 px-1 pb-[18px] pt-4 text-sm font-semibold text-[#6B7280] border-b-2 border-transparent rounded-none data-[state=active]:text-[#003399] data-[state=active]:border-[#003399]"

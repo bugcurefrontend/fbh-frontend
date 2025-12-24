@@ -13,6 +13,7 @@ import { ArrowLeft } from "lucide-react";
 import { donations, tableData } from "./account/mock-data";
 import { Donation } from "./account/types";
 import { TreeUpdate } from "./account/TreeUpdate";
+import Map from "./Map";
 
 interface PlantedTreesProps {
   onBack: () => void;
@@ -47,7 +48,7 @@ const PlantedTrees = ({ onBack, donation }: PlantedTreesProps) => {
 
   const DataTable = () => {
     return (
-      <div className="md:w-[60%] h-full bg-white shadow-sm rounded-[12px] border border-gray-200 overflow-x-scroll justify-between flex flex-col">
+      <div className="max-md:overflow-x-scroll md:w-[60%] mx-auto h-full bg-white shadow-sm rounded-[12px] border border-gray-200 justify-between flex flex-col">
         <table className="w-full">
           <thead className="border-b border-gray-200">
             <tr>
@@ -99,18 +100,20 @@ const PlantedTrees = ({ onBack, donation }: PlantedTreesProps) => {
               >
                 Updates
               </th>
-              <th
-                className="w-[20%] py-3 px-6 text-xs font-medium"
-                style={{
-                  fontFamily: "Poppins, sans-serif",
-                  fontWeight: 500,
-                  fontSize: "12px",
-                  lineHeight: "18px",
-                  color: "#454950",
-                }}
-              >
-                Directions
-              </th>
+              {donation.geoTagged === "true" && (
+                <th
+                  className="w-[20%] py-3 px-6 text-xs font-medium"
+                  style={{
+                    fontFamily: "Poppins, sans-serif",
+                    fontWeight: 500,
+                    fontSize: "12px",
+                    lineHeight: "18px",
+                    color: "#454950",
+                  }}
+                >
+                  Directions
+                </th>
+              )}
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
@@ -172,19 +175,21 @@ const PlantedTrees = ({ onBack, donation }: PlantedTreesProps) => {
                     View
                   </button>
                 </td>
-                <td className="text-center h-18 px-3.5">
-                  <button
-                    style={{
-                      fontFamily: "'Public Sans', sans-serif",
-                      fontWeight: 700,
-                      fontSize: "14px",
-                      lineHeight: "22px",
-                      color: "#003399",
-                    }}
-                  >
-                    click here
-                  </button>
-                </td>
+                {donation.geoTagged === "true" && (
+                  <td className="text-center h-18 px-3.5">
+                    <button
+                      style={{
+                        fontFamily: "'Public Sans', sans-serif",
+                        fontWeight: 700,
+                        fontSize: "14px",
+                        lineHeight: "22px",
+                        color: "#003399",
+                      }}
+                    >
+                      click here
+                    </button>
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>
@@ -242,11 +247,10 @@ const PlantedTrees = ({ onBack, donation }: PlantedTreesProps) => {
 
   return (
     <main className="md:px-4 space-y-6">
-      <div className="flex flex-wrap items-center gap-4">
+      <div className="flex flex-wrap items-center gap-2 md:gap-4">
         <button onClick={onBack}>
           <ArrowLeft strokeWidth="3px" className="w-5 h-5" />
         </button>
-        <div className="flex items-center gap-2"></div>
         <h1 className="font-semibold text-xl md:text-2xl leading-9">
           Planted Trees{" "}
         </h1>
@@ -260,13 +264,7 @@ const PlantedTrees = ({ onBack, donation }: PlantedTreesProps) => {
           <div className="w-full flex md:flex-row flex-col gap-4">
             <div className="bg-white border md:w-[40%] border-gray-200 rounded-2xl overflow-hidden">
               <div className="min-h-[360px] h-full w-full relative overflow-hidden rounded-lg">
-                <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3528.9814570275257!2d78.21631687473341!3d17.1752898088815!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcbc68ae81e7a79%3A0x3e82438832073e9d!2sKanha%20Shanti%20Vanam!5e1!3m2!1sen!2sin!4v1765172898898!5m2!1sen!2sin"
-                  width="100%"
-                  height="100%"
-                  className="rounded-lg border-0 min-h-[360px] h-full"
-                  allowFullScreen
-                />
+                <Map />
               </div>
             </div>
 

@@ -120,14 +120,14 @@ const SpeciesSection: React.FC<SpeciesSectionProps> = ({ species }) => {
               key={item.documentId}
               href={`/species/${generateSlug(item.name)}`}
             >
-              <div className="flex-1 min-w-[314px] max-w-[314px] border border-gray-200 rounded-xl flex-shrink-0 overflow-hidden">
+              <div className="flex-1 border border-gray-200 rounded-xl flex-shrink-0 overflow-hidden">
                 <div className="pt-3 px-3">
                   <Image
                     src={item.image}
                     alt={item.name}
-                    width={280}
-                    height={194}
-                    className="rounded-md object-cover"
+                    width={282}
+                    height={160}
+                    className="rounded-md object-cover max-h-[160px]"
                   />
                 </div>
                 <div className="p-4 flex sm:flex-root flex-col justify-between sm:items-center max-sm:gap-2">
