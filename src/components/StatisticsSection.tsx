@@ -169,7 +169,7 @@ const StatisticsSection: React.FC<StatisticsSectionProps> = ({
                         {rightItem.mobileIcon}
                       </div>
                       <p className="text-2xl font-bold">{rightItem.number}</p>
-                      <p className="text-xs font-semibold text-[#454950]">
+                      <p className="text-xs max-[500px]:w-20 font-semibold text-[#454950]">
                         {rightItem.label}
                       </p>
                     </div>

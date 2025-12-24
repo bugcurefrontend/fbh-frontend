@@ -17,15 +17,19 @@ interface ActivitiesSectionProps {
   activities: Article[];
 }
 
-const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({ activities }) => {
+const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({
+  activities,
+}) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   // Format date from "2025-12-08" to "08 DEC"
   const formatDate = (dateString: string) => {
     try {
       const date = new Date(dateString);
-      const day = date.getDate().toString().padStart(2, '0');
-      const month = date.toLocaleString('en-US', { month: 'short' }).toUpperCase();
+      const day = date.getDate().toString().padStart(2, "0");
+      const month = date
+        .toLocaleString("en-US", { month: "short" })
+        .toUpperCase();
       return `${day} ${month}`;
     } catch (error) {
       return dateString;
@@ -88,7 +92,9 @@ const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({ activities }) => 
                       {activity.description.length > 80
                         ? `${activity.description.substring(0, 80)}...`
                         : activity.description}{" "}
-                      <span className="text-[#003399] font-bold text-xs">Read More</span>
+                      <span className="text-[#003399] font-bold text-xs">
+                        Read More
+                      </span>
                     </p>
                   </div>
                 </div>
@@ -138,14 +144,16 @@ const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({ activities }) => 
                     {formatDate(activity.date)}
                   </span>
                 </div>
-                <h3 className="text-lg font-bold text-[#333333] md:text-lg md:font-bold md:leading-[26px] md:align-middle md:text-[#333333]">
+                <h3 className="text-lg font-bold text-[#333333] md:text-lg md:font-bold md:leading-[26px] md:align-middle md:text-[#333333] truncate">
                   {activity.title}
                 </h3>
                 <p className="text-sm font-normal text-gray-600 md:text-sm md:font-normal md:leading-[21px] md:align-middle md:text-[#595959]">
                   {activity.description.length > 80
                     ? `${activity.description.substring(0, 80)}...`
                     : activity.description}{" "}
-                  <span className="text-[#003399] font-bold text-xs">Read More</span>
+                  <span className="text-[#003399] font-bold text-xs">
+                    Read More
+                  </span>
                 </p>
               </div>
             </div>

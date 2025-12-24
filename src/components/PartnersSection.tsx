@@ -8,7 +8,9 @@ interface PartnersSectionProps {
   partners?: PartnerSimplified[];
 }
 
-const PartnersSection: React.FC<PartnersSectionProps> = ({ partners: apiPartners }) => {
+const PartnersSection: React.FC<PartnersSectionProps> = ({
+  partners: apiPartners,
+}) => {
   const fallbackPartners = [
     { name: "Google", logo: "/images/partners/google1.png" },
     { name: "Accenture", logo: "/images/partners/accenture.png" },
@@ -32,13 +34,15 @@ const PartnersSection: React.FC<PartnersSectionProps> = ({ partners: apiPartners
   ];
 
   // Use API data if available, otherwise use fallback
-  const partners = apiPartners && apiPartners.length > 0
-    ? apiPartners.map((p) => ({ name: p.name, logo: p.logo }))
-    : fallbackPartners;
+  const partners =
+    apiPartners && apiPartners.length > 0
+      ? apiPartners.map((p) => ({ name: p.name, logo: p.logo }))
+      : fallbackPartners;
 
-  const mobilePartners = apiPartners && apiPartners.length > 0
-    ? apiPartners.slice(0, 6).map((p) => ({ name: p.name, logo: p.logo }))
-    : fallbackMobilePartners;
+  const mobilePartners =
+    apiPartners && apiPartners.length > 0
+      ? apiPartners.slice(0, 6).map((p) => ({ name: p.name, logo: p.logo }))
+      : fallbackMobilePartners;
 
   const items = partners.map((partner) => ({
     id: partner.name,
@@ -74,9 +78,9 @@ const PartnersSection: React.FC<PartnersSectionProps> = ({ partners: apiPartners
               <Image
                 src={partner.logo}
                 alt={partner.name}
-                width={300}
-                height={150}
-                className="object-contain max-w-[100px] max-h-[50px]"
+                width={70}
+                height={24}
+                className="object-contain max-w-[80px] max-h-[30px]"
               />
             </div>
           ))}

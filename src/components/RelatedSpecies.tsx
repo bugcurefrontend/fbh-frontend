@@ -14,7 +14,7 @@ interface RelatedSpeciesProps {
 
 const RelatedSpecies: React.FC<RelatedSpeciesProps> = ({
   currentSpeciesId,
-  limit = 3
+  limit = 3,
 }) => {
   const [species, setSpecies] = useState<SpeciesSimplified[]>([]);
   const [loading, setLoading] = useState(true);
@@ -22,15 +22,17 @@ const RelatedSpecies: React.FC<RelatedSpeciesProps> = ({
   useEffect(() => {
     const loadRelatedSpecies = async () => {
       try {
-        const { fetchAllSpecies } = await import('@/services/species');
+        const { fetchAllSpecies } = await import("@/services/species");
         const allSpecies = await fetchAllSpecies();
 
         // Filter out current species
-        const filtered = allSpecies.filter(s => s.documentId !== currentSpeciesId);
+        const filtered = allSpecies.filter(
+          (s) => s.documentId !== currentSpeciesId
+        );
 
         // Separate popular and non-popular
-        const popular = filtered.filter(s => s.popular);
-        const nonPopular = filtered.filter(s => !s.popular);
+        const popular = filtered.filter((s) => s.popular);
+        const nonPopular = filtered.filter((s) => !s.popular);
 
         // Take popular first, fill remaining with non-popular
         const result: SpeciesSimplified[] = [];
@@ -74,7 +76,10 @@ const RelatedSpecies: React.FC<RelatedSpeciesProps> = ({
 
       <div className="hidden mt-6 gap-6 md:gap-8 sm:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 items-center">
         {species.map((item) => (
-          <Link key={item.documentId} href={`/species/${generateSlug(item.name)}`}>
+          <Link
+            key={item.documentId}
+            href={`/species/${generateSlug(item.name)}`}
+          >
             <div className="flex-1 min-w-0 border border-gray-200 rounded-xl flex-shrink-0 hover:shadow-md transition-all duration-200">
               <div className="overflow-hidden w-full md:p-4 p-2">
                 <Image
@@ -102,15 +107,18 @@ const RelatedSpecies: React.FC<RelatedSpeciesProps> = ({
       <div className="sm:hidden mb-6 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         <div className="flex gap-4 pb-2 w-max">
           {species.map((item) => (
-            <Link key={item.documentId} href={`/species/${generateSlug(item.name)}`}>
-              <div className="flex-1 min-w-[314px] max-w-[314px] border border-gray-200 rounded-xl flex-shrink-0 overflow-hidden">
+            <Link
+              key={item.documentId}
+              href={`/species/${generateSlug(item.name)}`}
+            >
+              <div className="flex-1 border border-gray-200 rounded-xl flex-shrink-0 overflow-hidden">
                 <div className="pt-3 px-3">
                   <Image
                     src={item.image}
                     alt={item.name}
                     width={280}
                     height={194}
-                    className="rounded-md object-cover"
+                    className="rounded-md object-cover max-h-[160px]"
                   />
                 </div>
                 <div className="p-4 flex sm:flex-root flex-col justify-between sm:items-center max-sm:gap-2">
