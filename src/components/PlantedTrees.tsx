@@ -14,6 +14,7 @@ import { donations, tableData } from "./account/mock-data";
 import { Donation } from "./account/types";
 import { TreeUpdate } from "./account/TreeUpdate";
 import Map from "./Map";
+import Image from "next/image";
 
 interface PlantedTreesProps {
   onBack: () => void;
@@ -48,7 +49,7 @@ const PlantedTrees = ({ onBack, donation }: PlantedTreesProps) => {
 
   const DataTable = () => {
     return (
-      <div className="max-md:overflow-x-scroll md:w-[60%] mx-auto h-full bg-white shadow-sm rounded-[12px] border border-gray-200 justify-between flex flex-col">
+      <div className="max-md:hidden max-md:overflow-x-scroll md:w-[60%] mx-auto h-full bg-white shadow-sm rounded-[12px] border border-gray-200 justify-between flex flex-col">
         <table className="w-full">
           <thead className="border-b border-gray-200">
             <tr>
@@ -261,14 +262,112 @@ const PlantedTrees = ({ onBack, donation }: PlantedTreesProps) => {
 
       {donation.geoTagged === "true" ? (
         <div className="flex flex-col items-center justify-center">
-          <div className="w-full flex md:flex-row flex-col gap-4">
+          <div className="w-full flex md:flex-row flex-col gap-6 md:gap-4">
             <div className="bg-white border md:w-[40%] border-gray-200 rounded-2xl overflow-hidden">
-              <div className="min-h-[360px] h-full w-full relative overflow-hidden rounded-lg">
+              <div className="md:min-h-[360px] h-full w-full relative overflow-hidden rounded-lg">
                 <Map />
               </div>
             </div>
 
             <DataTable />
+
+            <div className="md:hidden flex flex-col gap-6 w-full">
+              {currentData.map((donor, index) => (
+                <div
+                  key={startIndex + index}
+                  className="border border-[#E8E8E9] rounded-2xl overflow-hidden bg-white"
+                >
+                  <div className="border-b py-3 px-4 border-[#E8E8E9] flex items-center justify-between">
+                    <h2 className="text-lg font-bold">{donor.species} Tree</h2>
+                    <div className="flex items-center justify-center rounded-full h-8 w-8 bg-[#003399]">
+                      <Image
+                        src="/images/direction.png"
+                        alt="map"
+                        width={20}
+                        height={20}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-6 p-4">
+                    <div className="text-[#4C4748] flex justify-between">
+                      <div className="space-y-2 text-sm">
+                        <h1 className="text-sm font-semibold">Project</h1>
+                        <p className="text-[#19212C] font-bold">
+                          {donor.projectName}
+                        </p>
+                      </div>
+
+                      <div className="space-y-2 text-sm">
+                        <h1 className="text-sm font-semibold">Tree Code:</h1>
+                        <p className="text-[#19212C] font-bold">
+                          {donor.treeCode}
+                        </p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() =>
+                        setSelectedTree(donations[startIndex + index])
+                      }
+                      className=" w-full border border-[#003399] rounded-sm py-3"
+                      style={{
+                        fontFamily: "'Public Sans', sans-serif",
+                        fontWeight: 700,
+                        lineHeight: "22px",
+                        color: "#003399",
+                      }}
+                    >
+                      Updates
+                    </button>
+                  </div>
+                </div>
+              ))}
+              <Pagination className="h-18 px-0 w-full">
+                <PaginationContent className="w-full flex items-center justify-between">
+                  <PaginationItem className="border rounded-l-md">
+                    <PaginationPrevious
+                      onClick={() =>
+                        setCurrentPage((prev) => Math.max(prev - 1, 1))
+                      }
+                      className={
+                        currentPage === 1
+                          ? "pointer-events-none opacity-50"
+                          : "cursor-pointer hover:rounded-r-none"
+                      }
+                    />
+                  </PaginationItem>
+
+                  <div className="flex items-center gap-2">
+                    {Array.from({ length: totalPages }).map((_, index) => {
+                      const page = index + 1;
+                      return (
+                        <PaginationItem key={page}>
+                          <PaginationLink
+                            isActive={currentPage === page}
+                            onClick={() => setCurrentPage(page)}
+                          >
+                            {page}
+                          </PaginationLink>
+                        </PaginationItem>
+                      );
+                    })}
+                  </div>
+
+                  <PaginationItem className="border rounded-r-md">
+                    <PaginationNext
+                      onClick={() =>
+                        setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                      }
+                      className={
+                        currentPage === totalPages
+                          ? "pointer-events-none opacity-50"
+                          : "cursor-pointer hover:rounded-l-none"
+                      }
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            </div>
           </div>
 
           <p className="leading-6 text-[#090C0F] mt-4 max-md:hidden">
