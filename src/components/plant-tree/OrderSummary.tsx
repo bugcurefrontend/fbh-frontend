@@ -4,13 +4,6 @@ import React from "react";
 import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/button";
 import { OrderSummary as OrderSummaryType } from "./types";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 
 import plantAnimation from "../../../public/images/plant.json";
 import {

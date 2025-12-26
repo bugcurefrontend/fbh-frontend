@@ -21,6 +21,7 @@ interface ComboBoxProps {
   onChange: (value: string) => void;
   options: string[];
   placeholder?: string;
+  contentClassName?: string;
 }
 
 export function ComboBox({
@@ -28,6 +29,7 @@ export function ComboBox({
   onChange,
   options,
   placeholder,
+  contentClassName,
 }: ComboBoxProps) {
   const [open, setOpen] = React.useState(false);
 
@@ -40,7 +42,7 @@ export function ComboBox({
         </button>
       </PopoverTrigger>
 
-      <PopoverContent className="w-60 p-0">
+      <PopoverContent className={cn("p-0", contentClassName ?? "w-60")}>
         <Command>
           <CommandInput placeholder={`Search ${placeholder}`} />
           <CommandEmpty>No results found.</CommandEmpty>
