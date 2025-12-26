@@ -52,7 +52,7 @@ const Step1: React.FC<Step1Props> = ({
           onChange={setOccasion}
           placeholder="Occasion / Cause"
           options={["Birthday", "Climate Healing"]}
-          contentClassName="md:w-[450px]"
+          contentClassName="md:w-[424px]"
         />
       </div>
 
