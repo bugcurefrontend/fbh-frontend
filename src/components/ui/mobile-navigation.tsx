@@ -156,7 +156,7 @@ export function MobileNavigation({
                             : "max-h-0"
                         }`}
                       >
-                        <ul className="pl-8 pb-2 list-disc list-outside">
+                        <ul className="pl-12 pb-2 list-disc list-outside">
                           {item.sub.map((subItem, subIndex) => (
                             <li key={subIndex} className="text-[#454950]">
                               <Link

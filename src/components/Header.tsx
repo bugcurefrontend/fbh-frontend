@@ -48,7 +48,7 @@ export default function Header() {
 
   const navigationItems = [
     {
-      label: "Project",
+      label: "Projects",
       href: "/projects",
     },
     {
@@ -91,7 +91,7 @@ export default function Header() {
   }
 
   return (
-    <header className="sticky top-0 left-0 w-full z-50 bg-[#FFFFFF] backdrop-blur-md shadow-sm h-16">
+    <header className="sticky top-0 left-0 w-full z-50 bg-[#FFFFFF] backdrop-blur-md shadow-sm h-15">
       <div className="max-w-7xl mx-auto h-full flex items-center justify-between px-4 sm:px-8">
         {/* Logo */}
         <div className="xl:max-w-[150px] xl:w-full">
@@ -230,8 +230,10 @@ export default function Header() {
                       >
                         Dashboard
                       </Link>
-                      <Link
-                        href="/my-trees"
+                      <a
+                        href="https://my.heartfulness.org"
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="block px-3 py-2 hover:bg-gray-50 rounded-md transition-colors"
                         style={{
                           fontFamily: "Public Sans",
@@ -243,8 +245,8 @@ export default function Header() {
                         }}
                         onClick={() => setDropdownOpen(false)}
                       >
-                        My Trees
-                      </Link>
+                        My Account
+                      </a>
 
                       {/* Sign Out Button */}
                       <div
