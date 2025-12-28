@@ -226,10 +226,15 @@ const LightBox: React.FC = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-[86vh]">
+    <main>
       <AlertDialog onOpenChange={setShowBox} open={showBox}>
-        <AlertDialogTrigger className="w-fit bg-[#003399] hover:bg-[#152e72] text-white font-semibold py-3 px-5.5 rounded-md">
-          Open Light Box
+        <AlertDialogTrigger className="w-fit relative rounded-full p-[1px] bg-gradient-to-r to-[#128748] from-[#7EE212]">
+          <span
+            className="block rounded-full px-5 py-2 text-white text-xs leading-4.5 font-bold bg-gradient-to-r from-[#0D824B] to-[#A1FF00] transition-all duration-300 hover:brightness-110 active:scale-95
+        "
+          >
+            Plant For A Cause
+          </span>
         </AlertDialogTrigger>
         <AlertDialogContent
           className="lg:max-w-[944px] lg:min-w-[944px] lg:h-[640px] h-fit max-md:max-h-[90%] flex border border-[#BED4FF] md:rounded-4xl dialog-pop gap-6 max-md:p-4
@@ -330,13 +335,13 @@ const LightBox: React.FC = () => {
           </div>
         </AlertDialogContent>
       </AlertDialog>
-      <LoginDialog
+      {/* <LoginDialog
         isOpen={isLoginDialogOpen}
         onClose={handleContinueAsGuest}
         onContinueAsGuest={handleContinueAsGuest}
         onSignIn={handleSignIn}
-      />
-    </div>
+      /> */}
+    </main>
   );
 };
 

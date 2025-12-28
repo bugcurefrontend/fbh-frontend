@@ -18,6 +18,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import LightBox from "./light-box/LightBox";
 
 export default function Header() {
   const { isAuthenticated, userProfile, isLoading, login, logout } = useAuth();
@@ -47,28 +48,23 @@ export default function Header() {
 
   const navigationItems = [
     {
-      label: "About",
-      sub: [
-        { label: "Our Mission & Vision", href: "/about-us" },
-        { label: "Meet The Team", href: "/team" },
-      ],
-    },
-
-    {
-      label: "Projects",
-      sub: [{ label: "All Projects", href: "/projects" }],
+      label: "Project",
+      href: "/projects",
     },
     {
       label: "Species",
-      sub: [{ label: "All Species", href: "/species" }],
+      href: "/species",
     },
-
     {
-      label: "Plant for a cause",
+      label: "About",
       sub: [
-        { label: "Donate", href: "/plant-tree" },
-        { label: "Corporate Gifting", href: "/gift-tree" },
+        { label: "About us", href: "/about-us" },
+        { label: "Our Team", href: "/team" },
       ],
+    },
+    {
+      label: "Contact Us",
+      href: "/contact-us",
     },
   ];
 
@@ -114,6 +110,7 @@ export default function Header() {
         {/* Desktop navigation */}
         <CustomNavigationMenu navigationItems={navigationItems} />
         <div className="max-md:hidden flex items-center gap-3">
+          <LightBox />
           <CurrencySelect />
           {/* Authentication Section */}
           <div className="max-md:hidden relative" ref={dropdownRef}>

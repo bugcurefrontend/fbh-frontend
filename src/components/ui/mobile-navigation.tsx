@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import {
   ChevronRightIcon,
   XIcon,
@@ -11,16 +12,17 @@ import {
   LogOut,
 } from "lucide-react";
 import CurrencySelect from "../CurrencySelect";
+import LightBox from "../light-box/LightBox";
 
-interface subItem {
+interface SubItem {
   label: string;
   href: string;
 }
 
 interface NavigationItem {
   label: string;
-  sub: subItem[];
   href?: string;
+  sub?: SubItem[];
 }
 
 interface UserProfile {
@@ -115,49 +117,69 @@ export function MobileNavigation({
             </div>
 
             <div className="flex-1 overflow-y-auto py-4">
-              {navigationItems.map((item, index) => (
-                <div key={index} className="space-y-2">
-                  <button
-                    onClick={() => handleMobileMenuExpand(item.label)}
-                    className="flex justify-between items-center w-full px-4 py-3 hover:bg-gray-50 transition-colors"
-                  >
-                    <span className="font-medium text-lg text-#090C0F uppercase">
+              <div className="px-4 py-3">
+                <LightBox />
+              </div>
+              {navigationItems.map((item, index) => {
+                if (item.href) {
+                  return (
+                    <Link
+                      key={index}
+                      href={item.href}
+                      className="flex justify-between items-center w-full px-4 py-3 hover:bg-gray-50 transition-colors font-medium text-lg text-#090C0F uppercase"
+                      onClick={handleClose}
+                    >
                       {item.label}
-                    </span>
-                    {mobileExpandedMenu === item.label ? (
-                      <ChevronDownIcon size={20} />
-                    ) : (
-                      <ChevronRightIcon size={20} />
-                    )}
-                  </button>
-                  <div
-                    className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                      mobileExpandedMenu === item.label ? "max-h-96" : "max-h-0"
-                    }`}
-                  >
-                    <ul className="pl-8 pb-2 list-disc list-outside">
-                      {item.sub.map((subItem, subIndex) => (
-                        <li key={subIndex} className="text-[#454950]">
-                          <a href={subItem.href} className="block py-2">
-                            {subItem.label}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              ))}
-              <a
-                href="/contact-us"
-                className="flex justify-between items-center w-full px-4 py-3 hover:bg-gray-50 transition-colors font-medium text-lg text-#090C0F uppercase"
-              >
-                Contact Us
-              </a>
+                    </Link>
+                  );
+                }
+                if (item.sub) {
+                  return (
+                    <div key={index} className="space-y-2">
+                      <button
+                        onClick={() => handleMobileMenuExpand(item.label)}
+                        className="flex justify-between items-center w-full px-4 py-3 hover:bg-gray-50 transition-colors"
+                      >
+                        <span className="font-medium text-lg text-#090C0F uppercase">
+                          {item.label}
+                        </span>
+                        {mobileExpandedMenu === item.label ? (
+                          <ChevronDownIcon size={20} />
+                        ) : (
+                          <ChevronRightIcon size={20} />
+                        )}
+                      </button>
+                      <div
+                        className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                          mobileExpandedMenu === item.label
+                            ? "max-h-96"
+                            : "max-h-0"
+                        }`}
+                      >
+                        <ul className="pl-8 pb-2 list-disc list-outside">
+                          {item.sub.map((subItem, subIndex) => (
+                            <li key={subIndex} className="text-[#454950]">
+                              <Link
+                                href={subItem.href}
+                                className="block py-2"
+                                onClick={handleClose}
+                              >
+                                {subItem.label}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  );
+                }
+                return null;
+              })}
 
               {/* Auth Section */}
               {isAuthenticated ? (
                 <>
-                  <a
+                  <Link
                     href="/account"
                     className="flex justify-between items-center w-full px-4 py-3 hover:bg-gray-50 transition-colors font-medium text-lg uppercase"
                     style={{
@@ -166,8 +188,8 @@ export function MobileNavigation({
                     onClick={handleClose}
                   >
                     Profile
-                  </a>
-                  <a
+                  </Link>
+                  <Link
                     href="/account"
                     className="flex justify-between items-center w-full px-4 py-3 hover:bg-gray-50 transition-colors font-medium text-lg uppercase"
                     style={{
@@ -176,8 +198,8 @@ export function MobileNavigation({
                     onClick={handleClose}
                   >
                     Dashboard
-                  </a>
-                  <a
+                  </Link>
+                  <Link
                     href="/my-trees"
                     className="flex justify-between items-center w-full px-4 py-3 hover:bg-gray-50 transition-colors font-medium text-lg uppercase"
                     style={{
@@ -186,7 +208,7 @@ export function MobileNavigation({
                     onClick={handleClose}
                   >
                     My Trees
-                  </a>
+                  </Link>
 
                   {/* Sign Out Button */}
                   <button

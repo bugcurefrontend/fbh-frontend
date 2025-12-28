@@ -3,16 +3,17 @@
 import React, { useState, useRef, useEffect } from "react";
 import { ChevronDownIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
-interface subItem {
+interface SubItem {
   label: string;
   href: string;
 }
 
 interface NavigationItem {
   label: string;
-  sub: subItem[];
   href?: string;
+  sub?: SubItem[];
 }
 
 interface NavigationMenuProps {
@@ -32,17 +33,20 @@ export function CustomNavigationMenu({
       )}
     >
       <ul className="flex flex-1 list-none items-center justify-center">
-        {navigationItems.map((item) => (
-          <NavigationMenuItem key={item.label} item={item} />
-        ))}
-        <li>
-          <a
-            href="/contact-us"
-            className="group inline-flex items-center justify-center bg-background p-2 uppercase text-xs font-bold leading-[18px] text-center align-middle text-[#19212C] rounded-none hover:bg-[#E6EBF5] transition-colors"
-          >
-            Contact us
-          </a>
-        </li>
+        {navigationItems.map((item) =>
+          item.sub ? (
+            <NavigationMenuItem key={item.label} item={item} />
+          ) : (
+            <li key={item.label}>
+              <Link
+                href={item.href || "#"}
+                className="group inline-flex items-center justify-center bg-background p-2 uppercase text-xs font-bold leading-[18px] text-center align-middle text-[#19212C] rounded-none hover:bg-[#E6EBF5] transition-colors"
+              >
+                {item.label}
+              </Link>
+            </li>
+          )
+        )}
       </ul>
     </nav>
   );
@@ -98,24 +102,24 @@ function NavigationMenuItem({ item }: { item: NavigationItem }) {
         />
       </button>
 
-      {isOpen && (
+      {isOpen && item.sub && (
         <div
           className={cn(
-            "absolute left-0 top-full z-50 min-w-[200px] overflow-hidden border bg-white shadow-md animate-in fade-in-0 zoom-in-95"
+            "absolute left-0 top-full z-50 overflow-hidden border bg-white shadow-md animate-in fade-in-0 zoom-in-95"
           )}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
           <div className="px-0 py-2">
             <ul className="grid">
-              {item.sub.map((item) => (
-                <li key={item.label}>
-                  <a
-                    href={item.href}
-                    className="block text-[16px] font-medium hover:bg-[#E6EBF5] px-4 py-2 transition-colors"
+              {item.sub.map((subItem) => (
+                <li key={subItem.label}>
+                  <Link
+                    href={subItem.href}
+                    className="block text-[16px] font-medium hover:bg-[#E6EBF5] px-4 py-2 transition-colors truncate"
                   >
-                    {item.label}
-                  </a>
+                    {subItem.label}
+                  </Link>
                 </li>
               ))}
             </ul>
