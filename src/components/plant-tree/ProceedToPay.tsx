@@ -18,7 +18,7 @@ const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 interface ProceedToPayProps {
   isFormValid: boolean;
   numberOfTrees: number;
-  onTreeCountChange: (count: number) => void;
+  onTreeCountChange?: (count: number) => void;
   availableTrees?: number;
 }
 
@@ -64,7 +64,7 @@ const ProceedToPay: React.FC<ProceedToPayProps> = ({
 
   const handleSaveAdjust = () => {
     const val = parseInt(adjustInput, 10);
-    if (!isNaN(val)) {
+    if (!isNaN(val) && onTreeCountChange) {
       onTreeCountChange(val);
     }
     setIsAdjustOpen(false);

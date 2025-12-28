@@ -15,10 +15,6 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
   currentStep,
   isFormValid,
 }) => {
-  const [selectedTrees, setSelectedTrees] = useState(
-    orderSummary.numberOfTrees
-  );
-
   return (
     <div className="lg:w-[45%] sticky top-20 self-start space-y-6">
       <div className="space-y-1">
@@ -39,8 +35,8 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
               <div className="space-y-4 font-bold">
                 <h2>Shivgarh, MP</h2>
                 <h2>
-                  {selectedTrees > 0
-                    ? String(selectedTrees).padStart(2, "0")
+                  {orderSummary.numberOfTrees > 0
+                    ? String(orderSummary.numberOfTrees).padStart(2, "0")
                     : "--"}
                 </h2>
                 <h2>{orderSummary.totalCo2Offset}</h2>
@@ -59,8 +55,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
       {currentStep === 2 && (
         <ProceedToPay
           isFormValid={isFormValid}
-          numberOfTrees={selectedTrees}
-          onTreeCountChange={setSelectedTrees}
+          numberOfTrees={orderSummary.numberOfTrees}
         />
       )}
     </div>
