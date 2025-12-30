@@ -12,7 +12,11 @@ interface FooterProps {
   usefulLinks?: UsefulLinkItem[];
 }
 
-const Footer: React.FC<FooterProps> = ({ menuItems, socialLinks, usefulLinks }) => {
+const Footer: React.FC<FooterProps> = ({
+  menuItems,
+  socialLinks,
+  usefulLinks,
+}) => {
   // Fallback useful links
   const fallbackUsefulLinks: UsefulLinkItem[] = [
     { label: "Heartfulness Institute", url: "#" },
@@ -23,7 +27,8 @@ const Footer: React.FC<FooterProps> = ({ menuItems, socialLinks, usefulLinks }) 
     { label: "Donate", url: "#" },
   ];
 
-  const usefulLinksArray = usefulLinks && usefulLinks.length > 0 ? usefulLinks : fallbackUsefulLinks;
+  const usefulLinksArray =
+    usefulLinks && usefulLinks.length > 0 ? usefulLinks : fallbackUsefulLinks;
 
   // Fallback if no menu items from Strapi
   const fallbackLinks = [
@@ -34,7 +39,8 @@ const Footer: React.FC<FooterProps> = ({ menuItems, socialLinks, usefulLinks }) 
     { label: "Privacy & Policy", url: "/privacy" },
   ];
 
-  const moreLinks = menuItems && menuItems.length > 0 ? menuItems : fallbackLinks;
+  const moreLinks =
+    menuItems && menuItems.length > 0 ? menuItems : fallbackLinks;
 
   // Build social links array from props or use fallback
   const socialLinksArray = [
@@ -80,7 +86,7 @@ const Footer: React.FC<FooterProps> = ({ menuItems, socialLinks, usefulLinks }) 
             alt="Forests by Heartfulness"
             width={216}
             height={63}
-            className="max-sm:w-[170px]"
+            className="max-sm:w-[170.65px] max-sm:h-[50px]"
           />
           <div className="flex gap-4">
             <a href={playStoreUrl} target="_blank" rel="noopener noreferrer">
@@ -89,7 +95,7 @@ const Footer: React.FC<FooterProps> = ({ menuItems, socialLinks, usefulLinks }) 
                 alt="Google Play"
                 width={154}
                 height={52}
-                className="cursor-pointer max-sm:w-[134px] max-sm:h-[41px]"
+                className="cursor-pointer max-sm:w-[134px] max-sm:max-h-[41px] rounded-[4px]"
               />
             </a>
             <a href={appStoreUrl} target="_blank" rel="noopener noreferrer">
@@ -98,7 +104,7 @@ const Footer: React.FC<FooterProps> = ({ menuItems, socialLinks, usefulLinks }) 
                 alt="App Store"
                 width={154}
                 height={52}
-                className="cursor-pointer max-sm:w-[134px] max-sm:h-[41px]"
+                className="cursor-pointer max-sm:w-[134px] max-sm:max-h-[41px] rounded-[4px]"
               />
             </a>
           </div>
@@ -110,7 +116,7 @@ const Footer: React.FC<FooterProps> = ({ menuItems, socialLinks, usefulLinks }) 
             {moreLinks.map((link, index) => (
               <li
                 key={index}
-                className="font-[poppins] text-base sm:font-medium font-semibold sm:text-lg text-[#e6e6e6] hover:text-white hover:underline cursor-pointer"
+                className="font-[public_sans] text-base font-medium sm:text-lg text-[#e6e6e6] hover:text-white hover:underline cursor-pointer"
               >
                 <a href={link.url} target="_blank" rel="noopener noreferrer">
                   {link.label}
@@ -120,16 +126,20 @@ const Footer: React.FC<FooterProps> = ({ menuItems, socialLinks, usefulLinks }) 
           </ul>
           <div className="flex flex-1 gap-8 w-full">
             <div className="flex flex-col gap-4 w-full">
-              <h3 className="font-[poppins] text-base sm:font-medium font-semibold sm:text-lg text-[#e6e6e6]">
+              <h3 className="font-[public_sans] text-base font-medium sm:text-lg text-[#e6e6e6]">
                 Useful Links
               </h3>
               <ul className="flex flex-col gap-2">
                 {usefulLinksArray.map((link, index) => (
                   <li
                     key={index}
-                    className="text-sm leading-5 font-[poppins] font-light text-[#e6e6e6] hover:text-white hover:underline cursor-pointer"
+                    className="text-sm leading-5 font-[public_sans] font-normal text-[#e6e6e6] hover:text-white hover:underline cursor-pointer"
                   >
-                    <a href={link.url} target="_blank" rel="noopener noreferrer">
+                    <a
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       {link.label}
                     </a>
                   </li>
@@ -138,7 +148,7 @@ const Footer: React.FC<FooterProps> = ({ menuItems, socialLinks, usefulLinks }) 
             </div>
 
             <div className="flex flex-col gap-4 w-full">
-              <h3 className="font-[poppins] text-base sm:font-medium font-semibold sm:text-lg text-[#e6e6e6]">
+              <h3 className="font-[public_sans] text-base font-medium sm:text-lg text-[#e6e6e6]">
                 Social
               </h3>
               <ul className="flex flex-col gap-2">
@@ -160,7 +170,7 @@ const Footer: React.FC<FooterProps> = ({ menuItems, socialLinks, usefulLinks }) 
                         height={24}
                         className="object-contain"
                       />
-                      <span className="font-[poppins] text-sm font-light">
+                      <span className="font-[public_sans] text-sm font-normal">
                         {item.name}
                       </span>
                     </a>
@@ -174,9 +184,9 @@ const Footer: React.FC<FooterProps> = ({ menuItems, socialLinks, usefulLinks }) 
 
       {/* Footer Bottom */}
       <div className="bg-black">
-        <div className="flex items-center justify-center md:h-18 h-[52px] px-4 mx-auto">
-          <p className="font-[poppins] font-medium text-white text-sm sm:text-base text-center">
-            © 2025 Heartfulness Institute | All Rights Reserved
+        <div className="flex items-center justify-center md:h-18 h-[52px] p-4 mx-auto">
+          <p className="font-[public_sans] sm:font-medium text-white text-base text-center leading-5">
+            © 2025 Heartfulness | All Rights Reserved
           </p>
         </div>
       </div>

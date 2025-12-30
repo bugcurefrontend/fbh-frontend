@@ -62,14 +62,13 @@ const ProjectsSection: React.FC<ProjectsSectionProps> = ({
     <section className="max-w-7xl mx-auto px-4 md:px-8 mt-8 md:mt-16">
       {/* Header */}
       <div className="w-full md:text-center mb-8 relative">
-        <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold mx-auto sm:mx-0 text-black md:text-[32px] md:font-semibold md:leading-[48px] md:align-middle md:text-[#090C0F]">
+        <h2 className="text-[22px] sm:text-[32px] font-[Playfair_Display] font-semibold mx-auto sm:mx-0 text-black md:text-[32px] md:font-semibold md:leading-[48px] md:align-middle md:text-[#090C0F]">
           Projects
         </h2>
-        <Link
-          href="/projects"
-          className="absolute right-0 top-4 text-[#003399] font-bold text-xs uppercase md:font-bold md:text-xs md:leading-[18px] md:text-center md:align-middle md:uppercase md:text-[#003399]"
-        >
-          View All
+        <Link href="/projects">
+          <button className="absolute right-0 top-2.5 md:top-4 text-[#003399] font-bold text-xs uppercase md:font-bold md:text-xs md:leading-[18px] md:text-center md:align-middle md:uppercase md:text-[#003399]">
+            View All
+          </button>
         </Link>
       </div>
 
@@ -96,7 +95,7 @@ const ProjectsSection: React.FC<ProjectsSectionProps> = ({
 
       {/* Mobile Carousel */}
       <div className="sm:hidden overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-        <div className="flex gap-4 pb-2 w-max">
+        <div className="flex gap-6 w-max">
           {projects.map((project, idx) => (
             <Link
               key={idx}
@@ -121,7 +120,7 @@ const ProjectsSection: React.FC<ProjectsSectionProps> = ({
                     )}
                   </div>
                 </div>
-                <div className="px-2 py-3 flex flex-col gap-4">
+                <div className="px-2.5 py-4 flex flex-col gap-4">
                   <div className="flex justify-between items-center">
                     <p className="font-semibold truncate flex-1 min-w-0 md:font-bold md:text-lg md:leading-[26px] md:align-middle text-[#090C0F]">
                       {project.title}
@@ -133,13 +132,13 @@ const ProjectsSection: React.FC<ProjectsSectionProps> = ({
                       </span>
                     </div>
                   </div>
-                  <button className="bg-[#003399] h-[36px] text-white font-bold text-base py-2 rounded-[8px] w-full hover:bg-[#002080] gap-2 flex items-center justify-center md:font-bold md:text-base md:leading-[26px] md:text-[#FFFFFF]">
+                  <button className="bg-[#003399] h-[36px] text-white font-bold text-sm py-2 rounded-[8px] w-full hover:bg-[#002080] gap-2 flex items-center justify-center md:font-bold md:text-base md:leading-[26px] md:text-[#FFFFFF]">
                     PLANT A TREE
                     <Image
                       src="/images/donate.png"
                       alt="donate"
-                      width={24}
-                      height={24}
+                      width={20}
+                      height={20}
                       className=""
                     />{" "}
                   </button>

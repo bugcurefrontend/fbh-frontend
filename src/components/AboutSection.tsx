@@ -12,12 +12,12 @@ const AboutSection: React.FC = () => {
         alt="Circular architecture with gardens"
         width={588}
         height={404}
-        className="rounded-xl object-cover w-full h-auto md:w-[46%] xl:w-[588px]"
+        className="sm:rounded-xl rounded-[9.34px] object-cover w-full h-auto md:w-[46%] xl:w-[588px]"
       />
 
       {/* Content */}
       <div className="flex flex-col gap-6 p-4 flex-1 max-w-[556px] md:max-w-full">
-        <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold text-black md:text-[32px] md:font-semibold md:leading-[48px] md:align-middle md:text-[#090C0F]">
+        <h2 className="text-[22px] sm:text-[32px] font-[Playfair_Display] font-semibold text-black md:text-[32px] md:font-semibold md:leading-[48px] md:align-middle md:text-[#090C0F]">
           What is Forests By Heartfulness?
         </h2>
 
@@ -35,7 +35,7 @@ const AboutSection: React.FC = () => {
               width={22}
               height={22}
               color="#003399"
-              className="max-sm:w-4"
+              className="max-sm:w-5"
             />
           </button>
         </Link>

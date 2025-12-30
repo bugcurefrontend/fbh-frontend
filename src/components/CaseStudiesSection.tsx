@@ -76,7 +76,7 @@ const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({
 
   return (
     <section className="max-w-7xl mx-auto px-4 md:px-8 mt-8 md:mt-16">
-      <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold sm:text-center text-[#232D26] mb-6">
+      <h2 className="text-[22px] sm:text-[32px] font-[Playfair_Display] font-semibold sm:text-center text-[#090C0F] md:text-[#232D26] mb-6">
         Case Studies
       </h2>
 
@@ -157,7 +157,7 @@ const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({
         {caseStudies.map((study, idx) => (
           <div
             key={idx}
-            className="w-full rounded-[9px] border border-[#e4e4e4] flex flex-row p-3 gap-3.5 shadow-none items-center"
+            className="w-full rounded-[9.15px] border border-[#e4e4e4] flex flex-row p-[9.15px] gap-3.5 shadow-none items-center"
           >
             <Image
               src={study.image}
@@ -187,7 +187,7 @@ const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({
                     width={22}
                     height={22}
                     color="#003399"
-                    className="max-sm:w-4"
+                    className="max-sm:w-5"
                   />
                 </button>
               </Link>

@@ -116,8 +116,11 @@ const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
   };
 
   return (
-    <section ref={sectionRef} className="max-w-7xl mx-auto px-4 md:px-8 mt-8 md:mt-16">
-      <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold sm:text-center text-[#232D26] mb-6 md:text-[32px] md:font-semibold md:leading-[48px] md:align-middle md:text-[#232D26]">
+    <section
+      ref={sectionRef}
+      className="max-w-7xl mx-auto px-4 md:px-8 mt-8 md:mt-16"
+    >
+      <h2 className="text-[22px] sm:text-[32px] font-[Playfair_Display] font-semibold sm:text-center text-[#090C0F] mb-6 md:text-[32px] md:font-semibold md:leading-[48px] md:align-middle md:text-[#232D26]">
         Testimonials
       </h2>
 
@@ -127,7 +130,11 @@ const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
         onMouseLeave={() => setIsHovered(false)}
       >
         <div
-          className={`rounded-xl w-full md:w-[45%] md:max-h-[40%] h-full relative overflow-hidden ${testimonials[current].videoUrl && !videoPlaying ? 'cursor-pointer' : ''}`}
+          className={`md:rounded-xl rounded-[8px] w-full md:w-[45%] md:max-h-[40%] h-full relative overflow-hidden ${
+            testimonials[current].videoUrl && !videoPlaying
+              ? "cursor-pointer"
+              : ""
+          }`}
           onClick={(e) => {
             e.stopPropagation();
             if (testimonials[current].videoUrl && !videoPlaying) {
@@ -137,10 +144,17 @@ const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
         >
           {/* Show embedded video when playing */}
           {videoPlaying && testimonials[current].videoUrl ? (
-            testimonials[current].videoUrl!.includes("youtube.com") || testimonials[current].videoUrl!.includes("youtu.be") ? (
+            testimonials[current].videoUrl!.includes("youtube.com") ||
+            testimonials[current].videoUrl!.includes("youtu.be") ? (
               <iframe
-                src={`${testimonials[current].videoUrl!.includes("embed") ? testimonials[current].videoUrl : testimonials[current].videoUrl!.replace("watch?v=", "embed/").replace("youtu.be/", "youtube.com/embed/")}?autoplay=1`}
-                className="w-full min-h-[316px] md:min-h-[423px] max-h-[423px] h-full rounded-lg"
+                src={`${
+                  testimonials[current].videoUrl!.includes("embed")
+                    ? testimonials[current].videoUrl
+                    : testimonials[current]
+                        .videoUrl!.replace("watch?v=", "embed/")
+                        .replace("youtu.be/", "youtube.com/embed/")
+                }?autoplay=1`}
+                className="w-full min-h-[316px] md:min-h-[423px] max-h-[423px] h-full md:rounded-lg rounded-[8px]"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen
@@ -148,7 +162,7 @@ const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
             ) : (
               <video
                 src={testimonials[current].videoUrl!}
-                className="w-full min-h-[316px] md:min-h-[423px] max-h-[423px] h-full object-cover rounded-lg"
+                className="w-full min-h-[316px] md:min-h-[423px] max-h-[423px] h-full object-cover md:rounded-lg rounded-[8px]"
                 controls
                 autoPlay
                 playsInline
@@ -173,11 +187,11 @@ const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
                   alt={testimonials[current].name}
                   width={493}
                   height={423}
-                  className="rounded-lg w-full min-h-[316px] md:min-h-[423px] max-h-[423px] h-full object-cover"
+                  className="md:rounded-lg rounded-[8px] w-full min-h-[316px] md:min-h-[423px] max-h-[423px] h-full object-cover"
                 />
                 {/* Play Button Overlay - show if videoUrl exists */}
                 {testimonials[current].videoUrl && (
-                  <div className="absolute inset-0 flex items-center justify-center rounded-lg pointer-events-none">
+                  <div className="absolute inset-0 flex items-center justify-center md:rounded-lg rounded-[8px] pointer-events-none">
                     <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center shadow-lg">
                       <svg
                         className="w-7 h-7 text-[#003399] ml-1"

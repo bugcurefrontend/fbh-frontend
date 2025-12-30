@@ -47,7 +47,7 @@ const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({
     <section className="max-w-7xl mx-auto px-4 md:px-8 relative mt-8 md:mt-16">
       {/* Header */}
       <div className="w-full md:text-center mb-8 relative">
-        <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold mx-auto sm:mx-0 text-black md:text-[32px] md:font-semibold md:leading-[48px] md:align-middle md:text-[#090C0F]">
+        <h2 className="text-[22px] sm:text-[32px] font-[Playfair_Display] font-semibold mx-auto sm:mx-0 text-black md:text-[32px] md:font-semibold md:leading-[48px] md:align-middle md:text-[#090C0F]">
           FBH Activities
         </h2>
       </div>
@@ -121,7 +121,7 @@ const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({
       </Carousel>
 
       {/*Mobile Carousel */}
-      <div className="flex sm:hidden justify-center gap-5 flex-col md:flex-row mb-4">
+      <div className="flex sm:hidden justify-center gap-6 flex-col md:flex-row mb-4">
         {activities.map((activity, idx) => (
           <a
             key={idx}
@@ -129,7 +129,7 @@ const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({
             target="_blank"
             rel="noopener noreferrer"
           >
-            <div className="flex-1 min-w-0 border border-gray-200 rounded-xl flex-shrink-0 overflow-hidden">
+            <div className="flex-1 min-w-0 border border-[#E4E4E4] rounded-xl flex-shrink-0 overflow-hidden">
               <Image
                 src={activity.image}
                 alt={activity.title}
