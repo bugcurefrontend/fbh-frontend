@@ -16,6 +16,7 @@ import { fetchLandingProjects } from "@/services/projects";
 import { fetchPopularSpecies } from "@/services/species";
 import { fetchAllArticles } from "@/services/articles";
 import PlantForCause from "@/components/PlantForCause";
+import { fetchAllAttributes } from "@/services/attributes";
 
 export default async function Home() {
   const [
@@ -27,6 +28,7 @@ export default async function Home() {
     projects,
     species,
     articles,
+    attributes,
   ] = await Promise.all([
     fetchAllPartners(),
     fetchAllCaseStudies(),
@@ -36,6 +38,7 @@ export default async function Home() {
     fetchLandingProjects(6),
     fetchPopularSpecies(),
     fetchAllArticles(),
+    fetchAllAttributes(),
   ]);
 
   return (
@@ -46,7 +49,7 @@ export default async function Home() {
       <PartnersSection partners={partners} />
       <SpeciesSection species={species} />
       <ProjectsSection projects={projects} />
-      <PlantForCause />
+      <PlantForCause attributes={attributes} />
       <ActivitiesSection activities={articles} />
       <TestimonialsSection testimonials={testimonials} />
       <CaseStudiesSection caseStudies={caseStudies} />
