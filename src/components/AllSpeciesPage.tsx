@@ -36,10 +36,14 @@ const AllSpeciesPage: React.FC<AllSpeciesPageProps> = ({
   initialPagination,
   initialSearchQuery = "",
 }) => {
-  const [allSpecies, setAllSpecies] = useState<SpeciesSimplified[]>(initialSpecies || []);
+  const [allSpecies, setAllSpecies] = useState<SpeciesSimplified[]>(
+    initialSpecies || []
+  );
   const [loading, setLoading] = useState(!initialSpecies);
   const [searchQuery, setSearchQuery] = useState<string>(initialSearchQuery);
-  const [currentPage, setCurrentPage] = useState(initialPagination?.currentPage || 1);
+  const [currentPage, setCurrentPage] = useState(
+    initialPagination?.currentPage || 1
+  );
 
   useEffect(() => {
     if (initialSpecies && initialSpecies.length > 0) return; // Skip if data already provided
@@ -47,7 +51,7 @@ const AllSpeciesPage: React.FC<AllSpeciesPageProps> = ({
     const loadSpecies = async () => {
       try {
         // Fetch from API using the service
-        const { fetchAllSpecies } = await import('@/services/species');
+        const { fetchAllSpecies } = await import("@/services/species");
         const apiData = await fetchAllSpecies();
         setAllSpecies(apiData);
       } catch (error) {
@@ -62,7 +66,7 @@ const AllSpeciesPage: React.FC<AllSpeciesPageProps> = ({
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleSearchChange = (query: string) => {
@@ -73,9 +77,10 @@ const AllSpeciesPage: React.FC<AllSpeciesPageProps> = ({
   // 🔍 Filter species based on search query
   const filteredSpecies = useMemo(() => {
     const query = searchQuery.toLowerCase();
-    return allSpecies.filter((item) =>
-      item.name.toLowerCase().includes(query) ||
-      item.scientificName.toLowerCase().includes(query)
+    return allSpecies.filter(
+      (item) =>
+        item.name.toLowerCase().includes(query) ||
+        item.scientificName.toLowerCase().includes(query)
     );
   }, [searchQuery, allSpecies]);
 
@@ -108,7 +113,7 @@ const AllSpeciesPage: React.FC<AllSpeciesPageProps> = ({
       >
         <div className="max-w-7xl w-full mx-auto px-4 md:px-8 md:space-y-12 space-y-8 text-white">
           <Breadcrumb>
-            <BreadcrumbList className="text-white font-normal md:text-base text-sm leading-[18px]">
+            <BreadcrumbList className="text-white font-semibold md:text-base text-sm leading-[18px]">
               <BreadcrumbItem>
                 <BreadcrumbLink href="/">Homepage</BreadcrumbLink>
               </BreadcrumbItem>
@@ -157,8 +162,11 @@ const AllSpeciesPage: React.FC<AllSpeciesPageProps> = ({
             <div className="mt-6 gap-6 md:gap-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 items-center">
               {paginatedSpecies.length > 0 ? (
                 paginatedSpecies.map((item) => (
-                  <Link key={item.documentId} href={`/species/${generateSlug(item.name)}`}>
-                    <div className="flex-1 min-w-0 border border-gray-200 rounded-xl flex-shrink-0 hover:shadow-md transition-all duration-200">
+                  <Link
+                    key={item.documentId}
+                    href={`/species/${generateSlug(item.name)}`}
+                  >
+                    <div className="flex-1 min-w-0 border border-gray-200 rounded-[16px] flex-shrink-0 hover:shadow-md transition-all duration-200">
                       <div className="overflow-hidden w-full md:p-4 p-2">
                         <Image
                           src={item.image}
@@ -174,7 +182,11 @@ const AllSpeciesPage: React.FC<AllSpeciesPageProps> = ({
                         </p>
                         <button className="mr-4 flex items-center gap-2 text-[#003399] font-bold text-xs uppercase cursor-pointer">
                           Know More
-                          <ArrowRightIcon width={22} height={22} color="#003399" />
+                          <ArrowRightIcon
+                            width={22}
+                            height={22}
+                            color="#003399"
+                          />
                         </button>
                       </div>
                     </div>

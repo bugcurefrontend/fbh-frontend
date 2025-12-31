@@ -175,7 +175,7 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
         {/* Left side - Hero Image / Map / Video */}
         <div className="lg:w-[546px] w-full relative flex-shrink-0 group/container">
           <div
-            className="min-h-[360px] h-full w-full relative overflow-hidden rounded-lg cursor-pointer"
+            className="min-h-[360px] h-full w-full relative overflow-hidden md:rounded-lg rounded-[8px] cursor-pointer"
             onClick={() => {
               // Only trigger video play when clicking on video item
               if (
@@ -229,7 +229,7 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
                 src={`https://www.google.com/maps/embed?pb=${mapCode}`}
                 width="100%"
                 height="100%"
-                className="rounded-lg border-0 min-h-[360px] h-full"
+                className="md:rounded-lg rounded-[8px] border-0 min-h-[360px] h-full"
                 allowFullScreen
               />
             ) : (
@@ -358,30 +358,30 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
           </div>
 
           {/* Statistics */}
-          <div className="max-md:mt-2 border border-[#E4E4E4] rounded-2xl flex items-center justify-between p-6">
+          <div className="max-md:mt-2 max-sm:h-[140px] border border-[#E4E4E4] rounded-2xl flex items-center justify-between p-6">
             <div className="text-center space-y-2 xl:space-y-4 flex-1">
               <LandscapeIcon className="md:w-10 w-8 h-8 md:h-10 text-white mx-auto" />
               <div className="md:text-2xl text-lg font-bold md:font-semibold text-black">
                 {stats.treesAvailable.toLocaleString()}
               </div>
-              <div className="md:text-base text-xs text-gray-600">
+              <div className="md:text-base text-[10px] text-gray-600">
                 Trees <br className="md:hidden" /> Available
               </div>
             </div>
 
-            <div className="w-px md:h-[140px] h-[96px] bg-gray-300 mx-6"></div>
+            <div className="sm:w-px w-[0.5px] md:h-[140px] h-[96px] bg-gray-300 mx-6"></div>
 
             <div className="text-center space-y-2 xl:space-y-4 flex-1">
               <TreeSpeciesIcon className="md:w-10 w-8 h-8 md:h-10 mx-auto" />
               <div className="md:text-2xl text-lg font-bold md:font-semibold text-black">
                 {stats.treesPlanted.toLocaleString()}
               </div>
-              <div className="md:text-base text-xs text-gray-600">
+              <div className="md:text-base text-[10px] text-gray-600">
                 Trees <br className="md:hidden" /> Planted
               </div>
             </div>
 
-            <div className="w-px md:h-[140px] h-[96px] bg-gray-300 mx-6"></div>
+            <div className="sm:w-px w-[0.5px] md:h-[140px] h-[96px] bg-gray-300 mx-6"></div>
 
             <div className="text-center space-y-2 xl:space-y-4 flex-1">
               <div className="md:w-10 w-8 md:h-10 h-8 mx-auto">
@@ -396,7 +396,7 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
               <div className="md:text-2xl text-lg font-bold md:font-semibold text-black">
                 {stats.totalTrees.toLocaleString()}
               </div>
-              <div className="md:text-base text-xs text-gray-600">
+              <div className="md:text-base text-[10px] text-gray-600">
                 Total <br className="md:hidden" /> Trees
               </div>
             </div>

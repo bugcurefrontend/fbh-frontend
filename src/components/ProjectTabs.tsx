@@ -73,7 +73,9 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({
   projectSpecies = [],
 }) => {
   // Get unique years from updates for the dropdown
-  const years = Array.from(new Set(projectUpdates.map((u) => u.year))).sort((a, b) => b - a);
+  const years = Array.from(new Set(projectUpdates.map((u) => u.year))).sort(
+    (a, b) => b - a
+  );
   const [selectedYear, setSelectedYear] = React.useState<string>(
     years.length > 0 ? years[0].toString() : new Date().getFullYear().toString()
   );
@@ -124,7 +126,9 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({
               Project Description:
             </h3>
             <div className="space-y-4 text-[#454950]">
-              <div className="font-public-sans whitespace-pre-line">{projectDescription}</div>
+              <div className="font-public-sans whitespace-pre-line">
+                {projectDescription}
+              </div>
               {projectDetails.map((detail, index) => (
                 <p key={index} className="font-inter">
                   {detail}
@@ -160,7 +164,12 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({
               </Select>
             )}
             {filteredUpdates.length === 0 ? (
-              <p className="text-gray-500 text-center py-8">No updates available for this year.</p>
+              <div className="p-15 flex items-center justify-center flex-col space-y-4 text-[#B7B9BB]">
+                <Update strokeWidth={0.5} className="w-50 h-50" />
+                <p className="font-semibold text-2xl leading-6">
+                  No Updates Available
+                </p>
+              </div>
             ) : (
               filteredUpdates.map((update) => (
                 <div key={update.id} className="space-y-4">
@@ -243,7 +252,12 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({
           className="mt-8 gap-8 grid grid-cols-3 items-center"
         >
           {projectSpecies.length === 0 ? (
-            <p className="text-gray-500 text-center py-8 col-span-3">No species available for this project.</p>
+            <div className="col-span-3 p-15 flex items-center justify-center flex-col space-y-4 text-[#B7B9BB]">
+              <Species strokeWidth={0.5} className="w-50 h-50" />
+              <p className="font-semibold text-2xl leading-6">
+                No Species Available
+              </p>
+            </div>
           ) : (
             projectSpecies.map((item) => (
               <Link key={item.id} href={`/species/${item.slug}`}>
@@ -263,7 +277,11 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({
                     </p>
                     <button className="mr-4 flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer">
                       Know More
-                      <CircleArrowRight width={22} height={22} color="#003399" />
+                      <CircleArrowRight
+                        width={22}
+                        height={22}
+                        color="#003399"
+                      />
                     </button>
                   </div>
                 </div>

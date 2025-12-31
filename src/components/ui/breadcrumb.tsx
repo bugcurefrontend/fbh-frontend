@@ -75,7 +75,7 @@ function BreadcrumbSeparator({
       className={cn("[&>svg]:size-4 [&>svg]:[stroke-width:3]", className)}
       {...props}
     >
-      {children ?? <ChevronRight />}
+      {children ?? ">"}
     </li>
   );
 }

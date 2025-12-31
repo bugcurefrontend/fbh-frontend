@@ -88,7 +88,7 @@ const AllProjectsPage: React.FC<AllProjectsPageProps> = ({
       >
         <div className="max-w-7xl w-full mx-auto px-4 md:px-12 md:space-y-12 space-y-8 text-white">
           <Breadcrumb>
-            <BreadcrumbList className="text-white font-normal md:text-base text-sm leading-[18px]">
+            <BreadcrumbList className="text-white font-semibold md:text-base text-sm leading-[18px]">
               <BreadcrumbItem>
                 <BreadcrumbLink href="/">Homepage</BreadcrumbLink>
               </BreadcrumbItem>
@@ -120,10 +120,13 @@ const AllProjectsPage: React.FC<AllProjectsPageProps> = ({
         />
 
         {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {filteredProjects.length > 0 ? (
             filteredProjects.map((project) => (
-              <Link key={project.id} href={`/projects/${generateProjectSlug(project.title)}`}>
+              <Link
+                key={project.id}
+                href={`/projects/${generateProjectSlug(project.title)}`}
+              >
                 <ProjectCard
                   id={project.id}
                   title={project.title}

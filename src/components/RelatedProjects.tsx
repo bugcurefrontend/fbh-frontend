@@ -32,14 +32,13 @@ const RelatedProjects: React.FC<RelatedProjectsProps> = ({
     <div className="md:space-y-8 space-y-6">
       {/* Header */}
       <div className="w-full md:text-center mb-8 relative">
-        <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold mx-auto sm:mx-0 text-black md:text-[32px] md:font-semibold md:leading-[48px] md:align-middle md:text-[#090C0F]">
+        <h2 className="text-[22px] sm:text-[32px] font-[Playfair_Display] font-semibold mx-auto sm:mx-0 text-black md:text-[32px] md:font-semibold md:leading-[48px] md:align-middle md:text-[#090C0F]">
           Explore other projects{" "}
         </h2>
-        <Link
-          href="/projects"
-          className="absolute right-0 top-4 text-[#003399] font-bold text-xs uppercase md:font-bold md:text-xs md:leading-[18px] md:text-center md:align-middle md:uppercase md:text-[#003399]"
-        >
-          View All
+        <Link href="/projects">
+          <button className="absolute right-0 md:top-4 top-2.5 text-[#003399] font-bold text-xs uppercase md:font-bold md:text-xs md:leading-[18px] md:text-center md:align-middle md:uppercase md:text-[#003399]">
+            View All
+          </button>
         </Link>
       </div>
 
@@ -66,12 +65,12 @@ const RelatedProjects: React.FC<RelatedProjectsProps> = ({
 
       {/* Mobile Carousel */}
       <div className="sm:hidden overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-        <div className="flex gap-4 pb-2 w-max">
+        <div className="flex gap-6 w-max">
           {projects.map((project, idx) => (
             <Link
               key={idx}
               href={`/projects/${generateProjectSlug(project.title)}`}
-              className="flex-1 min-w-[314px] max-w-[314px] border border-gray-200 rounded-xl flex-shrink-0 overflow-hidden"
+              className="flex-1 min-w-[314px] max-w-[314px] min-h-[264px] border border-gray-200 rounded-[16px] flex-shrink-0 overflow-hidden"
             >
               <div className="relative h-[160px]">
                 <Image
@@ -94,7 +93,7 @@ const RelatedProjects: React.FC<RelatedProjectsProps> = ({
                   )}
                 </div>
               </div>
-              <div className="px-2 py-3 flex flex-col gap-6">
+              <div className="px-2.5 py-3.5 flex flex-col gap-3">
                 <div className="flex justify-between items-center">
                   <p className="font-bold text-lg text-black truncate md:font-bold md:text-lg md:leading-[26px] md:align-middle md:text-[#090C0F]">
                     {project.title}
@@ -106,7 +105,7 @@ const RelatedProjects: React.FC<RelatedProjectsProps> = ({
                     </span>
                   </div>
                 </div>
-                <button className="bg-[#003399] h-[36px] text-white font-bold text-base py-2 rounded-[8px] w-full hover:bg-[#002080] gap-2 flex items-center justify-center md:font-bold md:text-base md:leading-[26px] md:text-[#FFFFFF]">
+                <button className="bg-[#003399] h-[36px] text-white font-bold text-sm py-2 rounded-[8px] w-full hover:bg-[#002080] gap-2 flex items-center justify-center md:font-bold md:text-base md:leading-[26px] md:text-[#FFFFFF]">
                   PLANT A TREE
                   <Image
                     src="/images/donate.png"

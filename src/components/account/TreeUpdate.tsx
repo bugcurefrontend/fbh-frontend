@@ -12,6 +12,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Donation } from "./types";
 import { fetchTreeUpdates, treeUpdates } from "./mock-data";
+import Update from "../icons/update";
 
 export const TreeUpdate = ({
   tree,
@@ -79,9 +80,12 @@ export const TreeUpdate = ({
         {isLoading ? (
           <p className="text-gray-500 text-center py-8">Loading updates...</p>
         ) : filteredUpdates.length === 0 ? (
-          <p className="text-gray-500 text-center py-8">
-            No updates available for this year.
-          </p>
+          <div className="sm:p-15 p-4 flex items-center justify-center flex-col space-y-4 text-[#B7B9BB]">
+            <Update strokeWidth={0.5} className="sm:w-50 w-10 h-10 sm:h-50" />
+            <p className="font-semibold sm:text-2xl leading-6">
+              No updates Available
+            </p>
+          </div>
         ) : (
           filteredUpdates.map((update) => (
             <div key={update.id} className="space-y-4">

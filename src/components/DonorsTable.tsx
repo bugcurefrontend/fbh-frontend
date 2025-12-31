@@ -111,7 +111,7 @@ const UserAvatar: React.FC<{
 }> = ({ name, avatar, isAnonymous }) => {
   if (isAnonymous || !avatar) {
     return (
-      <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+      <div className="md:w-8 md:h-8 w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
         <User className="w-5 h-5 text-blue-600" />
       </div>
     );
@@ -121,7 +121,7 @@ const UserAvatar: React.FC<{
     <img
       src={avatar}
       alt={name}
-      className="w-8 h-8 rounded-full object-cover"
+      className="md:w-8 md:h-8 w-12 h-12 rounded-full object-cover"
     />
   );
 };
@@ -329,7 +329,7 @@ const DonorsTable = () => {
         {donorsData.slice(0, 8).map((donor) => (
           <div
             key={donor.id}
-            className="p-2 border rounded-lg hover:bg-gray-50"
+            className="p-2 border rounded-lg hover:bg-gray-50 h-16"
           >
             <div className="flex items-center space-x-3">
               <UserAvatar
@@ -342,7 +342,7 @@ const DonorsTable = () => {
                   style={{
                     fontFamily: "'Public Sans', sans-serif",
                     fontWeight: 600,
-                    fontSize: "14px",
+                    fontSize: "16px",
                     lineHeight: "22px",
                     color: "#090C0F",
                   }}
@@ -356,7 +356,7 @@ const DonorsTable = () => {
                       alt="tree"
                       width={18}
                       height={18}
-                      className="mr-1"
+                      className="mr-1 max-w-4.5 max-h-4.5"
                     />
                     <span
                       style={{
@@ -364,7 +364,6 @@ const DonorsTable = () => {
                         fontWeight: 600,
                         fontSize: "14px",
                         lineHeight: "22px",
-                        color: "#454950",
                       }}
                     >
                       {donor.treesPlanted} Trees Planted

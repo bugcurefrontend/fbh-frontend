@@ -33,7 +33,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   };
 
   return (
-    <div className="rounded-xl shadow-sm overflow-hidden border border-gray-200 flex flex-col">
+    <div className="rounded-[16px] shadow-sm overflow-hidden border border-gray-200 flex flex-col">
       <div className="relative h-[200px]">
         <Image
           src={imageUrl}
@@ -67,7 +67,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         </div>
         <button
           onClick={() => onPlantTree(id)}
-          className="bg-[#003399] text-white font-bold md:text-base text-sm md:py-3 py-1.5 rounded-[8px] w-full hover:bg-[#002080] gap-2 flex items-center justify-center"
+          className="bg-[#003399] text-white font-bold md:text-base text-sm md:py-3 h-9 md:h-12 py-1.5 rounded-[8px] w-full hover:bg-[#002080] gap-2 flex items-center justify-center"
         >
           PLANT A TREE
           <Image
@@ -75,7 +75,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
             alt="donate"
             width={24}
             height={24}
-            className=""
+            className="max-sm:w-5"
           />{" "}
         </button>
       </div>
