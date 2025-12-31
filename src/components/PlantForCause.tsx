@@ -11,34 +11,28 @@ import {
   CarouselPrevious,
 } from "./ui/carousel";
 
-interface CauseImage {
-  id: string;
-  imageUrl: string;
-  title: string;
+import { Attribute } from "@/types/attribute";
+
+interface PlantForCauseProps {
+  attributes: Attribute[];
 }
 
-const imagesArray: CauseImage[] = [
-  { id: "1", imageUrl: "/images/climate.png", title: "Climate Healing" },
-  { id: "2", imageUrl: "/images/birthday.png", title: "Birthday" },
-  { id: "3", imageUrl: "/images/wedding.png", title: "Wedding" },
-  { id: "4", imageUrl: "/images/apology.png", title: "Apology" },
-  { id: "5", imageUrl: "/images/new-year.png", title: "New Year" },
-  { id: "6", imageUrl: "/images/climate.png", title: "Climate Healing" },
-  { id: "7", imageUrl: "/images/birthday.png", title: "Birthday" },
-  { id: "8", imageUrl: "/images/wedding.png", title: "Wedding" },
-  { id: "9", imageUrl: "/images/apology.png", title: "Apology" },
-  { id: "10", imageUrl: "/images/new-year.png", title: "New Year" },
-];
-
-const PlantForCause: React.FC = () => {
+const PlantForCause: React.FC<PlantForCauseProps> = ({ attributes }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  // If no attributes are provided, render nothing or fallback? 
+  // User asked not to change UI, but empty carousel is bad. 
+  // Assuming attributes will be passed. If array is empty, it just won't render items.
+  const imagesArray = attributes;
 
   const totalSlides = imagesArray.length;
   const visibleSlides = 5;
   const progress =
-    ((currentIndex + visibleSlides) / totalSlides) * 100 > 100
-      ? 100
-      : ((currentIndex + visibleSlides) / totalSlides) * 100;
+    totalSlides > 0
+      ? ((currentIndex + visibleSlides) / totalSlides) * 100 > 100
+        ? 100
+        : ((currentIndex + visibleSlides) / totalSlides) * 100
+      : 0;
 
   return (
     <section className="max-w-7xl mx-auto px-4 md:px-8 relative mt-8 md:mt-16">
@@ -68,15 +62,15 @@ const PlantForCause: React.FC = () => {
             >
               <div className="border-[0.7px] overflow-hidden border-[#B7B9BB] rounded-xl cursor-pointer hover:shadow-lg transition-shadow">
                 <Image
-                  src={image.imageUrl}
-                  alt={image.title}
+                  src={image.image}
+                  alt={image.name}
                   width={200}
                   height={200}
                   className="w-full"
                 />
               </div>
               <h3 className="text-center font-bold md:text-lg md:font-bold md:leading-[26px] text-[#090C0F] truncate">
-                {image.title}
+                {image.name}
               </h3>
             </CarouselItem>
           ))}
@@ -104,14 +98,14 @@ const PlantForCause: React.FC = () => {
         {imagesArray.map((image) => (
           <div key={image.id} className="space-y-2">
             <Image
-              src={image.imageUrl}
-              alt={image.title}
+              src={image.image}
+              alt={image.name}
               width={150}
               height={150}
               className="min-w-[150px] object-cover border-[0.7px] overflow-hidden border-[#B7B9BB] rounded-xl"
             />
             <h3 className="text-center text-base font-semibold leading-[26px] text-[#090C0F] truncate">
-              {image.title}
+              {image.name}
             </h3>
           </div>
         ))}
