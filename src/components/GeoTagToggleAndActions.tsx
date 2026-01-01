@@ -59,7 +59,7 @@ const GeoTagToggleAndActions: React.FC<GeoTagToggleAndActionsProps> = ({
       <div
         className={
           isMobile
-            ? "md:hidden bg-white fixed bottom-0 left-0 right-0 border-t border-gray-200 shadow-lg z-50 px-4 pt-3 pb-6 safe-area-inset-bottom"
+            ? "md:hidden bg-white fixed bottom-0 left-0 right-0 border-t border-gray-200 shadow-[0_-6px_24.8px_0_rgba(0,0,0,0.2)] z-50 px-4 pt-3 pb-6 safe-area-inset-bottom"
             : "max-sm:hidden border border-[#E4E4E4] rounded-2xl px-4 py-6 bg-[#E6EBF54D]"
         }
       >

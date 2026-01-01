@@ -44,7 +44,13 @@ const AboutHeartfulness = () => {
                     : "border-[#12B569]"
                 } rounded-xl p-4 flex flex-col items-center justify-center text-center hover:shadow-md transition-shadow md:space-y-4 space-y-2`}
               >
-                <Image src={stat.url} alt={stat.label} width={40} height={40} />
+                <Image
+                  src={stat.url}
+                  alt={stat.label}
+                  width={40}
+                  height={40}
+                  className="max-sm:w-8"
+                />
                 <div className="text-2xl font-semibold">{stat.value}</div>
                 <div className="max-md:text-sm text-[#4C4748]">
                   {stat.label}

@@ -99,15 +99,9 @@ const AllProjectsPage: React.FC<AllProjectsPageProps> = ({
             </BreadcrumbList>
           </Breadcrumb>
 
-          <div className="space-y-4">
-            <h1 className="font-[Playfair_Display] text-[22px] md:text-[32px] font-semibold">
-              All Projects
-            </h1>
-            <p className="md:text-lg text-[10px] md:font-bold font-semibold leading-4 md:leading-[26px] w-[85%] md:w-[70%]">
-              Our projects create healthier ecosystems while fostering a culture
-              of care, sustainability, and humanity for future generations.
-            </p>
-          </div>
+          <h1 className="font-[Playfair_Display] text-[22px] md:text-[32px] font-semibold">
+            All Projects
+          </h1>
         </div>
       </section>
 

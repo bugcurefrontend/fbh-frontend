@@ -125,7 +125,7 @@ const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
       </h2>
 
       <div
-        className="overflow-hidden border border-[#e4e4e4] p-4 rounded-2xl flex flex-col md:flex-row sm:gap-16 gap-6 items-center justify-between"
+        className="overflow-hidden border border-[#e4e4e4] p-4 rounded-2xl flex flex-col md:flex-row sm:gap-16 gap-4 items-center justify-between"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >

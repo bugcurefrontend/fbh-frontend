@@ -84,7 +84,7 @@ const TeamSection = () => {
       {/* Mobile Select */}
       <div className="md:hidden mb-6">
         <Select value={activeTab} onValueChange={setActiveTab}>
-          <SelectTrigger className="w-full h-12 hover:rounded-md border-[#95AAD5] rounded-md text-[#003399] font-bold">
+          <SelectTrigger className="w-full min-h-12 hover:rounded-md border-[#95AAD5] rounded-md text-[#003399] font-bold">
             <SelectValue placeholder="Select team" />
           </SelectTrigger>
           <SelectContent className="rounded-md hover:rounded-md">
@@ -128,25 +128,29 @@ const TeamSection = () => {
                   alt={member.name}
                   width={343}
                   height={400}
-                  className="object-cover rounded-xl md:max-w-[300px] md:min-w-[300px] max-sm:max-h-[343px] "
+                  className="object-cover md:rounded-xl rounded-[8px] md:max-w-[300px] md:min-w-[300px] max-sm:max-h-[343px] "
                 />
 
                 {/* Content */}
                 <div className="space-y-4.5 md:p-4">
                   <div className="flex items-center gap-4">
-                    <div className="border-r border-[#B7B9BB] pr-4 sm:space-y-2 space-y-1">
-                      <h3 className="font-[Playfair_Display] sm:text-xl font-bold sm:leading-7.5 text-[#090C0F]">
+                    <div className="max-[400px]:w-full border-r border-[#B7B9BB] pr-4 sm:space-y-2 space-y-1">
+                      <h3 className="font-[Playfair_Display] sm:text-xl text-lg font-bold sm:leading-7.5 text-[#090C0F]">
                         {member.name}
                       </h3>
-                      <p className="max-sm:text-sm sm:leading-6 text-[#94979A]">
+                      <p className="text-sm md:text-base sm:leading-6 text-[#94979A]">
                         {member.role}
                       </p>
                     </div>
-                    <a href={member.linkedin} target="_blank">
+                    <a
+                      href={member.linkedin}
+                      target="_blank"
+                      className="w-[33.48px] h-8"
+                    >
                       <Image
                         src="/images/linkedin.png"
                         alt="LinkedIn"
-                        width={32}
+                        width={32.48}
                         height={32}
                       />
                     </a>

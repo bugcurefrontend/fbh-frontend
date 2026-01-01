@@ -86,7 +86,7 @@ const FAQs = () => {
             Category
           </h3>
           <Select value={activeTab} onValueChange={setActiveTab}>
-            <SelectTrigger className="w-full h-12 hover:rounded-md border-[#95AAD5] rounded-md text-[#003399] font-bold">
+            <SelectTrigger className="w-full min-h-12 hover:rounded-md border-[#95AAD5] rounded-md text-[#003399] font-bold">
               <SelectValue placeholder="Select category" />
             </SelectTrigger>
             <SelectContent className="rounded-md hover:rounded-md">

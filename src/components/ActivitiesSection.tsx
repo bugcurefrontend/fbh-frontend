@@ -144,7 +144,7 @@ const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({
                     {formatDate(activity.date)}
                   </span>
                 </div>
-                <h3 className="text-lg font-bold text-[#333333] md:text-lg md:font-bold md:leading-[26px] md:align-middle md:text-[#333333] truncate">
+                <h3 className="text-lg font-semibold text-[#333333] md:text-lg md:font-bold md:leading-[24px] md:align-middle md:text-[#333333] truncate">
                   {activity.title}
                 </h3>
                 <p className="text-sm font-normal text-gray-600 md:text-sm md:font-normal md:leading-[21px] md:align-middle md:text-[#595959]">

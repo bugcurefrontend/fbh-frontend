@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import Gallery from "@/components/Gallery";
 import TeamSection from "@/components/OurTeam";
 
@@ -15,7 +14,7 @@ const T = ({}) => {
           backgroundPosition: "top",
         }}
       >
-        <h1 className="font-[Playfair_Display] text-2xl md:text-[48px] text-white leading-12 font-semibold">
+        <h1 className="font-[Playfair_Display] text-[22px] md:text-[48px] text-white leading-12 font-semibold">
           Our Team
         </h1>
       </section>

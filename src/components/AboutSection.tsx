@@ -6,7 +6,7 @@ import Link from "next/link";
 
 const AboutSection: React.FC = () => {
   return (
-    <section className="max-w-7xl mx-auto px-4 md:px-8 flex md:flex-row flex-col gap-8 items-center mb-8 md:mb-16">
+    <section className="max-w-7xl mx-auto px-4 md:px-8 flex md:flex-row flex-col md:gap-8 gap-3 items-center mb-8 md:mb-16">
       <Image
         src="/images/architecture-circular.png"
         alt="Circular architecture with gardens"
@@ -16,12 +16,12 @@ const AboutSection: React.FC = () => {
       />
 
       {/* Content */}
-      <div className="flex flex-col gap-6 p-4 flex-1 max-w-[556px] md:max-w-full">
+      <div className="flex flex-col gap-6 md:p-4 max-md:px-4 max-md:py-3 flex-1 max-w-[556px] md:max-w-full">
         <h2 className="text-[22px] sm:text-[32px] font-[Playfair_Display] font-semibold text-black md:text-[32px] md:font-semibold md:leading-[48px] md:align-middle md:text-[#090C0F]">
           What is Forests By Heartfulness?
         </h2>
 
-        <p className="font-semibold sm:text-base text-sm leading-6 sm:text-[#19212C] text-[#454950] md:font-semibold md:text-base md:leading-6 md:align-middle md:text-[#19212C]">
+        <p className="text-sm leading-4.5 text-[#454950] md:font-semibold md:text-base md:leading-6 md:align-middle">
           Forests By Heartfulness is an initiative committed to rejuvenating
           Earth's native, endangered, and endemic species through green action,
           cutting-edge research, ecological empathy and a reconnection between

@@ -124,22 +124,9 @@ const AllSpeciesPage: React.FC<AllSpeciesPageProps> = ({
             </BreadcrumbList>
           </Breadcrumb>
 
-          <div className="space-y-4">
-            <h1 className="font-[Playfair_Display] text-[22px] md:text-[32px] font-semibold">
-              All Species
-            </h1>
-            <p className="max-md:hidden md:text-lg text-[10px] md:font-bold font-semibold leading-4 md:leading-[26px] w-[85%] md:w-[70%]">
-              Explore our collection of tree species, each with unique
-              environmental, cultural, and medicinal value. Learn about their
-              impact on biodiversity, carbon absorption, and communities—and
-              choose to donate or gift a tree that creates a lasting difference.
-            </p>
-            <p className="md:hidden md:text-lg text-[10px] md:font-bold font-semibold leading-4 md:leading-[26px] w-[85%] md:w-[70%]">
-              Explore our collection of tree species, each with unique
-              environmental, cultural, and medicinal value. Learn about their
-              impact on biodiversity, carbon absorption.
-            </p>
-          </div>
+          <h1 className="font-[Playfair_Display] text-[22px] md:text-[32px] font-semibold">
+            All Species
+          </h1>
         </div>
       </section>
 

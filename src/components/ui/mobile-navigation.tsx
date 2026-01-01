@@ -117,7 +117,7 @@ export function MobileNavigation({
             </div>
 
             <div className="flex-1 overflow-y-auto py-4">
-              <div className="px-4 py-3">
+              <div className="p-4">
                 <LightBox />
               </div>
               {navigationItems.map((item, index) => {
@@ -126,7 +126,7 @@ export function MobileNavigation({
                     <Link
                       key={index}
                       href={item.href}
-                      className="flex justify-between items-center w-full px-4 py-3 hover:bg-gray-50 transition-colors font-medium text-lg text-#090C0F uppercase"
+                      className="flex justify-between items-center w-full px-4 py-2.5 mb-2 hover:bg-gray-50 transition-colors font-medium text-sm text-#090C0F uppercase"
                       onClick={handleClose}
                     >
                       {item.label}
@@ -138,15 +138,15 @@ export function MobileNavigation({
                     <div key={index} className="space-y-2">
                       <button
                         onClick={() => handleMobileMenuExpand(item.label)}
-                        className="flex justify-between items-center w-full px-4 py-3 hover:bg-gray-50 transition-colors"
+                        className="flex justify-between items-center w-full px-4 py-2.5 hover:bg-gray-50 transition-colors"
                       >
-                        <span className="font-medium text-lg text-#090C0F uppercase">
+                        <span className="font-medium text-sm text-#090C0F uppercase">
                           {item.label}
                         </span>
                         {mobileExpandedMenu === item.label ? (
-                          <ChevronDownIcon size={20} />
+                          <ChevronDownIcon size={20} color="#63676C" />
                         ) : (
-                          <ChevronRightIcon size={20} />
+                          <ChevronRightIcon size={20} color="#63676C" />
                         )}
                       </button>
                       <div
@@ -181,7 +181,7 @@ export function MobileNavigation({
                 <>
                   <Link
                     href="/account"
-                    className="flex justify-between items-center w-full px-4 py-3 hover:bg-gray-50 transition-colors font-medium text-lg uppercase"
+                    className="flex justify-between items-center w-full px-4 py-2.5 mb-2 hover:bg-gray-50 transition-colors font-medium text-sm uppercase"
                     style={{
                       color: "#090C0F",
                     }}
@@ -191,7 +191,7 @@ export function MobileNavigation({
                   </Link>
                   <Link
                     href="/account"
-                    className="flex justify-between items-center w-full px-4 py-3 hover:bg-gray-50 transition-colors font-medium text-lg uppercase"
+                    className="flex justify-between items-center w-full px-4 py-2.5 mb-2 hover:bg-gray-50 transition-colors font-medium text-sm uppercase"
                     style={{
                       color: "#090C0F",
                     }}
@@ -200,14 +200,16 @@ export function MobileNavigation({
                     Dashboard
                   </Link>
                   <Link
-                    href="/my-trees"
-                    className="flex justify-between items-center w-full px-4 py-3 hover:bg-gray-50 transition-colors font-medium text-lg uppercase"
+                    href="https://my.heartfulness.org"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex justify-between items-center w-full px-4 py-2.5 mb-2 hover:bg-gray-50 transition-colors font-medium text-sm uppercase"
                     style={{
                       color: "#090C0F",
                     }}
                     onClick={handleClose}
                   >
-                    My Trees
+                    My Account
                   </Link>
 
                   {/* Sign Out Button */}
@@ -216,7 +218,7 @@ export function MobileNavigation({
                       handleClose();
                       onSignOut?.();
                     }}
-                    className="flex items-center gap-2 w-full px-4 py-3 transition-colors font-medium text-lg uppercase"
+                    className="flex items-center gap-2 w-full px-4 py-2.5 mb-2 transition-colors font-medium text-sm uppercase"
                     style={{
                       color: "#F04438",
                     }}
@@ -237,7 +239,7 @@ export function MobileNavigation({
                     handleClose();
                     login?.();
                   }}
-                  className="mt-2 py-3 px-4 hover:bg-gray-50 transition-colors flex items-center gap-2 !text-[#003399] font-semibold text-lg uppercase"
+                  className="mt-2 py-2.5 px-4 hover:bg-gray-50 transition-colors flex items-center gap-2 !text-[#003399] font-semibold text-sm uppercase"
                 >
                   Login
                   <LogInIcon size={18} />
