@@ -136,7 +136,7 @@ const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({
         </CarouselContent>
 
         {/* Controls + Progress Bar */}
-        <div className="flex justify-between items-center mt-6 gap-6 relative">
+        <div className="flex justify-between items-center mt-8 gap-12 relative">
           <div className="w-full h-1 md:h-[4px] bg-[#d1d1d1] rounded-[2px] overflow-hidden">
             <div
               className="h-1 md:h-[4px] bg-[#003399] rounded-[2px] transition-all duration-300"
@@ -146,7 +146,7 @@ const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({
 
           {/* Navigation */}
           <div className="flex gap-2">
-            <CarouselPrevious className="border border-[#9CA3AF] md:w-[42px] md:h-[42px] rounded-full flex items-center justify-center text-[#9CA3AF] cursor-pointer" />
+            <CarouselPrevious className="border border-gray-700 md:w-[42px] md:h-[42px] rounded-full flex items-center justify-center text-gray-700 cursor-pointer" />
             <CarouselNext className="border border-black md:w-[42px] md:h-[42px] rounded-full flex items-center justify-center cursor-pointer" />
           </div>
         </div>

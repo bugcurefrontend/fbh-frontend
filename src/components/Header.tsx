@@ -77,10 +77,10 @@ export default function Header() {
               <Image
                 src="/images/logo3.svg"
                 alt="logo"
-                width={57}
+                width={57.3}
                 height={46}
                 priority
-                className="min-w-[57px]"
+                className="min-w-[57.3px] min-h-[46px]"
               />
             </Link>
           </div>
@@ -99,10 +99,10 @@ export default function Header() {
             <Image
               src="/images/logo3.svg"
               alt="logo"
-              width={57}
+              width={57.3}
               height={46}
               priority
-              className="min-w-[57px]"
+              className="min-w-[57.3px] min-h-[46px]"
             />
           </Link>
         </div>

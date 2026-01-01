@@ -102,7 +102,7 @@ const Gallery: React.FC<GalleryProps> = ({ className }) => {
           </CarouselContent>
 
           {/* Controls + Progress Bar */}
-          <div className="flex justify-between items-center mt-8 gap-6 relative">
+          <div className="flex justify-between items-center mt-8 gap-12 relative">
             <div className="w-full h-1 md:h-[4px] bg-[#d1d1d1] rounded-[2px] overflow-hidden">
               <div
                 className="h-1 md:h-[4px] bg-[#003399] rounded-[2px] transition-all duration-300"
