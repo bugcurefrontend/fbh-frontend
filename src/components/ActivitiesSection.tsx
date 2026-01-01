@@ -38,6 +38,14 @@ const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({
 
   const totalSlides = activities.length;
   const visibleSlides = 3;
+  const cleanTitle = (title: string) => {
+    if (!title) return "";
+
+    return title
+      .trim() // remove extra spaces
+      .replace(/^["'“”]+/, "") // remove quotes from start
+      .replace(/["'“”]+$/, ""); // remove quotes from end
+  };
   const progress =
     ((currentIndex + visibleSlides) / totalSlides) * 100 > 100
       ? 100
@@ -86,7 +94,7 @@ const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({
                       </span>
                     </div>
                     <h3 className="text-lg font-bold text-[#333333] md:text-lg md:font-bold md:leading-[26px] md:align-middle md:text-[#333333] truncate">
-                      {activity.title}
+                      {cleanTitle(activity.title)}
                     </h3>
                     <p className="text-sm font-normal text-gray-600 md:text-sm md:font-normal md:leading-[21px] md:align-middle md:text-[#595959]">
                       {activity.description.length > 80
@@ -145,7 +153,7 @@ const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({
                   </span>
                 </div>
                 <h3 className="text-lg font-semibold text-[#333333] md:text-lg md:font-bold md:leading-[24px] md:align-middle md:text-[#333333] truncate">
-                  {activity.title}
+                  {cleanTitle(activity.title)}
                 </h3>
                 <p className="text-sm font-normal text-gray-600 md:text-sm md:font-normal md:leading-[21px] md:align-middle md:text-[#595959]">
                   {activity.description.length > 80

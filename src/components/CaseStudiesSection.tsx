@@ -77,7 +77,7 @@ const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({
   return (
     <section className="max-w-7xl mx-auto px-4 md:px-8 mt-8 md:mt-16">
       <h2 className="text-[22px] sm:text-[32px] font-[Playfair_Display] font-semibold sm:text-center text-[#090C0F] md:text-[#232D26] mb-6">
-        Case Studies
+        Case Study
       </h2>
 
       {/*Desktop Carousel */}
@@ -106,7 +106,7 @@ const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({
                 </div>
 
                 <div className="flex flex-col gap-4 md:gap-[24px] flex-1 min-w-0">
-                  <div className="flex flex-col gap-1 md:gap-[4px]">
+                  <div>
                     <h3 className="text-[18px] md:text-[18px] font-bold text-[#333333] leading-tight md:text-lg md:font-bold md:leading-[26px] md:align-middle">
                       {study.title}
                     </h3>
