@@ -20,7 +20,7 @@ export default async function page() {
           backgroundPosition: "top",
         }}
       >
-        <h1 className="font-[Playfair_Display] text-2xl md:text-[48px] text-white leading-12 font-semibold">
+        <h1 className="font-[Playfair_Display] text-[22px] md:text-[48px] text-white leading-12 font-semibold">
           About Us
         </h1>
       </section>

@@ -60,7 +60,7 @@ const JourneyTimeline = () => {
 
   return (
     <div className="w-full text-center bg-white md:px-8 px-4">
-      <h1 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold text-black md:text-[32px] md:font-semibold md:leading-[48px] md:align-middle md:text-[#090C0F] md:mb-8 mb-6">
+      <h1 className="text-[22px] sm:text-[32px] font-[Playfair_Display] font-semibold text-black md:text-[32px] md:font-semibold md:leading-[48px] md:align-middle md:text-[#090C0F] md:mb-8 mb-6">
         Our Journey
       </h1>
 
@@ -69,7 +69,7 @@ const JourneyTimeline = () => {
         <div className="absolute md:left-1/2 transform md:-translate-x-1/2 h-full w-1 bg-[#9DE1C2] rounded-full"></div>
 
         {/* Timeline items */}
-        <div className="flex flex-col gap-12">
+        <div className="flex flex-col md:gap-12 gap-6">
           {timelineData.map((item, index) => (
             <div
               key={index}
@@ -89,9 +89,9 @@ const JourneyTimeline = () => {
                           alt={item.title}
                           width={296}
                           height={144}
-                          className="max-w-74 max-h-36 rounded-md object-cover md:mb-6 mb-4 md:ml-auto"
+                          className="max-w-74 max-sm:w-[198px] max-h-36 rounded-[5.38px] sm:rounded-[8.7px] object-cover md:mb-6 mb-4 md:ml-auto"
                         />
-                        <h3 className="text-xl leading-6 font-bold md:mb-4 mb-2">
+                        <h3 className="sm:text-xl leading-6 font-bold md:mb-4 mb-2">
                           {item.year} — {item.title}
                         </h3>
                         <p className="md:text-lg text-sm font-medium text-[#454950] md:leading-6">
@@ -101,8 +101,8 @@ const JourneyTimeline = () => {
                     </div>
 
                     {/* Center dot */}
-                    <div className="absolute flex items-center justify-center top-[64%] md:left-1/2 -left-2 transform md:-translate-x-1/2 w-[19px] h-[19px] border-[#9DE1C2] rounded-full border-[0.4px] bg-[#E7F8F0] z-10">
-                      <div className="bg-[#007A3F] rounded-full h-[11px] w-[11px]"></div>
+                    <div className="absolute flex items-center justify-center md:top-[60%] md:left-1/2 -left-2 transform md:-translate-x-1/2 md:w-8 md:h-8 w-[18px] h-[18px] border-[#9DE1C2] rounded-full border-[0.4px] bg-[#E7F8F0] z-10">
+                      <div className="bg-[#007A3F] rounded-full md:h-[18.5px] md:w-[18.5px] h-[10.5px] w-[10.5px]"></div>
                     </div>
 
                     {/* Right empty space */}
@@ -114,8 +114,8 @@ const JourneyTimeline = () => {
                     <div className="md:w-1/2 md:pr-8"></div>
 
                     {/* Center dot */}
-                    <div className="absolute flex items-center justify-center top-[64%] md:left-1/2 -left-2 transform md:-translate-x-1/2 w-[19px] h-[19px] border-[#9DE1C2] rounded-full border-[0.4px] bg-[#E7F8F0] z-10">
-                      <div className="bg-[#007A3F] rounded-full h-[11px] w-[11px]"></div>
+                    <div className="absolute flex items-center justify-center md:top-[60%] md:left-1/2 -left-2 transform md:-translate-x-1/2 md:w-8 md:h-8 w-[18px] h-[18px] border-[#9DE1C2] rounded-full border-[0.4px] bg-[#E7F8F0] z-10">
+                      <div className="bg-[#007A3F] rounded-full md:h-[18.5px] md:w-[18.5px] h-[10.5px] w-[10.5px]"></div>
                     </div>
 
                     {/* Right content */}
@@ -126,9 +126,9 @@ const JourneyTimeline = () => {
                           alt={item.title}
                           width={296}
                           height={144}
-                          className="max-w-74 max-h-36 rounded-md object-cover md:mb-6 mb-4"
+                          className="max-w-74 max-h-36 max-sm:w-[198px] rounded-[5.38px] sm:rounded-[8.7px] object-cover md:mb-6 mb-4"
                         />
-                        <h3 className="text-xl leading-6 font-bold md:mb-4 mb-2">
+                        <h3 className="sm:text-xl leading-6 font-bold md:mb-4 mb-2">
                           {item.year} — {item.title}
                         </h3>
                         <p className="md:text-lg text-sm font-medium text-[#454950] md:leading-6">
@@ -156,7 +156,7 @@ const JourneyTimeline = () => {
         ) : (
           <button
             onClick={() => setShowAll(false)}
-            className="p-3 text-[#003399] font-bold text-sm text:bg-[#00339990] transition-colors flex items-center gap-2 uppercase"
+            className="p-3 text-[#003399] font-bold text-xs text:bg-[#00339990] transition-colors flex items-center gap-2 uppercase"
           >
             View Less
             <ChevronDown size={20} />

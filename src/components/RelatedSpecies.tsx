@@ -64,17 +64,17 @@ const RelatedSpecies: React.FC<RelatedSpeciesProps> = ({
     <div className="md:space-y-8 space-y-6">
       {/* Header */}
       <div className="w-full md:text-center mb-8 relative">
-        <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold mx-auto sm:mx-0 text-black md:text-[32px] md:font-semibold md:leading-[48px] md:align-middle md:text-[#090C0F]">
+        <h2 className="text-[22px] sm:text-[32px] font-[Playfair_Display] font-semibold mx-auto sm:mx-0 text-black md:text-[32px] md:font-semibold md:leading-[48px] md:align-middle md:text-[#090C0F]">
           Explore other species{" "}
         </h2>
         <Link href="/species">
-          <button className="absolute right-0 top-4 text-[#003399] font-bold text-xs uppercase md:font-bold md:text-xs md:leading-[18px] md:text-center md:align-middle md:uppercase md:text-[#003399]">
+          <button className="absolute right-0 md:top-4 top-2.5 text-[#003399] font-bold text-xs uppercase md:font-bold md:text-xs md:leading-[18px] md:text-center md:align-middle md:uppercase md:text-[#003399]">
             View All
           </button>
         </Link>
       </div>
 
-      <div className="hidden mt-6 gap-6 md:gap-8 sm:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 items-center">
+      <div className="hidden mt-6 md:gap-8 sm:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 items-center">
         {species.map((item) => (
           <Link
             key={item.documentId}
@@ -105,20 +105,20 @@ const RelatedSpecies: React.FC<RelatedSpeciesProps> = ({
       </div>
 
       <div className="sm:hidden mb-6 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-        <div className="flex gap-4 pb-2 w-max">
+        <div className="flex gap-6 w-max">
           {species.map((item) => (
             <Link
               key={item.documentId}
               href={`/species/${generateSlug(item.name)}`}
             >
-              <div className="flex-1 border border-gray-200 rounded-xl flex-shrink-0 overflow-hidden">
+              <div className="flex-1 border border-gray-200 rounded-[16px] flex-shrink-0 overflow-hidden">
                 <div className="pt-3 px-3">
                   <Image
                     src={item.image}
                     alt={item.name}
                     width={280}
                     height={194}
-                    className="rounded-md object-cover max-h-[160px]"
+                    className="rounded-[8px] object-cover max-h-[160px]"
                   />
                 </div>
                 <div className="p-4 flex sm:flex-root flex-col justify-between sm:items-center max-sm:gap-2">
