@@ -95,7 +95,7 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
             <h1 className="font-[Playfair_Display] text-[22px] md:text-[32px] md:leading-12 leading-[30px] font-semibold">
               {caseStudy.title}
             </h1>
-            <div className="flex items-center gap-1 md:text-lg text-[10px] md:font-bold font-semibold leading-4 md:leading-[26px]">
+            <div className="flex items-center gap-1 md:text-lg text-[10px] md:font-bold leading-4 md:leading-[26px]">
               <MapPin className="w-4 h-4 md:w-6 md:h-6" />
               <span className="md:text-xl md:leading-[30px] text-base md:font-bold">
                 {caseStudy.address}
@@ -108,10 +108,10 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
 
       <div className="max-w-7xl mx-auto md:space-y-12 space-y-8">
         <div className="md:space-y-6 space-y-4 md:px-8 px-4">
-          <h1 className="text-center font-[Playfair_Display] text-[22px] md:text-[32px] md:leading-12 leading-[30px] font-semibold">
+          <h1 className="text-center font-[Playfair_Display] text-2xl md:text-[32px] md:leading-12 leading-[30px] font-semibold">
             Overview
           </h1>
-          <p className="max-md:hidden text-[#454950] max-md:text-sm">
+          <p className="max-md:hidden text-[#454950]">
             {caseStudy.description}
           </p>
           <p className="md:hidden text-[#454950] text-sm">

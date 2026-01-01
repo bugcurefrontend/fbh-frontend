@@ -170,12 +170,12 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
   }, [items]);
 
   return (
-    <div className="bg-white rounded-2xl overflow-hidden" ref={heroRef}>
+    <div className="bg-white md:rounded-[16px] overflow-hidden" ref={heroRef}>
       <div className="flex flex-col lg:flex-row space-x-6 space-y-6 lg:space-y-0">
         {/* Left side - Hero Image / Map / Video */}
         <div className="lg:w-[546px] w-full relative flex-shrink-0 group/container">
           <div
-            className="min-h-[360px] h-full w-full relative overflow-hidden md:rounded-lg rounded-[8px] cursor-pointer"
+            className="min-h-[360px] h-full w-full relative overflow-hidden md:rounded-[16px] rounded-[8px] cursor-pointer"
             onClick={() => {
               // Only trigger video play when clicking on video item
               if (
@@ -229,7 +229,7 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
                 src={`https://www.google.com/maps/embed?pb=${mapCode}`}
                 width="100%"
                 height="100%"
-                className="md:rounded-lg rounded-[8px] border-0 min-h-[360px] h-full"
+                className="md:rounded-[16px] rounded-[8px] border-0 min-h-[360px] h-full"
                 allowFullScreen
               />
             ) : (

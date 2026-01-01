@@ -167,25 +167,26 @@ const AllSpeciesPage: React.FC<AllSpeciesPageProps> = ({
                     href={`/species/${generateSlug(item.name)}`}
                   >
                     <div className="flex-1 min-w-0 border border-gray-200 rounded-[16px] flex-shrink-0 hover:shadow-md transition-all duration-200">
-                      <div className="overflow-hidden w-full md:p-4 p-2">
+                      <div className="overflow-hidden w-full p-4">
                         <Image
                           src={item.image}
                           alt={item.name}
                           width={350}
                           height={194}
-                          className="w-full object-cover rounded-lg max-h-[194px]"
+                          className="w-full object-cover rounded-[8px] md:rounded-lg max-h-[194px]"
                         />
                       </div>
-                      <div className="p-4 pt-2 flex justify-between items-center">
-                        <p className="text-lg font-bold text-black truncate md:text-lg md:font-bold md:text-[#19212C]">
+                      <div className="p-4 md:pt-2 pt-0 flex justify-between items-center">
+                        <p className="text-lg font-semibold text-black truncate md:text-lg md:font-bold md:text-[#19212C]">
                           {item.name}
                         </p>
-                        <button className="mr-4 flex items-center gap-2 text-[#003399] font-bold text-xs uppercase cursor-pointer">
+                        <button className="md:mr-4 flex items-center gap-2 text-[#003399] font-bold text-xs uppercase cursor-pointer">
                           Know More
                           <ArrowRightIcon
-                            width={22}
-                            height={22}
+                            width={24}
+                            height={24}
                             color="#003399"
+                            className="max-sm:w-4.5"
                           />
                         </button>
                       </div>
@@ -209,7 +210,7 @@ const AllSpeciesPage: React.FC<AllSpeciesPageProps> = ({
                 hasNext={pagination.hasNext}
                 hasPrevious={pagination.hasPrevious}
                 onPageChange={handlePageChange}
-                className="pt-5"
+                className="md:pt-5 pt-3"
               />
             )}
           </>

@@ -53,7 +53,7 @@ const Gallery: React.FC<GalleryProps> = ({ className }) => {
     <section className="relative">
       {/* Large Image */}
       <div
-        className={`w-full h-[361px] md:h-[400px] relative rounded-xl overflow-hidden ${className}`}
+        className={`w-full h-[361px] md:h-[400px] relative rounded-[8px] overflow-hidden ${className}`}
       >
         <Image
           src={images[selectedIndex]}
@@ -86,7 +86,7 @@ const Gallery: React.FC<GalleryProps> = ({ className }) => {
                 }}
               >
                 <div
-                  className={`relative w-full h-[70px] md:h-[116px] rounded-md overflow-hidden ${
+                  className={`relative w-full h-[70px] md:h-[116px] rounded-[8px] overflow-hidden ${
                     selectedIndex === idx ? "" : "opacity-60"
                   }`}
                 >

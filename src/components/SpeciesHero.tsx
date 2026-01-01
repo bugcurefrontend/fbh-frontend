@@ -166,24 +166,35 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
   }, [items]);
 
   return (
-    <div className="bg-white rounded-2xl overflow-hidden" ref={heroRef}>
+    <div className="bg-white md:rounded-[16px] overflow-hidden" ref={heroRef}>
       <div className="flex flex-col lg:flex-row space-x-6 space-y-6 lg:space-y-0">
         {/* Left side - Hero Image / Video */}
         <div className="lg:w-[546px] w-full relative flex-shrink-0 group/container">
           <div
-            className="min-h-[360px] h-full w-full relative overflow-hidden rounded-lg cursor-pointer"
+            className="min-h-[360px] h-full w-full relative overflow-hidden md:rounded-[16px] rounded-[8px] cursor-pointer"
             onClick={() => {
               // Only trigger video play when clicking on video item
-              if (items[activeIndex]?.id === "video" && videoUrl && !videoPlaying) {
+              if (
+                items[activeIndex]?.id === "video" &&
+                videoUrl &&
+                !videoPlaying
+              ) {
                 setVideoPlaying(true);
               }
             }}
           >
             {/* Show video player when video is selected and playing */}
             {items[activeIndex]?.id === "video" && videoPlaying && videoUrl ? (
-              videoUrl.includes("youtube.com") || videoUrl.includes("youtu.be") ? (
+              videoUrl.includes("youtube.com") ||
+              videoUrl.includes("youtu.be") ? (
                 <iframe
-                  src={`${videoUrl.includes("embed") ? videoUrl : videoUrl.replace("watch?v=", "embed/").replace("youtu.be/", "youtube.com/embed/")}?autoplay=1`}
+                  src={`${
+                    videoUrl.includes("embed")
+                      ? videoUrl
+                      : videoUrl
+                          .replace("watch?v=", "embed/")
+                          .replace("youtu.be/", "youtube.com/embed/")
+                  }?autoplay=1`}
                   className="w-full h-full min-h-[360px]"
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -257,10 +268,8 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
                       setActiveIndex(i);
                       setVideoPlaying(false); // Always reset - user must click main view to play
                     }}
-                    className={`w-[112px] h-[112px] flex-shrink-0 rounded-lg overflow-hidden border-2 cursor-pointer ${
-                      activeIndex === i
-                        ? "border-[#003399]"
-                        : "border-white"
+                    className={`w-[112px] h-[112px] flex-shrink-0 md:rounded-[16px] rounded-[8px] overflow-hidden border-2 cursor-pointer ${
+                      activeIndex === i ? "border-[#003399]" : "border-white"
                     }`}
                   >
                     <div className="relative w-full h-full">
@@ -326,7 +335,7 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
           </div>
 
           {/* Species Characteristics */}
-          <div className="border border-[#E4E4E4] rounded-2xl flex items-center justify-between p-6 max-lg:mt-6">
+          <div className="border border-[#E4E4E4] rounded-[8px] md:rounded-2xl flex items-center justify-between md:p-6 p-4 max-lg:mt-6">
             <div className="text-center space-y-2 xl:space-y-4 flex-1">
               <div className="md:w-10 w-8 md:h-10 h-8 mx-auto">
                 <Image
@@ -338,14 +347,14 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
                 />
               </div>
               <div className="md:text-2xl text-lg font-bold md:font-semibold text-black">
-                {characteristics.lifespan}
+                {characteristics.lifespan} yrs
               </div>
               <div className="md:text-base text-xs text-[#4C4748]">
                 Lifespan
               </div>
             </div>
 
-            <div className="w-px md:h-[140px] h-[96px] bg-gray-300 mx-6"></div>
+            <div className="w-px md:h-[140px] h-[96px] bg-gray-300 md:mx-6 mx-1"></div>
 
             <div className="text-center space-y-2 xl:space-y-4 flex-1">
               <div className="md:w-10 w-8 md:h-10 h-8 mx-auto">
@@ -365,7 +374,7 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
               </div>
             </div>
 
-            <div className="w-px md:h-[140px] h-[96px] bg-gray-300 mx-6"></div>
+            <div className="w-px md:h-[140px] h-[96px] bg-gray-300 md:mx-6 mx-1"></div>
 
             <div className="text-center space-y-2 xl:space-y-4 flex-1">
               <div className="md:w-10 w-8 md:h-10 h-8 mx-auto">
@@ -381,7 +390,7 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
                 <span className="max-md:hidden">
                   {characteristics.mdHeight}
                 </span>
-                <span className="md:hidden">{characteristics.height}</span>
+                <span className="md:hidden">{characteristics.height}</span>m
               </div>
               <div className="md:text-base text-xs text-[#4C4748]">Height</div>
             </div>

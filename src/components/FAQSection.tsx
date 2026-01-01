@@ -58,13 +58,13 @@ const FAQSection: React.FC<FAQSectionProps> = ({ faqs }) => {
           {faqData.map((faq) => (
             <div
               key={faq.id}
-              className="border border-[#E4E4E4] rounded-lg overflow-hidden"
+              className="border border-[#E4E4E4] md:rounded-lg rounded-[8px] overflow-hidden"
             >
               <button
                 onClick={() => toggleItem(faq.id)}
                 className="w-full flex items-center justify-between text-left hover:bg-gray-50 transition-colors p-6"
               >
-                <span className="text-[#454950] md:text-lg text-sm md:font-bold font-semibold leading-relaxed">
+                <span className="text-[#454950] md:text-lg text-sm md:font-bold font-semibold md:leading-relaxed leading-4.5">
                   {faq.question}
                 </span>
                 <div className="flex-shrink-0">
