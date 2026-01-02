@@ -85,7 +85,8 @@ function NavigationMenuItem({ item }: { item: NavigationItem }) {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <button
+      <Link
+        href={item.href || "#"}
         className={cn(
           "group inline-flex items-center justify-center bg-background p-2 uppercase text-xs font-bold leading-[18px] text-center align-middle text-[#19212C] rounded-none hover:bg-[#E6EBF5] transition-colors",
           "hover:bg-[#E6EBF5] focus:bg-[#E6EBF5] focus-visible:outline-1 focus-visible:ring-[3px] focus-visible:ring-ring/50 outline-none"
@@ -100,12 +101,12 @@ function NavigationMenuItem({ item }: { item: NavigationItem }) {
           strokeWidth={2}
           aria-hidden="true"
         />
-      </button>
+      </Link>
 
       {isOpen && item.sub && (
         <div
           className={cn(
-            "absolute left-0 top-full z-50 overflow-hidden border bg-white shadow-md animate-in fade-in-0 zoom-in-95"
+            "absolute left-0 top-auto z-50 overflow-hidden border bg-white shadow-md animate-in fade-in-0 zoom-in-95"
           )}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}

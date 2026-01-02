@@ -82,13 +82,13 @@ const HeroSection: React.FC<HeroSectionProps> = ({ heroContents }) => {
               }}
             >
               {/* Foreground content */}
-              <div className="w-full max-w-7xl mx-auto md:px-16 px-4 md:pt-[200px] pt-[102px]">
-                <div className="sm:max-w-[582px] max-w-[276px] text-white transition-all duration-700">
-                  <h1 className="sm:text-[64px] font-bold mb-4 text-[38px] leading-[1.2] sm:mb-8">
+              <div className="max-sm:absolute w-full max-w-7xl mx-auto md:px-14 px-4 md:pt-[200px] bottom-20">
+                <div className="sm:max-w-[582px] max-sm:mx-auto max-w-[290px] text-white transition-all duration-700 max-md:flex items-center justify-center flex-col">
+                  <h1 className="sm:text-[64px] max-md:text-center font-bold mb-4 text-[38px] leading-[1.2] sm:mb-8 drop-shadow-[0_4px_4px_rgba(0,0,0,0.3)]">
                     {slide.title}
                   </h1>
                   <Link href={slide.href}>
-                    <button className="bg-[#003399] text-white font-bold text-sm sm:py-3 py-[6px] rounded-[8px] md:w-[370px] h-9 md:h-12 md:py-[11px] md:px-[22px] md:rounded-lg md:text-base md:font-bold md:leading-[26px] md:text-[#FFFFFF] max-w-[370px] w-full hover:bg-[#002080]">
+                    <button className="bg-[#003399] text-white font-bold text-sm sm:py-3 py-[6px] rounded-[8px] w-[210px] sm:w-[370px] h-9 md:h-12 md:py-[11px] md:px-[22px] md:rounded-lg md:text-base md:font-bold md:leading-[26px] md:text-[#FFFFFF] max-w-[370px] hover:bg-[#002080] drop-shadow-[0_4px_4px_rgba(0,0,0,0.3)]">
                       {slide.buttonText}
                     </button>
                   </Link>
@@ -100,23 +100,25 @@ const HeroSection: React.FC<HeroSectionProps> = ({ heroContents }) => {
       </div>
 
       {/* Navigation buttons */}
-      <div className="max-md:hidden absolute right-45 bottom-28 flex gap-3 z-10">
-        <button
-          onClick={scrollPrev}
-          className="bg-white md:w-[42px] md:h-[42px] rounded-full flex items-center justify-center text-[#B7B9BB] cursor-pointer"
-        >
-          <ChevronLeft />
-        </button>
-        <button
-          onClick={scrollNext}
-          className="bg-[#003399] text-white md:w-[42px] md:h-[42px] rounded-full flex items-center justify-center cursor-pointer"
-        >
-          <ChevronRight />
-        </button>
+      <div className="relative max-w-7xl mx-auto">
+        <div className="max-md:hidden absolute flex gap-3 px-14 z-40 right-0 top-98">
+          <button
+            onClick={scrollPrev}
+            className="bg-white md:w-[42px] md:h-[42px] rounded-full flex items-center justify-center text-[#B7B9BB] cursor-pointer drop-shadow-[0_4px_4px_rgba(0,0,0,0.3)]"
+          >
+            <ChevronLeft />
+          </button>
+          <button
+            onClick={scrollNext}
+            className="bg-[#003399] text-white md:w-[42px] md:h-[42px] rounded-full flex items-center justify-center cursor-pointer drop-shadow-[0_4px_4px_rgba(0,0,0,0.3)]"
+          >
+            <ChevronRight />
+          </button>
+        </div>
       </div>
 
       {/* Mobile dots */}
-      <div className="md:hidden absolute top-[334px] left-1/2 -translate-x-1/2 flex gap-3">
+      <div className="md:hidden absolute top-[358px] left-1/2 -translate-x-1/2 flex gap-3">
         {heroSlides.map((_, i) => (
           <div
             key={i}

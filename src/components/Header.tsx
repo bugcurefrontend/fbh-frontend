@@ -56,11 +56,9 @@ export default function Header() {
       href: "/species",
     },
     {
-      label: "About",
-      sub: [
-        { label: "About us", href: "/about-us" },
-        { label: "Our Team", href: "/team" },
-      ],
+      label: "About us",
+      href: "/about-us",
+      sub: [{ label: "Our Team", href: "/team" }],
     },
     {
       label: "Contact Us",
@@ -119,12 +117,7 @@ export default function Header() {
                 {/* User Avatar Button */}
                 <button
                   onClick={() => setDropdownOpen(!dropdownOpen)}
-                  style={{
-                    width: "40px",
-                    height: "40px",
-                    borderRadius: "250px",
-                  }}
-                  className="relative flex items-center justify-center bg-gray-200 hover:bg-gray-300 transition-colors overflow-hidden"
+                  className="relative flex items-center justify-center bg-gray-200 hover:bg-gray-300 transition-colors overflow-hidden h-[37px] w-[37px] rounded-full"
                 >
                   {userProfile?.picture ? (
                     <Image
@@ -143,22 +136,16 @@ export default function Header() {
                   <div
                     className="absolute right-0 top-full bg-white z-50"
                     style={{
-                      width: "200px",
-                      height: "220px",
+                      width: "219px",
                       marginTop: "5px",
-                      paddingTop: "16px",
-                      paddingBottom: "8px",
-                      paddingLeft: "16px",
-                      paddingRight: "16px",
                       border: "1px solid #E4E4E4",
                       boxShadow: "0px 21px 40px 0px #31313133",
-                      borderRadius: "0px",
                     }}
                   >
                     {/* User Info Section - Horizontal Layout */}
                     <Link
                       href="/account"
-                      className="hover:bg-gray-50 rounded-md transition-colors flex items-center justify-center gap-2"
+                      className="hover:bg-gray-50 transition-colors flex items-center justify-center gap-2 px-4 my-4"
                       style={{
                         fontFamily: "Public Sans",
                         fontWeight: 400,
@@ -168,9 +155,8 @@ export default function Header() {
                         color: "#454950",
                       }}
                       onClick={() => setDropdownOpen(false)}
-                      // className="flex items-center gap-3 pb-3"
                     >
-                      <div className="relative flex-shrink-0 w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+                      <div className="relative flex-shrink-0 w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
                         {userProfile?.picture ? (
                           <Image
                             src={userProfile.picture}
@@ -179,24 +165,24 @@ export default function Header() {
                             className="object-cover"
                           />
                         ) : (
-                          <User className="w-6 h-6 text-gray-600" />
+                          <User className="w-5 h-5 text-gray-600" />
                         )}
                       </div>
                       <div className="flex flex-col min-w-0 flex-1">
-                        <span
-                          className="font-semibold truncate"
+                        <p
+                          className="truncate"
                           style={{
                             fontFamily: "Public Sans",
-                            fontWeight: 600,
+                            fontWeight: 700,
                             fontSize: "14px",
                             lineHeight: "22px",
                             letterSpacing: "0px",
-                            color: "#454950",
+                            color: "#090C0F",
                           }}
                         >
                           {userProfile?.firstName} {userProfile?.lastName}
-                        </span>
-                        <span
+                        </p>
+                        <p
                           className="truncate"
                           style={{
                             fontFamily: "Public Sans",
@@ -209,22 +195,22 @@ export default function Header() {
                           title={userProfile?.email}
                         >
                           {userProfile?.email}
-                        </span>
+                        </p>
                       </div>
                     </Link>
 
                     {/* Menu Items */}
-                    <div className="flex flex-col gap-2 py-3">
+                    <div className="flex flex-col">
                       <Link
                         href="/account"
-                        className="block px-3 py-2 hover:bg-gray-50 rounded-md transition-colors"
+                        className="block px-4 py-2 hover:bg-[#E6EBF5] transition-colors border-y border-[#E4E4E4]"
                         style={{
                           fontFamily: "Public Sans",
-                          fontWeight: 400,
-                          fontSize: "16px",
+                          fontWeight: 500,
+                          fontSize: "14px",
                           lineHeight: "24px",
                           letterSpacing: "0px",
-                          color: "#454950",
+                          color: "#090C0F",
                         }}
                         onClick={() => setDropdownOpen(false)}
                       >
@@ -234,36 +220,30 @@ export default function Header() {
                         href="https://my.heartfulness.org"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="block px-3 py-2 hover:bg-gray-50 rounded-md transition-colors"
+                        className="block px-4 py-2 hover:bg-[#E6EBF5] transition-colors border-b border-[#E4E4E4]"
                         style={{
                           fontFamily: "Public Sans",
-                          fontWeight: 400,
-                          fontSize: "16px",
+                          fontWeight: 500,
+                          fontSize: "14px",
                           lineHeight: "24px",
                           letterSpacing: "0px",
-                          color: "#454950",
+                          color: "#090C0F",
                         }}
                         onClick={() => setDropdownOpen(false)}
                       >
                         My Account
                       </a>
-
-                      {/* Sign Out Button */}
-                      <div
-                        style={{ marginLeft: "-16px", marginRight: "-16px" }}
-                      >
+                      <div>
                         <button
                           onClick={() => setShowSignOutAlert(true)}
-                          className="flex items-center gap-2 w-full py-2 transition-colors"
+                          className="flex items-center gap-2 w-full py-2 px-4 transition-colors"
                           style={{
                             fontFamily: "Public Sans",
-                            fontWeight: 500,
-                            fontSize: "16px",
+                            fontWeight: 600,
+                            fontSize: "14px",
                             lineHeight: "22px",
                             letterSpacing: "0px",
                             color: "#F04438",
-                            paddingLeft: "28px",
-                            paddingRight: "16px",
                           }}
                           onMouseEnter={(e) =>
                             (e.currentTarget.style.backgroundColor = "#E6EBF5")
@@ -275,6 +255,7 @@ export default function Header() {
                         >
                           <span>Sign Out</span>
                           <LogOut
+                            strokeWidth="2.5px"
                             className="w-4 h-4"
                             style={{ color: "#F04438" }}
                           />
@@ -295,14 +276,14 @@ export default function Header() {
           </div>
         </div>
         <AlertDialog open={showSignOutAlert} onOpenChange={setShowSignOutAlert}>
-          <AlertDialogContent>
+          <AlertDialogContent className="md:w-[533px] md:h-[204px]">
             <AlertDialogHeader>
               <AlertDialogTitle
                 className="flex items-center justify-between
               uppercase font-bold text-2xl mb-6"
               >
                 <div className="flex items-center gap-2">
-                  <TriangleAlert className="text-yellow-600 w-5 h-5" />
+                  <TriangleAlert className="text-[#F78F08] w-8 h-8" />
                   Confirmation
                 </div>
                 <button
@@ -312,7 +293,7 @@ export default function Header() {
                   <X size={20} className="text-black" />
                 </button>
               </AlertDialogTitle>
-              <AlertDialogDescription className="text-black">
+              <AlertDialogDescription className="text-black text-start">
                 Are you sure you want to sign out?
               </AlertDialogDescription>
             </AlertDialogHeader>
@@ -322,11 +303,14 @@ export default function Header() {
                   setDropdownOpen(false);
                   logout({ redirect: true, targetPath: "/" });
                 }}
-                className="bg-[#003399] hover:bg-[#032d80]"
+                className="bg-[#003399] hover:bg-[#032d80] h-12 md:w-[146px] rounded-[8px] font-bold text-base leading-6.5"
               >
                 Sign Out
               </AlertDialogAction>
-              <AlertDialogCancel onClick={() => setDropdownOpen(false)}>
+              <AlertDialogCancel
+                onClick={() => setDropdownOpen(false)}
+                className=" h-12 md:w-[146px] rounded-[8px] font-bold text-base leading-6.5"
+              >
                 Cancel
               </AlertDialogCancel>
             </AlertDialogFooter>

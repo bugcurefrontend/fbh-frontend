@@ -52,7 +52,7 @@ export default function CurrencySelect() {
       {/* Selected currency button */}
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center gap-1 border-[3px] border-[#E6E6E6] rounded-sm px-1.5 py-1 bg-white hover:bg-[#E6EBF5]"
+        className="flex items-center gap-1 border-[2px] h-[37px] border-[#E6E6E6] rounded-sm px-1.5 py-1 bg-white hover:bg-[#E6EBF5]"
       >
         <Image src={selected.flag} alt={selected.code} width={25} height={25} />
         <span className="text-sm leading-5 text-[#333333]">
@@ -65,7 +65,7 @@ export default function CurrencySelect() {
 
       {/* Dropdown Menu */}
       {open && (
-        <div className="absolute mt-2 w-full bg-white border-[3px] border-[#E6E6E6] rounded-sm z-20 overflow-hidden">
+        <div className="absolute mt-2 w-full bg-white border-[2px] border-[#E6E6E6] rounded-sm z-20 overflow-hidden">
           {currencies.map((c) => (
             <button
               key={c.code}

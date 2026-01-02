@@ -121,55 +121,63 @@ export function MobileNavigation({
                 <LightBox />
               </div>
               {navigationItems.map((item, index) => {
+                const hasSub = !!item.sub;
                 if (item.href) {
                   return (
-                    <Link
-                      key={index}
-                      href={item.href}
-                      className="flex justify-between items-center w-full px-4 py-2.5 mb-2 hover:bg-gray-50 transition-colors font-medium text-sm text-#090C0F uppercase"
-                      onClick={handleClose}
-                    >
-                      {item.label}
-                    </Link>
-                  );
-                }
-                if (item.sub) {
-                  return (
-                    <div key={index} className="space-y-2">
-                      <button
-                        onClick={() => handleMobileMenuExpand(item.label)}
-                        className="flex justify-between items-center w-full px-4 py-2.5 hover:bg-gray-50 transition-colors"
-                      >
-                        <span className="font-medium text-sm text-#090C0F uppercase">
+                    <div key={index} className="mb-2">
+                      <div className="flex items-center justify-between hover:bg-gray-50">
+                        {/* LEFT: Text → Route */}
+                        <Link
+                          href={item.href}
+                          onClick={handleClose}
+                          className="font-medium text-sm uppercase text-[#090C0F] w-full px-4 py-2.5"
+                        >
                           {item.label}
-                        </span>
-                        {mobileExpandedMenu === item.label ? (
-                          <ChevronDownIcon size={20} color="#63676C" />
-                        ) : (
-                          <ChevronRightIcon size={20} color="#63676C" />
+                        </Link>
+
+                        {/* RIGHT: Chevron → Expand */}
+                        {hasSub && (
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleMobileMenuExpand(item.label);
+                            }}
+                            className="p-2 mr-4"
+                            aria-label="Expand submenu"
+                          >
+                            {mobileExpandedMenu === item.label ? (
+                              <ChevronDownIcon size={20} color="#63676C" />
+                            ) : (
+                              <ChevronRightIcon size={20} color="#63676C" />
+                            )}
+                          </button>
                         )}
-                      </button>
-                      <div
-                        className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                          mobileExpandedMenu === item.label
-                            ? "max-h-96"
-                            : "max-h-0"
-                        }`}
-                      >
-                        <ul className="pl-12 pb-2 list-disc list-outside">
-                          {item.sub.map((subItem, subIndex) => (
-                            <li key={subIndex} className="text-[#454950]">
-                              <Link
-                                href={subItem.href}
-                                className="block py-2"
-                                onClick={handleClose}
-                              >
-                                {subItem.label}
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
                       </div>
+
+                      {/* SUB MENU */}
+                      {hasSub && (
+                        <div
+                          className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                            mobileExpandedMenu === item.label
+                              ? "max-h-96"
+                              : "max-h-0"
+                          }`}
+                        >
+                          <ul className="pl-12 list-disc">
+                            {item.sub!.map((subItem, subIndex) => (
+                              <li key={subIndex} className="text-[#454950]">
+                                <Link
+                                  href={subItem.href}
+                                  className="block py-2"
+                                  onClick={handleClose}
+                                >
+                                  {subItem.label}
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
                     </div>
                   );
                 }
