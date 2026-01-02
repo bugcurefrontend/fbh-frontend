@@ -136,7 +136,7 @@ const AllSpeciesPage: React.FC<AllSpeciesPageProps> = ({
         <SearchBar
           value={searchQuery}
           onChange={handleSearchChange}
-          placeholder="Search a species..."
+          placeholder="Search by Species name..."
         />
 
         {loading ? (

@@ -128,7 +128,7 @@ const TeamSection = () => {
                   alt={member.name}
                   width={343}
                   height={400}
-                  className="object-cover md:rounded-xl rounded-[8px] md:max-w-[300px] md:min-w-[300px] max-sm:max-h-[343px] "
+                  className="object-cover md:rounded-[16px] rounded-[8px] md:max-w-[300px] md:min-w-[300px] max-sm:max-h-[343px] "
                 />
 
                 {/* Content */}

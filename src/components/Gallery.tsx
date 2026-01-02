@@ -118,13 +118,13 @@ const Gallery: React.FC<GalleryProps> = ({ className }) => {
                 onClick={handlePrev}
                 className="border border-[#9CA3AF] md:w-[42px] md:h-[42px] rounded-full flex items-center justify-center text-[#9CA3AF] cursor-pointer"
               >
-                <CarouselPrevious className="w-4 h-4" />
+                <CarouselPrevious className="w-4 border-none h-4" />
               </div>
               <div
                 onClick={handleNext}
                 className="border border-black md:w-[42px] md:h-[42px] rounded-full flex items-center justify-center cursor-pointer"
               >
-                <CarouselNext className="w-4 h-4" />
+                <CarouselNext className="w-4 h-4 border-none" />
               </div>
             </div>
           </div>

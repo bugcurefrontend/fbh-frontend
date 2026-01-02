@@ -35,7 +35,7 @@ const page = () => {
           <div className="grid md:grid-cols-2 gap-8">
             <div>
               <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-                First Name <span className="text-red-500">*</span>
+                First Name
               </label>
               <input
                 type="text"
@@ -49,12 +49,12 @@ const page = () => {
                   }
                 }}
                 placeholder="jason"
-                className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-lg text-[#090C0F]"
+                className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F]"
               />
             </div>
             <div>
               <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-                Last Name <span className="text-red-500">*</span>
+                Last Name
               </label>
               <input
                 type="text"
@@ -67,7 +67,7 @@ const page = () => {
                     onPersonalDetailsChange("lastName", value);
                   }
                 }}
-                className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-lg text-[#090C0F]"
+                className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F]"
                 placeholder="Manson"
               />
             </div>
@@ -75,7 +75,7 @@ const page = () => {
 
           <div>
             <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-              Email <span className="text-red-500">*</span>
+              Email
             </label>
 
             <div className="relative w-full">
@@ -93,7 +93,7 @@ const page = () => {
                   }
                 }}
                 placeholder="olivia@heartfulness.com"
-                className="w-full pl-10 px-3.5 py-2.5 border border-[#D0D5DD] rounded-lg text-[#090C0F]"
+                className="w-full pl-10 px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F]"
               />
             </div>
             {emailError && (
@@ -115,7 +115,7 @@ const page = () => {
                 onPersonalDetailsChange("message", value);
               }}
               placeholder="Type your message here..."
-              className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-lg text-[#090C0F]"
+              className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F]"
             />
 
             {emailError && (
@@ -125,14 +125,14 @@ const page = () => {
             )}
           </div>
 
-          <Button className="w-full h-12 border-1 disabled:border-[#E8E8E9] disabled:bg-white border-[#95AAD5] text-white bg-[#003399] disabled:text-[#94979A] rounded-lg text-base font-bold hover:bg-[#013eb9] transition-colors disabled:cursor-not-allowed disabled:opacity-100 uppercase">
+          <Button className="w-full h-12 border-1 disabled:border-[#E8E8E9] disabled:bg-white border-[#95AAD5] text-white bg-[#003399] disabled:text-[#94979A] rounded-[8px] text-base font-bold hover:bg-[#013eb9] transition-colors disabled:cursor-not-allowed disabled:opacity-100 uppercase">
             Submit
           </Button>
         </div>
       </div>
       <div className="max-w-7xl mx-auto flex justify-center md:px-16 px-4">
         <div className="w-full rounded-2xl border border-[#95AAD5] bg-white px-6 py-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 md:divide-x divide-[#D1D5DB]">
+          <div className="md:h-[236px] grid grid-cols-1 md:grid-cols-3 md:divide-x divide-[#D1D5DB]">
             {/* Address */}
             <div className="flex flex-col items-center text-center sm:px-4 max-md:py-4">
               <div className="mb-4 flex md:h-20 md:w-20 h-10 w-10 items-center justify-center rounded-full bg-[#E5EBF5]">
@@ -160,7 +160,7 @@ const page = () => {
                 Send us your questions, suggestions, or collaboration proposals
               </p>
               <a href="mailto:fbh@heartfulness.org">
-                <p className="font-bold text-[#003399] hover:underline">
+                <p className="font-bold text-[#003399] hover:underline py-[11px]">
                   fbh@heartfulness.org
                 </p>
               </a>
@@ -184,7 +184,7 @@ const page = () => {
                 Reach out to us directly for quick responses and inquiries
               </p>
               <a href="https://wa.me/919391003685">
-                <p className="font-bold text-[#003399] hover:underline">
+                <p className="font-bold text-[#003399] hover:underline py-[11px]">
                   +91 93910 03685
                 </p>
               </a>

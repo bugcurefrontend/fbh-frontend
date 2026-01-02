@@ -110,7 +110,7 @@ const AllProjectsPage: React.FC<AllProjectsPageProps> = ({
         <SearchBar
           value={searchQuery}
           onChange={handleSearchChange}
-          placeholder="Search a project..."
+          placeholder="Search by Project name..."
         />
 
         {/* Projects Grid */}

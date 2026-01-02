@@ -60,7 +60,7 @@ const Footer: React.FC<FooterProps> = ({
       url: socialLinks?.linkedin || "#",
     },
     {
-      name: "X",
+      name: "Twitter",
       icon: "/images/Twitter.png",
       url: socialLinks?.x || "#",
     },

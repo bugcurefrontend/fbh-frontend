@@ -29,7 +29,7 @@ const OurOrigin = () => {
           alt="Our Origin"
           width={588}
           height={404}
-          className="rounded-xl object-cover w-full h-auto md:w-[46%] xl:w-[588px] max-md:px-4"
+          className="rounded-[9.34px] md:rounded-[16px] object-cover w-full h-auto md:w-[46%] xl:w-[588px] max-md:px-4"
         />
       </div>
       <div className="flex max-md:flex-col-reverse md:gap-8 gap-6 items-center justify-center">
@@ -38,7 +38,7 @@ const OurOrigin = () => {
           alt="Our Origin"
           width={588}
           height={404}
-          className="rounded-xl object-cover w-full h-auto md:w-[46%] xl:w-[588px] max-md:px-4"
+          className="rounded-[9.34px] md:rounded-[16px] object-cover w-full h-auto md:w-[46%] xl:w-[588px] max-md:px-4"
         />
         <div className="px-4 space-y-6 w-full h-auto md:w-[46%] xl:w-[588px]">
           <p className="text-[#454950] leading-6 max-md:text-sm">

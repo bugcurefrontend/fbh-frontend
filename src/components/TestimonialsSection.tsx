@@ -130,7 +130,7 @@ const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
         onMouseLeave={() => setIsHovered(false)}
       >
         <div
-          className={`md:rounded-xl rounded-[8px] w-full md:w-[45%] md:max-h-[40%] h-full relative overflow-hidden ${
+          className={`md:rounded-xl rounded-[8px] w-full md:w-[43.4%] md:max-h-[40%] h-full relative overflow-hidden ${
             testimonials[current].videoUrl && !videoPlaying
               ? "cursor-pointer"
               : ""

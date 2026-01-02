@@ -98,13 +98,13 @@ const FAQs = () => {
             </SelectContent>
           </Select>
         </div>
-        <div className="hidden md:block w-fit mx-auto border-b px-4 border-gray-200">
-          <TabsList className="flex bg-transparent p-0 h-auto w-full justify-start gap-8">
+        <div className="hidden md:block w-fit mx-auto">
+          <TabsList className="flex bg-transparent p-0 h-auto w-full justify-start">
             {faqData.map((tab) => (
               <TabsTrigger
                 key={tab.value}
                 value={tab.value}
-                className="flex items-center gap-2 pl-2 pr-1 py-4 border-b-2 border-transparent bg-transparent text-[#63676C] hover:text-[#003399] rounded-none relative data-[state=active]:border-[#003399] data-[state=active]:text-[#003399] data-[state=active]:bg-transparent font-bold text-base"
+                className="flex items-center px-5 py-4 border-b-[2px] bg-transparent border-[#B7B9BB] text-[#63676C] hover:text-[#003399] rounded-none relative data-[state=active]:border-[#003399] data-[state=active]:text-[#003399] data-[state=active]:bg-transparent font-bold text-base"
               >
                 {tab.title}
               </TabsTrigger>

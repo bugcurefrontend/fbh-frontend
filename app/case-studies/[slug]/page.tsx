@@ -72,7 +72,7 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
           backgroundPosition: "center",
         }}
       >
-        <div className="max-w-7xl w-full mx-auto px-4 md:px-12 md:space-y-12 space-y-8 text-white relative">
+        <div className="max-w-7xl w-full mx-auto px-4 md:px-12 md:space-y-12 space-y-8 text-white">
           <Breadcrumb>
             <BreadcrumbList className="text-white font-semibold md:text-base text-sm leading-[18px]">
               <BreadcrumbItem>
@@ -91,19 +91,21 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
             </BreadcrumbList>
           </Breadcrumb>
 
-          <div className="space-y-2">
-            <h1 className="font-[Playfair_Display] text-[22px] md:text-[32px] md:leading-12 leading-[30px] font-semibold">
-              {caseStudy.title}
-            </h1>
-            <div className="flex items-center gap-1 md:text-lg text-[10px] md:font-bold leading-4 md:leading-[26px]">
-              <MapPin className="w-4 h-4 md:w-6 md:h-6" />
-              <span className="md:text-xl md:leading-[30px] text-base md:font-bold">
-                {caseStudy.address}
-              </span>
+          <div className="relative">
+            <div className="space-y-2">
+              <h1 className="font-[Playfair_Display] text-[22px] md:text-[32px] md:leading-12 leading-[30px] font-semibold">
+                {caseStudy.title}
+              </h1>
+              <div className="flex items-center gap-1 md:text-lg text-[10px] md:font-bold leading-4 md:leading-[26px]">
+                <MapPin className="w-4 h-4 md:w-6 md:h-6" />
+                <span className="md:text-xl md:leading-[30px] text-base md:font-bold">
+                  {caseStudy.address}
+                </span>
+              </div>
             </div>
+            <ShareButton className="bottom-0 right-0" />
           </div>
         </div>
-        <ShareButton className="md:bottom-17 bottom-13 right-4 md:right-43" />
       </section>
 
       <div className="max-w-7xl mx-auto md:space-y-12 space-y-8">

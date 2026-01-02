@@ -53,11 +53,11 @@ const KanhaShantiVanam = () => {
             return (
               <div
                 key={index}
-                className="relative text-center p-4 md:space-y-4 space-y-2"
+                className="relative text-center p-4 max-md:space-y-2"
               >
                 {/* Icon with circle background */}
                 <div className="flex justify-center">
-                  <div className="md:w-10 w-8 md:h-10 h-8 rounded-full bg-[#9DE1C2] border-[2.5px] border-[#76D5A9] flex items-center justify-center">
+                  <div className="sm:w-[33.33px] w-[26.67] sm:h-[33.33px] h-[26.67] rounded-full bg-[#9DE1C2] border-[2.5px] border-[#76D5A9] flex items-center justify-center">
                     <Star
                       className="md:w-4 md:h-4 w-3 h-3 text-[#007A3F]"
                       fill="#007A3F"
@@ -66,7 +66,7 @@ const KanhaShantiVanam = () => {
                 </div>
 
                 {/* Title */}
-                <h3 className="md:text-2xl text-lg font-semibold">
+                <h3 className="md:text-2xl text-lg font-semibold my-4">
                   {feature.title}
                 </h3>
 
@@ -78,7 +78,7 @@ const KanhaShantiVanam = () => {
                 {(index === 0 || index === 2) && (
                   <div
                     className="absolute top-6 right-0 
-     bg-[#D1D5DB] w-[0.5px] h-[97px]"
+     bg-[#D1D5DB] w-[0.5px] h-[97px] md:hidden"
                   />
                 )}
               </div>
