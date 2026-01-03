@@ -53,7 +53,7 @@ const Step2: React.FC<Step2Props> = ({
         <div className="grid md:grid-cols-2 gap-6">
           <div>
             <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-              First Name <span className="text-red-500">*</span>
+              First Name
             </label>
             <input
               type="text"
@@ -62,12 +62,12 @@ const Step2: React.FC<Step2Props> = ({
                 handlePersonalDetailsChange("firstName", e.target.value)
               }
               placeholder="First Name"
-              className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F]"
+              className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F] shadow-xs"
             />
           </div>
           <div>
             <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-              Last Name <span className="text-red-500">*</span>
+              Last Name
             </label>
             <input
               type="text"
@@ -75,7 +75,7 @@ const Step2: React.FC<Step2Props> = ({
               onChange={(e) =>
                 handlePersonalDetailsChange("lastName", e.target.value)
               }
-              className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F]"
+              className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F] shadow-xs"
               placeholder="Last Name"
             />
           </div>
@@ -83,7 +83,7 @@ const Step2: React.FC<Step2Props> = ({
         <div className="grid md:grid-cols-2 gap-6">
           <div>
             <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-              Email <span className="text-red-500">*</span>
+              Email
             </label>
             <div className="relative w-full">
               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-[#63676C] w-5 h-5" />
@@ -94,7 +94,7 @@ const Step2: React.FC<Step2Props> = ({
                   handlePersonalDetailsChange("email", e.target.value)
                 }
                 placeholder="Enter Email"
-                className="w-full pl-10 px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F]"
+                className="w-full pl-10 px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F] shadow-xs"
               />
             </div>
             {!emailValid && personalDetails.email && (
@@ -105,7 +105,7 @@ const Step2: React.FC<Step2Props> = ({
           </div>
           <div>
             <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-              Phone number <span className="text-red-500">*</span>
+              Phone number
             </label>
             <div className="flex relative w-full">
               <Select
@@ -132,7 +132,7 @@ const Step2: React.FC<Step2Props> = ({
                   )
                 }
                 placeholder="Enter Number"
-                className="pl-20 w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F]"
+                className="pl-20 w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F] shadow-xs"
               />
             </div>
             {!phoneValid && personalDetails.phoneNumber && (
@@ -144,7 +144,7 @@ const Step2: React.FC<Step2Props> = ({
         </div>
         <div>
           <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-            Door no, Street Address <span className="text-red-500">*</span>
+            Door no, Street Address
           </label>
           <input
             type="text"
@@ -152,14 +152,14 @@ const Step2: React.FC<Step2Props> = ({
             onChange={(e) =>
               handlePersonalDetailsChange("doorNo", e.target.value)
             }
-            className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F]"
+            className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F] shadow-xs"
             placeholder="Enter address"
           />
         </div>
         <div className="grid md:grid-cols-2 gap-6">
           <div>
             <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-              City <span className="text-red-500">*</span>
+              City
             </label>
             <ComboBox
               value={personalDetails.city}
@@ -170,7 +170,7 @@ const Step2: React.FC<Step2Props> = ({
           </div>
           <div>
             <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-              State <span className="text-red-500">*</span>
+              State
             </label>
             <ComboBox
               value={personalDetails.state}
@@ -183,7 +183,7 @@ const Step2: React.FC<Step2Props> = ({
         <div className="grid md:grid-cols-2 gap-6">
           <div>
             <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-              Country <span className="text-red-500">*</span>
+              Country
             </label>
             <ComboBox
               value={personalDetails.country}
@@ -196,7 +196,7 @@ const Step2: React.FC<Step2Props> = ({
           </div>
           <div>
             <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-              Pincode <span className="text-red-500">*</span>
+              Pincode
             </label>
             <input
               type="text"
@@ -207,7 +207,7 @@ const Step2: React.FC<Step2Props> = ({
                   e.target.value.replace(/[^0-9]/g, "")
                 )
               }
-              className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F]"
+              className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F] shadow-xs"
               placeholder="Enter Pincode"
             />
             {!pincodeValid && personalDetails.pincode && (
@@ -220,7 +220,7 @@ const Step2: React.FC<Step2Props> = ({
         <Button
           onClick={handleSaveAndNext}
           disabled={!isStep2Valid}
-          className="w-full h-12 text-white bg-[#003399] rounded-[8px] text-base font-bold hover:bg-[#013eb9] disabled:bg-gray-300"
+          className="w-full h-11 md:h-12 text-white bg-[#003399] rounded-[8px] text-base font-bold hover:bg-[#013eb9] disabled:bg-gray-300"
         >
           Next
         </Button>

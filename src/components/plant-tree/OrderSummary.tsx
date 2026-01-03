@@ -19,14 +19,16 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
     <div className="lg:w-[45%] sticky top-20 self-start space-y-6">
       <div className="space-y-1">
         <div className="border border-[#E8E8E9] rounded-2xl overflow-hidden">
-          <h2 className="border-b border-[#E8E8E9] text-lg font-bold py-4 px-6">
+          <h2 className="border-b border-[#E8E8E9] md:text-lg font-semibold md:font-bold py-4 px-4 md:px-6">
             Order Summary
           </h2>
 
-          <div className="space-y-6 p-6 bg-[#F9FCFE]">
+          <div className="space-y-6 p-4 md:p-6 bg-[#F9FCFE]">
             <div className="text-[#4C4748] flex justify-between">
               <div className="space-y-5 text-sm">
-                <h2 className="font-bold text-base">Donation for :</h2>
+                <h2 className="font-semibold md:font-bold md:text-base">
+                  Donation for :
+                </h2>
                 <h2>Number Of Trees :</h2>
                 <h2>
                   Total Co2 Sequested <span className="text-red-500">*</span> :
@@ -35,7 +37,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
               </div>
 
               <div className="space-y-4 font-semibold text-sm leading-5.5">
-                <h2 className="text-base font-bold">Shivgarh, MP</h2>
+                <h2 className="md:text-base md:font-bold">Shivgarh, MP</h2>
                 <h2>
                   {orderSummary.numberOfTrees > 0
                     ? String(orderSummary.numberOfTrees).padStart(2, "0")

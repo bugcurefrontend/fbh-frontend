@@ -66,7 +66,7 @@ const TaxDetail: React.FC<TaxDetailProps> = ({
       <div className="grid md:grid-cols-2 gap-6">
         <div>
           <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-            City <span className="text-red-500">*</span>
+            Citizenship <span className="text-red-500">*</span>
           </label>
           <ComboBox
             value={taxDetails.citizenship}
@@ -77,13 +77,13 @@ const TaxDetail: React.FC<TaxDetailProps> = ({
         </div>
         <div>
           <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-            ID Type <span className="text-red-500">*</span>
+            ID Type
           </label>
           <Select
             value={taxDetails.idType}
             onValueChange={(value) => onTaxDetailsChange("idType", value)}
           >
-            <SelectTrigger className="w-full px-3.5 py-2.5 border border-[#D0D5DD] min-h-fit rounded-[8px] text-[#090C0F] text-base">
+            <SelectTrigger className="w-full px-3.5 py-2.5 border border-[#D0D5DD] min-h-fit rounded-[8px] text-[#090C0F] shadow-xs text-base">
               <SelectValue placeholder="Select ID Type" />
             </SelectTrigger>
 
@@ -112,7 +112,6 @@ const TaxDetail: React.FC<TaxDetailProps> = ({
               : taxDetails.idType === "DRIVING LICENSE"
               ? "Driving License Number"
               : "ID Number"}{" "}
-            <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -120,7 +119,7 @@ const TaxDetail: React.FC<TaxDetailProps> = ({
             onChange={(e) =>
               onTaxDetailsChange("idNumber", formatIdValue(e.target.value))
             }
-            className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F]"
+            className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F] shadow-xs"
             placeholder={`Enter ${
               taxDetails.idType === "PAN CARD"
                 ? "PAN"
@@ -140,7 +139,6 @@ const TaxDetail: React.FC<TaxDetailProps> = ({
         <div>
           <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
             Abhyasi ID/ Member ID
-            <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -151,7 +149,7 @@ const TaxDetail: React.FC<TaxDetailProps> = ({
                 formatIdValue(e.target.value)
               )
             }
-            className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F]"
+            className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F] shadow-xs"
             placeholder="Enter ID details"
           />
         </div>

@@ -44,7 +44,7 @@ const Step1: React.FC<Step1Props> = ({
   return (
     <div className="flex flex-col w-full md:space-y-8 space-y-4">
       <div className="space-y-4">
-        <p className="text-lg text-[#454950] font-medium">
+        <p className="text-base md:text-lg text-[#454950] md:font-medium">
           What Occasion / Cause are you donating for?
         </p>
         <ComboBox
@@ -57,7 +57,7 @@ const Step1: React.FC<Step1Props> = ({
       </div>
 
       <div className="space-y-4">
-        <p className="text-lg text-[#454950] font-medium">
+        <p className="text-base md:text-lg text-[#454950] md:font-medium">
           How many trees would you like to plant?
         </p>
         <div className="space-y-4">
@@ -135,7 +135,7 @@ const Step1: React.FC<Step1Props> = ({
       <Button
         onClick={handleSaveAndNext}
         disabled={(!selectedQuantity && !manualQuantity) || !occasion.trim()}
-        className="w-full h-12 text-white bg-[#003399] rounded-[8px] text-base font-bold hover:bg-[#013eb9] disabled:bg-gray-300"
+        className="w-full h-11 md:h-12 text-white bg-[#003399] rounded-[8px] text-base font-bold hover:bg-[#013eb9] disabled:bg-gray-300"
       >
         Next
       </Button>

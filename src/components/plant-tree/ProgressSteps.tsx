@@ -12,7 +12,7 @@ const ProgressSteps: React.FC<ProgressStepsProps> = ({ currentStep }) => {
         {/* Step 1 */}
         <div className="flex flex-col items-center relative z-10">
           <div
-            className={`w-8 h-8 rounded-full flex items-center justify-center ${
+            className={`sm:w-8 sm:h-8 w-6 h-6 rounded-full flex items-center justify-center ${
               currentStep > 1
                 ? "bg-[#003399]"
                 : currentStep === 1
@@ -40,7 +40,7 @@ const ProgressSteps: React.FC<ProgressStepsProps> = ({ currentStep }) => {
         {/* Step 2 */}
         <div className="flex flex-col items-center relative z-10">
           <div
-            className={`w-8 h-8 rounded-full flex items-center justify-center ${
+            className={`sm:w-8 sm:h-8 w-6 h-6 rounded-full flex items-center justify-center ${
               currentStep > 2
                 ? "bg-[#003399]"
                 : currentStep === 2
@@ -68,7 +68,7 @@ const ProgressSteps: React.FC<ProgressStepsProps> = ({ currentStep }) => {
         {/* Step 3 */}
         <div className="flex flex-col items-center relative z-10">
           <div
-            className={`w-8 h-8 rounded-full flex items-center justify-center ${
+            className={`sm:w-8 sm:h-8 w-6 h-6 rounded-full flex items-center justify-center ${
               currentStep > 3
                 ? "bg-[#003399]"
                 : currentStep === 3
@@ -83,21 +83,21 @@ const ProgressSteps: React.FC<ProgressStepsProps> = ({ currentStep }) => {
 
       <div className="flex items-center justify-between">
         <h1
-          className={`font-semibold ${
+          className={`font-semibold max-sm:text-sm ${
             currentStep >= 1 ? "text-[#003399]" : "text-[#454950]"
           }`}
         >
           Plant Details
         </h1>
         <h1
-          className={`font-semibold ${
+          className={`font-semibold max-sm:text-sm ${
             currentStep >= 2 ? "text-[#003399]" : "text-[#454950]"
           }`}
         >
           Personal Details
         </h1>
         <h1
-          className={`font-semibold ${
+          className={`font-semibold max-sm:text-sm ${
             currentStep === 3 ? "text-[#003399]" : "text-[#454950]"
           }`}
         >

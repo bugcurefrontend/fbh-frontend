@@ -34,12 +34,15 @@ const NewOrderSummary: React.FC<NewOrderSummaryProps> = ({
               <div className="space-y-5 text-sm">
                 <h2 className="font-bold text-base">Donation for :</h2>
                 <h2>Number Of Trees :</h2>
-                <h2>Total Co2 offset :</h2>
+                <h2>
+                  Total Co2 Sequested <span className="text-red-500">*</span> :
+                </h2>{" "}
                 <h2>Total Amount :</h2>
               </div>
 
-              <div className="space-y-4 font-bold">
-                <h2>Shivgarh, MP</h2>
+              <div className="space-y-4 font-semibold text-sm leading-5.5">
+                {" "}
+                <h2 className="text-base font-bold">Shivgarh, MP</h2>
                 <h2>
                   {selectedTrees > 0
                     ? String(selectedTrees).padStart(2, "0")

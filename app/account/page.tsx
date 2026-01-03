@@ -36,9 +36,9 @@ const AccountPage = () => {
   }
 
   return (
-    <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 md:pt-8 pt-4">
+    <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
       <div className="flex items-center gap-3">
-        <div className="h-[35px] w-[35px] sm:h-[54.5px] sm:w-[54.5px] rounded-full overflow-hidden bg-gray-100">
+        <div className="h-[34.5px] w-[34.5px] sm:h-[54.5px] sm:w-[54.5px] rounded-full overflow-hidden bg-gray-100">
           <Image
             src="/images/profile.png"
             alt="Profile"
@@ -48,12 +48,12 @@ const AccountPage = () => {
           />
         </div>
 
-        <p className="font-[Playfair_Display] text-lg sm:text-2xl font-semibold text-[#232D26]">
+        <p className="font-[Playfair_Display] sm:text-2xl font-semibold text-[#232D26]">
           Hello, {displayName}!
         </p>
       </div>
 
-      <Tabs defaultValue="dashboard" className="mt-6 relative">
+      <Tabs defaultValue="dashboard" className="sm:mt-6 mt-4 relative">
         <TabsList className="items-center min-[400px]:justify-start w-full bg-transparent h-auto p-0 min-w-fit relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:border-b-2 after:border-gray-200">
           <TabsTrigger
             value="dashboard"
@@ -77,10 +77,11 @@ const AccountPage = () => {
             Need Support
             <CircleQuestionMark size={20} />
           </Button>
-          <button className="bg-[#0D824B] sm:hidden rounded-full shadow-xs h-15 w-15 z-50 text-white absolute -right-2 -bottom-2 items-center justify-center flex">
-            <Headset size={32} />
-          </button>
         </TabsList>
+
+        <button className="bg-[#0D824B] sm:hidden rounded-full shadow-xs h-15 w-15 z-50 text-white absolute -right-2 -bottom-16 items-center justify-center flex">
+          <Headset size={32} />
+        </button>
 
         <TabsContent value="dashboard">
           <DashboardTab />

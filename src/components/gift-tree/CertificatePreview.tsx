@@ -19,7 +19,7 @@ const CertificatePreview: React.FC = () => {
             backgroundImage: "url('/images/blur-certificate.png')",
           }}
         >
-          <button className="flex items-center gap-1.5 text-sm font-bold">
+          <button className="flex items-center gap-1.5 text-sm font-semibold md:font-bold">
             View Sample Certificate
             <Eye className="w-4 h-4" />
           </button>

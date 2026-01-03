@@ -58,8 +58,8 @@ const ProceedToPay: React.FC<ProceedToPayProps> = ({
     // Simulate processing delay then show error
     setTimeout(() => {
       setStatus("error");
-      setCountdown(5);
-    }, 4000);
+      setCountdown(50);
+    }, 50000);
   };
 
   const handleSaveAdjust = () => {
@@ -99,24 +99,24 @@ const ProceedToPay: React.FC<ProceedToPayProps> = ({
       </Button>
 
       <AlertDialog open={isStatusOpen} onOpenChange={setIsStatusOpen}>
-        <AlertDialogContent className="md:max-w-[533px] border border-[#E4E4E4] rounded-2xl dialog-pop gap-4">
+        <AlertDialogContent className="md:max-w-[533px] sm:h-[402px] h-[415px] border border-[#E4E4E4] rounded-[8px] md:rounded-2xl dialog-pop gap-4 max-sm:px-4 max-sm:py-20">
           {status === "error" ? (
             <>
-              <div className="w-[155px] h-[155px] mx-auto">
+              <div className="w-[125.25px] sm:w-[155px] h-[125.25px] sm:h-[155px] mx-auto">
                 <Lottie animationData={plantAnimation} loop={true} />
               </div>
 
               <AlertDialogTitle>
-                <p className="text-2xl leading-9 font-semibold md:font-bold text-[#232D26]">
+                <p className="md:text-[32px] text-2xl leading-9 font-semibold md:font-bold text-[#232D26]">
                   Uh-oh!
                 </p>
               </AlertDialogTitle>
 
               <div className="space-y-3">
-                <p className="text-xl font-semibold text-[#19212C]">
+                <p className="md:text-xl font-semibold text-[#19212C]">
                   Looks like all trees have been planted!{" "}
                 </p>
-                <p className="text-[#454950] font-medium">
+                <p className="max-sm:text-sm text-[#454950] font-medium">
                   Redirecting you to Homepage in{" "}
                   <span className="text-[#0D824B]">00:0{countdown}</span>
                 </p>
@@ -124,21 +124,21 @@ const ProceedToPay: React.FC<ProceedToPayProps> = ({
             </>
           ) : (
             <>
-              <div className="w-[155px] h-[155px] mx-auto">
+              <div className="w-[125.25px] sm:w-[155px] h-[125.25px] sm:h-[155px] mx-auto">
                 <Lottie animationData={plantAnimation} loop={true} />
               </div>
 
               <AlertDialogTitle>
-                <p className="text-2xl leading-9 font-semibold md:font-bold text-[#232D26]">
+                <p className="md:text-[32px] text-2xl leading-9 font-semibold md:font-bold text-[#232D26]">
                   Please wait
                 </p>
               </AlertDialogTitle>
 
               <div className="space-y-3">
-                <p className="text-xl font-semibold text-[#19212C]">
+                <p className="md:text-xl font-semibold text-[#19212C]">
                   Holding your trees and taking you to payment.
                 </p>
-                <p className="text-[#454950] font-medium">
+                <p className="max-sm:text-sm text-[#454950] font-medium">
                   Please do not refresh this page or click on browser’s back
                   button.{" "}
                 </p>
@@ -151,21 +151,21 @@ const ProceedToPay: React.FC<ProceedToPayProps> = ({
       <Dialog open={isAdjustOpen} onOpenChange={setIsAdjustOpen}>
         <DialogContent
           showCloseButton={false}
-          className="md:max-w-[533px] px-6 py-4"
+          className="md:max-w-[533px] overflow-hidden px-4 md:px-6 py-4"
         >
-          <DialogTitle className="uppercase font-bold text-2xl px-6 text-center">
+          <DialogTitle className="uppercase font-bold md:text-2xl px-6 text-center">
             Adjust Trees
           </DialogTitle>
-          <div className="space-y-6">
-            <div className="flex gap-5 items-center border-[0.8px] border-[#F78F08] text-[#F78F08] bg-[#FEF4E7] px-4 py-3 rounded-[8px] font-medium">
-              <TriangleAlert className="min-w-8 h-full" />
-              <p>
+          <div className="md:space-y-6 space-y-4">
+            <div className="flex max-sm:flex-col md:gap-5 gap-2 sm:items-center border-[0.8px] border-[#F78F08] text-[#F78F08] bg-[#FEF4E7] px-4 md:py-3 py-2 rounded-[8px] font-medium">
+              <TriangleAlert className="md:min-w-8 min-w-6 h-full" />
+              <p className="font-medium max-sm:text-sm">
                 You've exceeded the maximum trees quantity. Please reduce the
                 quantity for recipient.
               </p>
             </div>
             <div className="flex items-center gap-4">
-              <div className="bg-[#E8E8E9] text-[#19212C] text-lg leading-6.5 rounded-[8px] w-full p-3 flex justify-between items-center gap-4">
+              <div className="bg-[#E8E8E9] text-[#19212C] max-sm:flex-col md:text-lg leading-6.5 rounded-[8px] w-full sm:p-3 max-sm:py-2 max-sm:px-3 flex justify-between sm:items-center gap-1 sm:gap-4">
                 <span className="font-medium">Trees Available:</span>
                 <span className="font-bold ">{availableTrees}</span>
               </div>
@@ -174,7 +174,7 @@ const ProceedToPay: React.FC<ProceedToPayProps> = ({
                   isAdjustmentValid
                     ? "bg-[#ECFDF3] text-[#027A48]"
                     : "bg-[#FEECEB] text-[#F04438]"
-                } text-lg leading-6.5 rounded-[8px] w-full p-3 flex justify-between items-center gap-4 transition-colors`}
+                } max-sm:flex-col md:text-lg leading-6.5 rounded-[8px] w-full sm:p-3 max-sm:py-2 max-sm:px-3 flex justify-between sm:items-center gap-1 sm:gap-4 transition-colors`}
               >
                 <span className="font-medium">Trees Selected:</span>
                 <span className="font-bold ">{currentInputTrees}</span>
@@ -195,7 +195,7 @@ const ProceedToPay: React.FC<ProceedToPayProps> = ({
                 min="1"
                 value={adjustInput}
                 onChange={(e) => setAdjustInput(e.target.value)}
-                className={`text-center border-[#003399] text-[#003399] px-4 py-2.5 border rounded-[8px] flex-1 max-w-[128px] transition-colors`}
+                className={`text-center border-[#003399] text-[#003399] px-4 py-2.5 border rounded-[8px] flex-1 sm:max-w-[128px] max-w-[80px] transition-colors`}
               />
             </div>
             <Button

@@ -31,13 +31,13 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
 }) => {
   return (
     <div className="bg-white border border-[#E8E8E9] rounded-[8px] mb-8">
-      <h2 className="border-b border-[#E8E8E9] text-lg font-bold py-4 px-6">
+      <h2 className="border-b border-[#E8E8E9] md:text-lg font-semibold md:font-bold py-4 px-4 md:px-6">
         Personal Details
       </h2>
 
       <div className="p-4 space-y-6">
         <div className="space-y-4">
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 gap-6 md:gap-8">
             <div>
               <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
                 First Name
@@ -54,7 +54,7 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
                   }
                 }}
                 placeholder="jason"
-                className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F]"
+                className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F] shadow-xs"
               />
             </div>
             <div>
@@ -72,7 +72,7 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
                     onPersonalDetailsChange("lastName", value);
                   }
                 }}
-                className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F]"
+                className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F] shadow-xs"
                 placeholder="Manson"
               />
             </div>
@@ -112,7 +112,7 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
                 onPersonalDetailsChange("email", e.target.value.trimStart())
               }
               placeholder="olivia@heartfulness.com"
-              className="w-full pl-10 px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F]"
+              className="w-full pl-10 px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F] shadow-xs"
             />
           </div>
           {emailError && (
@@ -122,7 +122,7 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
           )}
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 gap-6 md:gap-8">
           <div>
             <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
               Phone number
@@ -170,7 +170,7 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
                   )
                 }
                 placeholder="Enter phone number"
-                className="pl-20 w-full px-3.5 py-2.5 border border-[#D0D5DD] min-h-fit rounded-[8px] text-[#090C0F] text-base"
+                className="pl-20 w-full px-3.5 py-2.5 border border-[#D0D5DD] min-h-fit rounded-[8px] text-[#090C0F] shadow-xs text-base"
               />
             </div>
             {phoneError && (
@@ -189,7 +189,7 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
                 onPersonalDetailsChange("currency", value)
               }
             >
-              <SelectTrigger className="w-full px-3.5 py-2.5 border border-[#D0D5DD] min-h-fit rounded-[8px] text-[#090C0F] text-base">
+              <SelectTrigger className="w-full px-3.5 py-2.5 border border-[#D0D5DD] min-h-fit rounded-[8px] text-[#090C0F] shadow-xs text-base">
                 <SelectValue placeholder="Currency" />
               </SelectTrigger>
               <SelectContent>
@@ -235,12 +235,12 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
                 e.target.value.replace(/[^A-Za-z0-9\s,./#-]/g, "").slice(0, 120)
               )
             }
-            className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F]"
+            className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F] shadow-xs"
             placeholder="Enter address"
           />
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 gap-6 md:gap-8">
           <div>
             <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
               City
@@ -270,7 +270,7 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
           </div>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 gap-6 md:gap-8">
           <div>
             <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
               Country
@@ -295,7 +295,7 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
                   e.target.value.replace(/[^0-9]/g, "").slice(0, 10)
                 )
               }
-              className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F]"
+              className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F] shadow-xs"
               placeholder="Enter Pincode"
             />
             {pincodeError && (

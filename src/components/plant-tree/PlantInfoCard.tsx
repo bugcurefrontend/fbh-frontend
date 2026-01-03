@@ -32,12 +32,12 @@ const PlantInfoCard: React.FC<PlantInfoCardProps> = ({
       <img
         src="https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=120&h=120&fit=crop"
         alt="Neem tree"
-        className="max-h-22 md:max-w-25 md:max-h-25 rounded object-cover"
+        className="max-h-[81.62px] max-w-[77px] md:max-w-25 md:max-h-25 rounded-[8px] object-cover"
       />
       <div className="flex flex-col justify-between w-full">
         <div className="flex items-center justify-between">
           {isGeoTagged ? (
-            <div className="font-semibold max-md:text-xs bg-[#E7F8F0] text-[#12B569] px-3 py-1 rounded-[8px]">
+            <div className="font-semibold max-md:text-xs bg-[#E7F8F0] text-[#12B569] px-2 md:px-3 py-[2px] md:py-1 rounded-[8px]">
               Plants are Geo-Tagged
             </div>
           ) : (
@@ -62,11 +62,17 @@ const PlantInfoCard: React.FC<PlantInfoCardProps> = ({
           </p>
         )}
         <div className="space-y-1">
-          <h1 className="text-2xl text-[#090C0F] leading-9 font-semibold">
+          <h1 className="text-lg sm:text-2xl text-[#090C0F] md:leading-9 font-semibold">
             Neem
           </h1>
           <div className="flex items-center gap-1 text-gray-600">
-            <Image src="/images/Frame.png" alt="tree" width={20} height={20} />{" "}
+            <Image
+              src="/images/Frame.png"
+              alt="tree"
+              width={20}
+              height={20}
+              className="max-sm:w-4"
+            />{" "}
             <span className="md:text-base text-sm md:font-semibold">
               Azadirachta{" "}
             </span>

@@ -44,12 +44,12 @@ const SpeciesSelectionDialog: React.FC<SpeciesSelectionDialogProps> = ({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>{trigger}</DialogTrigger>
       <DialogContent className="px-0 py-4 md:w-[533px]">
-        <DialogTitle className="border-b pb-4 px-6 uppercase font-bold text-2xl text-[#232D26]">
+        <DialogTitle className="pb-2 md:pb-4 px-4 sm:px-6 uppercase font-bold md:text-2xl text-[#232D26]">
           Select Species
         </DialogTitle>
-        <div className="px-6 space-y-4">
+        <div className="px-4 sm:px-6 space-y-4">
           <h1 className="flex items-baseline gap-1">
-            <span className="font-bold text-[28px] leading-[36px] text-[#090C0F]">
+            <span className="font-bold text-2xl sm:text-[28px] leading-[36px] text-[#090C0F]">
               ₹ 175 /
             </span>
             <span className="font-semibold text-[16px] leading-[36px] text-[#003399]">
@@ -90,7 +90,7 @@ const SpeciesSelectionDialog: React.FC<SpeciesSelectionDialogProps> = ({
               {availabilityMessage}
             </p>
           )}
-          <div className="mt-2 space-y-4 max-h-[400px] overflow-y-auto flex-1">
+          <div className="mt-2 space-y-4 max-h-[418px] sm:max-h-[400px] overflow-y-auto flex-1">
             {speciesData.length === 0 ? (
               <p className="text-sm text-red-500 font-medium">
                 No species available for this selection.
@@ -100,7 +100,7 @@ const SpeciesSelectionDialog: React.FC<SpeciesSelectionDialogProps> = ({
                 <div
                   key={tree.id}
                   onClick={() => onSpeciesSelect(tree.id)}
-                  className={`flex items-center gap-3 p-3 rounded-xl cursor-pointer border ${
+                  className={`flex items-center gap-3 p-3 rounded-[8px] cursor-pointer border max-sm:h-[70.8px] ${
                     selectedSpeciesId === tree.id
                       ? "border-[#2B56AB]"
                       : "border-gray-200"
@@ -111,11 +111,22 @@ const SpeciesSelectionDialog: React.FC<SpeciesSelectionDialogProps> = ({
                     alt={tree.name}
                     width={60}
                     height={60}
-                    className="rounded-[8px] object-cover"
+                    className="rounded-[3.55px] sm:rounded-[8px] object-cover max-sm:w-[46px]"
                   />
                   <div>
                     <h4 className="font-semibold">{tree.name}</h4>
-                    <p className="text-sm text-gray-500">{tree.botanical}</p>
+                    <div className="flex items-center gap-1 text-gray-600">
+                      <Image
+                        src="/images/Frame.png"
+                        alt="tree"
+                        width={20}
+                        height={20}
+                        className="max-sm:w-4"
+                      />{" "}
+                      <span className="md:text-base text-sm md:font-semibold">
+                        {tree.botanical}{" "}
+                      </span>
+                    </div>
                   </div>
                 </div>
               ))

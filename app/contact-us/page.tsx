@@ -23,7 +23,7 @@ const page = () => {
     <main className="md:space-y-16 space-y-8">
       <div className="bg-[#E6EBF580] flex flex-col gap-6 sm:gap-10 items-center justify-center sm:p-8 p-4">
         <div className="sm:space-y-4 text-center">
-          <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold text-black md:text-[32px] md:font-semibold md:leading-[48px] max-md:text-center md:text-[#090C0F]">
+          <h2 className="text-[22px] sm:text-[32px] font-[Playfair_Display] font-semibold text-black md:text-[32px] md:font-semibold md:leading-[48px] max-md:text-center md:text-[#090C0F]">
             Get In Touch
           </h2>
           <p className="text-[#454950] font-medium leading-6.5 md:text-lg max-sm:hidden">
@@ -32,7 +32,7 @@ const page = () => {
         </div>
 
         <div className="max-w-[706px] w-full bg-white border border-[#E8E8E9] rounded-2xl p-4 space-y-6">
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 gap-6 md:gap-8">
             <div>
               <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
                 First Name
@@ -49,7 +49,7 @@ const page = () => {
                   }
                 }}
                 placeholder="jason"
-                className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F]"
+                className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F] shadow-xs"
               />
             </div>
             <div>
@@ -67,7 +67,7 @@ const page = () => {
                     onPersonalDetailsChange("lastName", value);
                   }
                 }}
-                className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F]"
+                className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F] shadow-xs"
                 placeholder="Manson"
               />
             </div>
@@ -93,7 +93,7 @@ const page = () => {
                   }
                 }}
                 placeholder="olivia@heartfulness.com"
-                className="w-full pl-10 px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F]"
+                className="w-full pl-10 px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F] shadow-xs"
               />
             </div>
             {emailError && (
@@ -115,7 +115,7 @@ const page = () => {
                 onPersonalDetailsChange("message", value);
               }}
               placeholder="Type your message here..."
-              className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F]"
+              className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F] shadow-xs"
             />
 
             {emailError && (
@@ -125,13 +125,13 @@ const page = () => {
             )}
           </div>
 
-          <Button className="w-full h-12 border-1 disabled:border-[#E8E8E9] disabled:bg-white border-[#95AAD5] text-white bg-[#003399] disabled:text-[#94979A] rounded-[8px] text-base font-bold hover:bg-[#013eb9] transition-colors disabled:cursor-not-allowed disabled:opacity-100 uppercase">
+          <Button className="w-full h-11 md:h-12 border-1 disabled:border-[#E8E8E9] disabled:bg-white border-[#95AAD5] text-white bg-[#003399] disabled:text-[#94979A] rounded-[8px] text-base font-bold hover:bg-[#013eb9] transition-colors disabled:cursor-not-allowed disabled:opacity-100 uppercase">
             Submit
           </Button>
         </div>
       </div>
       <div className="max-w-7xl mx-auto flex justify-center md:px-16 px-4">
-        <div className="w-full rounded-2xl border border-[#95AAD5] bg-white px-6 py-8">
+        <div className="w-full rounded-2xl border border-[#95AAD5] bg-white md:px-6 md:py-8">
           <div className="md:h-[236px] grid grid-cols-1 md:grid-cols-3 md:divide-x divide-[#D1D5DB]">
             {/* Address */}
             <div className="flex flex-col items-center text-center sm:px-4 max-md:py-4">

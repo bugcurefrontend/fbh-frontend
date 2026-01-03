@@ -1,6 +1,6 @@
 export const stats = [
   {
-    label: "CO2 Sequestered",
+    label: "CO2 Sequested",
     value: "40",
     suffix: "kg",
     icon: "/images/leaf2.png",

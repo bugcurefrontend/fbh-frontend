@@ -122,7 +122,7 @@ const DownloadCertificate: React.FC = () => {
 
       <DialogContent
         showCloseButton={false}
-        className="md:w-[533px] md:h-[442px] px-6 py-4 gap-0"
+        className="md:w-[533px] md:h-[442px] px-4 md:px-6 py-4 gap-0"
       >
         <DialogTitle className="uppercase font-bold text-2xl">
           Download Certificate
