@@ -13,10 +13,11 @@ import {
 
 interface GalleryProps {
   className?: string;
+  images?: string[];
 }
 
-const Gallery: React.FC<GalleryProps> = ({ className }) => {
-  const images = [
+const Gallery: React.FC<GalleryProps> = ({ className, images: propImages }) => {
+  const defaultImages = [
     "/images/gallery/1.png",
     "/images/gallery/2.png",
     "/images/gallery/3.png",
@@ -24,6 +25,8 @@ const Gallery: React.FC<GalleryProps> = ({ className }) => {
     "/images/gallery/5.png",
     "/images/gallery/6.png",
   ];
+
+  const images = propImages && propImages.length > 0 ? propImages : defaultImages; 
 
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [carouselApi, setCarouselApi] = useState<CarouselApi | null>(null);
@@ -53,13 +56,13 @@ const Gallery: React.FC<GalleryProps> = ({ className }) => {
     <section className="relative">
       {/* Large Image */}
       <div
-        className={`w-full h-[361px] md:h-[400px] relative rounded-[8px] overflow-hidden ${className}`}
+        className={`w-full h-[361px] md:h-[400px] relative rounded-[8px] overflow-hidden flex items-center justify-center bg-[#F6F7F9] ${className}`}
       >
         <Image
           src={images[selectedIndex]}
           alt={`Gallery Image ${selectedIndex + 1}`}
           fill
-          className="object-cover transition-all duration-700"
+          className="object-contain transition-all duration-700"
         />
       </div>
 

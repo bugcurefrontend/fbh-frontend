@@ -2,8 +2,30 @@
 
 import Gallery from "@/components/Gallery";
 import TeamSection from "@/components/OurTeam";
+import { useEffect, useState } from "react";
+import { fetchOurTeamContent } from "@/services/our-team-content";
 
 const T = ({}) => {
+  const [galleryImages, setGalleryImages] = useState<string[] | null>(null);
+
+  useEffect(() => {
+    let mounted = true;
+
+    fetchOurTeamContent()
+      .then((data) => {
+        if (!mounted) return;
+        const imgs = data?.gallery?.map((g: any) => g.url).filter(Boolean) ?? null;
+        setGalleryImages(imgs);
+      })
+      .catch((err) => {
+        console.error("Failed to load Our Team content:", err);
+      });
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
   return (
     <main className="md:space-y-16 space-y-8">
       <section
@@ -25,7 +47,7 @@ const T = ({}) => {
           <h1 className="text-center font-[Playfair_Display] text-[22px] md:text-[32px] md:leading-12 leading-[30px] font-semibold">
             Gallery
           </h1>
-          <Gallery className="lg:h-[573px]" />
+          <Gallery className="lg:h-[573px]" images={galleryImages ?? undefined} />
         </div>
       </section>
     </main>
