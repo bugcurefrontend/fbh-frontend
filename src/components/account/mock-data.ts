@@ -1,28 +1,23 @@
-import React from "react";
-import { Leaf, ThumbsUp, Trees } from "lucide-react";
-
 export const stats = [
   {
     label: "CO2 Sequestered",
     value: "40",
     suffix: "kg",
-    icon: React.createElement(Leaf, { className: "w-5 h-5 text-[#0D824B]" }),
+    icon: "/images/leaf2.png",
     accent: "#0D824B",
   },
   {
     label: "Total Trees Planted",
     value: "4,893",
     suffix: "trees",
-    icon: React.createElement(Trees, { className: "w-5 h-5 text-[#12B569]" }),
+    icon: "/images/tree2.png",
     accent: "#12B569",
   },
   {
     label: "Projects Supported",
     value: "12",
     suffix: "projects",
-    icon: React.createElement(ThumbsUp, {
-      className: "w-5 h-5 text-[#F78F08]",
-    }),
+    icon: "/images/like.png",
     accent: "#F78F08",
   },
 ];

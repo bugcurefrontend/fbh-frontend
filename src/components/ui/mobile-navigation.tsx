@@ -110,7 +110,7 @@ export function MobileNavigation({
               />
               <button
                 onClick={handleClose}
-                className="p-1 rounded-md hover:bg-gray-100 transition-colors"
+                className="p-1 rounded-[8px] hover:bg-gray-100 transition-colors"
               >
                 <XIcon size={24} />
               </button>

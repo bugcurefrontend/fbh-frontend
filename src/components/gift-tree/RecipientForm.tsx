@@ -31,7 +31,7 @@ const RecipientForm: React.FC<RecipientFormProps> = ({
   isFormValid,
 }) => {
   return (
-    <div className="border rounded-xl">
+    <div className="border rounded-[16px]">
       <div className="flex justify-between items-center border-b border-gray-200 py-4 px-6">
         <h2 className="text-lg font-bold">
           {editingId
@@ -51,7 +51,7 @@ const RecipientForm: React.FC<RecipientFormProps> = ({
       </div>
 
       <div className="p-4">
-        <div className="mb-4 space-y-4">
+        <div className="space-y-6">
           <RecipientQuantitySelector
             quantities={quantities}
             selectedQuantity={formData.selectedQuantity}
@@ -65,13 +65,13 @@ const RecipientForm: React.FC<RecipientFormProps> = ({
           <div className="grid md:grid-cols-2 gap-4">
             <div>
               <label className="mb-1.5 block text-xs text-gray-700 font-semibold">
-                First Name <span className="text-red-500">*</span>
+                First Name
               </label>
               <input
                 type="text"
                 value={formData.firstName}
                 onChange={(e) => onInputChange("firstName", e.target.value)}
-                className={`w-full px-3.5 py-2.5 border rounded-lg ${
+                className={`w-full px-3.5 py-2.5 border rounded-[8px] ${
                   errors.firstName ? "border-red-500" : ""
                 }`}
                 placeholder="First Name"
@@ -82,13 +82,13 @@ const RecipientForm: React.FC<RecipientFormProps> = ({
             </div>
             <div>
               <label className="mb-1.5 block text-xs text-gray-700 font-semibold">
-                Last Name <span className="text-red-500">*</span>
+                Last Name
               </label>
               <input
                 type="text"
                 value={formData.lastName}
                 onChange={(e) => onInputChange("lastName", e.target.value)}
-                className={`w-full px-3.5 py-2.5 border rounded-lg ${
+                className={`w-full px-3.5 py-2.5 border rounded-[8px] ${
                   errors.lastName ? "border-red-500" : ""
                 }`}
                 placeholder="Last Name"
@@ -102,7 +102,7 @@ const RecipientForm: React.FC<RecipientFormProps> = ({
           {/* Email Field */}
           <div>
             <label className="mb-1.5 block text-xs text-gray-700 font-semibold">
-              Email <span className="text-red-500">*</span>
+              Email
             </label>
             <div className="relative">
               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 w-5 h-5" />
@@ -111,7 +111,7 @@ const RecipientForm: React.FC<RecipientFormProps> = ({
                 value={formData.email}
                 onChange={(e) => onInputChange("email", e.target.value)}
                 placeholder="example@email.com"
-                className={`w-full pl-10 pr-3.5 py-2.5 border rounded-lg ${
+                className={`w-full pl-10 pr-3.5 py-2.5 border rounded-[8px] ${
                   errors.email ? "border-red-500" : ""
                 }`}
               />
@@ -124,7 +124,7 @@ const RecipientForm: React.FC<RecipientFormProps> = ({
           {/* Phone Number Field */}
           <div>
             <label className="mb-1.5 block text-xs text-gray-700 font-semibold">
-              Phone number <span className="text-red-500">*</span>
+              Phone number
             </label>
             <div className="flex relative">
               <select
@@ -142,7 +142,7 @@ const RecipientForm: React.FC<RecipientFormProps> = ({
                 value={formData.phoneNumber}
                 onChange={(e) => onInputChange("phoneNumber", e.target.value)}
                 placeholder="98765 43210"
-                className={`pl-24 w-full px-3.5 py-2.5 border rounded-lg ${
+                className={`pl-24 w-full px-3.5 py-2.5 border rounded-[8px] ${
                   errors.phoneNumber ? "border-red-500" : ""
                 }`}
               />
@@ -151,16 +151,15 @@ const RecipientForm: React.FC<RecipientFormProps> = ({
               <p className="text-red-500 text-xs mt-1">{errors.phoneNumber}</p>
             )}
           </div>
+          {/* Save Button */}
+          <button
+            onClick={onSave}
+            disabled={!isFormValid}
+            className="w-full h-12 border-1 disabled:border-[#E8E8E9] disabled:bg-white border-[#95AAD5] text-white bg-[#003399] disabled:text-[#94979A] rounded-[8px] text-base font-bold hover:bg-[#013eb9] transition-colors disabled:cursor-not-allowed disabled:opacity-100"
+          >
+            {editingId ? "Update Recipient" : "Save"}
+          </button>
         </div>
-
-        {/* Save Button */}
-        <button
-          onClick={onSave}
-          disabled={!isFormValid}
-          className="w-full h-12 border-1 disabled:border-[#E8E8E9] disabled:bg-white border-[#95AAD5] text-white bg-[#003399] disabled:text-[#94979A] rounded-lg text-base font-bold hover:bg-[#013eb9] transition-colors disabled:cursor-not-allowed disabled:opacity-100"
-        >
-          {editingId ? "Update Recipient" : "Save"}
-        </button>
       </div>
     </div>
   );

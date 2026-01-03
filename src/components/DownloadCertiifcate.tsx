@@ -114,31 +114,34 @@ const DownloadCertificate: React.FC = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <div className="flex cursor-pointer gap-2 items-center justify-center bg-[#003399] hover:bg-[#062d7b] text-white font-semibold h-11 px-5 py-3 rounded-md w-full sm:w-[50%]">
+        <div className="flex cursor-pointer gap-2 items-center justify-center bg-[#003399] hover:bg-[#062d7b] text-white font-semibold h-11 px-5 py-3 rounded-[8px] w-full sm:w-[50%]">
           <span className="max-md:hidden">Download</span>Certificate
           <Download className="w-4 h-4" />
         </div>
       </DialogTrigger>
 
-      <DialogContent showCloseButton={false} className="max-w-4xl px-0 ">
-        <DialogTitle className="uppercase font-bold text-2xl px-6">
+      <DialogContent
+        showCloseButton={false}
+        className="md:w-[533px] md:h-[442px] px-6 py-4 gap-0"
+      >
+        <DialogTitle className="uppercase font-bold text-2xl">
           Download Certificate
         </DialogTitle>
         <DialogClose asChild>
-          <button className="absolute right-5 top-5 p-2 rounded-full hover:bg-gray-100 transition">
-            <X size={20} className="text-black" />
+          <button className="absolute right-5 top-2.5 p-2 rounded-full hover:bg-gray-100 transition">
+            <X size={24} className="text-black" />
           </button>
         </DialogClose>
-        <div className="flex justify-end px-6 gap-2 text-[#003399] cursor-pointer font-medium">
+        <div className="flex justify-end gap-2 text-[#003399] cursor-pointer font-medium mb-2.5 mt-4">
           <p>Download All </p>
           <DownloadIcon size={20} />
         </div>
-        <div className="h-[344px] px-4 overflow-y-scroll">
+        <div className="max-md:h-[236px] overflow-y-scroll">
           <div className="space-y-4 w-full">
             {donorsData.map((donor) => (
               <div
                 key={donor.id}
-                className="p-2 border rounded-lg hover:bg-gray-50"
+                className="p-2 border rounded-[8px] hover:bg-gray-50"
               >
                 <div className="flex items-center">
                   <div className="flex-1">

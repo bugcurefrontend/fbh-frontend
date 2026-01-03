@@ -93,13 +93,13 @@ const ProceedToPay: React.FC<ProceedToPayProps> = ({
       <Button
         onClick={onProceed}
         disabled={!isFormValid || numberOfTrees === 0}
-        className="w-full h-12 border-1 disabled:border-[#E8E8E9] disabled:bg-white border-[#95AAD5] text-white bg-[#003399] disabled:text-[#94979A] rounded-lg text-base font-bold hover:bg-[#013eb9] transition-colors disabled:cursor-not-allowed disabled:opacity-100"
+        className="w-full h-12 border-1 disabled:border-[#E8E8E9] disabled:bg-white border-[#95AAD5] text-white bg-[#003399] disabled:text-[#94979A] rounded-[8px] text-base font-bold hover:bg-[#013eb9] transition-colors disabled:cursor-not-allowed disabled:opacity-100"
       >
         Proceed to Payment
       </Button>
 
       <AlertDialog open={isStatusOpen} onOpenChange={setIsStatusOpen}>
-        <AlertDialogContent className="max-w-[533px] border border-[#E4E4E4] rounded-2xl dialog-pop gap-4">
+        <AlertDialogContent className="md:max-w-[533px] border border-[#E4E4E4] rounded-2xl dialog-pop gap-4">
           {status === "error" ? (
             <>
               <div className="w-[155px] h-[155px] mx-auto">
@@ -149,20 +149,23 @@ const ProceedToPay: React.FC<ProceedToPayProps> = ({
       </AlertDialog>
 
       <Dialog open={isAdjustOpen} onOpenChange={setIsAdjustOpen}>
-        <DialogContent showCloseButton={false} className="max-w-[533px] px-6">
+        <DialogContent
+          showCloseButton={false}
+          className="md:max-w-[533px] px-6 py-4"
+        >
           <DialogTitle className="uppercase font-bold text-2xl px-6 text-center">
             Adjust Trees
           </DialogTitle>
           <div className="space-y-6">
-            <div className="flex gap-5 items-center border-[0.8px] border-[#F78F08] text-[#F78F08] bg-[#FEF4E7] px-4 py-3 rounded-lg font-medium">
+            <div className="flex gap-5 items-center border-[0.8px] border-[#F78F08] text-[#F78F08] bg-[#FEF4E7] px-4 py-3 rounded-[8px] font-medium">
               <TriangleAlert className="min-w-8 h-full" />
               <p>
                 You've exceeded the maximum trees quantity. Please reduce the
                 quantity for recipient.
               </p>
             </div>
-            <div className="flex items-center justify-between gap-4">
-              <div className="bg-[#E8E8E9] text-[#19212C] text-lg leading-6.5 rounded-lg p-3 flex items-center gap-4">
+            <div className="flex items-center gap-4">
+              <div className="bg-[#E8E8E9] text-[#19212C] text-lg leading-6.5 rounded-[8px] w-full p-3 flex justify-between items-center gap-4">
                 <span className="font-medium">Trees Available:</span>
                 <span className="font-bold ">{availableTrees}</span>
               </div>
@@ -171,13 +174,13 @@ const ProceedToPay: React.FC<ProceedToPayProps> = ({
                   isAdjustmentValid
                     ? "bg-[#ECFDF3] text-[#027A48]"
                     : "bg-[#FEECEB] text-[#F04438]"
-                } text-lg leading-6.5 rounded-lg p-3 flex items-center gap-4 transition-colors`}
+                } text-lg leading-6.5 rounded-[8px] w-full p-3 flex justify-between items-center gap-4 transition-colors`}
               >
                 <span className="font-medium">Trees Selected:</span>
                 <span className="font-bold ">{currentInputTrees}</span>
               </div>
             </div>
-            <div className="flex items-center justify-between border border-[#E8E8E9] px-3 py-4 rounded-lg">
+            <div className="flex items-center justify-between border border-[#E8E8E9] px-4 py-2 rounded-[8px]">
               <div className="space-y-1">
                 <h1 className="text-[#090C0F] font-semibold leading-5">
                   Jane Cooper
@@ -192,13 +195,13 @@ const ProceedToPay: React.FC<ProceedToPayProps> = ({
                 min="1"
                 value={adjustInput}
                 onChange={(e) => setAdjustInput(e.target.value)}
-                className={`text-center border-[#003399] text-[#003399] px-4 py-2.5 border rounded-md flex-1 max-w-[128px] transition-colors`}
+                className={`text-center border-[#003399] text-[#003399] px-4 py-2.5 border rounded-[8px] flex-1 max-w-[128px] transition-colors`}
               />
             </div>
             <Button
               onClick={handleSaveAdjust}
               disabled={!isAdjustmentValid}
-              className="w-full h-12 text-white bg-[#003399] rounded-lg text-base font-bold hover:bg-[#013eb9] disabled:bg-gray-300"
+              className="w-full h-12 text-white bg-[#003399] rounded-[8px] text-base font-bold hover:bg-[#013eb9] disabled:bg-gray-300"
             >
               Save
             </Button>

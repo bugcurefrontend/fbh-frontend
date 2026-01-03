@@ -112,7 +112,7 @@ const ProjectsPagination: React.FC<ProjectsPaginationProps> = ({
         </div>
 
         {/* Mobile pagination: current, next, ..., last 2 */}
-        <div className="flex md:hidden border border-gray-300 rounded-md overflow-hidden">
+        <div className="flex md:hidden border border-gray-300 rounded-[8px] overflow-hidden">
           {/* Previous button */}
           <PaginationItem>
             <PaginationPrevious

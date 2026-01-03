@@ -61,14 +61,14 @@ export const TreeUpdate = ({
         <h1 className="font-semibold text-xl md:text-2xl leading-9">
           Trees Updates
         </h1>
-        <p className="bg-[#F4E9F6] px-3 py-1 rounded-md text-[#8C249E] font-semibold text-sm md:text-base">
+        <p className="bg-[#F4E9F6] px-3 py-1 rounded-[8px] text-[#8C249E] font-semibold text-sm md:text-base">
           {tree.reference}
         </p>
       </div>
       <div className="w-full px-0 md:px-14 space-y-10 relative">
         {years.length > 0 && (
           <Select value={selectedYear} onValueChange={setSelectedYear}>
-            <SelectTrigger className="absolute -top-1.5 right-0 md:right-14 gap-10 py-[9px] px-[13px] rounded-md border-[#D1D5DB] text-[#333333] text-sm w-auto">
+            <SelectTrigger className="absolute -top-1.5 right-0 md:right-14 gap-10 py-[9px] px-[13px] rounded-[8px] border-[#D1D5DB] text-[#333333] text-sm w-auto">
               <SelectValue placeholder="Year" />
             </SelectTrigger>
             <SelectContent>
@@ -98,7 +98,7 @@ export const TreeUpdate = ({
                   {update.images.slice(0, 2).map((img, i) => (
                     <div
                       key={i}
-                      className="relative w-full sm:w-[241px] h-[125px] sm:h-[185px] rounded-lg overflow-hidden"
+                      className="relative w-full sm:w-[241px] h-[125px] sm:h-[185px] rounded-[8px] overflow-hidden"
                     >
                       <Image
                         src={img}

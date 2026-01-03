@@ -171,7 +171,7 @@ const ProjectAccordion: React.FC<ProjectAccordionProps> = ({
                         {update.images.slice(0, 2).map((img, i) => (
                           <div
                             key={i}
-                            className="relative w-full h-31 md:h-48 lg:h-60 rounded-lg overflow-hidden"
+                            className="relative w-full h-31 md:h-48 lg:h-60 rounded-[8px] overflow-hidden"
                           >
                             <Image
                               src={img}
@@ -265,7 +265,7 @@ const ProjectAccordion: React.FC<ProjectAccordionProps> = ({
                       alt={item.name}
                       width={350}
                       height={160}
-                      className="w-full rounded-lg max-h-[160px] object-cover"
+                      className="w-full rounded-[8px] max-h-[160px] object-cover"
                     />
                   </div>
                   <div className="px-4 pt-2 pb-4 space-y-2">

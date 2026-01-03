@@ -83,7 +83,7 @@ const TaxDetail: React.FC<TaxDetailProps> = ({
             value={taxDetails.idType}
             onValueChange={(value) => onTaxDetailsChange("idType", value)}
           >
-            <SelectTrigger className="w-full px-3.5 py-2.5 border border-[#D0D5DD] min-h-fit rounded-lg text-[#090C0F] text-base">
+            <SelectTrigger className="w-full px-3.5 py-2.5 border border-[#D0D5DD] min-h-fit rounded-[8px] text-[#090C0F] text-base">
               <SelectValue placeholder="Select ID Type" />
             </SelectTrigger>
 
@@ -120,7 +120,7 @@ const TaxDetail: React.FC<TaxDetailProps> = ({
             onChange={(e) =>
               onTaxDetailsChange("idNumber", formatIdValue(e.target.value))
             }
-            className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-lg text-[#090C0F]"
+            className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F]"
             placeholder={`Enter ${
               taxDetails.idType === "PAN CARD"
                 ? "PAN"
@@ -151,7 +151,7 @@ const TaxDetail: React.FC<TaxDetailProps> = ({
                 formatIdValue(e.target.value)
               )
             }
-            className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-lg text-[#090C0F]"
+            className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F]"
             placeholder="Enter ID details"
           />
         </div>

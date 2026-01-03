@@ -77,7 +77,7 @@ const SpeciesSection: React.FC<SpeciesSectionProps> = ({ species }) => {
                       alt={item.name}
                       width={350}
                       height={194}
-                      className="w-full object-cover rounded-lg max-h-[194px]"
+                      className="w-full object-cover rounded-[8px] max-h-[194px]"
                     />
                   </div>
                   <div className="p-4 pt-2 flex justify-between items-center">
@@ -127,7 +127,7 @@ const SpeciesSection: React.FC<SpeciesSectionProps> = ({ species }) => {
                     alt={item.name}
                     width={282}
                     height={160}
-                    className="rounded-md object-cover max-h-[160px]"
+                    className="rounded-[8px] object-cover max-h-[160px]"
                   />
                 </div>
                 <div className="p-4 flex sm:flex-root flex-col justify-between sm:items-center max-sm:gap-2">

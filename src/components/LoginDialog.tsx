@@ -21,7 +21,7 @@ const LoginDialog: React.FC<LoginDialogProps> = ({
 }) => {
   return (
     <AlertDialog open={isOpen} onOpenChange={onClose}>
-      <AlertDialogContent className="max-w-[533px] border border-[#E4E4E4] rounded-2xl dialog-pop gap-4">
+      <AlertDialogContent className="md:max-w-[533px] border border-[#E4E4E4] rounded-2xl dialog-pop gap-4">
         <AlertDialogHeader>
           <AlertDialogTitle className="text-2xl leading-9 text-center font-semibold md:font-bold text-[#232D26]">
             BEFORE YOU PROCEED...
@@ -35,7 +35,7 @@ const LoginDialog: React.FC<LoginDialogProps> = ({
 
           <button
             onClick={onSignIn}
-            className="w-fit bg-[#003399] hover:bg-[#152e72] text-white font-semibold py-3 px-5.5 rounded-md"
+            className="w-fit bg-[#003399] hover:bg-[#152e72] text-white font-semibold py-3 px-5.5 rounded-[8px]"
           >
             LOG-IN / SIGN-UP{" "}
           </button>

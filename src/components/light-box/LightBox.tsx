@@ -261,7 +261,7 @@ const LightBox: React.FC = () => {
           {step > 1 && (
             <button
               onClick={handleBack}
-              className="bg-white hover:bg-gray-100 flex rounded-md items-center justify-self-center absolute gap-1 md:top-10 top-3 left-3 md:left-10 md:px-4 md:py-2 text-lg leading-6.5 font-medium"
+              className="bg-white hover:bg-gray-100 flex rounded-[8px] items-center justify-self-center absolute gap-1 md:top-10 top-3 left-3 md:left-10 md:px-4 md:py-2 text-lg leading-6.5 font-medium"
             >
               <ChevronLeft size={24} className="w-6 h-6" /> Back
             </button>

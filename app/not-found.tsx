@@ -32,7 +32,7 @@ export default function Custom404() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
           <button
             onClick={() => window.history.back()}
-            className="flex items-center px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium"
+            className="flex items-center px-6 py-3 bg-green-600 text-white rounded-[8px] hover:bg-green-700 transition-colors font-medium"
           >
             <ArrowLeft className="h-5 w-5 mr-2" />
             Go Back
@@ -40,7 +40,7 @@ export default function Custom404() {
 
           <a
             href="/"
-            className="flex items-center px-6 py-3 border border-green-600 text-green-600 rounded-lg hover:bg-green-50 transition-colors font-medium"
+            className="flex items-center px-6 py-3 border border-green-600 text-green-600 rounded-[8px] hover:bg-green-50 transition-colors font-medium"
           >
             <Home className="h-5 w-5 mr-2" />
             Home Page
@@ -48,7 +48,7 @@ export default function Custom404() {
 
           <a
             href="/projects"
-            className="flex items-center px-6 py-3 border border-gray-300 text-gray-600 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+            className="flex items-center px-6 py-3 border border-gray-300 text-gray-600 rounded-[8px] hover:bg-gray-50 transition-colors font-medium"
           >
             <Search className="h-5 w-5 mr-2" />
             Explore Projects

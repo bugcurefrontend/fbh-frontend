@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { Check, ChevronDownIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   Command,
@@ -36,9 +36,9 @@ export function ComboBox({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <button className="w-full flex justify-between items-center px-3.5 py-2.5 border border-[#D0D5DD] rounded-lg text-[#090C0F] text-base">
+        <button className="w-full flex justify-between items-center px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F] text-base">
           {value ? value : placeholder || "Select option"}
-          <ChevronsUpDown className="opacity-50 h-4 w-4" />
+          <ChevronDownIcon className="size-6 text-[#63676C]" />
         </button>
       </PopoverTrigger>
 

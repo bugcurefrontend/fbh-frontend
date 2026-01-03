@@ -255,7 +255,7 @@ const PlantedTrees = ({ onBack, donation }: PlantedTreesProps) => {
         <h1 className="font-semibold text-xl md:text-2xl leading-9">
           Planted Trees{" "}
         </h1>
-        <p className="bg-[#F4E9F6] px-3 py-1 rounded-md text-[#8C249E] font-semibold text-sm md:text-base">
+        <p className="bg-[#F4E9F6] px-3 py-1 rounded-[8px] text-[#8C249E] font-semibold text-sm md:text-base">
           {donation.reference}
         </p>
       </div>
@@ -264,7 +264,7 @@ const PlantedTrees = ({ onBack, donation }: PlantedTreesProps) => {
         <div className="flex flex-col items-center justify-center">
           <div className="w-full flex md:flex-row flex-col gap-6 md:gap-4">
             <div className="bg-white border md:w-[40%] border-gray-200 rounded-2xl overflow-hidden">
-              <div className="md:min-h-[360px] h-full w-full relative overflow-hidden rounded-lg">
+              <div className="md:min-h-[360px] h-full w-full relative overflow-hidden rounded-[8px]">
                 <Map />
               </div>
             </div>

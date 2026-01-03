@@ -118,7 +118,7 @@ const GeoTagToggleAndActions: React.FC<GeoTagToggleAndActionsProps> = ({
           <Link href="/plant-tree" className="w-full">
             <Button
               onClick={onPlantTree}
-              className={`flex-1 w-full bg-[#003399] hover:bg-[#002266] text-white font-bold py-3 h-12 rounded-lg uppercase ${
+              className={`flex-1 w-full bg-[#003399] hover:bg-[#002266] text-white font-bold py-3 h-12 rounded-[8px] uppercase ${
                 isMobile ? "text-sm gap-2" : "text-base"
               }`}
             >
@@ -136,7 +136,7 @@ const GeoTagToggleAndActions: React.FC<GeoTagToggleAndActionsProps> = ({
             <Button
               onClick={onGiftTree}
               variant="outline"
-              className={`flex-1 w-full border-gray-300 font-bold py-3 h-12 rounded-lg uppercase text-[#003399] hover:text-[#002266] ${
+              className={`flex-1 w-full border-gray-300 font-bold py-3 h-12 rounded-[8px] uppercase text-[#003399] hover:text-[#002266] ${
                 isMobile ? "text-sm gap-2" : "text-base"
               }`}
             >

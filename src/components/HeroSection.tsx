@@ -88,7 +88,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ heroContents }) => {
                     {slide.title}
                   </h1>
                   <Link href={slide.href}>
-                    <button className="bg-[#003399] text-white font-bold text-sm sm:py-3 py-[6px] rounded-[8px] w-[210px] sm:w-[370px] h-9 md:h-12 md:py-[11px] md:px-[22px] md:rounded-lg md:text-base md:font-bold md:leading-[26px] md:text-[#FFFFFF] max-w-[370px] hover:bg-[#002080] drop-shadow-[0_4px_4px_rgba(0,0,0,0.3)]">
+                    <button className="bg-[#003399] text-white font-bold text-sm sm:py-3 py-[6px] rounded-[8px] w-[210px] sm:w-[370px] h-9 md:h-12 md:py-[11px] md:px-[22px] md:rounded-[8px] md:text-base md:font-bold md:leading-[26px] md:text-[#FFFFFF] max-w-[370px] hover:bg-[#002080] drop-shadow-[0_4px_4px_rgba(0,0,0,0.3)]">
                       {slide.buttonText}
                     </button>
                   </Link>

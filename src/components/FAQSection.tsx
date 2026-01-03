@@ -58,7 +58,7 @@ const FAQSection: React.FC<FAQSectionProps> = ({ faqs }) => {
           {faqData.map((faq) => (
             <div
               key={faq.id}
-              className="border border-[#E4E4E4] md:rounded-lg rounded-[8px] overflow-hidden"
+              className="border border-[#E4E4E4] md:rounded-[8px] rounded-[8px] overflow-hidden"
             >
               <button
                 onClick={() => toggleItem(faq.id)}

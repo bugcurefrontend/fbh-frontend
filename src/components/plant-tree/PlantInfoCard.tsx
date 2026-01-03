@@ -37,12 +37,12 @@ const PlantInfoCard: React.FC<PlantInfoCardProps> = ({
       <div className="flex flex-col justify-between w-full">
         <div className="flex items-center justify-between">
           {isGeoTagged ? (
-            <div className="font-semibold max-md:text-xs bg-[#E7F8F0] text-[#12B569] px-3 py-1 rounded-md">
-              Plants are Geo-tagged
+            <div className="font-semibold max-md:text-xs bg-[#E7F8F0] text-[#12B569] px-3 py-1 rounded-[8px]">
+              Plants are Geo-Tagged
             </div>
           ) : (
-            <div className="font-semibold max-md:text-xs bg-[#FEF4E6] text-[#F78F08] px-3 py-1 rounded-md">
-              Plants are not geo-tagged
+            <div className="font-semibold max-md:text-xs bg-[#FEF4E6] text-[#F78F08] px-3 py-1 rounded-[8px]">
+              Plants are not Geo-Tagged
             </div>
           )}
 

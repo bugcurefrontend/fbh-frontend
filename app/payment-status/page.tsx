@@ -16,7 +16,7 @@ const PaymentStatusUI: React.FC = () => {
         <div className="flex gap-2 mb-12 justify-center">
           <button
             onClick={() => setStatus("success")}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+            className={`px-4 py-2 rounded-[8px] text-sm font-medium transition-colors ${
               status === "success"
                 ? "bg-green-600 text-white"
                 : "bg-white text-gray-600 hover:bg-gray-50"
@@ -26,7 +26,7 @@ const PaymentStatusUI: React.FC = () => {
           </button>
           <button
             onClick={() => setStatus("failed")}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+            className={`px-4 py-2 rounded-[8px] text-sm font-medium transition-colors ${
               status === "failed"
                 ? "bg-red-600 text-white"
                 : "bg-white text-gray-600 hover:bg-gray-50"
@@ -54,7 +54,7 @@ const PaymentStatusUI: React.FC = () => {
                 Payment Successful!
               </h1>
 
-              <div className="py-2 w-fit mx-auto px-4 my-6 rounded-md bg-[#E7F8F0]">
+              <div className="py-2 w-fit mx-auto px-4 my-6 rounded-[8px] bg-[#E7F8F0]">
                 <p className="font-bold md:text-xl leading-9 text-green-700">
                   Reference Number: SF-1656798
                 </p>
@@ -67,7 +67,7 @@ const PaymentStatusUI: React.FC = () => {
 
               <Link href="/" className="mt-8 inline-block">
                 <Button
-                  className={`flex-1 bg-[#003399] hover:bg-[#002266] text-white font-bold w-[207px] h-12 rounded-lg`}
+                  className={`flex-1 bg-[#003399] hover:bg-[#002266] text-white font-bold w-[207px] h-12 rounded-[8px]`}
                 >
                   Go to Dashboard
                   <ArrowRightCircle className="w-5 h-5" />
@@ -91,7 +91,7 @@ const PaymentStatusUI: React.FC = () => {
                 Donation did not succeed
               </h1>
 
-              <div className="w-fit mx-auto py-2 px-4 my-6 rounded-md bg-[#FEEDEC]">
+              <div className="w-fit mx-auto py-2 px-4 my-6 rounded-[8px] bg-[#FEEDEC]">
                 <p className="font-bold md:text-xl leading-9 text-[#F04438]">
                   Reference Number: SF-1656798
                 </p>
@@ -110,7 +110,7 @@ const PaymentStatusUI: React.FC = () => {
 
               <Link href="/" className="inline-block">
                 <Button
-                  className={`flex-1 bg-[#003399] hover:bg-[#002266] text-white font-bold w-[207px] h-12 rounded-lg`}
+                  className={`flex-1 bg-[#003399] hover:bg-[#002266] text-white font-bold w-[207px] h-12 rounded-[8px]`}
                 >
                   Go to Home Page
                   <ArrowRightCircle className="w-5 h-5" />

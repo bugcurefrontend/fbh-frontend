@@ -62,7 +62,7 @@ const Step2: React.FC<Step2Props> = ({
                 handlePersonalDetailsChange("firstName", e.target.value)
               }
               placeholder="First Name"
-              className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-lg text-[#090C0F]"
+              className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F]"
             />
           </div>
           <div>
@@ -75,7 +75,7 @@ const Step2: React.FC<Step2Props> = ({
               onChange={(e) =>
                 handlePersonalDetailsChange("lastName", e.target.value)
               }
-              className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-lg text-[#090C0F]"
+              className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F]"
               placeholder="Last Name"
             />
           </div>
@@ -94,7 +94,7 @@ const Step2: React.FC<Step2Props> = ({
                   handlePersonalDetailsChange("email", e.target.value)
                 }
                 placeholder="Enter Email"
-                className="w-full pl-10 px-3.5 py-2.5 border border-[#D0D5DD] rounded-lg text-[#090C0F]"
+                className="w-full pl-10 px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F]"
               />
             </div>
             {!emailValid && personalDetails.email && (
@@ -132,7 +132,7 @@ const Step2: React.FC<Step2Props> = ({
                   )
                 }
                 placeholder="Enter Number"
-                className="pl-20 w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-lg text-[#090C0F]"
+                className="pl-20 w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F]"
               />
             </div>
             {!phoneValid && personalDetails.phoneNumber && (
@@ -152,7 +152,7 @@ const Step2: React.FC<Step2Props> = ({
             onChange={(e) =>
               handlePersonalDetailsChange("doorNo", e.target.value)
             }
-            className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-lg text-[#090C0F]"
+            className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F]"
             placeholder="Enter address"
           />
         </div>
@@ -207,7 +207,7 @@ const Step2: React.FC<Step2Props> = ({
                   e.target.value.replace(/[^0-9]/g, "")
                 )
               }
-              className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-lg text-[#090C0F]"
+              className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F]"
               placeholder="Enter Pincode"
             />
             {!pincodeValid && personalDetails.pincode && (
@@ -220,7 +220,7 @@ const Step2: React.FC<Step2Props> = ({
         <Button
           onClick={handleSaveAndNext}
           disabled={!isStep2Valid}
-          className="w-full h-12 text-white bg-[#003399] rounded-lg text-base font-bold hover:bg-[#013eb9] disabled:bg-gray-300"
+          className="w-full h-12 text-white bg-[#003399] rounded-[8px] text-base font-bold hover:bg-[#013eb9] disabled:bg-gray-300"
         >
           Next
         </Button>

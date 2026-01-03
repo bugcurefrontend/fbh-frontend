@@ -66,7 +66,7 @@ const Step1: React.FC<Step1Props> = ({
               <button
                 key={qty}
                 onClick={() => handleQuantitySelect(qty)}
-                className={`sm:px-[22px] w-full sm:py-[11px] px-3 py-2 rounded-md border transition-colors ${
+                className={`sm:px-[22px] w-full sm:py-[11px] px-3 py-2 rounded-[8px] border transition-colors ${
                   selectedQuantity === qty
                     ? "text-[#003399] border-[#003399]"
                     : "border-[#B7B9BB]"
@@ -82,7 +82,7 @@ const Step1: React.FC<Step1Props> = ({
             value={manualQuantity}
             onChange={handleManualQuantityChange}
             min="1"
-            className={`text-center py-[11px] pl-4 border rounded-md w-full placeholder:text-black truncate transition-colors ${
+            className={`text-center py-[11px] pl-4 border rounded-[8px] w-full placeholder:text-black truncate transition-colors ${
               manualQuantity
                 ? "border-[#003399] text-[#003399]"
                 : "border-[#B7B9BB] text-black"
@@ -135,7 +135,7 @@ const Step1: React.FC<Step1Props> = ({
       <Button
         onClick={handleSaveAndNext}
         disabled={(!selectedQuantity && !manualQuantity) || !occasion.trim()}
-        className="w-full h-12 text-white bg-[#003399] rounded-lg text-base font-bold hover:bg-[#013eb9] disabled:bg-gray-300"
+        className="w-full h-12 text-white bg-[#003399] rounded-[8px] text-base font-bold hover:bg-[#013eb9] disabled:bg-gray-300"
       >
         Next
       </Button>

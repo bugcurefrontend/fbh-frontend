@@ -9,6 +9,8 @@ import OrderSummary from "@/components/plant-tree/OrderSummary";
 import LoginDialog from "@/components/LoginDialog";
 import { useTreeCheckout } from "../../src/components/plant-tree/useTreeCheckout";
 import { QUANTITIES } from "../../src/components/plant-tree/constants";
+import CertificatePreview from "@/components/gift-tree/CertificatePreview";
+import { Button } from "@/components/ui/button";
 
 const TreeCheckout = () => {
   const {
@@ -53,7 +55,7 @@ const TreeCheckout = () => {
 
       <div className="lg:flex max-lg:space-y-8 md:gap-12 xl:gap-15">
         {/* Left Section */}
-        <div className="lg:w-[55%]">
+        <div className="lg:w-[63%]">
           {step === 1 && (
             <>
               <PlantInfoCard
@@ -67,6 +69,8 @@ const TreeCheckout = () => {
                 availabilityMessage={availabilityMessage}
               />
 
+              <CertificatePreview />
+
               <PlantDetailsSection
                 quantities={QUANTITIES}
                 selectedQuantity={selectedQuantity}
@@ -74,8 +78,15 @@ const TreeCheckout = () => {
                 onQuantitySelect={handleQuantitySelect}
                 onManualQuantityChange={handleManualQuantityChange}
                 onManualInputFocus={handleManualInputFocus}
-                onSaveAndNext={handleSaveAndNext}
               />
+
+              <Button
+                onClick={handleSaveAndNext}
+                disabled={!selectedQuantity && !manualQuantity}
+                className="mt-8 w-full h-12 border-1 disabled:border-[#E8E8E9] disabled:bg-white border-[#95AAD5] text-white bg-[#003399] disabled:text-[#94979A] rounded-[8px] text-base font-bold hover:bg-[#013eb9] transition-colors disabled:cursor-not-allowed disabled:opacity-100"
+              >
+                Next
+              </Button>
             </>
           )}
 

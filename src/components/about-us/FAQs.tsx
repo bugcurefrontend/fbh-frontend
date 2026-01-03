@@ -86,10 +86,10 @@ const FAQs = () => {
             Category
           </h3>
           <Select value={activeTab} onValueChange={setActiveTab}>
-            <SelectTrigger className="w-full min-h-12 hover:rounded-md border-[#95AAD5] rounded-md text-[#003399] font-bold">
+            <SelectTrigger className="w-full min-h-12 hover:rounded-[8px] border-[#95AAD5] rounded-[8px] text-[#003399] font-bold">
               <SelectValue placeholder="Select category" />
             </SelectTrigger>
-            <SelectContent className="rounded-md hover:rounded-md">
+            <SelectContent className="rounded-[8px] hover:rounded-[8px]">
               {faqData.map((tab) => (
                 <SelectItem key={tab.value} value={tab.value}>
                   {tab.title}
@@ -118,7 +118,7 @@ const FAQs = () => {
               {tab.faqs.map((faq) => (
                 <div
                   key={faq.id}
-                  className="border border-[#E4E4E4] rounded-lg overflow-hidden"
+                  className="border border-[#E4E4E4] rounded-[8px] overflow-hidden"
                 >
                   <button
                     onClick={() => toggleItem(faq.id)}

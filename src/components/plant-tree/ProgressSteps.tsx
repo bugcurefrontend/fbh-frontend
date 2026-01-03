@@ -82,9 +82,27 @@ const ProgressSteps: React.FC<ProgressStepsProps> = ({ currentStep }) => {
       </div>
 
       <div className="flex items-center justify-between">
-        <h1 className="font-semibold text-[#454950]">Plant Details</h1>
-        <h1 className="font-semibold text-[#454950]">Personal & Tax Details</h1>
-        <h1 className="font-semibold text-[#454950]">Payment</h1>
+        <h1
+          className={`font-semibold ${
+            currentStep >= 1 ? "text-[#003399]" : "text-[#454950]"
+          }`}
+        >
+          Plant Details
+        </h1>
+        <h1
+          className={`font-semibold ${
+            currentStep >= 2 ? "text-[#003399]" : "text-[#454950]"
+          }`}
+        >
+          Personal Details
+        </h1>
+        <h1
+          className={`font-semibold ${
+            currentStep === 3 ? "text-[#003399]" : "text-[#454950]"
+          }`}
+        >
+          Payment
+        </h1>
       </div>
     </div>
   );

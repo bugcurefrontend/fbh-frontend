@@ -10,7 +10,7 @@ const PaymentProcessPopup = () => {
     <Dialog>
       <DialogContent
         showCloseButton={false}
-        className="max-w-[533px] border border-[#E4E4E4] rounded-2xl dialog-pop gap-4"
+        className="md:max-w-[533px] border border-[#E4E4E4] rounded-2xl dialog-pop gap-4"
       >
         <DialogHeader>
           <DialogTitle className="text-2xl leading-9 text-center font-semibold md:font-bold text-[#232D26]">

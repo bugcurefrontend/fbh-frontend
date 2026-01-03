@@ -84,10 +84,10 @@ const TeamSection = () => {
       {/* Mobile Select */}
       <div className="md:hidden mb-6">
         <Select value={activeTab} onValueChange={setActiveTab}>
-          <SelectTrigger className="w-full min-h-12 hover:rounded-md border-[#95AAD5] rounded-md text-[#003399] font-bold">
+          <SelectTrigger className="w-full min-h-12 hover:rounded-[8px] border-[#95AAD5] rounded-[8px] text-[#003399] font-bold">
             <SelectValue placeholder="Select team" />
           </SelectTrigger>
-          <SelectContent className="rounded-md hover:rounded-md">
+          <SelectContent className="rounded-[8px] hover:rounded-[8px]">
             {teamData.map((tab) => (
               <SelectItem key={tab.value} value={tab.value}>
                 {tab.title}

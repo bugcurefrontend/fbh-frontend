@@ -65,7 +65,7 @@ const TaxDetailsSection: React.FC<TaxDetailsSectionProps> = ({
         <div className="grid md:grid-cols-2 gap-8">
           <div>
             <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-              City <span className="text-red-500">*</span>
+              City
             </label>
             <ComboBox
               value={taxDetails.citizenship}
@@ -76,13 +76,13 @@ const TaxDetailsSection: React.FC<TaxDetailsSectionProps> = ({
           </div>
           <div>
             <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-              ID Type <span className="text-red-500">*</span>
+              ID Type
             </label>
             <Select
               value={taxDetails.idType}
               onValueChange={(value) => onTaxDetailsChange("idType", value)}
             >
-              <SelectTrigger className="w-full px-3.5 py-2.5 border border-[#D0D5DD] min-h-fit rounded-lg text-[#090C0F] text-base">
+              <SelectTrigger className="w-full px-3.5 py-2.5 border border-[#D0D5DD] min-h-fit rounded-[8px] text-[#090C0F] text-base">
                 <SelectValue placeholder="Select ID Type" />
               </SelectTrigger>
 
@@ -111,7 +111,6 @@ const TaxDetailsSection: React.FC<TaxDetailsSectionProps> = ({
                 : taxDetails.idType === "DRIVING LICENSE"
                 ? "Driving License Number"
                 : "ID Number"}{" "}
-              <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
@@ -119,7 +118,7 @@ const TaxDetailsSection: React.FC<TaxDetailsSectionProps> = ({
               onChange={(e) =>
                 onTaxDetailsChange("idNumber", formatIdValue(e.target.value))
               }
-              className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-lg text-[#090C0F]"
+              className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F]"
               placeholder={`Enter ${
                 taxDetails.idType === "PAN CARD"
                   ? "PAN"
@@ -139,7 +138,6 @@ const TaxDetailsSection: React.FC<TaxDetailsSectionProps> = ({
           <div>
             <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
               Abhyasi ID/ Member ID
-              <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
@@ -150,7 +148,7 @@ const TaxDetailsSection: React.FC<TaxDetailsSectionProps> = ({
                   formatIdValue(e.target.value)
                 )
               }
-              className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-lg text-[#090C0F]"
+              className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F]"
               placeholder="Enter ID details"
             />
           </div>

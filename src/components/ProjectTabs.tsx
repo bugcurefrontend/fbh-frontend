@@ -151,7 +151,7 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({
           <div className="w-full px-4 md:px-14 space-y-10 relative">
             {years.length > 0 && (
               <Select value={selectedYear} onValueChange={setSelectedYear}>
-                <SelectTrigger className="absolute -top-1.5 right-14 gap-10 py-[9px] px-[13px] rounded-md border-[#D1D5DB] text-[#333333] text-sm">
+                <SelectTrigger className="absolute -top-1.5 right-14 gap-10 py-[9px] px-[13px] rounded-[8px] border-[#D1D5DB] text-[#333333] text-sm">
                   <SelectValue placeholder="Year" />
                 </SelectTrigger>
                 <SelectContent>
@@ -183,7 +183,7 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({
                       {update.images.slice(0, 2).map((img, i) => (
                         <div
                           key={i}
-                          className="relative w-[241px] h-[185px] rounded-lg overflow-hidden"
+                          className="relative w-[241px] h-[185px] rounded-[8px] overflow-hidden"
                         >
                           <Image
                             src={img}
@@ -268,7 +268,7 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({
                       alt={item.name}
                       width={350}
                       height={194}
-                      className="w-full object-cover rounded-lg max-h-[194px]"
+                      className="w-full object-cover rounded-[8px] max-h-[194px]"
                     />
                   </div>
                   <div className="p-4 pt-2 flex justify-between items-center">

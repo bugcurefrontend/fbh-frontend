@@ -350,7 +350,7 @@ const AddRecipient: React.FC<AddRecipientProps> = ({
       {recipients.length > 0 && !showForm && (
         <button
           onClick={handleNextStep}
-          className="w-full h-12 bg-[#003399] text-white rounded-lg text-base font-bold hover:bg-[#002266] transition-colors shadow-sm hover:shadow-md"
+          className="w-full h-12 bg-[#003399] text-white rounded-[8px] text-base font-bold hover:bg-[#002266] transition-colors shadow-sm hover:shadow-md"
         >
           Next
         </button>
@@ -362,7 +362,7 @@ const AddRecipient: React.FC<AddRecipientProps> = ({
           <p className="text-gray-500 mb-4">No recipients added yet</p>
           <button
             onClick={handleAddMore}
-            className="px-6 py-3 bg-[#003399] text-white rounded-lg font-semibold hover:bg-[#002266] transition-colors"
+            className="px-6 py-3 bg-[#003399] text-white rounded-[8px] font-semibold hover:bg-[#002266] transition-colors"
           >
             Add First Recipient
           </button>

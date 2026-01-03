@@ -87,7 +87,7 @@ const RelatedSpecies: React.FC<RelatedSpeciesProps> = ({
                   alt={item.name}
                   width={350}
                   height={194}
-                  className="w-full object-cover rounded-lg max-h-[194px]"
+                  className="w-full object-cover rounded-[8px] max-h-[194px]"
                 />
               </div>
               <div className="p-4 pt-2 flex justify-between items-center">

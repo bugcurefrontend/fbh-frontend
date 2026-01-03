@@ -43,8 +43,10 @@ const SpeciesSelectionDialog: React.FC<SpeciesSelectionDialogProps> = ({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>{trigger}</DialogTrigger>
-      <DialogContent className="px-0 py-4">
-        <DialogTitle className="border-b pb-4 px-6">Select Species</DialogTitle>
+      <DialogContent className="px-0 py-4 md:w-[533px]">
+        <DialogTitle className="border-b pb-4 px-6 uppercase font-bold text-2xl text-[#232D26]">
+          Select Species
+        </DialogTitle>
         <div className="px-6 space-y-4">
           <h1 className="flex items-baseline gap-1">
             <span className="font-bold text-[28px] leading-[36px] text-[#090C0F]">
@@ -109,7 +111,7 @@ const SpeciesSelectionDialog: React.FC<SpeciesSelectionDialogProps> = ({
                     alt={tree.name}
                     width={60}
                     height={60}
-                    className="rounded-md object-cover"
+                    className="rounded-[8px] object-cover"
                   />
                   <div>
                     <h4 className="font-semibold">{tree.name}</h4>
@@ -122,7 +124,7 @@ const SpeciesSelectionDialog: React.FC<SpeciesSelectionDialogProps> = ({
           {/* Next Button */}
           <Button
             onClick={handleClose}
-            className="w-full h-12 border-1 border-[#95AAD5] text-white bg-[#003399] rounded-lg text-base font-bold hover:bg-[#013eb9] transition-colors disabled:cursor-not-allowed disabled:opacity-100"
+            className="w-full h-12 border-1 border-[#95AAD5] text-white bg-[#003399] rounded-[8px] text-base font-bold hover:bg-[#013eb9] transition-colors disabled:cursor-not-allowed disabled:opacity-100"
           >
             Next
           </Button>

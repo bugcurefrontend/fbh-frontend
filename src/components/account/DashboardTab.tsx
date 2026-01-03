@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { stats } from "./mock-data";
 
 export const DashboardTab = () => {
@@ -9,7 +10,7 @@ export const DashboardTab = () => {
         Track your environmental contribution
       </p>
       <div className="space-y-1">
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 md:gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {stats.map((stat) => (
             <div
               key={stat.label}
@@ -17,7 +18,7 @@ export const DashboardTab = () => {
             >
               <div className="flex items-center justify-between">
                 <p className="text-lg font-bold text-[#454950]">{stat.label}</p>
-                <div>{stat.icon}</div>
+                <Image src={stat.icon} alt="icon" width={28} height={28} />
               </div>
               <div className="mt-3 flex items-baseline gap-2">
                 <span

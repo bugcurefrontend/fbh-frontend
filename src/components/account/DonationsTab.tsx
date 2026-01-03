@@ -165,7 +165,7 @@ export const DonationsTab = () => {
                 <DownloadCertificate />
                 <Button
                   variant="outline"
-                  className="border-[#95AAD5] hover:text-[#003399] text-[#003399] font-bold text-base h-11 px-5 py-3 rounded-md sm:w-[50%] w-full gap-1"
+                  className="border-[#95AAD5] hover:text-[#003399] text-[#003399] font-bold text-base h-11 px-5 py-3 rounded-[8px] sm:w-[50%] w-full gap-1"
                 >
                   See Receipt
                 </Button>

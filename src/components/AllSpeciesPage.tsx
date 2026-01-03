@@ -160,7 +160,7 @@ const AllSpeciesPage: React.FC<AllSpeciesPageProps> = ({
                           alt={item.name}
                           width={350}
                           height={194}
-                          className="w-full object-cover rounded-[8px] md:rounded-lg max-h-[194px]"
+                          className="w-full object-cover rounded-[8px] md:rounded-[8px] max-h-[194px]"
                         />
                       </div>
                       <div className="p-4 md:pt-2 pt-0 flex justify-between items-center">

@@ -329,7 +329,7 @@ const DonorsTable = () => {
         {donorsData.slice(0, 8).map((donor) => (
           <div
             key={donor.id}
-            className="p-2 border rounded-lg hover:bg-gray-50 h-16"
+            className="p-2 border rounded-[8px] hover:bg-gray-50 h-16"
           >
             <div className="flex items-center space-x-3">
               <UserAvatar

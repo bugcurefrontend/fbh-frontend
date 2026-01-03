@@ -253,7 +253,7 @@ export default function Header() {
                               "transparent")
                           }
                         >
-                          <span>Sign Out</span>
+                          <span>SIGN OUT</span>
                           <LogOut
                             strokeWidth="2.5px"
                             className="w-4 h-4"

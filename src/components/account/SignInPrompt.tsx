@@ -15,7 +15,7 @@ export const SignInPrompt = ({ login }: { login: () => void }) => {
         </p>
         <Button
           onClick={login}
-          className="bg-[#003399] text-white px-5 py-3 h-auto rounded-lg"
+          className="bg-[#003399] text-white px-5 py-3 h-auto rounded-[8px]"
         >
           Sign in
         </Button>

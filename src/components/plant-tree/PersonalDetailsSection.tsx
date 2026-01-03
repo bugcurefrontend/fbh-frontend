@@ -30,7 +30,7 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
   pincodeError,
 }) => {
   return (
-    <div className="bg-white border border-[#E8E8E9] rounded-2xl mb-8">
+    <div className="bg-white border border-[#E8E8E9] rounded-[8px] mb-8">
       <h2 className="border-b border-[#E8E8E9] text-lg font-bold py-4 px-6">
         Personal Details
       </h2>
@@ -40,7 +40,7 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
           <div className="grid md:grid-cols-2 gap-8">
             <div>
               <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-                First Name <span className="text-red-500">*</span>
+                First Name
               </label>
               <input
                 type="text"
@@ -54,12 +54,12 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
                   }
                 }}
                 placeholder="jason"
-                className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-lg text-[#090C0F]"
+                className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F]"
               />
             </div>
             <div>
               <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-                Last Name <span className="text-red-500">*</span>
+                Last Name
               </label>
               <input
                 type="text"
@@ -72,7 +72,7 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
                     onPersonalDetailsChange("lastName", value);
                   }
                 }}
-                className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-lg text-[#090C0F]"
+                className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F]"
                 placeholder="Manson"
               />
             </div>
@@ -100,7 +100,7 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
         </div>
         <div className="">
           <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-            Email <span className="text-red-500">*</span>
+            Email
           </label>
 
           <div className="relative w-full">
@@ -112,7 +112,7 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
                 onPersonalDetailsChange("email", e.target.value.trimStart())
               }
               placeholder="olivia@heartfulness.com"
-              className="w-full pl-10 px-3.5 py-2.5 border border-[#D0D5DD] rounded-lg text-[#090C0F]"
+              className="w-full pl-10 px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F]"
             />
           </div>
           {emailError && (
@@ -122,55 +122,10 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
           )}
         </div>
 
-        <div className="">
-          <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-            Door no, Street Address <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="text"
-            value={personalDetails.doorNo}
-            onChange={(e) =>
-              onPersonalDetailsChange(
-                "doorNo",
-                e.target.value.replace(/[^A-Za-z0-9\s,./#-]/g, "").slice(0, 120)
-              )
-            }
-            className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-lg text-[#090C0F]"
-            placeholder="Enter address"
-          />
-          <p className="text-[10px] text-black leading-[16px] mt-2">
-            <span className=" font-bold">Note:</span> Please provide the address
-            in full, without which the organization needs to pay 30% tax on
-            these donations.
-          </p>
-        </div>
-
         <div className="grid md:grid-cols-2 gap-8">
           <div>
             <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-              Pincode <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              value={personalDetails.pincode}
-              onChange={(e) =>
-                onPersonalDetailsChange(
-                  "pincode",
-                  e.target.value.replace(/[^0-9]/g, "").slice(0, 10)
-                )
-              }
-              className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-lg text-[#090C0F]"
-              placeholder="Enter Pincode"
-            />
-            {pincodeError && (
-              <p className="text-xs text-red-500 font-medium mt-1">
-                {pincodeError}
-              </p>
-            )}
-          </div>
-          <div>
-            <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-              Phone number <span className="text-red-500">*</span>
+              Phone number
             </label>
 
             <div className="flex relative w-full">
@@ -215,7 +170,7 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
                   )
                 }
                 placeholder="Enter phone number"
-                className="pl-20 w-full px-3.5 py-2.5 border border-[#D0D5DD] min-h-fit rounded-lg text-[#090C0F] text-base"
+                className="pl-20 w-full px-3.5 py-2.5 border border-[#D0D5DD] min-h-fit rounded-[8px] text-[#090C0F] text-base"
               />
             </div>
             {phoneError && (
@@ -224,12 +179,9 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
               </p>
             )}
           </div>
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-8">
           <div>
             <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-              Currency <span className="text-red-500">*</span>
+              Currency
             </label>
             <Select
               value={personalDetails.currency}
@@ -237,7 +189,7 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
                 onPersonalDetailsChange("currency", value)
               }
             >
-              <SelectTrigger className="w-full px-3.5 py-2.5 border border-[#D0D5DD] min-h-fit rounded-lg text-[#090C0F] text-base">
+              <SelectTrigger className="w-full px-3.5 py-2.5 border border-[#D0D5DD] min-h-fit rounded-[8px] text-[#090C0F] text-base">
                 <SelectValue placeholder="Currency" />
               </SelectTrigger>
               <SelectContent>
@@ -268,23 +220,41 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
               </SelectContent>
             </Select>
           </div>
-          <div>
-            <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-              Country <span className="text-red-500">*</span>
-            </label>
-            <ComboBox
-              value={personalDetails.country}
-              onChange={(value) => onPersonalDetailsChange("country", value)}
-              options={["India", "USA", "Canada", "UK"]}
-              placeholder="Select Country"
-            />
-          </div>
+        </div>
+
+        <div className="">
+          <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
+            Door no, Street Address
+          </label>
+          <input
+            type="text"
+            value={personalDetails.doorNo}
+            onChange={(e) =>
+              onPersonalDetailsChange(
+                "doorNo",
+                e.target.value.replace(/[^A-Za-z0-9\s,./#-]/g, "").slice(0, 120)
+              )
+            }
+            className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F]"
+            placeholder="Enter address"
+          />
         </div>
 
         <div className="grid md:grid-cols-2 gap-8">
           <div>
             <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-              State <span className="text-red-500">*</span>
+              City
+            </label>
+            <ComboBox
+              value={personalDetails.city}
+              onChange={(value) => onPersonalDetailsChange("city", value)}
+              options={["Nagpur", "Pune", "Mumbai", "Kolhapur", "Thane"]}
+              placeholder="Select City"
+            />
+          </div>
+          <div>
+            <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
+              State
             </label>
             <ComboBox
               value={personalDetails.state}
@@ -298,19 +268,48 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
               placeholder="Select State"
             />
           </div>
+        </div>
 
+        <div className="grid md:grid-cols-2 gap-8">
           <div>
             <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-              City <span className="text-red-500">*</span>
+              Country
             </label>
             <ComboBox
-              value={personalDetails.city}
-              onChange={(value) => onPersonalDetailsChange("city", value)}
-              options={["Nagpur", "Pune", "Mumbai", "Kolhapur", "Thane"]}
-              placeholder="Select City"
+              value={personalDetails.country}
+              onChange={(value) => onPersonalDetailsChange("country", value)}
+              options={["India", "USA", "Canada", "UK"]}
+              placeholder="Select Country"
             />
           </div>
+          <div>
+            <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
+              Pin / Zip Code
+            </label>
+            <input
+              type="text"
+              value={personalDetails.pincode}
+              onChange={(e) =>
+                onPersonalDetailsChange(
+                  "pincode",
+                  e.target.value.replace(/[^0-9]/g, "").slice(0, 10)
+                )
+              }
+              className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F]"
+              placeholder="Enter Pincode"
+            />
+            {pincodeError && (
+              <p className="text-xs text-red-500 font-medium mt-1">
+                {pincodeError}
+              </p>
+            )}
+          </div>
         </div>
+        <p className="text-[10px] text-black leading-[16px] mt-2">
+          <span className=" font-bold">Note:</span> Please provide the address
+          in full, without which the organization needs to pay 30% tax on these
+          donations.
+        </p>
       </div>
     </div>
   );

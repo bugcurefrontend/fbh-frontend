@@ -21,7 +21,7 @@ export const useTreeCheckout = () => {
   const [personalDetails, setPersonalDetails] = useState<PersonalDetails>({
     firstName: "",
     lastName: "",
-    displayOnDonorsList: false,
+    displayOnDonorsList: true,
     email: "",
     doorNo: "",
     pincode: "",
