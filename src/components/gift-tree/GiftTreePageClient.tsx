@@ -16,9 +16,13 @@ import {
 } from "@/components/plant-tree/types";
 import { useAuth } from "@/lib/auth-context";
 import LoginDialog from "@/components/LoginDialog";
-import { fetchGlobal } from "@/services/global";
 
-const GiftTreePageClient = () => {
+interface Props {
+  co2PerTree?: number | null;
+  sampleCertificateUrl?: string | null;
+}
+
+const GiftTreePageClient = ({ co2PerTree, sampleCertificateUrl }: Props) => {
   const [step, setStep] = useState(1);
   const [orderSummary, setOrderSummary] = useState<OrderSummaryType>({
     numberOfTrees: 0,
@@ -53,17 +57,6 @@ const GiftTreePageClient = () => {
   const [isLoginDialogOpen, setIsLoginDialogOpen] = useState(false);
   const [hasChosenGuest, setHasChosenGuest] = useState(false);
   const { isAuthenticated, isLoading, login } = useAuth();
-  const [sampleCertificateUrl, setSampleCertificateUrl] = useState<
-    string | undefined
-  >(undefined);
-
-  useEffect(() => {
-    const loadGlobal = async () => {
-      const global = await fetchGlobal();
-      setSampleCertificateUrl(global?.sample_certificate?.url);
-    };
-    loadGlobal();
-  }, []);
 
   const speciesData: Species[] = [
     {
@@ -117,11 +110,13 @@ const GiftTreePageClient = () => {
   ];
 
   const updateOrderSummary = (qty: number) => {
-    const co2Offset = Math.round(qty * 16.67); // Approximate calculation
-    const amount = qty * 16.67; // Approximate price per tree
+    const perTreeCo2 = typeof co2PerTree === "number" ? co2PerTree : 16.67; // fallback
+    const co2Offset = Math.round(qty * perTreeCo2);
+    const amount = qty * 16.67; // price per tree remains unchanged
+    const co2Label = co2Offset === 1 ? `${co2Offset} Kg` : `${co2Offset} Kg(s)`;
     setOrderSummary({
       numberOfTrees: qty,
-      totalCo2Offset: `${co2Offset}Kg`,
+      totalCo2Offset: co2Label,
       totalAmount: `INR ${amount.toFixed(2)}`,
     });
   };
