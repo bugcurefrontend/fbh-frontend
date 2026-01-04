@@ -8,6 +8,9 @@ import Co2OffsetIcon from "./icons/Co2OffsetIcon";
 import StatesProjectsIcon from "./icons/StatesProjectsIcon";
 import LakesRestoredIcon from "./icons/LakesRestoredIcon";
 import { MetricSimplified } from "@/types/metric";
+import PlantingSites from "./icons/PlantingSites";
+import VolunteerEngaged from "./icons/VolunteersEngaged";
+import PartnerOrganization from "./icons/PartnerOrganization";
 
 interface StatisticsSectionProps {
   metrics?: MetricSimplified[];
@@ -112,31 +115,42 @@ const StatisticsSection: React.FC<StatisticsSectionProps> = ({
     : apiStats;
 
   // If aboutStats provided, render a single row of 4 stats instead of the default layout
-  const hasAboutStats = aboutStats && (aboutStats.trees || aboutStats.plantingSites || aboutStats.volunteers || aboutStats.partners);
+  const hasAboutStats =
+    aboutStats &&
+    (aboutStats.trees ||
+      aboutStats.plantingSites ||
+      aboutStats.volunteers ||
+      aboutStats.partners);
 
   const aboutRowStats = hasAboutStats
     ? [
         {
           icon: <TreeSpeciesIcon width={36} height={36} color="#206f32" />,
-          mobileIcon: <TreeSpeciesIcon width={28} height={28} color="#206f32" />,
+          mobileIcon: (
+            <TreeSpeciesIcon width={28} height={28} color="#206f32" />
+          ),
           number: aboutStats?.trees || "-",
           label: "Trees planted",
         },
         {
-          icon: <LandscapeIcon width={40} height={40} color="#206f32" />,
-          mobileIcon: <LandscapeIcon width={32} height={32} color="#206f32" />,
+          icon: <PlantingSites width={40} height={40} color="#206f32" />,
+          mobileIcon: <PlantingSites width={32} height={32} color="#206f32" />,
           number: aboutStats?.plantingSites || "-",
           label: "Planting sites",
         },
         {
-          icon: <StatesProjectsIcon width={36} height={40} color="#206f32" />,
-          mobileIcon: <StatesProjectsIcon width={28} height={32} color="#206f32" />,
+          icon: <VolunteerEngaged width={36} height={40} color="#206f32" />,
+          mobileIcon: (
+            <VolunteerEngaged width={28} height={32} color="#206f32" />
+          ),
           number: aboutStats?.volunteers || "-",
           label: "Volunteers",
         },
         {
-          icon: <LakesRestoredIcon width={40} height={40} color="#206f32" />,
-          mobileIcon: <LakesRestoredIcon width={32} height={32} color="#206f32" />,
+          icon: <PartnerOrganization width={40} height={40} color="#206f32" />,
+          mobileIcon: (
+            <PartnerOrganization width={32} height={32} color="#206f32" />
+          ),
           number: aboutStats?.partners || "-",
           label: "Partner organisations",
         },
@@ -227,76 +241,89 @@ const StatisticsSection: React.FC<StatisticsSectionProps> = ({
 
         {/* Mobile Layout - Dynamic rows of 2 items each (aboutStats overrides) */}
         <div className="flex flex-col sm:hidden gap-12">
-          {hasAboutStats ? (
-            Array.from({ length: 2 }).map((_, rowIdx) => {
-              const leftItem = aboutRowStats[rowIdx * 2];
-              const rightItem = aboutRowStats[rowIdx * 2 + 1];
-              return (
-                <div key={rowIdx} className="flex justify-between items-center gap-4">
-                  {leftItem && (
-                    <div className="flex flex-col items-center gap-3 text-center flex-1">
-                      <div className="w-8 h-8 flex items-center justify-center">
-                        {leftItem.mobileIcon}
+          {hasAboutStats
+            ? Array.from({ length: 2 }).map((_, rowIdx) => {
+                const leftItem = aboutRowStats[rowIdx * 2];
+                const rightItem = aboutRowStats[rowIdx * 2 + 1];
+                return (
+                  <div
+                    key={rowIdx}
+                    className="flex justify-between items-center gap-4"
+                  >
+                    {leftItem && (
+                      <div className="flex flex-col items-center gap-3 text-center flex-1">
+                        <div className="w-8 h-8 flex items-center justify-center">
+                          {leftItem.mobileIcon}
+                        </div>
+                        <p className="text-lg text-[#090C0F] font-bold">
+                          {leftItem.number}
+                        </p>
+                        <p className="text-[10px] max-[500px]:w-20 font-semibold text-[#454950]">
+                          {leftItem.label}
+                        </p>
                       </div>
-                      <p className="text-lg text-[#090C0F] font-bold">{leftItem.number}</p>
-                      <p className="text-[10px] max-[500px]:w-20 font-semibold text-[#454950]">
-                        {leftItem.label}
-                      </p>
-                    </div>
-                  )}
-                  {leftItem && rightItem && <div className="h-[96px] w-[0.5px] bg-[#D1D5DB] rounded" />}
-                  {rightItem && (
-                    <div className="flex flex-col items-center gap-3 text-center flex-1">
-                      <div className="w-8 h-8 flex items-center justify-center">{rightItem.mobileIcon}</div>
-                      <p className="text-lg text-[#090C0F] font-bold">{rightItem.number}</p>
-                      <p className="text-[10px] max-[500px]:w-26 font-semibold text-[#454950]">{rightItem.label}</p>
-                    </div>
-                  )}
-                </div>
-              );
-            })
-          ) : (
-            Array.from({ length: Math.ceil(orderedApiStats.length / 2) }).map((_, rowIdx) => {
-              const leftItem = orderedApiStats[rowIdx * 2];
-              const rightItem = orderedApiStats[rowIdx * 2 + 1];
-              return (
-                <div
-                  key={rowIdx}
-                  className="flex justify-between items-center gap-4"
-                >
-                  {leftItem && (
-                    <div className="flex flex-col items-center gap-3 text-center flex-1">
-                      <div className="w-8 h-8 flex items-center justify-center">
-                        {leftItem.mobileIcon}
+                    )}
+                    {leftItem && rightItem && (
+                      <div className="h-[96px] w-[0.5px] bg-[#D1D5DB] rounded" />
+                    )}
+                    {rightItem && (
+                      <div className="flex flex-col items-center gap-3 text-center flex-1">
+                        <div className="w-8 h-8 flex items-center justify-center">
+                          {rightItem.mobileIcon}
+                        </div>
+                        <p className="text-lg text-[#090C0F] font-bold">
+                          {rightItem.number}
+                        </p>
+                        <p className="text-[10px] max-[500px]:w-26 font-semibold text-[#454950]">
+                          {rightItem.label}
+                        </p>
                       </div>
-                      <p className="text-lg text-[#090C0F] font-bold">
-                        {leftItem.number}
-                      </p>
-                      <p className="text-[10px] max-[500px]:w-20 font-semibold text-[#454950]">
-                        {leftItem.label}
-                      </p>
+                    )}
+                  </div>
+                );
+              })
+            : Array.from({ length: Math.ceil(apiStats.length / 2) }).map(
+                (_, rowIdx) => {
+                  const leftItem = apiStats[rowIdx * 2];
+                  const rightItem = apiStats[rowIdx * 2 + 1];
+                  return (
+                    <div
+                      key={rowIdx}
+                      className="flex justify-between items-center gap-4"
+                    >
+                      {leftItem && (
+                        <div className="flex flex-col items-center gap-3 text-center flex-1">
+                          <div className="w-8 h-8 flex items-center justify-center">
+                            {leftItem.mobileIcon}
+                          </div>
+                          <p className="text-lg text-[#090C0F] font-bold">
+                            {leftItem.number}
+                          </p>
+                          <p className="text-[10px] max-[500px]:w-20 font-semibold text-[#454950]">
+                            {leftItem.label}
+                          </p>
+                        </div>
+                      )}
+                      {leftItem && rightItem && (
+                        <div className="h-[96px] w-[0.5px] bg-[#D1D5DB] rounded"></div>
+                      )}
+                      {rightItem && (
+                        <div className="flex flex-col items-center gap-3 text-center flex-1">
+                          <div className="w-8 h-8 flex items-center justify-center">
+                            {rightItem.mobileIcon}
+                          </div>
+                          <p className="text-lg text-[#090C0F] font-bold">
+                            {rightItem.number}
+                          </p>
+                          <p className="text-[10px] max-[500px]:w-26 font-semibold text-[#454950]">
+                            {rightItem.label}
+                          </p>
+                        </div>
+                      )}
                     </div>
-                  )}
-                  {leftItem && rightItem && (
-                    <div className="h-[96px] w-[0.5px] bg-[#D1D5DB] rounded"></div>
-                  )}
-                  {rightItem && (
-                    <div className="flex flex-col items-center gap-3 text-center flex-1">
-                      <div className="w-8 h-8 flex items-center justify-center">
-                        {rightItem.mobileIcon}
-                      </div>
-                      <p className="text-lg text-[#090C0F] font-bold">
-                        {rightItem.number}
-                      </p>
-                      <p className="text-[10px] max-[500px]:w-26 font-semibold text-[#454950]">
-                        {rightItem.label}
-                      </p>
-                    </div>
-                  )}
-                </div>
-              );
-            })
-          )}
+                  );
+                }
+              )}
         </div>
       </div>
     </div>

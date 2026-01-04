@@ -131,12 +131,12 @@ const FAQs = () => {
                       {openItem === faq.id ? (
                         <Minus
                           strokeWidth={2}
-                          className="w-4 md:w-6 h-4 md:h-6 text-[#63676C]"
+                          className="w-6 h-6 text-[#63676C]"
                         />
                       ) : (
                         <Plus
                           strokeWidth={2}
-                          className="w-4 md:w-6 h-4 md:h-6 text-[#63676C]"
+                          className="w-6 h-6 text-[#63676C]"
                         />
                       )}
                     </div>

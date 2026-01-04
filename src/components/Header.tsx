@@ -109,7 +109,10 @@ export default function Header() {
         <CustomNavigationMenu navigationItems={navigationItems} />
         <div className="max-md:hidden flex items-center gap-3">
           <LightBox />
-          <CurrencySelect />
+          <CurrencySelect
+            className="h-9 w-[88.88px] gap-1 rounded-[5px]"
+            className2="px-1.5 gap-1"
+          />
           {/* Authentication Section */}
           <div className="max-md:hidden relative" ref={dropdownRef}>
             {isAuthenticated ? (

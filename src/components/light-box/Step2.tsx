@@ -220,9 +220,9 @@ const Step2: React.FC<Step2Props> = ({
         <Button
           onClick={handleSaveAndNext}
           disabled={!isStep2Valid}
-          className="w-full h-11 md:h-12 text-white bg-[#003399] rounded-[8px] text-base font-bold hover:bg-[#013eb9] disabled:bg-gray-300"
+          className="w-full h-11 md:h-12 text-white bg-[#003399] rounded-[8px] text-base font-semibold md:leading-6.5 md:font-bold hover:bg-[#013eb9] disabled:bg-gray-300"
         >
-          Next
+          NEXT
         </Button>
       </div>
     </div>

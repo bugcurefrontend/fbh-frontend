@@ -4,7 +4,9 @@ import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 
-const JourneyTimeline: React.FC<{ journeyImages?: ({url:string,width?:number,height?:number}|null)[] }>= ({ journeyImages }) => {
+const JourneyTimeline: React.FC<{
+  journeyImages?: ({ url: string; width?: number; height?: number } | null)[];
+}> = ({ journeyImages }) => {
   const [showAll, setShowAll] = useState(false);
   const timelineData = [
     {
@@ -95,9 +97,9 @@ const JourneyTimeline: React.FC<{ journeyImages?: ({url:string,width?:number,hei
                           <Image
                             src={item.image.url}
                             alt={item.title}
-                            width={item.image.width ?? 296}
+                            width={item.image.width ?? 297}
                             height={item.image.height ?? 144}
-                            className="max-w-74 max-sm:w-[198px] max-h-36 rounded-[5.38px] sm:rounded-[8.7px] object-cover md:mb-6 mb-4 md:ml-auto"
+                            className="sm:w-[297px] sm:max-h-[144px] w-[198px] max-h-[96px] rounded-[5.38px] sm:rounded-[8.7px] object-cover md:mb-6 mb-4 md:ml-auto"
                           />
                         ) : (
                           <Image
@@ -105,7 +107,7 @@ const JourneyTimeline: React.FC<{ journeyImages?: ({url:string,width?:number,hei
                             alt={item.title}
                             width={296}
                             height={144}
-                            className="max-w-74 max-sm:w-[198px] max-h-36 rounded-[5.38px] sm:rounded-[8.7px] object-cover md:mb-6 mb-4 md:ml-auto"
+                            className="sm:w-[297px] sm:max-h-[144px] w-[198px] max-h-[96px] rounded-[5.38px] sm:rounded-[8.7px] object-cover md:mb-6 mb-4 md:ml-auto"
                           />
                         )}
                         <h3 className="sm:text-xl leading-6 font-bold md:mb-4 mb-2">
@@ -142,9 +144,9 @@ const JourneyTimeline: React.FC<{ journeyImages?: ({url:string,width?:number,hei
                           <Image
                             src={item.image.url}
                             alt={item.title}
-                            width={item.image.width ?? 296}
+                            width={item.image.width ?? 297}
                             height={item.image.height ?? 144}
-                            className="max-w-74 max-h-36 max-sm:w-[198px] rounded-[5.38px] sm:rounded-[8.7px] object-cover md:mb-6 mb-4"
+                            className="sm:w-[297px] sm:max-h-[144px] w-[198px] max-h-[96px] rounded-[5.38px] sm:rounded-[8.7px] object-cover md:mb-6 mb-4"
                           />
                         ) : (
                           <Image
@@ -152,7 +154,7 @@ const JourneyTimeline: React.FC<{ journeyImages?: ({url:string,width?:number,hei
                             alt={item.title}
                             width={296}
                             height={144}
-                            className="max-w-74 max-h-36 max-sm:w-[198px] rounded-[5.38px] sm:rounded-[8.7px] object-cover md:mb-6 mb-4"
+                            className="sm:w-[297px] sm:max-h-[144px] w-[198px] max-h-[96px] rounded-[5.38px] sm:rounded-[8.7px] object-cover md:mb-6 mb-4"
                           />
                         )}
                         <h3 className="sm:text-xl leading-6 font-bold md:mb-4 mb-2">

@@ -278,7 +278,9 @@ const PlantedTrees = ({ onBack, donation }: PlantedTreesProps) => {
                   className="border border-[#E8E8E9] rounded-2xl overflow-hidden bg-white"
                 >
                   <div className="border-b py-3 px-4 border-[#E8E8E9] flex items-center justify-between">
-                    <h2 className="text-lg font-bold">{donor.species} Tree</h2>
+                    <h2 className="text-lg font-semibold sm:font-bold">
+                      {donor.species} Tree
+                    </h2>
                     <div className="flex items-center justify-center rounded-full h-8 w-8 bg-[#003399]">
                       <Image
                         src="/images/direction.png"

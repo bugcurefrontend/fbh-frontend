@@ -39,7 +39,7 @@ const PaymentStatusUI: React.FC = () => {
         {/* Payment Status Card */}
         <div className="text-center flex items-center justify-center">
           {status === "success" ? (
-            <div className="py-12 md:px-16 px-4 border-[#12B569] border rounded-xl">
+            <div className="md:py-12 py-8 md:px-16 px-4 border-[#12B569] border rounded-xl">
               {/* Success State */}
               <div className="inline-flex items-center justify-center w-25 h-25 animate-bounce">
                 <Image
@@ -60,12 +60,13 @@ const PaymentStatusUI: React.FC = () => {
                 </p>
               </div>
 
-              <p className="text-[#454950] font-semibold md:text-2xl md:leading-9">
-                Your tree is now planted for a greener tomorrow. <br />
+              <p className="text-[#090C0F] font-medium md:text-2xl md:leading-9">
+                Your tree is now planted for a greener tomorrow.{" "}
+                <br className="max-sm:hidden" />
                 Thank you for making a difference!
               </p>
 
-              <Link href="/" className="mt-8 inline-block">
+              <Link href="/" className="mt-6 sm:mt-8 inline-block">
                 <Button
                   className={`flex-1 bg-[#003399] hover:bg-[#002266] text-white font-bold w-[207px] h-12 rounded-[8px]`}
                 >
@@ -75,7 +76,7 @@ const PaymentStatusUI: React.FC = () => {
               </Link>
             </div>
           ) : (
-            <div className="py-12 md:px-16 px-4 border-[#F04438] border rounded-xl">
+            <div className="md:py-12 py-8 md:px-16 px-4 border-[#F04438] border rounded-xl">
               {/* Failed State */}
               <div className="inline-flex items-center justify-center w-20 h-20 animate-bounce">
                 <Image
@@ -99,7 +100,7 @@ const PaymentStatusUI: React.FC = () => {
 
               <p className="text-[#F04438] font-medium md:text-2xl md:leading-9 mb-4">
                 Please check you bank/card account. If money is debited,
-                <br />
+                <br className="max-sm:hidden" />
                 it will get refunded back to your/card account
               </p>
 

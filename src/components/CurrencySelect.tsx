@@ -36,7 +36,15 @@ export function useCurrency() {
   return { currency, currencySymbol, setCurrency };
 }
 
-export default function CurrencySelect() {
+interface CurrencySelectProps {
+  className?: string;
+  className2?: string;
+}
+
+export default function CurrencySelect({
+  className,
+  className2,
+}: CurrencySelectProps) {
   const { currency, setCurrency } = useCurrency();
   const [open, setOpen] = useState(false);
 
@@ -52,7 +60,7 @@ export default function CurrencySelect() {
       {/* Selected currency button */}
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center gap-1 border-[2px] h-[37px] border-[#E6E6E6] rounded-sm px-1.5 py-1 bg-white hover:bg-[#E6EBF5]"
+        className={`flex items-center justify-center border-[2px] border-[#E6E6E6] bg-white hover:bg-[#E6EBF5] ${className}`}
       >
         <Image src={selected.flag} alt={selected.code} width={25} height={25} />
         <span className="text-sm leading-5 text-[#333333]">
@@ -70,7 +78,7 @@ export default function CurrencySelect() {
             <button
               key={c.code}
               onClick={() => handleSelect(c)}
-              className="flex items-center gap-1 w-full px-1.5 py-1 hover:bg-[#E6EBF5]"
+              className={`flex items-center w-full py-1 hover:bg-[#E6EBF5] ${className2}`}
             >
               <Image src={c.flag} alt={c.code} width={25} height={25} />
               <span className="text-sm leading-5 text-[#333333]">{c.code}</span>

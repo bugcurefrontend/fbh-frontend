@@ -238,10 +238,7 @@ const LightBox: React.FC = () => {
             Plant For A Cause
           </span>
         </AlertDialogTrigger>
-        <AlertDialogContent
-          className="lg:max-w-[944px] lg:min-w-[944px] lg:h-[640px] h-fit max-md:max-h-[90%] flex border border-[#BED4FF] md:rounded-4xl dialog-pop gap-6 max-md:p-4
-        "
-        >
+        <AlertDialogContent className="lg:max-w-[944px] lg:min-w-[944px] lg:h-[640px] h-fit max-md:max-h-[90%] flex border border-[#BED4FF] shadow-[0_24px_48px_0_rgba(133,133,133,0.2)] md:rounded-4xl dialog-pop gap-6 max-md:p-4">
           <AlertDialogTitle className="hidden" />
           <div
             onClick={() => setShowBox(false)}
@@ -251,13 +248,13 @@ const LightBox: React.FC = () => {
           >
             <X size={18} className="text-black" />
           </div>
-          <div className="max-lg:hidden w-full h-full">
+          <div className="max-lg:hidden max-w-100 w-full h-full">
             <Image
               src="/images/gallery/5.png"
               alt="lightbox"
               height={592}
               width={400}
-              className="rounded-2xl w-full min-h-[592px] object-cover"
+              className="rounded-2xl max-w-100 min-h-[592px] object-cover"
             />
           </div>
           {step > 1 && (

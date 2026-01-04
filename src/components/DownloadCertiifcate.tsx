@@ -124,15 +124,15 @@ const DownloadCertificate: React.FC = () => {
         showCloseButton={false}
         className="md:w-[533px] md:h-[442px] px-4 md:px-6 py-4 gap-0"
       >
-        <DialogTitle className="uppercase font-bold text-2xl">
+        <DialogTitle className="uppercase font-bold sm:text-2xl">
           Download Certificate
         </DialogTitle>
         <DialogClose asChild>
-          <button className="absolute right-5 top-2.5 p-2 rounded-full hover:bg-gray-100 transition">
-            <X size={24} className="text-black" />
+          <button className="absolute right-3 sm:right-5 top-1.5 sm:top-2.5 p-2 rounded-full hover:bg-gray-100 transition">
+            <X size={24} className="text-black max-sm:w-4.5" />
           </button>
         </DialogClose>
-        <div className="flex justify-end gap-2 text-[#003399] cursor-pointer font-medium mb-2.5 mt-4">
+        <div className="flex justify-end gap-2 text-[#003399] cursor-pointer max-sm:text-sm font-medium mb-2.5 mt-4">
           <p>Download All </p>
           <DownloadIcon size={20} />
         </div>

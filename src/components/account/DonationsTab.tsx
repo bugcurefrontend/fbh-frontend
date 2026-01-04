@@ -47,14 +47,14 @@ export const DonationsTab = () => {
   }
   return (
     <div className="pt-6 space-y-4">
-      <div className="grid gap-4 sm:gap-8 sm:grid-cols-2">
+      <div className="grid gap-6 sm:gap-8 sm:grid-cols-2">
         {currentData.map((donation) => (
           <div
             key={donation.id}
             className="bg-white border border-[#E6E6E6] rounded-2xl"
           >
             <div className="flex items-center justify-between sm:px-6 px-3 py-4 border-b border-[#E5E7EB]">
-              <div className="flex items-center gap-2.5">
+              <div className="flex items-center gap-2 sm:gap-2.5">
                 <div
                   className="h-8 w-8 rounded-full flex items-center justify-center"
                   style={{ backgroundColor: `${donation.accent}1A` }}
@@ -64,9 +64,10 @@ export const DonationsTab = () => {
                     alt="Icon"
                     width={32}
                     height={32}
+                    className="max-sm:w-6"
                   />
                 </div>
-                <p className="sm:text-2xl text-xl font-semibold text-[#111827] leading-5.5">
+                <p className="sm:text-2xl text-lg font-semibold text-[#111827] leading-5.5">
                   {donation.name}
                 </p>
               </div>
@@ -74,7 +75,7 @@ export const DonationsTab = () => {
                 <Tooltip>
                   <TooltipTrigger>
                     <Badge
-                      className="font-semibold text-base leading-6 border-0 items-center justify-center flex rounded-full px-3 py-1"
+                      className="font-semibold max-sm:h-6 text-sm sm:text-base leading-6 border-0 items-center justify-center flex rounded-[16px] sm:rounded-full px-3 py-1"
                       style={{
                         backgroundColor: `${donation.accent}1A`,
                         color: donation.accent,
@@ -94,7 +95,7 @@ export const DonationsTab = () => {
                 </Tooltip>
               ) : (
                 <Badge
-                  className="font-semibold text-base leading-6 border-0 items-center justify-center flex rounded-full px-3 py-1"
+                  className="font-semibold max-sm:h-6 text-sm sm:text-base leading-6 border-0 items-center justify-center flex rounded-[16px] sm:rounded-full px-3 py-1"
                   style={{
                     backgroundColor: `${donation.accent}1A`,
                     color: donation.accent,
@@ -105,33 +106,33 @@ export const DonationsTab = () => {
               )}
             </div>
 
-            <div className="sm:p-6 p-3 space-y-6">
-              <div className="flex gap-3 justify-between items-center font-semibold text-[#94979A]">
+            <div className="sm:p-6 p-4 space-y-6">
+              <div className="max-sm:text-sm flex gap-4 sm:gap-3 justify-between items-center font-semibold text-[#94979A]">
                 <div className="space-y-4 w-fit">
-                  <div className="sm:space-y-2">
+                  <div className="space-y-2">
                     <h1>Reference No.</h1>
-                    <p className="text-lg font-bold text-[#19212C]">
+                    <p className="sm:text-lg font-bold text-[#19212C]">
                       {donation.reference}
                     </p>
                   </div>
-                  <div className="sm:space-y-2">
+                  <div className="space-y-2">
                     <h1> Date</h1>
 
-                    <p className="text-lg font-bold text-[#19212C]">
+                    <p className="sm:text-lg font-bold text-[#19212C]">
                       {donation.date}
                     </p>
                   </div>
                 </div>
 
                 <div className="space-y-4 w-fit">
-                  <div className="sm:space-y-2">
+                  <div className="space-y-2">
                     <h1>Trees Planted</h1>
-                    <p className="text-lg font-bold text-[#19212C]">
+                    <p className="sm:text-lg font-bold text-[#19212C]">
                       {donation.trees}
                     </p>
                   </div>
 
-                  <div className="sm:space-y-2">
+                  <div className="space-y-2">
                     <div className="flex gap-2 items-center">
                       <h2>Geo-Tagged</h2>
                       {donation.geoTagged === "true" ? (
@@ -153,7 +154,7 @@ export const DonationsTab = () => {
 
                     <button
                       onClick={() => setSelectedTree(donation)}
-                      className="text-lg border-b-2 border-[#003399] leading-6 font-bold text-[#003399]"
+                      className="sm:text-lg border-b-2 border-[#003399] leading-6 font-bold text-[#003399]"
                     >
                       View Trees
                     </button>

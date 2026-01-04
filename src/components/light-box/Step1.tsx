@@ -51,7 +51,10 @@ const Step1: React.FC<Step1Props> = ({
           value={occasion}
           onChange={setOccasion}
           placeholder="Occasion / Cause"
-          options={["Birthday", "Climate Healing"]}
+          options={[
+            { text: "Birthday", image: "/images/celebration.png" },
+            { text: "Climate Healing", image: "/images/healing.png" },
+          ]}
           contentClassName="md:w-[424px]"
         />
       </div>
@@ -102,7 +105,8 @@ const Step1: React.FC<Step1Props> = ({
             </TooltipTrigger>
             <TooltipContent className="bg-[#E7F8F0] px-4 py-3">
               <p className="text-[#0D824B] text-xs md:font-semibold">
-                We will geotag your trees and provide quarterly growth updates.
+                We will geotag your trees and provide quarterly <br /> growth
+                updates for the next three years.
               </p>
             </TooltipContent>
           </Tooltip>
@@ -116,15 +120,14 @@ const Step1: React.FC<Step1Props> = ({
 
       <div className="bg-[#95AAD5] h-[1px] w-full mt-5" />
 
-      <div className="flex justify-between">
-        <CurrencySelect />
+      <div className="flex justify-between items-center">
+        <CurrencySelect
+          className="md:h-[46px] h-[36px] md:w-[116px] w-[88.81px] md:gap-2 gap-1 rounded-[8px]"
+          className2="gap-2 px-3.5"
+        />
         <h1 className="flex items-baseline gap-1">
           <span className="font-bold text-2xl md:text-[40px] md:leading-[36px] text-[#090C0F]">
-            {currencySymbol}{" "}
-            {isGeoTagged
-              ? geotaggedRate.toFixed(2)
-              : nonGeotaggedRate.toFixed(2)}{" "}
-            /
+            {currencySymbol} {isGeoTagged ? geotaggedRate : nonGeotaggedRate} /
           </span>
           <span className="font-semibold text-[16px] leading-[36px] text-[#003399]">
             Tree
@@ -135,9 +138,9 @@ const Step1: React.FC<Step1Props> = ({
       <Button
         onClick={handleSaveAndNext}
         disabled={(!selectedQuantity && !manualQuantity) || !occasion.trim()}
-        className="w-full h-11 md:h-12 text-white bg-[#003399] rounded-[8px] text-base font-bold hover:bg-[#013eb9] disabled:bg-gray-300"
+        className="w-full h-11 md:h-12 text-white bg-[#003399] rounded-[8px] text-base font-semibold md:leading-6.5 md:font-bold hover:bg-[#013eb9] disabled:bg-gray-300"
       >
-        Next
+        NEXT
       </Button>
     </div>
   );

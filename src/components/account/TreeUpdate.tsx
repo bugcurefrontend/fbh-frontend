@@ -52,12 +52,11 @@ export const TreeUpdate = ({
     : [];
 
   return (
-    <div className="space-y-8">
-      <div className="flex flex-wrap items-center gap-4">
+    <div className="md:px-4 space-y-8">
+      <div className="flex flex-wrap items-center gap-2 sm:gap-4">
         <button onClick={onBack}>
           <ArrowLeft strokeWidth="3px" className="w-5 h-5" />
         </button>
-        <div className="flex items-center gap-2"></div>
         <h1 className="font-semibold text-xl md:text-2xl leading-9">
           Trees Updates
         </h1>
@@ -65,10 +64,10 @@ export const TreeUpdate = ({
           {tree.reference}
         </p>
       </div>
-      <div className="w-full px-0 md:px-14 space-y-10 relative">
+      <div className="w-full px-0 md:px-10 space-y-10 relative">
         {years.length > 0 && (
           <Select value={selectedYear} onValueChange={setSelectedYear}>
-            <SelectTrigger className="absolute -top-1.5 right-0 md:right-14 gap-10 py-[9px] px-[13px] rounded-[8px] border-[#D1D5DB] text-[#333333] text-sm w-auto">
+            <SelectTrigger className="absolute sm:-top-1.5 right-0 md:right-14 md:gap-10 max-sm:max-h-6 sm:py-[9px] px-[13px] sm:rounded-[8px] rounded border-[#D1D5DB] text-[#333333] text-sm w-auto">
               <SelectValue placeholder="Year" />
             </SelectTrigger>
             <SelectContent>
@@ -89,11 +88,11 @@ export const TreeUpdate = ({
         ) : (
           filteredUpdates.map((update) => (
             <div key={update.id} className="space-y-4">
-              <h3 className="font-bold md:leading-[30px] text-xl text-[#454950]">
-                {update.month}
+              <h3 className="font-semibold md:font-bold md:leading-[30px] md:text-xl text-[#454950]">
+                {update.month} {update.year}
               </h3>
 
-              <div className="flex flex-col lg:flex-row justify-between items-center gap-8">
+              <div className="flex flex-col lg:flex-row justify-between items-center gap-3 md:gap-8">
                 <div className="flex justify-center gap-4 md:gap-8 w-full lg:w-auto">
                   {update.images.slice(0, 2).map((img, i) => (
                     <div
@@ -111,7 +110,7 @@ export const TreeUpdate = ({
                 </div>
 
                 <div className="w-full lg:w-[45%]">
-                  <p className="text-sm md:text-base">{update.text}</p>
+                  <p className="text-xs md:text-base">{update.text}</p>
                 </div>
               </div>
             </div>
