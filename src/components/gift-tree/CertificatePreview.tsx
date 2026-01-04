@@ -9,14 +9,22 @@ import {
 } from "@/components/ui/dialog";
 import Image from "next/image";
 
-const CertificatePreview: React.FC = () => {
+type Props = {
+  imageUrl?: string | null;
+  blurImageUrl?: string | null;
+};
+
+const CertificatePreview: React.FC<Props> = ({ imageUrl, blurImageUrl }) => {
+  const triggerBg = blurImageUrl ?? "/images/blur-certificate.png";
+  const dialogImage = imageUrl ?? "/images/certificate.png";
+
   return (
     <Dialog>
       <DialogTrigger asChild>
         <div
           className="h-[109px] border border-[#94979A] bg-gray-100 rounded-[8px] mb-8 flex items-center justify-center bg-cover bg-center relative overflow-hidden cursor-pointer"
           style={{
-            backgroundImage: "url('/images/blur-certificate.png')",
+            backgroundImage: `url('${triggerBg}')`,
           }}
         >
           <button className="flex items-center gap-1.5 text-sm font-semibold md:font-bold">
@@ -39,7 +47,7 @@ const CertificatePreview: React.FC = () => {
           </button>
         </DialogClose>
         <Image
-          src="/images/certificate.png"
+          src={dialogImage}
           alt="Certificate"
           width={623}
           height={442}

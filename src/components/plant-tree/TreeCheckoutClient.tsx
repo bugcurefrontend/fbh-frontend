@@ -14,9 +14,10 @@ import { Button } from "@/components/ui/button";
 
 interface Props {
   co2PerTree?: number | null;
+  sampleCertificateUrl?: string | null;
 }
 
-const TreeCheckoutClient = ({ co2PerTree }: Props) => {
+const TreeCheckoutClient = ({ co2PerTree, sampleCertificateUrl }: Props) => {
   const {
     step,
     selectedQuantity,
@@ -73,7 +74,7 @@ const TreeCheckoutClient = ({ co2PerTree }: Props) => {
                 availabilityMessage={availabilityMessage}
               />
 
-              <CertificatePreview />
+              <CertificatePreview imageUrl={sampleCertificateUrl ?? undefined} blurImageUrl={sampleCertificateUrl ?? undefined} />
 
               <PlantDetailsSection
                 quantities={QUANTITIES}

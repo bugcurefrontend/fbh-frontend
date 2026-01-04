@@ -63,9 +63,10 @@ export const useTreeCheckout = (co2PerTree?: number) => {
     const perTreeCo2 = typeof co2PerTree === "number" ? co2PerTree : 16.67; // fallback
     const co2Offset = Math.round(qty * perTreeCo2);
     const amount = qty * 16.67; // price per tree remains unchanged
+    const co2Label = co2Offset === 1 ? `${co2Offset} Kg` : `${co2Offset} Kg(s)`;
     setOrderSummary({
       numberOfTrees: qty,
-      totalCo2Offset: `${co2Offset}Kg`,
+      totalCo2Offset: co2Label,
       totalAmount: `INR ${amount.toFixed(2)}`,
     });
   };

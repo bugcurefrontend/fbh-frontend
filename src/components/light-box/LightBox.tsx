@@ -107,9 +107,11 @@ const LightBox: React.FC = () => {
   const updateOrderSummary = (qty: number) => {
     const rate = isGeoTagged ? geotaggedRate : nonGeotaggedRate;
     const amount = qty * rate;
+    const co2Offset = Math.round(qty * 16.67);
+    const co2Label = co2Offset === 1 ? `${co2Offset} Kg` : `${co2Offset} Kg(s)`;
     setOrderSummary({
       numberOfTrees: qty,
-      totalCo2Offset: `${Math.round(qty * 16.67)}Kg`,
+      totalCo2Offset: co2Label,
       totalAmount: `${currencySymbol} ${amount.toFixed(2)}`,
     });
   };
