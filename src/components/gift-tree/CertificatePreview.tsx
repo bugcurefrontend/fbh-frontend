@@ -26,8 +26,11 @@ const CertificatePreview: React.FC<Props> = ({ imageUrl, blurImageUrl }) => {
           style={{
             backgroundImage: `url('${triggerBg}')`,
           }}
+          role="button"
+          aria-label="View Sample Certificate"
         >
-          <button className="flex items-center gap-1.5 text-sm font-semibold md:font-bold">
+          {/* On small screens show only the blurred thumbnail. On md+ show the explicit button text + icon */}
+          <button className="hidden md:flex items-center gap-1.5 text-sm font-semibold md:font-bold">
             View Sample Certificate
             <Eye className="w-4 h-4" />
           </button>
