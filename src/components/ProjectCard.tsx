@@ -33,7 +33,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   };
 
   return (
-    <div className="rounded-[16px] shadow-sm overflow-hidden border border-gray-200 flex flex-col">
+    <div className="hover:shadow-[0_1px_8px_rgba(0,0,0,0.3)] rounded-[16px] shadow-sm overflow-hidden border border-gray-200 flex flex-col">
       <div className="relative h-[200px]">
         <Image
           src={imageUrl}

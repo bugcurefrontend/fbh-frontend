@@ -302,7 +302,10 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
             </div>
           </div>
 
-          <ShareButton className="max-md:hidden right-4 top-4" />
+          <ShareButton
+            className="max-md:hidden right-4 top-4"
+            popClass="md:top-4 md:right-18"
+          />
         </div>
 
         {/* Right side - Species Details */}
@@ -327,7 +330,10 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
                   </span>
                 </div>
               </div>
-              <ShareButton className="md:hidden right-0" />
+              <ShareButton
+                className="md:hidden right-0 top-2"
+                popClass="right-12 top-2"
+              />
             </div>
             <p className="text-gray-700 md:text-base text-sm leading-6 line-clamp-5">
               {description}

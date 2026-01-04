@@ -103,7 +103,10 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
                 </span>
               </div>
             </div>
-            <ShareButton className="bottom-0 right-0" />
+            <ShareButton
+              className="bottom-0 right-0"
+              popClass="right-12 md:right-14 bottom-0"
+            />
           </div>
         </div>
       </section>

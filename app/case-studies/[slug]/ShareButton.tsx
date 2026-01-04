@@ -2,12 +2,14 @@
 
 import { useState } from "react";
 import { Check, Share2 } from "lucide-react";
+import LinkIcon from "@/components/icons/LinkIcon";
 
 interface ShareButtonProps {
   className?: string;
+  popClass?: string;
 }
 
-const ShareButton: React.FC<ShareButtonProps> = ({ className }) => {
+const ShareButton: React.FC<ShareButtonProps> = ({ className, popClass }) => {
   const [isCopied, setIsCopied] = useState(false);
 
   const handleShare = async () => {
@@ -17,16 +19,28 @@ const ShareButton: React.FC<ShareButtonProps> = ({ className }) => {
   };
 
   return (
-    <button
-      onClick={handleShare}
-      className={`flex items-center justify-center absolute md:h-12 md:w-12 h-8 w-8 rounded md:rounded-[8px] text-white bg-[#003399] hover:bg-[#002266] transition-colors ${className}`}
-    >
-      {isCopied ? (
-        <Check strokeWidth={1.5} className="md:w-6 w-4.5 md:h-6 h-4.5" />
-      ) : (
-        <Share2 strokeWidth={1.5} className="md:w-6 w-4.5 md:h-6 h-4.5" />
+    <div>
+      {isCopied && (
+        <div
+          className={`
+           flex items-center justify-center gap-2 absolute md:h-12 h-10 w-[107px] md:w-[134px] leading-4.5 rounded-[8px] shadow-xs bg-white text-[#003399] md:text-sm text-xs font-semibold ${popClass}
+          `}
+        >
+          <LinkIcon />
+          Link Copied
+        </div>
       )}
-    </button>
+      <button
+        onClick={handleShare}
+        className={`flex items-center justify-center absolute md:h-12 md:w-12 h-10 w-10 rounded md:rounded-[8px] text-white bg-[#003399] hover:bg-[#002266] transition-colors shadow-xs ${className}`}
+      >
+        {isCopied ? (
+          <Check strokeWidth={1.5} className="md:w-6 w-5.5 md:h-6 h-5.5" />
+        ) : (
+          <Share2 strokeWidth={1.5} className="md:w-6 w-5.5 md:h-6 h-5.5" />
+        )}
+      </button>
+    </div>
   );
 };
 

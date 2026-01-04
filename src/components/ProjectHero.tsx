@@ -326,7 +326,10 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
             </div>
           </div>
 
-          <ShareButton className="max-md:hidden right-4 top-4" />
+          <ShareButton
+            className="max-md:hidden right-4 top-4"
+            popClass="md:top-4 md:right-18"
+          />
         </div>
 
         {/* Right side - Project Details (unchanged) */}
@@ -354,7 +357,10 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
               </button>
             </div>
 
-            <ShareButton className="md:hidden right-0 top-3" />
+            <ShareButton
+              className="md:hidden right-0 top-2"
+              popClass="right-12 top-2"
+            />
           </div>
 
           {/* Statistics */}
