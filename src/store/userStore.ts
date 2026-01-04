@@ -12,6 +12,7 @@ interface UserData {
   tokenData?: {
     accessToken?: string;
   };
+  picture?: string;
   [key: string]: any;
 }
 
@@ -48,6 +49,7 @@ class UserStore {
         firebaseUid: userData.firebaseUid,
         cityId: userData.cityId,
         state: userData.state,
+        picture: userData.picture,
       }));
     }
 

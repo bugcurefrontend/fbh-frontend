@@ -1,0 +1,16 @@
+name: Strapi Content Rebuild
+
+on:
+  repository_dispatch:
+    types: strapi_content_update
+
+  # Allow manual trigger
+  workflow_dispatch:
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Deploy
+        run: |
+          curl -X POST "${{ secrets.DEPLOY_WEBHOOK_URL }}"

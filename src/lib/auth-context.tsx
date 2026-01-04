@@ -14,6 +14,7 @@ interface UserProfile {
   firstName?: string;
   lastName?: string;
   email?: string;
+  picture?: string;
   [key: string]: any;
 }
 

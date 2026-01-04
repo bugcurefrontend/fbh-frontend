@@ -46,6 +46,7 @@ function OneAuth() {
             "state",
             "email",
             "id",
+            "photo_url",
           ],
         });
 
@@ -63,6 +64,7 @@ function OneAuth() {
             cityId: userData.city_id || "",
             city: userData.city_id || {},
             state: userData.state || "",
+            picture: userData.photo_url || "",
             tokenData: { accessToken: access_token },
             apiToken: access_token,
           };
