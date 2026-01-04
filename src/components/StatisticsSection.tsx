@@ -79,15 +79,37 @@ const StatisticsSection: React.FC<StatisticsSectionProps> = ({
   // Use API data if available (even 1), otherwise use fallback
   const hasApiData = apiMetrics && apiMetrics.length > 0;
 
-  // Convert API metrics to display format
-  const apiStats = hasApiData
+  // Local typed shape for stats used in UI
+  type StatItem = {
+    icon: JSX.Element;
+    mobileIcon: JSX.Element;
+    number: string;
+    label: string | JSX.Element;
+    order?: number;
+  };
+
+  // Convert API metrics to display format and keep their order for layout
+  const apiStatsFromApi: StatItem[] = hasApiData
     ? apiMetrics.map((m) => ({
         icon: <Image src={m.icon} alt={m.label} width={40} height={40} />,
         mobileIcon: <Image src={m.icon} alt={m.label} width={32} height={32} />,
         number: formatNumber(m.value),
         label: m.label,
+        order: m.order ?? 0,
       }))
-    : [...fallbackTopRowStats, ...fallbackBottomRowStats];
+    : [];
+
+  // Unified apiStats typed as StatItem[] (fallback cast to StatItem[])
+  const apiStats: StatItem[] = hasApiData
+    ? apiStatsFromApi
+    : ([...fallbackTopRowStats, ...fallbackBottomRowStats] as StatItem[]);
+
+  // If we have API data, sort by the `order` field so positions follow the CMS order.
+  // Desktop layout: rows of 3 (first 3 = first row; next 3 = second row)
+  // Mobile layout: rows of 2
+  const orderedApiStats: StatItem[] = hasApiData
+    ? apiStatsFromApi.slice().sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+    : apiStats;
 
   // If aboutStats provided, render a single row of 4 stats instead of the default layout
   const hasAboutStats = aboutStats && (aboutStats.trees || aboutStats.plantingSites || aboutStats.volunteers || aboutStats.partners);
@@ -121,9 +143,10 @@ const StatisticsSection: React.FC<StatisticsSectionProps> = ({
       ]
     : [];
 
-  // Split into top and bottom rows (top gets first 3, bottom gets rest)
-  const topRowStats = apiStats.slice(0, 3);
-  const bottomRowStats = apiStats.slice(3);
+  // Split into top and bottom rows using the ordered metrics
+  // Desktop: first 3 -> first row, next 3 -> second row
+  const topRowStats = orderedApiStats.slice(0, 3);
+  const bottomRowStats = orderedApiStats.slice(3, 6);
 
   return (
     <div className="px-4 max-w-7xl md:px-14 mx-auto mb-6 md:mb-4">
@@ -233,9 +256,9 @@ const StatisticsSection: React.FC<StatisticsSectionProps> = ({
               );
             })
           ) : (
-            Array.from({ length: Math.ceil(apiStats.length / 2) }).map((_, rowIdx) => {
-              const leftItem = apiStats[rowIdx * 2];
-              const rightItem = apiStats[rowIdx * 2 + 1];
+            Array.from({ length: Math.ceil(orderedApiStats.length / 2) }).map((_, rowIdx) => {
+              const leftItem = orderedApiStats[rowIdx * 2];
+              const rightItem = orderedApiStats[rowIdx * 2 + 1];
               return (
                 <div
                   key={rowIdx}

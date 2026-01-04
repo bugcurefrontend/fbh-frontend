@@ -19,6 +19,7 @@ function transformMetric(metric: Metric): MetricSimplified {
     label: metric.description,
     value: metric.value,
     deleted: metric.deleted || false,
+    order: metric.order ?? (metric as any)?.attributes?.order ?? 0,
   };
 }
 

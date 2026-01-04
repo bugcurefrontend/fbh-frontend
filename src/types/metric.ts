@@ -53,6 +53,11 @@ export interface Metric {
   icon: MetricIcon;
   description: string;
   value: number;
+  /**
+   * Ordering integer from Strapi - used to position metrics in the UI.
+   * Lower numbers render earlier (1 -> first row, first column).
+   */
+  order?: number;
   deleted: boolean;
   createdAt: string;
   updatedAt: string;
@@ -67,6 +72,8 @@ export interface MetricSimplified {
   label: string;
   value: number;
   deleted: boolean;
+  /** Ordering integer propagated from the API */
+  order?: number;
 }
 
 // API Response wrapper
