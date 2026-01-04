@@ -22,15 +22,16 @@ const CertificatePreview: React.FC<Props> = ({ imageUrl, blurImageUrl }) => {
     <Dialog>
       <DialogTrigger asChild>
         <div
-          className="h-[109px] border border-[#94979A] bg-gray-100 rounded-[8px] mb-8 flex items-center justify-center bg-cover bg-center relative overflow-hidden cursor-pointer"
+          className="h-[109px] border border-[#94979A] rounded-[8px] mb-8 flex items-center justify-center bg-cover bg-center relative overflow-hidden cursor-pointer"
           style={{
             backgroundImage: `url('${triggerBg}')`,
           }}
           role="button"
           aria-label="View Sample Certificate"
         >
-          {/* On small screens show only the blurred thumbnail. On md+ show the explicit button text + icon */}
-          <button className="hidden md:flex items-center gap-1.5 text-sm font-semibold md:font-bold">
+          <div className="absolute inset-0 backdrop-blur-[5.29px] bg-white/20" />
+
+          <button className="relative z-10 hidden md:flex items-center gap-1.5 text-sm font-semibold md:font-bold">
             View Sample Certificate
             <Eye className="w-4 h-4" />
           </button>
