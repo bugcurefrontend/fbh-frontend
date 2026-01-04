@@ -101,7 +101,7 @@ const ProjectsSection: React.FC<ProjectsSectionProps> = ({
               key={idx}
               href={`/projects/${generateProjectSlug(project.title)}`}
             >
-              <div className="flex-1 max-w-[314px] max-h-[264px] border border-gray-200 rounded-xl flex-shrink-0 overflow-hidden">
+              <div className="flex-1 max-w-[314px] max-h-[272px] border border-gray-200 rounded-xl flex-shrink-0 overflow-hidden">
                 <div className="relative h-[160px]">
                   <Image
                     src={project.imageUrl}
@@ -132,7 +132,7 @@ const ProjectsSection: React.FC<ProjectsSectionProps> = ({
                       </span>
                     </div>
                   </div>
-                  <button className="bg-[#003399] h-[36px] text-white font-bold text-sm py-2 rounded-[8px] w-full hover:bg-[#002080] gap-2 flex items-center justify-center md:font-bold md:text-base md:leading-[26px] md:text-[#FFFFFF]">
+                  <button className="bg-[#003399] h-[44px] text-white font-bold text-sm py-2 rounded-[8px] w-full hover:bg-[#002080] gap-2 flex items-center justify-center md:font-bold md:text-base md:leading-[26px] md:text-[#FFFFFF]">
                     PLANT A TREE
                     <Image
                       src="/images/donate.png"

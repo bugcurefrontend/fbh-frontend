@@ -70,7 +70,7 @@ const RelatedProjects: React.FC<RelatedProjectsProps> = ({
             <Link
               key={idx}
               href={`/projects/${generateProjectSlug(project.title)}`}
-              className="flex-1 min-w-[314px] max-w-[314px] min-h-[264px] border border-gray-200 rounded-[16px] flex-shrink-0 overflow-hidden"
+              className="flex-1 min-w-[314px] max-w-[314px] min-h-[272px] border border-gray-200 rounded-[16px] flex-shrink-0 overflow-hidden"
             >
               <div className="relative h-[160px]">
                 <Image
@@ -105,7 +105,7 @@ const RelatedProjects: React.FC<RelatedProjectsProps> = ({
                     </span>
                   </div>
                 </div>
-                <button className="bg-[#003399] h-[36px] text-white font-bold text-sm py-2 rounded-[8px] w-full hover:bg-[#002080] gap-2 flex items-center justify-center md:font-bold md:text-base md:leading-[26px] md:text-[#FFFFFF]">
+                <button className="bg-[#003399] h-[44px] text-white font-bold text-sm py-2 rounded-[8px] w-full hover:bg-[#002080] gap-2 flex items-center justify-center md:font-bold md:text-base md:leading-[26px] md:text-[#FFFFFF]">
                   PLANT A TREE
                   <Image
                     src="/images/donate.png"

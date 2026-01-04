@@ -111,20 +111,18 @@ function NavigationMenuItem({ item }: { item: NavigationItem }) {
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
-          <div className="px-0 py-2">
-            <ul className="grid">
-              {item.sub.map((subItem) => (
-                <li key={subItem.label}>
-                  <Link
-                    href={subItem.href}
-                    className="block text-[16px] font-medium hover:bg-[#E6EBF5] px-4 py-2 transition-colors truncate"
-                  >
-                    {subItem.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <ul className="grid">
+            {item.sub.map((subItem) => (
+              <li key={subItem.label}>
+                <Link
+                  href={subItem.href}
+                  className="block text-[16px] font-medium hover:bg-[#E6EBF5] px-4 py-2 transition-colors truncate"
+                >
+                  {subItem.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
       )}
     </li>
