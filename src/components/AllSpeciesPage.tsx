@@ -27,6 +27,7 @@ interface AllSpeciesPageProps {
   initialSpecies?: SpeciesSimplified[];
   initialPagination?: PaginationData;
   initialSearchQuery?: string;
+  headerImageUrl?: string | null;
 }
 
 const ITEMS_PER_PAGE = 9;
@@ -35,6 +36,7 @@ const AllSpeciesPage: React.FC<AllSpeciesPageProps> = ({
   initialSpecies,
   initialPagination,
   initialSearchQuery = "",
+  headerImageUrl = null,
 }) => {
   const [allSpecies, setAllSpecies] = useState<SpeciesSimplified[]>(
     initialSpecies || []
@@ -106,7 +108,7 @@ const AllSpeciesPage: React.FC<AllSpeciesPageProps> = ({
       <section
         className="relative h-[213px] md:h-[288px] flex items-center justify-center"
         style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?crop=entropy&cs=srgb&fm=jpg&q=85')`,
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('${headerImageUrl ?? "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?crop=entropy&cs=srgb&fm=jpg&q=85"}')`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}

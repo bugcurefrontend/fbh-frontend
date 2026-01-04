@@ -1,0 +1,61 @@
+"use client";
+
+import Gallery from "@/components/Gallery";
+import TeamSection from "@/components/OurTeam";
+import { useEffect, useState } from "react";
+import { fetchOurTeamContent } from "@/services/our-team-content";
+
+type Props = {
+  headerImageUrl?: string | null;
+};
+
+const TeamPageClient = ({ headerImageUrl }: Props) => {
+  const [galleryImages, setGalleryImages] = useState<string[] | null>(null);
+
+  useEffect(() => {
+    let mounted = true;
+
+    fetchOurTeamContent()
+      .then((data) => {
+        if (!mounted) return;
+        const imgs = data?.gallery?.map((g: any) => g.url).filter(Boolean) ?? null;
+        setGalleryImages(imgs);
+      })
+      .catch((err) => {
+        console.error("Failed to load Our Team content:", err);
+      });
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  return (
+    <main className="md:space-y-16 space-y-8">
+      <section
+        className="relative h-[213px] md:h-[288px] flex items-center justify-center"
+        style={{
+          backgroundImage: ` url('${headerImageUrl ?? "/images/meet-team.png"}')`,
+          backgroundSize: "cover",
+          backgroundPosition: "top",
+        }}
+      >
+        <h1 className="font-[Playfair_Display] text-[22px] md:text-[48px] text-white leading-12 font-semibold">
+          Our Team
+        </h1>
+      </section>
+      <section className="max-w-7xl mx-auto md:px-8 px-4 md:space-y-16 space-y-8">
+        <TeamSection />
+
+        <div className="space-y-6">
+          <h1 className="text-center font-[Playfair_Display] text-[22px] md:text-[32px] md:leading-12 leading-[30px] font-semibold">
+            Gallery
+          </h1>
+          <Gallery className="lg:h-[573px]" images={galleryImages ?? undefined} />
+        </div>
+      </section>
+    </main>
+  );
+};
+
+export default TeamPageClient;

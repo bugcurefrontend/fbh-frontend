@@ -10,12 +10,14 @@ interface FooterProps {
   menuItems?: FooterMenuItem[];
   socialLinks?: SocialLinkSimplified;
   usefulLinks?: UsefulLinkItem[];
+  copyright?: string | null;
 }
 
 const Footer: React.FC<FooterProps> = ({
   menuItems,
   socialLinks,
   usefulLinks,
+  copyright,
 }) => {
   // Fallback useful links
   const fallbackUsefulLinks: UsefulLinkItem[] = [
@@ -186,7 +188,11 @@ const Footer: React.FC<FooterProps> = ({
       <div className="bg-black">
         <div className="flex items-center justify-center md:h-18 h-[52px] p-4 mx-auto">
           <p className="font-[public_sans] sm:font-medium text-white text-base text-center leading-5">
-            © 2025 Heartfulness | All Rights Reserved
+            {copyright ? (
+              <span dangerouslySetInnerHTML={{ __html: copyright }} />
+            ) : (
+              "© 2025 Heartfulness | All Rights Reserved"
+            )}
           </p>
         </div>
       </div>

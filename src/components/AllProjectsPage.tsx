@@ -35,12 +35,14 @@ interface AllProjectsPageProps {
   initialProjects: Project[];
   initialPagination: PaginationData;
   initialSearchQuery?: string;
+  headerImageUrl?: string | null;
 }
 
 const AllProjectsPage: React.FC<AllProjectsPageProps> = ({
   initialProjects,
   initialPagination,
   initialSearchQuery = "",
+  headerImageUrl = null,
 }) => {
   // Keep original list for reference
   const [allProjects] = useState<Project[]>(initialProjects);
@@ -81,7 +83,7 @@ const AllProjectsPage: React.FC<AllProjectsPageProps> = ({
       <section
         className="relative h-[213px] md:h-[288px] flex items-center justify-center"
         style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1655985313952-4a182841d6e3?crop=entropy&cs=srgb&fm=jpg&q=85')`,
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('${headerImageUrl ?? "https://images.unsplash.com/photo-1655985313952-4a182841d6e3?crop=entropy&cs=srgb&fm=jpg&q=85"}')`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}

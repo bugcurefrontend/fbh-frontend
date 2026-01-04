@@ -7,9 +7,10 @@ import VisionMission from "@/components/about-us/VisionMission";
 import StatisticsSection from "@/components/StatisticsSection";
 import { fetchAllMetrics } from "@/services/metrics";
 import { fetchAboutContent } from "@/services/about-content";
+import { fetchGlobal } from "@/services/global";
 
 export default async function page() {
-  const [metrics, aboutContent] = await Promise.all([fetchAllMetrics(), fetchAboutContent()]);
+  const [metrics, aboutContent, global] = await Promise.all([fetchAllMetrics(), fetchAboutContent(), fetchGlobal()]);
   const aboutStats = aboutContent ? {
     trees: aboutContent.total_trees_planted || undefined,
     plantingSites: aboutContent.total_planting_sites || undefined,
@@ -17,12 +18,14 @@ export default async function page() {
     partners: aboutContent.total_partner_organisations || undefined,
   } : undefined;
 
+  const headerImageUrl = global?.about_us_hearderimage?.url ?? null;
+
   return (
     <main>
       <section
         className="relative h-[213px] md:h-[288px] flex items-center justify-center"
         style={{
-          backgroundImage: ` url('/images/about-us.png')`,
+          backgroundImage: `url('${headerImageUrl ?? "/images/about-us.png"}')`,
           backgroundSize: "cover",
           backgroundPosition: "top",
         }}

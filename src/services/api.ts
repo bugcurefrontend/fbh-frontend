@@ -65,7 +65,9 @@ export async function fetchAPI(
     const response = await fetch(requestUrl, mergedOptions);
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch data. Status: ${response.status}`);
+      const respText = await response.text();
+      console.error(`API non-ok response: ${response.status} ${respText}`);
+      throw new Error(`Failed to fetch data. Status: ${response.status} - ${respText}`);
     }
 
     const data = await response.json();

@@ -7,7 +7,7 @@ import {
 } from "@/components/plant-tree/types";
 import { SPECIES_DATA } from "./constants";
 
-export const useTreeCheckout = () => {
+export const useTreeCheckout = (co2PerTree?: number) => {
   const [step, setStep] = useState(1);
   const [selectedQuantity, setSelectedQuantity] = useState<number | null>(null);
   const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
@@ -60,8 +60,9 @@ export const useTreeCheckout = () => {
   }, [isGeoTagged]);
 
   const updateOrderSummary = (qty: number) => {
-    const co2Offset = Math.round(qty * 16.67); // Approximate calculation
-    const amount = qty * 16.67; // Approximate price per tree
+    const perTreeCo2 = typeof co2PerTree === "number" ? co2PerTree : 16.67; // fallback
+    const co2Offset = Math.round(qty * perTreeCo2);
+    const amount = qty * 16.67; // price per tree remains unchanged
     setOrderSummary({
       numberOfTrees: qty,
       totalCo2Offset: `${co2Offset}Kg`,

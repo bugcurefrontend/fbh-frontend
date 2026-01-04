@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import AllProjectsPage from "../../src/components/AllProjectsPage";
 import { fetchAllProjects } from "@/services/projects";
+import { fetchGlobal } from "@/services/global";
 
 export const metadata: Metadata = {
   title: "All Projects - FBH",
@@ -9,7 +10,9 @@ export const metadata: Metadata = {
 };
 
 export default async function ProjectsPage() {
-  const apiData = await fetchAllProjects();
+  const [apiData, global] = await Promise.all([fetchAllProjects(), fetchGlobal()]);
+
+  const headerImageUrl = global?.projects_list_headerimage?.url ?? null;
 
   // Transform API data to match UI structure
   const projects = apiData.map((p) => ({
@@ -34,6 +37,7 @@ export default async function ProjectsPage() {
       initialProjects={projects}
       initialPagination={pagination}
       initialSearchQuery=""
+      headerImageUrl={headerImageUrl}
     />
   );
 }
