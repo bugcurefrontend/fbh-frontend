@@ -19,6 +19,11 @@ const nextConfig = {
         hostname: "*.heartfulness.org",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+        pathname: "/**",
+      },
     ],
   },
 };

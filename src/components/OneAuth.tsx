@@ -50,8 +50,11 @@ function OneAuth() {
           ],
         });
 
+        console.log("OneAuth: getMeProfile response", resData);
+
         if (resData?.data && resData.data.user_firebase_uid) {
           const userData = resData.data;
+          console.log("OneAuth: photo_url from data", userData.photo_url);
 
           const userInfo = {
             ...userData,
