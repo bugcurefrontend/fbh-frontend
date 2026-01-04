@@ -6,9 +6,16 @@ import OurOrigin from "@/components/about-us/OurOrigin";
 import VisionMission from "@/components/about-us/VisionMission";
 import StatisticsSection from "@/components/StatisticsSection";
 import { fetchAllMetrics } from "@/services/metrics";
+import { fetchAboutContent } from "@/services/about-content";
 
 export default async function page() {
-  const [metrics] = await Promise.all([fetchAllMetrics()]);
+  const [metrics, aboutContent] = await Promise.all([fetchAllMetrics(), fetchAboutContent()]);
+  const aboutStats = aboutContent ? {
+    trees: aboutContent.total_trees_planted || undefined,
+    plantingSites: aboutContent.total_planting_sites || undefined,
+    volunteers: aboutContent.total_volunteers_engaged || undefined,
+    partners: aboutContent.total_partner_organisations || undefined,
+  } : undefined;
 
   return (
     <main>
@@ -24,12 +31,25 @@ export default async function page() {
           About Us
         </h1>
       </section>
-      <StatisticsSection metrics={metrics} />
+      <StatisticsSection metrics={metrics} aboutStats={aboutStats} />
       <section className="max-w-7xl mx-auto md:space-y-16 space-y-8">
-        <OurOrigin />
+        <OurOrigin imageOne={aboutContent?.our_origin_one} imageTwo={aboutContent?.our_origin_two} />
         <VisionMission />
-        <JourneyTimeline />
-        <AboutHeartfulness />
+        <JourneyTimeline journeyImages={[
+          aboutContent?.our_journey_one ?? null,
+          aboutContent?.our_journey_two ?? null,
+          aboutContent?.our_journey_three ?? null,
+          aboutContent?.our_journey_four ?? null,
+          aboutContent?.our_journey_five ?? null,
+          aboutContent?.our_journey_six ?? null,
+          aboutContent?.our_journey_seven ?? null,
+        ]} />
+        <AboutHeartfulness stats={{
+          total_countries: aboutContent?.total_countries,
+          total_practitioners: aboutContent?.total_practitioners,
+          total_trainers: aboutContent?.total_trainers,
+          total_meditation_centres: aboutContent?.total_meditation_centres,
+        }} />
       </section>
       <KanhaShantiVanam />
       <FAQs />

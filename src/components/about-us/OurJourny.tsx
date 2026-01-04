@@ -4,7 +4,7 @@ import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 
-const JourneyTimeline = () => {
+const JourneyTimeline: React.FC<{ journeyImages?: ({url:string,width?:number,height?:number}|null)[] }>= ({ journeyImages }) => {
   const [showAll, setShowAll] = useState(false);
   const timelineData = [
     {
@@ -13,6 +13,7 @@ const JourneyTimeline = () => {
       description:
         "Under the guidance of expert forestry, agro-forestry and climate change experts, FBH helped Kanha Shanti Vanam evolve into the green oasis that it is today.",
       position: "left",
+      image: journeyImages?.[0],
     },
     {
       year: "2019",
@@ -20,6 +21,7 @@ const JourneyTimeline = () => {
       description:
         "Recognizing the urgent need to scale up tree-driven forestry work for a reforestation initiative, AI At the time, FBH pledged to plant 30 million native and endemic trees across India by 2025.",
       position: "right",
+      image: journeyImages?.[1],
     },
     {
       year: "2020–2022",
@@ -27,6 +29,7 @@ const JourneyTimeline = () => {
       description:
         "FBH has been at the forefront of large-scale afforestation efforts across India. The FBH team and countless volunteers undertook afforestation work on 10,000 acres across multiple regions.",
       position: "left",
+      image: journeyImages?.[2],
     },
     {
       year: "2022–2023",
@@ -34,6 +37,7 @@ const JourneyTimeline = () => {
       description:
         "Since then, FBH diversified its impact beyond reforestation to include water conservation, agriculture, and more. This work continues to grow in scale, spreading to new regions.",
       position: "right",
+      image: journeyImages?.[3],
     },
     {
       year: "2023–2024",
@@ -41,6 +45,7 @@ const JourneyTimeline = () => {
       description:
         "The FBH team studied understudied and vital linkages and successfully translocated mature trees. These efforts demonstrate a holistic approach to ecological restoration combining scale.",
       position: "left",
+      image: journeyImages?.[4],
     },
     {
       year: "2024",
@@ -48,6 +53,7 @@ const JourneyTimeline = () => {
       description:
         "Over 30 million trees were planted through 40 projects across 12 states in India. This included lakes restored, naruralist nurturing, hatchings, and native and endemic species conservation.",
       position: "right",
+      image: journeyImages?.[5],
     },
     {
       year: "2024–Present",
@@ -55,6 +61,7 @@ const JourneyTimeline = () => {
       description:
         "Today, FBH is a Government partner with IUCN and the United Nations Convention to Combat Desertification.",
       position: "left",
+      image: journeyImages?.[6],
     },
   ];
 
@@ -84,13 +91,23 @@ const JourneyTimeline = () => {
                     {/* Left content */}
                     <div className="md:w-1/2 max-md:pl-8 md:pr-8 max-md:text-left md:text-right">
                       <div className="inline-block">
-                        <Image
-                          src="/images/journey.png"
-                          alt={item.title}
-                          width={296}
-                          height={144}
-                          className="max-w-74 max-sm:w-[198px] max-h-36 rounded-[5.38px] sm:rounded-[8.7px] object-cover md:mb-6 mb-4 md:ml-auto"
-                        />
+                        {item.image && item.image.url ? (
+                          <Image
+                            src={item.image.url}
+                            alt={item.title}
+                            width={item.image.width ?? 296}
+                            height={item.image.height ?? 144}
+                            className="max-w-74 max-sm:w-[198px] max-h-36 rounded-[5.38px] sm:rounded-[8.7px] object-cover md:mb-6 mb-4 md:ml-auto"
+                          />
+                        ) : (
+                          <Image
+                            src="/images/journey.png"
+                            alt={item.title}
+                            width={296}
+                            height={144}
+                            className="max-w-74 max-sm:w-[198px] max-h-36 rounded-[5.38px] sm:rounded-[8.7px] object-cover md:mb-6 mb-4 md:ml-auto"
+                          />
+                        )}
                         <h3 className="sm:text-xl leading-6 font-bold md:mb-4 mb-2">
                           {item.year} — {item.title}
                         </h3>
@@ -121,13 +138,23 @@ const JourneyTimeline = () => {
                     {/* Right content */}
                     <div className="md:w-1/2 md:pl-8 pl-8">
                       <div className="inline-block text-left">
-                        <Image
-                          src="/images/journey.png"
-                          alt={item.title}
-                          width={296}
-                          height={144}
-                          className="max-w-74 max-h-36 max-sm:w-[198px] rounded-[5.38px] sm:rounded-[8.7px] object-cover md:mb-6 mb-4"
-                        />
+                        {item.image && item.image.url ? (
+                          <Image
+                            src={item.image.url}
+                            alt={item.title}
+                            width={item.image.width ?? 296}
+                            height={item.image.height ?? 144}
+                            className="max-w-74 max-h-36 max-sm:w-[198px] rounded-[5.38px] sm:rounded-[8.7px] object-cover md:mb-6 mb-4"
+                          />
+                        ) : (
+                          <Image
+                            src="/images/journey.png"
+                            alt={item.title}
+                            width={296}
+                            height={144}
+                            className="max-w-74 max-h-36 max-sm:w-[198px] rounded-[5.38px] sm:rounded-[8.7px] object-cover md:mb-6 mb-4"
+                          />
+                        )}
                         <h3 className="sm:text-xl leading-6 font-bold md:mb-4 mb-2">
                           {item.year} — {item.title}
                         </h3>

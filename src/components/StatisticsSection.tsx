@@ -11,6 +11,12 @@ import { MetricSimplified } from "@/types/metric";
 
 interface StatisticsSectionProps {
   metrics?: MetricSimplified[];
+  aboutStats?: {
+    trees?: string;
+    plantingSites?: string;
+    volunteers?: string;
+    partners?: string;
+  };
 }
 
 // Helper to format number with commas and + suffix
@@ -20,6 +26,7 @@ const formatNumber = (value: number): string => {
 
 const StatisticsSection: React.FC<StatisticsSectionProps> = ({
   metrics: apiMetrics,
+  aboutStats,
 }) => {
   const fallbackTopRowStats = [
     {
@@ -82,6 +89,38 @@ const StatisticsSection: React.FC<StatisticsSectionProps> = ({
       }))
     : [...fallbackTopRowStats, ...fallbackBottomRowStats];
 
+  // If aboutStats provided, render a single row of 4 stats instead of the default layout
+  const hasAboutStats = aboutStats && (aboutStats.trees || aboutStats.plantingSites || aboutStats.volunteers || aboutStats.partners);
+
+  const aboutRowStats = hasAboutStats
+    ? [
+        {
+          icon: <TreeSpeciesIcon width={36} height={36} color="#206f32" />,
+          mobileIcon: <TreeSpeciesIcon width={28} height={28} color="#206f32" />,
+          number: aboutStats?.trees || "-",
+          label: "Trees planted",
+        },
+        {
+          icon: <LandscapeIcon width={40} height={40} color="#206f32" />,
+          mobileIcon: <LandscapeIcon width={32} height={32} color="#206f32" />,
+          number: aboutStats?.plantingSites || "-",
+          label: "Planting sites",
+        },
+        {
+          icon: <StatesProjectsIcon width={36} height={40} color="#206f32" />,
+          mobileIcon: <StatesProjectsIcon width={28} height={32} color="#206f32" />,
+          number: aboutStats?.volunteers || "-",
+          label: "Volunteers",
+        },
+        {
+          icon: <LakesRestoredIcon width={40} height={40} color="#206f32" />,
+          mobileIcon: <LakesRestoredIcon width={32} height={32} color="#206f32" />,
+          number: aboutStats?.partners || "-",
+          label: "Partner organisations",
+        },
+      ]
+    : [];
+
   // Split into top and bottom rows (top gets first 3, bottom gets rest)
   const topRowStats = apiStats.slice(0, 3);
   const bottomRowStats = apiStats.slice(3);
@@ -91,11 +130,11 @@ const StatisticsSection: React.FC<StatisticsSectionProps> = ({
       <div className="border border-[#E4E4E4] rounded-[8px] relative -top-4.5 sm:top-[-48px] z-10 bg-white sm:rounded-[16px] shadow-[0_12px_24px_-4px_rgba(133,133,133,0.12)] p-5 sm:p-8 flex flex-col gap-8 sm:gap-16 sm:mx-auto sm:max-w-[1400px]">
         {/* Desktop Layout */}
         <div className="hidden sm:flex flex-col gap-14">
-          {topRowStats.length > 0 && (
-            <div className="flex justify-around items-center">
-              {topRowStats.map((stat, idx) => (
+          {hasAboutStats ? (
+            <div className="flex justify-between items-center">
+              {aboutRowStats.map((stat, idx) => (
                 <React.Fragment key={idx}>
-                  <div className="flex flex-col items-center text-center gap-5 w-[33.33%]">
+                  <div className="flex flex-col items-center text-center gap-5 w-[25%]">
                     <div className="w-10 h-10 sm:w-10 sm:h-10 flex items-center justify-center">
                       {stat.icon}
                     </div>
@@ -106,42 +145,95 @@ const StatisticsSection: React.FC<StatisticsSectionProps> = ({
                       {stat.label}
                     </p>
                   </div>
-                  {idx < topRowStats.length - 1 && (
+                  {idx < aboutRowStats.length - 1 && (
                     <div className="h-[152px] w-[0.5px] bg-[#D1D5DB]"></div>
                   )}
                 </React.Fragment>
               ))}
             </div>
-          )}
+          ) : (
+            <>
+              {topRowStats.length > 0 && (
+                <div className="flex justify-around items-center">
+                  {topRowStats.map((stat, idx) => (
+                    <React.Fragment key={idx}>
+                      <div className="flex flex-col items-center text-center gap-5 w-[33.33%]">
+                        <div className="w-10 h-10 sm:w-10 sm:h-10 flex items-center justify-center">
+                          {stat.icon}
+                        </div>
+                        <p className="text-4xl font-semibold text-black sm:text-[40px]">
+                          {stat.number}
+                        </p>
+                        <p className="md:text-base md:font-normal md:leading-6 md:text-center md:align-middle md:text-[#454950] text-base text-gray-500">
+                          {stat.label}
+                        </p>
+                      </div>
+                      {idx < topRowStats.length - 1 && (
+                        <div className="h-[152px] w-[0.5px] bg-[#D1D5DB]"></div>
+                      )}
+                    </React.Fragment>
+                  ))}
+                </div>
+              )}
 
-          {bottomRowStats.length > 0 && (
-            <div className="flex justify-around items-center">
-              {bottomRowStats.map((stat, idx) => (
-                <React.Fragment key={idx}>
-                  <div className="flex flex-col items-center text-center gap-4 w-[33.33%]">
-                    <div className="w-10 h-10 flex items-center justify-center">
-                      {stat.icon}
-                    </div>
-                    <p className="text-4xl font-semibold text-black sm:text-[40px]">
-                      {stat.number}
-                    </p>
-                    <p className="md:text-base md:font-normal md:leading-6 md:text-center md:align-middle md:text-[#454950] text-base text-gray-500">
-                      {stat.label}
-                    </p>
-                  </div>
-                  {idx < bottomRowStats.length - 1 && (
-                    <div className="h-[152px] w-[0.5px] bg-[#D1D5DB]"></div>
-                  )}
-                </React.Fragment>
-              ))}
-            </div>
+              {bottomRowStats.length > 0 && (
+                <div className="flex justify-around items-center">
+                  {bottomRowStats.map((stat, idx) => (
+                    <React.Fragment key={idx}>
+                      <div className="flex flex-col items-center text-center gap-4 w-[33.33%]">
+                        <div className="w-10 h-10 flex items-center justify-center">
+                          {stat.icon}
+                        </div>
+                        <p className="text-4xl font-semibold text-black sm:text-[40px]">
+                          {stat.number}
+                        </p>
+                        <p className="md:text-base md:font-normal md:leading-6 md:text-center md:align-middle md:text-[#454950] text-base text-gray-500">
+                          {stat.label}
+                        </p>
+                      </div>
+                      {idx < bottomRowStats.length - 1 && (
+                        <div className="h-[152px] w-[0.5px] bg-[#D1D5DB]"></div>
+                      )}
+                    </React.Fragment>
+                  ))}
+                </div>
+              )}
+            </>
           )}
         </div>
 
-        {/* Mobile Layout - Dynamic rows of 2 items each */}
+        {/* Mobile Layout - Dynamic rows of 2 items each (aboutStats overrides) */}
         <div className="flex flex-col sm:hidden gap-12">
-          {Array.from({ length: Math.ceil(apiStats.length / 2) }).map(
-            (_, rowIdx) => {
+          {hasAboutStats ? (
+            Array.from({ length: 2 }).map((_, rowIdx) => {
+              const leftItem = aboutRowStats[rowIdx * 2];
+              const rightItem = aboutRowStats[rowIdx * 2 + 1];
+              return (
+                <div key={rowIdx} className="flex justify-between items-center gap-4">
+                  {leftItem && (
+                    <div className="flex flex-col items-center gap-3 text-center flex-1">
+                      <div className="w-8 h-8 flex items-center justify-center">
+                        {leftItem.mobileIcon}
+                      </div>
+                      <p className="text-lg text-[#090C0F] font-bold">{leftItem.number}</p>
+                      <p className="text-[10px] max-[500px]:w-20 font-semibold text-[#454950]">
+                        {leftItem.label}
+                      </p>
+                    </div>
+                  )}
+                  {leftItem && rightItem && <div className="h-[96px] w-[0.5px] bg-[#D1D5DB] rounded" />}
+                  {rightItem && (
+                    <div className="flex flex-col items-center gap-3 text-center flex-1">
+                      <div className="w-8 h-8 flex items-center justify-center">{rightItem.mobileIcon}</div>
+                      <p className="text-lg text-[#090C0F] font-bold">{rightItem.number}</p>
+                      <p className="text-[10px] max-[500px]:w-26 font-semibold text-[#454950]">{rightItem.label}</p>
+                    </div>
+                  )}
+                </div>
+              );
+            })
+          ) : (
+            Array.from({ length: Math.ceil(apiStats.length / 2) }).map((_, rowIdx) => {
               const leftItem = apiStats[rowIdx * 2];
               const rightItem = apiStats[rowIdx * 2 + 1];
               return (
@@ -180,7 +272,7 @@ const StatisticsSection: React.FC<StatisticsSectionProps> = ({
                   )}
                 </div>
               );
-            }
+            })
           )}
         </div>
       </div>

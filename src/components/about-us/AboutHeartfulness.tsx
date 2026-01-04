@@ -1,11 +1,24 @@
 import Image from "next/image";
 
-const AboutHeartfulness = () => {
-  const stats = [
-    { url: "/images/countries.png", value: "160+", label: "Countries" },
-    { url: "/images/team.png", value: "5M+", label: "Practitioners" },
-    { url: "/images/trainer.png", value: "16,000+", label: "Trainers" },
-    { url: "/images/tent.png", value: "280+", label: "Retreat Centres" },
+interface Props {
+  stats?: Partial<{
+    total_trees_planted: string;
+    total_planting_sites: string;
+    total_volunteers_engaged: string;
+    total_partner_organisations: string;
+    total_countries: string;
+    total_practitioners: string;
+    total_trainers: string;
+    total_meditation_centres: string;
+  }>;
+}
+
+const AboutHeartfulness: React.FC<Props> = ({ stats }) => {
+  const primaryStats = [
+    { url: "/images/countries.png", value: stats?.total_countries || "160+", label: "Countries" },
+    { url: "/images/team.png", value: stats?.total_practitioners || "5M+", label: "Practitioners" },
+    { url: "/images/trainer.png", value: stats?.total_trainers || "16,000+", label: "Trainers" },
+    { url: "/images/tent.png", value: stats?.total_meditation_centres || "280+", label: "Retreat Centres" },
   ];
 
   return (
@@ -34,7 +47,7 @@ const AboutHeartfulness = () => {
 
         {/* Right Stats Grid */}
         <div className="grid grid-cols-2 gap-6">
-          {stats.map((stat, index) => {
+          {primaryStats.map((stat, index) => {
             return (
               <div
                 key={index}
