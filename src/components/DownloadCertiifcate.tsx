@@ -128,7 +128,7 @@ const DownloadCertificate: React.FC = () => {
           Download Certificate
         </DialogTitle>
         <DialogClose asChild>
-          <button className="absolute right-3 sm:right-5 top-1.5 sm:top-2.5 p-2 rounded-full hover:bg-gray-100 transition">
+          <button className="absolute right-3 sm:right-5 top-1.5 sm:top-2.5 p-2 border-none rounded-full hover:bg-gray-100 transition">
             <X size={24} className="text-black max-sm:w-4.5" />
           </button>
         </DialogClose>
@@ -141,7 +141,7 @@ const DownloadCertificate: React.FC = () => {
             {donorsData.map((donor) => (
               <div
                 key={donor.id}
-                className="p-2 border rounded-[8px] hover:bg-gray-50"
+                className="md:h-[70px] h-[68px] px-4 py-3 border rounded-[8px] hover:bg-gray-50"
               >
                 <div className="flex items-center">
                   <div className="flex-1">
@@ -149,10 +149,10 @@ const DownloadCertificate: React.FC = () => {
                       style={{
                         fontFamily: "'Public Sans', sans-serif",
                         fontWeight: 600,
-                        fontSize: "14px",
                         lineHeight: "22px",
                         color: "#090C0F",
                       }}
+                      className="md:text-xl"
                     >
                       {donor.name}
                     </div>

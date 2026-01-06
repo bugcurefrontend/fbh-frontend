@@ -55,6 +55,7 @@ const TeamPageClient = ({ headerImageUrl }: Props) => {
             Gallery
           </h1>
           <Gallery
+            itemClass="basis-1/6"
             className="lg:h-[573px]"
             images={galleryImages ?? undefined}
           />

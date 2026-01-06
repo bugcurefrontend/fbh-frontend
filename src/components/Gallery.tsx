@@ -14,9 +14,16 @@ import {
 interface GalleryProps {
   className?: string;
   images?: string[];
+  itemClass: string;
+  dotClass?: string;
 }
 
-const Gallery: React.FC<GalleryProps> = ({ className, images: propImages }) => {
+const Gallery: React.FC<GalleryProps> = ({
+  className,
+  itemClass,
+  dotClass,
+  images: propImages,
+}) => {
   const defaultImages = [
     "/images/gallery/1.png",
     "/images/gallery/2.png",
@@ -83,7 +90,7 @@ const Gallery: React.FC<GalleryProps> = ({ className, images: propImages }) => {
             {images.map((img, idx) => (
               <CarouselItem
                 key={idx}
-                className="basis-1/3 md:basis-1/6 pl-2 md:pl-4 cursor-pointer"
+                className={`basis-1/3 pl-2 md:pl-4 cursor-pointer ${itemClass}`}
                 onClick={() => {
                   setSelectedIndex(idx);
                   carouselApi?.scrollTo(idx);
@@ -136,7 +143,9 @@ const Gallery: React.FC<GalleryProps> = ({ className, images: propImages }) => {
       </div>
 
       {/* Mobile Dots */}
-      <div className="md:hidden mt-4 flex gap-3 items-center justify-center">
+      <div
+        className={`md:hidden mt-4 flex gap-3 items-center justify-center ${dotClass}`}
+      >
         {images.map((_, i) => (
           <div
             key={i}

@@ -205,6 +205,20 @@ const TeamSection = () => {
                         <LinkedInIcon />
                       </a>
                     </div>
+                    <Image
+                      src="images/teamBg.svg"
+                      alt="svg"
+                      width={150}
+                      height={110}
+                      className="absolute bottom-0 left-0"
+                    />
+                    <Image
+                      src="images/teamBg1.svg"
+                      alt="svg"
+                      width={150}
+                      height={110}
+                      className="absolute right-0 bottom-0"
+                    />
                   </div>
                 </div>
               </div>

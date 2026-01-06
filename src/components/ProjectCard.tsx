@@ -42,12 +42,12 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           className="object-cover rounded-t-md"
         />
 
-        <div className="absolute top-4 md:left-4 left-2.5 flex gap-3">
-          <div className="bg-[#006161] shadow-[0_20px_40px_-4px_rgba(133,133,133,0.12)] text-white text-xs font-semibold px-4 py-1 rounded-full md:text-base md:font-semibold md:leading-6 md:align-middle md:text-[#FFFFFF] capitalize">
+        <div className="absolute top-4 md:left-4 left-2.5 flex md:gap-3 gap-[6.81px]">
+          <div className="bg-[#006161] shadow-[0_20px_40px_-4px_rgba(133,133,133,0.12)] text-white text-sm font-semibold max-md:h-[26px] h-[30px] md:px-4 md:py-2 px-3 py-1 flex items-center justify-center rounded-full md:text-base md:font-semibold md:leading-[13.62px] md:align-middle md:text-[#FFFFFF] capitalize">
             {formatPlantedCount(plantedCount)}
           </div>
           {category && (
-            <div className="bg-[#006161] shadow-[0_20px_40px_-4px_rgba(133,133,133,0.12)] text-white text-xs font-semibold px-4 py-1 rounded-full md:text-base md:font-semibold md:leading-6 md:align-middle md:text-[#FFFFFF] capitalize">
+            <div className="bg-[#006161] shadow-[0_20px_40px_-4px_rgba(133,133,133,0.12)] text-white text-sm font-semibold max-md:h-[26px] h-[30px] md:px-4 md:py-2 px-3 py-1 flex items-center justify-center rounded-full md:text-base md:font-semibold md:leading-[13.62px] md:align-middle md:text-[#FFFFFF] capitalize">
               {category}
             </div>
           )}

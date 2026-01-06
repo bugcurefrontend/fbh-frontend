@@ -109,12 +109,12 @@ const ProjectsSection: React.FC<ProjectsSectionProps> = ({
                     fill
                     className="object-cover rounded-t-[16px] max-h-[160px]"
                   />
-                  <div className="absolute top-4 left-4 flex gap-1">
-                    <div className="bg-[#006161] shadow-[0_20px_40px_-4px_rgba(133,133,133,0.12)] text-white text-xs font-semibold px-2 py-1 rounded-full md:text-base md:font-semibold md:leading-6 md:align-middle md:text-[#FFFFFF] capitalize">
+                  <div className="absolute top-4 left-4 flex gap-[6.81px]">
+                    <div className="bg-[#006161] shadow-[0_20px_40px_-4px_rgba(133,133,133,0.12)] text-white text-sm px-3 py-1.5 rounded-full font-semibold leading-[13.62px] md:align-middle md:text-[#FFFFFF] capitalize">
                       {formatPlantedCount(project.plantedCount)}
                     </div>
                     {project.category && (
-                      <div className="bg-[#006161] shadow-[0_20px_40px_-4px_rgba(133,133,133,0.12)] text-white text-xs font-semibold px-2 py-1 rounded-full md:text-base md:font-semibold md:leading-6 md:align-middle md:text-[#FFFFFF] capitalize">
+                      <div className="bg-[#006161] shadow-[0_20px_40px_-4px_rgba(133,133,133,0.12)] text-white text-sm px-3 py-1.5 rounded-full leading-[13.62px] md:align-middle md:text-[#FFFFFF] capitalize">
                         {project.category}
                       </div>
                     )}

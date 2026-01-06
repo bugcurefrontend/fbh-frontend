@@ -187,7 +187,7 @@ const PlantedTrees = ({ onBack, donation }: PlantedTreesProps) => {
                         color: "#003399",
                       }}
                     >
-                      click here
+                      Click Here
                     </button>
                   </td>
                 )}

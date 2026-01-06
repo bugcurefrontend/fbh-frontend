@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "./ui/tabs";
 import { CircleArrowRight, Users, X, XIcon } from "lucide-react";
 import Image from "next/image";
@@ -26,6 +26,7 @@ import {
 } from "./ui/dialog";
 import Gallery from "./Gallery";
 import { DialogClose } from "@radix-ui/react-dialog";
+import { fetchOurTeamContent } from "@/services/our-team-content";
 
 interface Project {
   id: string;
@@ -72,6 +73,26 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({
   projectUpdates = [],
   projectSpecies = [],
 }) => {
+  const [galleryImages, setGalleryImages] = useState<string[] | null>(null);
+
+  useEffect(() => {
+    let mounted = true;
+
+    fetchOurTeamContent()
+      .then((data) => {
+        if (!mounted) return;
+        const imgs =
+          data?.gallery?.map((g: any) => g.url).filter(Boolean) ?? null;
+        setGalleryImages(imgs);
+      })
+      .catch((err) => {
+        console.error("Failed to load Our Team content:", err);
+      });
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
   // Get unique years from updates for the dropdown
   const years = Array.from(new Set(projectUpdates.map((u) => u.year))).sort(
     (a, b) => b - a
@@ -87,38 +108,36 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({
   return (
     <div className="w-full max-md:hidden">
       <Tabs defaultValue="overview" className="w-full">
-        <div className="border-b border-gray-200">
-          <TabsList className="flex bg-transparent p-0 h-auto w-full justify-start gap-8">
-            <TabsTrigger
-              value="overview"
-              className="flex items-center gap-2 pl-2 pr-1 py-4 border-b-2 border-transparent bg-transparent text-[#63676C] hover:text-[#003399] rounded-none relative data-[state=active]:border-[#003399] data-[state=active]:text-[#003399] data-[state=active]:bg-transparent"
-            >
-              <Overview className="w-6 h-6 mr-0.5" />
-              <span className="font-bold text-base">Overview</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="updates"
-              className="flex items-center gap-2 pl-2 pr-1 py-4 border-b-2 border-transparent bg-transparent text-[#63676C] hover:text-[#003399] rounded-none data-[state=active]:border-[#003399] data-[state=active]:text-[#003399] data-[state=active]:bg-transparent"
-            >
-              <Update className="w-6 h-6 mr-0.5" />
-              <span className="font-bold text-base">Updates</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="species"
-              className="flex items-center gap-2 pl-2 pr-1 py-4 border-b-2 border-transparent bg-transparent text-[#63676C] hover:text-[#003399] rounded-none data-[state=active]:border-[#003399] data-[state=active]:text-[#003399] data-[state=active]:bg-transparent"
-            >
-              <Species className="w-6 h-6" />
-              <span className="font-bold text-base">Species</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="donors"
-              className="flex items-center gap-2 pl-2 pr-1 py-4 border-b-2 border-transparent bg-transparent text-[#63676C] hover:text-[#003399] rounded-none data-[state=active]:border-[#003399] data-[state=active]:text-[#003399] data-[state=active]:bg-transparent"
-            >
-              <Users className="w-6 h-6" />
-              <span className="font-bold text-base">Donors</span>
-            </TabsTrigger>
-          </TabsList>
-        </div>
+        <TabsList className="flex bg-transparent p-0 h-auto w-full justify-start gap-8 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:border-b-2 after:border-gray-200">
+          <TabsTrigger
+            value="overview"
+            className="relative flex items-center gap-2 pl-2 pr-1 py-4 bg-transparent text-[#63676C] hover:text-[#003399] rounded-none data-[state=active]:text-[#003399] data-[state=active]:after:content-[''] data-[state=active]:after:absolute data-[state=active]:after:bottom-0 data-[state=active]:after:left-0 data-[state=active]:after:right-0 data-[state=active]:after:border-b-2 data-[state=active]:after:border-[#003399] data-[state=active]:after:z-10"
+          >
+            <Overview className="w-6 h-6 mr-0.5" />
+            <span className="font-bold text-base">Overview</span>
+          </TabsTrigger>
+          <TabsTrigger
+            value="updates"
+            className="relative flex items-center gap-2 pl-2 pr-1 py-4 bg-transparent text-[#63676C] hover:text-[#003399] rounded-none data-[state=active]:text-[#003399] data-[state=active]:after:content-[''] data-[state=active]:after:absolute data-[state=active]:after:bottom-0 data-[state=active]:after:left-0 data-[state=active]:after:right-0 data-[state=active]:after:border-b-2 data-[state=active]:after:border-[#003399] data-[state=active]:after:z-10"
+          >
+            <Update className="w-6 h-6 mr-0.5" />
+            <span className="font-bold text-base">Updates</span>
+          </TabsTrigger>
+          <TabsTrigger
+            value="species"
+            className="relative flex items-center gap-2 pl-2 pr-1 py-4 bg-transparent text-[#63676C] hover:text-[#003399] rounded-none data-[state=active]:text-[#003399] data-[state=active]:after:content-[''] data-[state=active]:after:absolute data-[state=active]:after:bottom-0 data-[state=active]:after:left-0 data-[state=active]:after:right-0 data-[state=active]:after:border-b-2 data-[state=active]:after:border-[#003399] data-[state=active]:after:z-10"
+          >
+            <Species className="w-6 h-6" />
+            <span className="font-bold text-base">Species</span>
+          </TabsTrigger>
+          <TabsTrigger
+            value="donors"
+            className="relative flex items-center gap-2 pl-2 pr-1 py-4 bg-transparent text-[#63676C] hover:text-[#003399] rounded-none data-[state=active]:text-[#003399] data-[state=active]:after:content-[''] data-[state=active]:after:absolute data-[state=active]:after:bottom-0 data-[state=active]:after:left-0 data-[state=active]:after:right-0 data-[state=active]:after:border-b-2 data-[state=active]:after:border-[#003399] data-[state=active]:after:z-10"
+          >
+            <Users className="w-6 h-6" />
+            <span className="font-bold text-base">Donors</span>
+          </TabsTrigger>
+        </TabsList>
 
         <TabsContent value="overview" className="mt-8 space-y-4">
           <div>
@@ -211,21 +230,32 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({
                           </DialogTrigger>
                           <DialogContent
                             showCloseButton={false}
-                            className="min-w-4xl px-0"
+                            className="md:w-[901px] max-md:h-[90%] py-4 md:px-6 px-4 max-md:gap-1"
                           >
-                            <DialogTitle className="uppercase font-bold text-2xl px-6">
-                              Gallery
-                            </DialogTitle>
-                            <DialogClose asChild>
-                              <button className="absolute right-5 top-5 p-2 rounded-full hover:bg-gray-100 transition">
-                                <X size={20} className="text-black" />
-                              </button>
-                            </DialogClose>
-                            <div className="px-6 max-h-[600px] overflow-y-auto space-y-4">
+                            <div className="flex justify-between">
+                              <DialogTitle className="uppercase font-bold md:text-2xl text-base md:leading-9 leading-4.5">
+                                Gallery
+                              </DialogTitle>
+                              <DialogClose asChild>
+                                <button className="md:px-1.5 rounded-full hover:bg-gray-100 transition">
+                                  <X
+                                    size={24}
+                                    className="text-black max-md:w-4.5"
+                                  />
+                                </button>
+                              </DialogClose>
+                            </div>
+                            <Gallery
+                              className="max-md:hidden lg:h-[50vh]"
+                              itemClass="basis-1/5"
+                              images={galleryImages ?? undefined}
+                              dotClass="hidden"
+                            />
+                            <div className="md:hidden h-[100%] overflow-y-auto space-y-4">
                               {update.images.map((img, i) => (
                                 <div
                                   key={i}
-                                  className="relative w-full h-60 rounded-[16px] overflow-hidden"
+                                  className="relative w-full h-[171px] rounded-[8px] overflow-hidden"
                                 >
                                   <Image
                                     src={img}
@@ -253,7 +283,7 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({
         >
           {projectSpecies.length === 0 ? (
             <div className="col-span-3 p-15 flex items-center justify-center flex-col space-y-4 text-[#B7B9BB]">
-              <Species strokeWidth={0.5} className="w-50 h-50" />
+              <Species strokeWidth={0.5} className="w-53 h-53" />
               <p className="font-semibold text-2xl leading-6">
                 No Species Available
               </p>
@@ -261,7 +291,7 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({
           ) : (
             projectSpecies.map((item) => (
               <Link key={item.id} href={`/species/${item.slug}`}>
-                <div className="flex-1 min-w-0 border border-gray-200 rounded-[16px] flex-shrink-0">
+                <div className="flex-1 min-w-0 border border-gray-200 rounded-xl flex-shrink-0">
                   <div className="overflow-hidden w-full md:p-4 p-2">
                     <Image
                       src={item.image || "/images/placeholder-species.jpg"}

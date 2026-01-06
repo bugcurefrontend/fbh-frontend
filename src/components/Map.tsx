@@ -28,7 +28,7 @@ export default function Map() {
   if (!isLoaded) return <div>Loading Map...</div>;
 
   return (
-    <div className="w-full md:h-[475px] h-[300px] rounded-[16px] overflow-hidden">
+    <div className="w-full md:h-[475px] h-[338px] rounded-[16px] overflow-hidden">
       <GoogleMap
         mapContainerStyle={{ width: "100%", height: "100%" }}
         center={center}

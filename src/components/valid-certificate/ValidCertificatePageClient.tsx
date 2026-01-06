@@ -317,7 +317,7 @@ const ValidCertificatePageClient = () => {
                             color: "#003399",
                           }}
                         >
-                          click here
+                          Click Here
                         </button>
                       </td>
                     </tr>

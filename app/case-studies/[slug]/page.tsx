@@ -125,7 +125,7 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
           <h1 className="text-center font-[Playfair_Display] text-[22px] md:text-[32px] md:leading-12 leading-[30px] font-semibold">
             Gallery
           </h1>
-          <Gallery className="lg:h-[573px]" />
+          <Gallery itemClass="basis-1/6" className="lg:h-[573px]" />
         </div>
       </div>
     </main>

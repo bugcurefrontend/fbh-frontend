@@ -104,13 +104,13 @@ const HeroSection: React.FC<HeroSectionProps> = ({ heroContents }) => {
         <div className="max-md:hidden absolute flex gap-3 px-14 z-40 right-0 top-98">
           <button
             onClick={scrollPrev}
-            className="bg-white md:w-[42px] md:h-[42px] rounded-full flex items-center justify-center text-[#B7B9BB] cursor-pointer drop-shadow-[0_4px_4px_rgba(0,0,0,0.3)]"
+            className="md:w-[42px] md:h-[42px] rounded-full flex items-center justify-center text-white border-1 cursor-pointer drop-shadow-[0_4px_4px_rgba(0,0,0,0.3)]"
           >
             <ChevronLeft />
           </button>
           <button
             onClick={scrollNext}
-            className="bg-[#003399] text-white md:w-[42px] md:h-[42px] rounded-full flex items-center justify-center cursor-pointer drop-shadow-[0_4px_4px_rgba(0,0,0,0.3)]"
+            className="text-white border-1 md:w-[42px] md:h-[42px] rounded-full flex items-center justify-center cursor-pointer drop-shadow-[0_4px_4px_rgba(0,0,0,0.3)]"
           >
             <ChevronRight />
           </button>
