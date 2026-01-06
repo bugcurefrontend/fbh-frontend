@@ -282,7 +282,7 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
                       setActiveIndex(i);
                       setVideoPlaying(false); // Always reset - user must click main view to play
                     }}
-                    className={`w-[112px] h-[112px] flex-shrink-0 rounded-[8px] overflow-hidden border-2 cursor-pointer ${
+                    className={`w-[112px] h-[112px] flex-shrink-0 rounded-[8px] overflow-hidden border-[0.75px] cursor-pointer ${
                       activeIndex === i ? "border-[#003399]" : "border-white"
                     }`}
                   >

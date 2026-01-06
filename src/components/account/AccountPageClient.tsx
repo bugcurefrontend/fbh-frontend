@@ -74,7 +74,7 @@ const AccountPageClient = () => {
           </Button>
         </TabsList>
 
-        <button className="bg-[#0D824B] sm:hidden rounded-full shadow-xs h-15 w-15 z-50 text-white absolute -right-2 -bottom-16 items-center justify-center flex">
+        <button className="bg-[#0D824B] sm:hidden rounded-full shadow-[0px_1px_5px_0px_rgba(18,18,18,0.5)] h-[59px] w-[59px] z-50 text-white fixed bottom-4 right-4 items-center justify-center flex">
           <Headset size={32} />
         </button>
 
