@@ -70,7 +70,7 @@ const SpeciesSection: React.FC<SpeciesSectionProps> = ({ species }) => {
               className="basis-1/1 sm:basis-1/2 lg:basis-1/3 pl-8"
             >
               <Link href={`/species/${generateSlug(item.name)}`}>
-                <div className="flex-1 min-w-0 border border-gray-200 rounded-xl flex-shrink-0">
+                <div className="flex-1 min-w-0 border border-gray-200 rounded-[16px] flex-shrink-0">
                   <div className="overflow-hidden w-full md:p-4 p-2">
                     <Image
                       src={item.image}

@@ -55,7 +55,7 @@ const Step1: React.FC<Step1Props> = ({
             { text: "Birthday", image: "/images/celebration.png" },
             { text: "Climate Healing", image: "/images/healing.png" },
           ]}
-          contentClassName="md:w-[424px]"
+          contentClassName="md:w-[450px] min-w-fit"
         />
       </div>
 
@@ -103,7 +103,7 @@ const Step1: React.FC<Step1Props> = ({
             <TooltipTrigger>
               <Info className="w-4 h-4 text-gray-400" />
             </TooltipTrigger>
-            <TooltipContent className="bg-[#E7F8F0] px-4 py-3">
+            <TooltipContent side="bottom" className="bg-[#E7F8F0] px-4 py-3">
               <p className="text-[#0D824B] text-xs md:font-semibold">
                 We will geotag your trees and provide quarterly <br /> growth
                 updates for the next three years.

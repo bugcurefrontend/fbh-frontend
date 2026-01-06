@@ -18,7 +18,8 @@ const TeamPageClient = ({ headerImageUrl }: Props) => {
     fetchOurTeamContent()
       .then((data) => {
         if (!mounted) return;
-        const imgs = data?.gallery?.map((g: any) => g.url).filter(Boolean) ?? null;
+        const imgs =
+          data?.gallery?.map((g: any) => g.url).filter(Boolean) ?? null;
         setGalleryImages(imgs);
       })
       .catch((err) => {
@@ -35,7 +36,9 @@ const TeamPageClient = ({ headerImageUrl }: Props) => {
       <section
         className="relative h-[213px] md:h-[288px] flex items-center justify-center"
         style={{
-          backgroundImage: ` url('${headerImageUrl ?? "/images/meet-team.png"}')`,
+          backgroundImage: ` url('${
+            headerImageUrl ?? "/images/meet-team.png"
+          }')`,
           backgroundSize: "cover",
           backgroundPosition: "top",
         }}
@@ -51,7 +54,10 @@ const TeamPageClient = ({ headerImageUrl }: Props) => {
           <h1 className="text-center font-[Playfair_Display] text-[22px] md:text-[32px] md:leading-12 leading-[30px] font-semibold">
             Gallery
           </h1>
-          <Gallery className="lg:h-[573px]" images={galleryImages ?? undefined} />
+          <Gallery
+            className="lg:h-[573px]"
+            images={galleryImages ?? undefined}
+          />
         </div>
       </section>
     </main>

@@ -228,7 +228,7 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
           </div>
 
           {/* Mobile dots (shows on hover) */}
-          <div className="flex md:hidden justify-center mt-4 gap-2 transition-all duration-300 opacity-0 group-hover/container:opacity-100">
+          <div className="flex md:hidden justify-center mt-4 gap-2 transition-all duration-300">
             {items.map((_, i) => (
               <div
                 key={i}
@@ -322,8 +322,8 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
                   <Image
                     src="/images/Frame.png"
                     alt="tree"
-                    width={20}
-                    height={20}
+                    width={16}
+                    height={16}
                   />
                   <span className="md:text-base text-sm md:font-semibold">
                     {scientificName}
@@ -342,7 +342,7 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
 
           {/* Species Characteristics */}
           <div className="border border-[#E4E4E4] rounded-[8px] md:rounded-2xl flex items-center justify-between md:p-6 p-4 max-lg:mt-6">
-            <div className="text-center space-y-2 xl:space-y-4 flex-1">
+            <div className="text-center space-y-2 md:space-y-4 flex-1">
               <div className="md:w-10 w-8 md:h-10 h-8 mx-auto">
                 <Image
                   src="/images/lifespan.png"
@@ -355,14 +355,14 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
               <div className="md:text-2xl text-lg font-bold md:font-semibold text-black">
                 {characteristics.lifespan} yrs
               </div>
-              <div className="md:text-base text-xs text-[#4C4748]">
+              <div className="md:text-base max-md:font-semibold text-xs text-[#4C4748]">
                 Lifespan
               </div>
             </div>
 
             <div className="w-px md:h-[140px] h-[96px] bg-gray-300 md:mx-6 mx-1"></div>
 
-            <div className="text-center space-y-2 xl:space-y-4 flex-1">
+            <div className="text-center space-y-2 md:space-y-4 flex-1">
               <div className="md:w-10 w-8 md:h-10 h-8 mx-auto">
                 <Image
                   src="/images/oxygen.png"
@@ -375,14 +375,14 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
               <div className="md:text-2xl text-lg font-bold md:font-semibold text-black">
                 {characteristics.oxygenReleased}
               </div>
-              <div className="md:text-base text-xs text-[#4C4748]">
+              <div className="md:text-base max-md:font-semibold text-xs text-[#4C4748]">
                 Oxygen <span className="max-md:hidden">Released</span>
               </div>
             </div>
 
             <div className="w-px md:h-[140px] h-[96px] bg-gray-300 md:mx-6 mx-1"></div>
 
-            <div className="text-center space-y-2 xl:space-y-4 flex-1">
+            <div className="text-center space-y-2 md:space-y-4 flex-1">
               <div className="md:w-10 w-8 md:h-10 h-8 mx-auto">
                 <Image
                   src="/images/height.png"
@@ -398,7 +398,9 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
                 </span>
                 <span className="md:hidden">{characteristics.height}</span>m
               </div>
-              <div className="md:text-base text-xs text-[#4C4748]">Height</div>
+              <div className="md:text-base max-md:font-semibold text-xs text-[#4C4748]">
+                Height
+              </div>
             </div>
           </div>
 

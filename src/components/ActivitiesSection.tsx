@@ -78,7 +78,7 @@ const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({
               className="basis-1/1 sm:basis-1/2 lg:basis-1/3 pl-8"
             >
               <a href={activity.url} target="_blank" rel="noopener noreferrer">
-                <div className="flex-1 h-full min-w-0 border border-gray-200 rounded-xl flex-shrink-0 overflow-hidden cursor-pointer">
+                <div className="flex-1 h-full min-w-0 border border-gray-200 rounded-[16px] flex-shrink-0 overflow-hidden cursor-pointer">
                   <Image
                     src={activity.image}
                     alt={activity.title}
@@ -137,7 +137,7 @@ const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({
             target="_blank"
             rel="noopener noreferrer"
           >
-            <div className="flex-1 min-w-0 border border-[#E4E4E4] rounded-xl flex-shrink-0 overflow-hidden">
+            <div className="flex-1 min-w-0 border border-[#E4E4E4] rounded-[16px] flex-shrink-0 overflow-hidden">
               <Image
                 src={activity.image}
                 alt={activity.title}

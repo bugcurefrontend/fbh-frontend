@@ -20,6 +20,7 @@ interface ProceedToPayProps {
   numberOfTrees: number;
   onTreeCountChange?: (count: number) => void;
   availableTrees?: number;
+  className?: string;
 }
 
 const ProceedToPay: React.FC<ProceedToPayProps> = ({
@@ -27,6 +28,7 @@ const ProceedToPay: React.FC<ProceedToPayProps> = ({
   numberOfTrees,
   onTreeCountChange,
   availableTrees = 10,
+  className,
 }) => {
   const router = useRouter();
   const [isStatusOpen, setIsStatusOpen] = useState(false);
@@ -93,7 +95,7 @@ const ProceedToPay: React.FC<ProceedToPayProps> = ({
       <Button
         onClick={onProceed}
         disabled={!isFormValid || numberOfTrees === 0}
-        className="w-full h-12 border-1 disabled:border-[#E8E8E9] disabled:bg-white border-[#95AAD5] text-white bg-[#003399] disabled:text-[#94979A] rounded-[8px] text-base font-bold hover:bg-[#013eb9] transition-colors disabled:cursor-not-allowed disabled:opacity-100"
+        className={`w-full h-12 border-1 disabled:border-[#E8E8E9] disabled:bg-white border-[#95AAD5] text-white bg-[#003399] disabled:text-[#94979A] rounded-[8px] text-base font-bold hover:bg-[#013eb9] transition-colors disabled:cursor-not-allowed disabled:opacity-100 ${className}`}
       >
         Proceed to Payment
       </Button>

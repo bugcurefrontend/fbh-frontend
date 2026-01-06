@@ -138,7 +138,7 @@ const ValidCertificatePageClient = () => {
             Your Certificate is Valid!
           </h1>
 
-          <div className="mt-6 border border-[#E6E6E6] rounded-xl md:p-6 p-4 max-w-200 w-full mx-auto grid grid-cols-2 md:grid-cols-4 gap-5.5 md:flex-row flex-col">
+          <div className="mt-6 border border-[#E6E6E6] rounded-[16px] md:p-6 p-4 max-w-200 w-full mx-auto grid grid-cols-2 md:grid-cols-4 gap-5.5 md:flex-row flex-col">
             <div className="space-y-2">
               <h2 className="text-[#94979A] max-md:text-sm leading-6 font-semibold">
                 Certificate ID

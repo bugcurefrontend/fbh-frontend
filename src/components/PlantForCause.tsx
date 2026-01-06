@@ -60,13 +60,13 @@ const PlantForCause: React.FC<PlantForCauseProps> = ({ attributes }) => {
               key={image.id}
               className="basis-1/1 sm:basis-1/4 lg:basis-1/5 md:pl-14 pl-8 space-y-2"
             >
-              <div className="border-[0.7px] overflow-hidden border-[#B7B9BB] rounded-xl cursor-pointer hover:shadow-[0_1px_8px_rgba(0,0,0,0.3)]">
+              <div className="border-[0.7px] overflow-hidden border-[#B7B9BB] rounded-[16px] cursor-pointer hover:shadow-[0_1px_8px_rgba(0,0,0,0.3)]">
                 <Image
                   src={image.image}
                   alt={image.name}
                   width={200}
                   height={200}
-                  className="w-full"
+                  className="h-50 w-50"
                 />
               </div>
               <h3 className="text-center font-bold md:text-lg md:font-bold md:leading-[26px] text-[#090C0F] truncate">
@@ -102,7 +102,7 @@ const PlantForCause: React.FC<PlantForCauseProps> = ({ attributes }) => {
               alt={image.name}
               width={150}
               height={150}
-              className="min-w-[150px] object-cover border-[0.7px] overflow-hidden border-[#B7B9BB] rounded-xl"
+              className="min-w-[150px] object-cover border-[0.7px] overflow-hidden border-[#B7B9BB] rounded-[12px]"
             />
             <h3 className="text-center text-base font-semibold leading-[26px] text-[#090C0F] truncate">
               {image.name}

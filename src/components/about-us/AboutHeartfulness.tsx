@@ -15,10 +15,26 @@ interface Props {
 
 const AboutHeartfulness: React.FC<Props> = ({ stats }) => {
   const primaryStats = [
-    { url: "/images/countries.png", value: stats?.total_countries || "160+", label: "Countries" },
-    { url: "/images/team.png", value: stats?.total_practitioners || "5M+", label: "Practitioners" },
-    { url: "/images/trainer.png", value: stats?.total_trainers || "16,000+", label: "Trainers" },
-    { url: "/images/tent.png", value: stats?.total_meditation_centres || "280+", label: "Retreat Centres" },
+    {
+      url: "/images/countries.png",
+      value: stats?.total_countries || "160+",
+      label: "Countries",
+    },
+    {
+      url: "/images/team.png",
+      value: stats?.total_practitioners || "5M+",
+      label: "Practitioners",
+    },
+    {
+      url: "/images/trainer.png",
+      value: stats?.total_trainers || "16,000+",
+      label: "Trainers",
+    },
+    {
+      url: "/images/tent.png",
+      value: stats?.total_meditation_centres || "280+",
+      label: "Retreat Centres",
+    },
   ];
 
   return (
@@ -55,7 +71,7 @@ const AboutHeartfulness: React.FC<Props> = ({ stats }) => {
                   index === 1 || index === 2
                     ? "border-[#9DE1C2]"
                     : "border-[#12B569]"
-                } rounded-xl p-4 flex flex-col items-center justify-center text-center hover:shadow-md transition-shadow md:space-y-4 space-y-2`}
+                } rounded-[16px] p-4 flex flex-col items-center justify-center text-center hover:shadow-md transition-shadow md:space-y-4 space-y-2`}
               >
                 <Image
                   src={stat.url}

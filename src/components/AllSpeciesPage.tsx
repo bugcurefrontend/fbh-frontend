@@ -108,7 +108,10 @@ const AllSpeciesPage: React.FC<AllSpeciesPageProps> = ({
       <section
         className="relative h-[213px] md:h-[288px] flex items-center justify-center"
         style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('${headerImageUrl ?? "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?crop=entropy&cs=srgb&fm=jpg&q=85"}')`,
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('${
+            headerImageUrl ??
+            "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?crop=entropy&cs=srgb&fm=jpg&q=85"
+          }')`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
@@ -175,7 +178,7 @@ const AllSpeciesPage: React.FC<AllSpeciesPageProps> = ({
                             width={24}
                             height={24}
                             color="#003399"
-                            className="max-sm:w-4.5"
+                            className="max-sm:w-6"
                           />
                         </button>
                       </div>

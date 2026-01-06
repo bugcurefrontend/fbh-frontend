@@ -39,7 +39,7 @@ const PaymentStatusPageClient: React.FC = () => {
         {/* Payment Status Card */}
         <div className="text-center flex items-center justify-center">
           {status === "success" ? (
-            <div className="md:py-12 py-8 md:px-16 px-4 border-[#12B569] border rounded-xl">
+            <div className="md:py-12 py-8 md:px-16 px-4 border-[#12B569] border rounded-[16px]">
               {/* Success State */}
               <div className="inline-flex items-center justify-center w-25 h-25 animate-bounce">
                 <Image
@@ -76,7 +76,7 @@ const PaymentStatusPageClient: React.FC = () => {
               </Link>
             </div>
           ) : (
-            <div className="md:py-12 py-8 md:px-16 px-4 border-[#F04438] border rounded-xl">
+            <div className="md:py-12 py-8 md:px-16 px-4 border-[#F04438] border rounded-[16px]">
               {/* Failed State */}
               <div className="inline-flex items-center justify-center w-20 h-20 animate-bounce">
                 <Image

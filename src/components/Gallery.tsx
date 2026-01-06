@@ -26,7 +26,8 @@ const Gallery: React.FC<GalleryProps> = ({ className, images: propImages }) => {
     "/images/gallery/6.png",
   ];
 
-  const images = propImages && propImages.length > 0 ? propImages : defaultImages; 
+  const images =
+    propImages && propImages.length > 0 ? propImages : defaultImages;
 
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [carouselApi, setCarouselApi] = useState<CarouselApi | null>(null);
@@ -62,7 +63,7 @@ const Gallery: React.FC<GalleryProps> = ({ className, images: propImages }) => {
           src={images[selectedIndex]}
           alt={`Gallery Image ${selectedIndex + 1}`}
           fill
-          className="object-contain transition-all duration-700"
+          className="object-cover transition-all duration-700"
         />
       </div>
 

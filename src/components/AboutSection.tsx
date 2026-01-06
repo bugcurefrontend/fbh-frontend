@@ -79,10 +79,10 @@ const AboutSection: React.FC = () => {
           <button className="flex items-center gap-2 text-[#003399] font-bold text-xs uppercase cursor-pointer md:font-bold md:text-xs md:leading-[18px] md:uppercase md:text-[#003399]">
             {buttonLabel}
             <ArrowRightIcon
-              width={22}
-              height={22}
+              width={24}
+              height={24}
               color="#003399"
-              className="max-sm:w-5"
+              className="max-sm:w-6"
             />
           </button>
         </Link>

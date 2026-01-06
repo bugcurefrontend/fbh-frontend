@@ -116,10 +116,7 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
           <h1 className="text-center font-[Playfair_Display] text-2xl md:text-[32px] md:leading-12 leading-[30px] font-semibold">
             Overview
           </h1>
-          <p className="max-md:hidden text-[#454950]">
-            {caseStudy.description}
-          </p>
-          <p className="md:hidden text-[#454950] text-sm">
+          <p className="text-[#454950] leading-4.5 md:leading-6 max-md:text-sm">
             {caseStudy.description}
           </p>
         </div>

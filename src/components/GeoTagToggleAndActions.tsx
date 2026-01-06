@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { Info } from "lucide-react";
 import { Switch } from "./ui/switch";
 import { Button } from "./ui/button";
 import Link from "next/link";
@@ -11,6 +10,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import ToolTipIcon from "./icons/ToolTipIcon";
 
 interface GeoTagToggleAndActionsProps {
   isGeoTagged: boolean;
@@ -39,6 +39,7 @@ const GeoTagToggleAndActions: React.FC<GeoTagToggleAndActionsProps> = ({
 }) => {
   const isMobile = variant === "mobile";
   const [localNotice, setLocalNotice] = useState("");
+  const [isTooltipOpen, setIsTooltipOpen] = useState(false);
 
   const handleToggle = (checked: boolean) => {
     if (geoAvailability) {
@@ -59,7 +60,7 @@ const GeoTagToggleAndActions: React.FC<GeoTagToggleAndActionsProps> = ({
       <div
         className={
           isMobile
-            ? "md:hidden bg-white fixed bottom-0 left-0 right-0 border-t border-gray-200 shadow-[0_-6px_24.8px_0_rgba(0,0,0,0.2)] z-50 px-4 pt-3 pb-6 safe-area-inset-bottom"
+            ? "md:hidden bg-white fixed bottom-0 left-0 right-0 border-t border-gray-200 shadow-[0_-6px_24.8px_0_rgba(0,0,0,0.2)] z-50 px-4 pt-4 pb-6 safe-area-inset-bottom"
             : "max-sm:hidden border border-[#E4E4E4] rounded-2xl px-4 py-6 bg-[#E6EBF54D]"
         }
       >
@@ -84,9 +85,11 @@ const GeoTagToggleAndActions: React.FC<GeoTagToggleAndActionsProps> = ({
             >
               I want my trees to be geo-tagged{isMobile ? "" : "."}
             </span>
-            <Tooltip>
-              <TooltipTrigger>
-                <Info className="w-4 h-4 text-gray-400" />
+            <Tooltip open={isTooltipOpen} onOpenChange={setIsTooltipOpen}>
+              <TooltipTrigger
+                onClick={() => isMobile && setIsTooltipOpen(!isTooltipOpen)}
+              >
+                <ToolTipIcon />
               </TooltipTrigger>
               <TooltipContent
                 align={isMobile ? "center" : "start"}
@@ -114,11 +117,11 @@ const GeoTagToggleAndActions: React.FC<GeoTagToggleAndActionsProps> = ({
         )}
 
         {/* Action Buttons */}
-        <div className={`flex ${isMobile ? "gap-3" : "gap-4"}`}>
+        <div className={`flex gap-4`}>
           <Link href="/plant-tree" className="w-full">
             <Button
               onClick={onPlantTree}
-              className={`flex-1 w-full bg-[#003399] hover:bg-[#002266] text-white font-bold py-3 h-12 rounded-[8px] uppercase ${
+              className={`flex-1 w-full bg-[#003399] hover:bg-[#002266] text-white font-bold py-3 md:h-12 rounded-[8px] uppercase ${
                 isMobile ? "text-sm gap-2" : "text-base"
               }`}
             >
@@ -136,7 +139,7 @@ const GeoTagToggleAndActions: React.FC<GeoTagToggleAndActionsProps> = ({
             <Button
               onClick={onGiftTree}
               variant="outline"
-              className={`flex-1 w-full border-gray-300 font-bold py-3 h-12 rounded-[8px] uppercase text-[#003399] hover:text-[#002266] ${
+              className={`flex-1 w-full border-gray-300 font-bold py-3 md:h-12 rounded-[8px] uppercase text-[#003399] hover:text-[#002266] ${
                 isMobile ? "text-sm gap-2" : "text-base"
               }`}
             >

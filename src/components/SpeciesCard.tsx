@@ -28,7 +28,7 @@ const SpeciesCard: React.FC<SpeciesCardProps> = ({
   onDonate,
 }) => {
   return (
-    <div className="rounded-xl shadow-sm overflow-hidden border border-gray-200 flex flex-col">
+    <div className="rounded-[16px] shadow-sm overflow-hidden border border-gray-200 flex flex-col">
       <div className="relative h-52">
         <Image
           src={imageUrl}

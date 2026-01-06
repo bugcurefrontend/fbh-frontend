@@ -101,7 +101,7 @@ const ProjectsSection: React.FC<ProjectsSectionProps> = ({
               key={idx}
               href={`/projects/${generateProjectSlug(project.title)}`}
             >
-              <div className="flex-1 max-w-[314px] max-h-[272px] border border-gray-200 rounded-xl flex-shrink-0 overflow-hidden">
+              <div className="flex-1 max-w-[314px] max-h-[272px] border border-gray-200 rounded-[16px] flex-shrink-0 overflow-hidden">
                 <div className="relative h-[160px]">
                   <Image
                     src={project.imageUrl}

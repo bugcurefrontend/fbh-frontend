@@ -74,9 +74,8 @@ const Footer: React.FC<FooterProps> = ({
 
   const pathname = usePathname();
   const footerClass = `bg-[#0F172A] text-[#e6e6e6] md:mt-16 mt-8 ${
-    pathname === "/project-detail" || pathname === "/species-detail"
-      ? "max-md:mb-41" // congrats = mb-25 if not then mb-41
-      : ""
+    (pathname.startsWith("/projects/") || pathname.startsWith("/species/")) &&
+    "max-md:mb-[158px]"
   }`;
 
   return (

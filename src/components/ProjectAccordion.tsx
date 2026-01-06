@@ -215,7 +215,7 @@ const ProjectAccordion: React.FC<ProjectAccordionProps> = ({
                                 {update.images.map((img, i) => (
                                   <div
                                     key={i}
-                                    className="relative w-full h-44 sm:h-52 md:h-60 rounded-xl overflow-hidden"
+                                    className="relative w-full h-44 sm:h-52 md:h-60 rounded-[16px] overflow-hidden"
                                   >
                                     <Image
                                       src={img}
@@ -257,7 +257,7 @@ const ProjectAccordion: React.FC<ProjectAccordionProps> = ({
                 <Link
                   key={item.id}
                   href={`/species/${item.slug}`}
-                  className="flex-1 min-w-0 border border-gray-200 rounded-xl flex-shrink-0"
+                  className="flex-1 min-w-0 border border-gray-200 rounded-[16px] flex-shrink-0"
                 >
                   <div className="overflow-hidden w-full md:p-4 p-2">
                     <Image

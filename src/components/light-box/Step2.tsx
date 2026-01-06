@@ -52,7 +52,7 @@ const Step2: React.FC<Step2Props> = ({
         {/* Personal details form fields */}
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
+            <label className="mb-1.5 block text-xs text-[#454950] font-semibold">
               First Name
             </label>
             <input
@@ -66,7 +66,7 @@ const Step2: React.FC<Step2Props> = ({
             />
           </div>
           <div>
-            <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
+            <label className="mb-1.5 block text-xs text-[#454950] font-semibold">
               Last Name
             </label>
             <input
@@ -82,7 +82,7 @@ const Step2: React.FC<Step2Props> = ({
         </div>
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
+            <label className="mb-1.5 block text-xs text-[#454950] font-semibold">
               Email
             </label>
             <div className="relative w-full">
@@ -104,7 +104,7 @@ const Step2: React.FC<Step2Props> = ({
             )}
           </div>
           <div>
-            <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
+            <label className="mb-1.5 block text-xs text-[#454950] font-semibold">
               Phone number
             </label>
             <div className="flex relative w-full">
@@ -143,7 +143,7 @@ const Step2: React.FC<Step2Props> = ({
           </div>
         </div>
         <div>
-          <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
+          <label className="mb-1.5 block text-xs text-[#454950] font-semibold">
             Door no, Street Address
           </label>
           <input
@@ -158,7 +158,7 @@ const Step2: React.FC<Step2Props> = ({
         </div>
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
+            <label className="mb-1.5 block text-xs text-[#454950] font-semibold">
               City
             </label>
             <ComboBox
@@ -169,7 +169,7 @@ const Step2: React.FC<Step2Props> = ({
             />
           </div>
           <div>
-            <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
+            <label className="mb-1.5 block text-xs text-[#454950] font-semibold">
               State
             </label>
             <ComboBox
@@ -182,7 +182,7 @@ const Step2: React.FC<Step2Props> = ({
         </div>
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
+            <label className="mb-1.5 block text-xs text-[#454950] font-semibold">
               Country
             </label>
             <ComboBox
@@ -195,7 +195,7 @@ const Step2: React.FC<Step2Props> = ({
             />
           </div>
           <div>
-            <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
+            <label className="mb-1.5 block text-xs text-[#454950] font-semibold">
               Pincode
             </label>
             <input

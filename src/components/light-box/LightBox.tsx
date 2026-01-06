@@ -313,7 +313,7 @@ const LightBox: React.FC = () => {
             )}
 
             {step === 3 && (
-              <div className="w-full space-y-5.5">
+              <div className="w-full space-y-4 md:space-y-2">
                 <TaxDetail
                   taxDetails={taxDetails}
                   onTaxDetailsChange={handleTaxDetailsChange}

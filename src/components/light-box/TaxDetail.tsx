@@ -65,7 +65,7 @@ const TaxDetail: React.FC<TaxDetailProps> = ({
     <div className="space-y-6">
       <div className="grid md:grid-cols-2 gap-6">
         <div>
-          <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
+          <label className="mb-1.5 block text-xs text-[#454950] font-semibold">
             Citizenship <span className="text-red-500">*</span>
           </label>
           <ComboBox
@@ -76,7 +76,7 @@ const TaxDetail: React.FC<TaxDetailProps> = ({
           />
         </div>
         <div>
-          <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
+          <label className="mb-1.5 block text-xs text-[#454950] font-semibold">
             ID Type
           </label>
           <Select
@@ -100,7 +100,7 @@ const TaxDetail: React.FC<TaxDetailProps> = ({
 
       <div className="grid md:grid-cols-2 gap-6">
         <div>
-          <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
+          <label className="mb-1.5 block text-xs text-[#454950] font-semibold">
             {taxDetails.idType === "PAN CARD"
               ? "PAN Card Number"
               : taxDetails.idType === "AADHAR CARD"
@@ -137,7 +137,7 @@ const TaxDetail: React.FC<TaxDetailProps> = ({
           )}
         </div>
         <div>
-          <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
+          <label className="mb-1.5 block text-xs text-[#454950] font-semibold">
             Abhyasi ID/ Member ID
           </label>
           <input

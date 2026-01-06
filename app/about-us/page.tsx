@@ -10,13 +10,19 @@ import { fetchAboutContent } from "@/services/about-content";
 import { fetchGlobal } from "@/services/global";
 
 export default async function page() {
-  const [metrics, aboutContent, global] = await Promise.all([fetchAllMetrics(), fetchAboutContent(), fetchGlobal()]);
-  const aboutStats = aboutContent ? {
-    trees: aboutContent.total_trees_planted || undefined,
-    plantingSites: aboutContent.total_planting_sites || undefined,
-    volunteers: aboutContent.total_volunteers_engaged || undefined,
-    partners: aboutContent.total_partner_organisations || undefined,
-  } : undefined;
+  const [metrics, aboutContent, global] = await Promise.all([
+    fetchAllMetrics(),
+    fetchAboutContent(),
+    fetchGlobal(),
+  ]);
+  const aboutStats = aboutContent
+    ? {
+        trees: aboutContent.total_trees_planted || undefined,
+        plantingSites: aboutContent.total_planting_sites || undefined,
+        volunteers: aboutContent.total_volunteers_engaged || undefined,
+        partners: aboutContent.total_partner_organisations || undefined,
+      }
+    : undefined;
 
   const headerImageUrl = global?.about_us_hearderimage?.url ?? null;
 
@@ -25,7 +31,9 @@ export default async function page() {
       <section
         className="relative h-[213px] md:h-[288px] flex items-center justify-center"
         style={{
-          backgroundImage: `url('${headerImageUrl ?? "/images/about-us.png"}')`,
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),url('${
+            headerImageUrl ?? "/images/about-us.png"
+          }')`,
           backgroundSize: "cover",
           backgroundPosition: "top",
         }}
@@ -36,23 +44,30 @@ export default async function page() {
       </section>
       <StatisticsSection metrics={metrics} aboutStats={aboutStats} />
       <section className="max-w-7xl mx-auto md:space-y-16 space-y-8">
-        <OurOrigin imageOne={aboutContent?.our_origin_one} imageTwo={aboutContent?.our_origin_two} />
+        <OurOrigin
+          imageOne={aboutContent?.our_origin_one}
+          imageTwo={aboutContent?.our_origin_two}
+        />
         <VisionMission />
-        <JourneyTimeline journeyImages={[
-          aboutContent?.our_journey_one ?? null,
-          aboutContent?.our_journey_two ?? null,
-          aboutContent?.our_journey_three ?? null,
-          aboutContent?.our_journey_four ?? null,
-          aboutContent?.our_journey_five ?? null,
-          aboutContent?.our_journey_six ?? null,
-          aboutContent?.our_journey_seven ?? null,
-        ]} />
-        <AboutHeartfulness stats={{
-          total_countries: aboutContent?.total_countries,
-          total_practitioners: aboutContent?.total_practitioners,
-          total_trainers: aboutContent?.total_trainers,
-          total_meditation_centres: aboutContent?.total_meditation_centres,
-        }} />
+        <JourneyTimeline
+          journeyImages={[
+            aboutContent?.our_journey_one ?? null,
+            aboutContent?.our_journey_two ?? null,
+            aboutContent?.our_journey_three ?? null,
+            aboutContent?.our_journey_four ?? null,
+            aboutContent?.our_journey_five ?? null,
+            aboutContent?.our_journey_six ?? null,
+            aboutContent?.our_journey_seven ?? null,
+          ]}
+        />
+        <AboutHeartfulness
+          stats={{
+            total_countries: aboutContent?.total_countries,
+            total_practitioners: aboutContent?.total_practitioners,
+            total_trainers: aboutContent?.total_trainers,
+            total_meditation_centres: aboutContent?.total_meditation_centres,
+          }}
+        />
       </section>
       <KanhaShantiVanam />
       <FAQs />

@@ -122,10 +122,10 @@ const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({
                     <button className="flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer md:font-bold md:text-xs md:leading-[18px] md:uppercase md:text-[#003399]">
                       read More{" "}
                       <ArrowRightIcon
-                        width={22}
-                        height={22}
+                        width={24}
+                        height={24}
                         color="#003399"
-                        className="max-sm:w-4"
+                        className="max-sm:w-6"
                       />
                     </button>
                   </Link>
@@ -184,10 +184,10 @@ const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({
                 <button className="flex items-center gap-2 text-[#003399] font-bold text-xs leading-[18px] uppercase min-w-[0] cursor-pointer font-[Public_Sans]">
                   Read More{" "}
                   <ArrowRightIcon
-                    width={22}
-                    height={22}
+                    width={24}
+                    height={24}
                     color="#003399"
-                    className="max-sm:w-5"
+                    className="max-sm:w-6"
                   />
                 </button>
               </Link>

@@ -80,7 +80,7 @@ const RelatedSpecies: React.FC<RelatedSpeciesProps> = ({
             key={item.documentId}
             href={`/species/${generateSlug(item.name)}`}
           >
-            <div className="flex-1 min-w-0 border border-gray-200 rounded-xl flex-shrink-0 hover:shadow-md transition-all duration-200">
+            <div className="flex-1 min-w-0 border border-gray-200 rounded-[16px] flex-shrink-0 hover:shadow-md transition-all duration-200">
               <div className="overflow-hidden w-full md:p-4 p-2">
                 <Image
                   src={item.image}

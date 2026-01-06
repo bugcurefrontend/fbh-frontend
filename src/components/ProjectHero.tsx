@@ -241,7 +241,7 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
           </div>
 
           {/* Mobile dots (shows on hover) */}
-          <div className="flex md:hidden justify-center mt-4 gap-2 transition-all duration-300 opacity-0 group-hover/container:opacity-100">
+          <div className="flex md:hidden justify-center mt-4 gap-2 transition-all duration-300">
             {items.map((_, i) => (
               <div
                 key={i}
@@ -370,7 +370,7 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
               <div className="md:text-2xl text-lg font-bold md:font-semibold text-black">
                 {stats.treesAvailable.toLocaleString()}
               </div>
-              <div className="md:text-base text-[10px] text-gray-600">
+              <div className="max-md:font-bold md:text-base text-[10px] text-gray-600">
                 Trees <br className="md:hidden" /> Available
               </div>
             </div>
@@ -382,7 +382,7 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
               <div className="md:text-2xl text-lg font-bold md:font-semibold text-black">
                 {stats.treesPlanted.toLocaleString()}
               </div>
-              <div className="md:text-base text-[10px] text-gray-600">
+              <div className="max-md:font-bold md:text-base text-[10px] text-gray-600">
                 Trees <br className="md:hidden" /> Planted
               </div>
             </div>
@@ -402,7 +402,7 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
               <div className="md:text-2xl text-lg font-bold md:font-semibold text-black">
                 {stats.totalTrees.toLocaleString()}
               </div>
-              <div className="md:text-base text-[10px] text-gray-600">
+              <div className="max-md:font-bold md:text-base text-[10px] text-gray-600">
                 Total <br className="md:hidden" /> Trees
               </div>
             </div>
