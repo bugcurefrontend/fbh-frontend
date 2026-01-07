@@ -21,21 +21,21 @@ const LoginDialog: React.FC<LoginDialogProps> = ({
 }) => {
   return (
     <AlertDialog open={isOpen} onOpenChange={onClose}>
-      <AlertDialogContent className="md:max-w-[533px] border border-[#E4E4E4] rounded-2xl dialog-pop gap-4">
+      <AlertDialogContent className="md:min-w-[533px] border border-[#E4E4E4] rounded-2xl dialog-pop gap-4 pb-5 md:space-y-2">
         <AlertDialogHeader>
-          <AlertDialogTitle className="text-2xl leading-9 text-center font-semibold md:font-bold text-[#232D26]">
+          <AlertDialogTitle className="text-base md:text-2xl leading-9 text-center font-semibold md:font-bold text-[#232D26]">
             BEFORE YOU PROCEED...
           </AlertDialogTitle>
         </AlertDialogHeader>
 
         <div className="space-y-6 flex flex-col items-center">
-          <p className="text-center text-xl text-[#090C0F">
-            Sign-in to autofill your details and view past contributions
+          <p className="text-center text-lg md:text-xl text-[#090C0F">
+            Sign-in to autofill your details and view past contributions.
           </p>
 
           <button
             onClick={onSignIn}
-            className="w-fit bg-[#003399] hover:bg-[#152e72] text-white font-semibold py-3 px-5.5 rounded-[8px]"
+            className="md:w-fit bg-[#003399] hover:bg-[#152e72] text-white max-md:text-sm font-semibold md:py-3 py-1.5 px-5.5 rounded-[8px] w-full"
           >
             LOG-IN / SIGN-UP{" "}
           </button>

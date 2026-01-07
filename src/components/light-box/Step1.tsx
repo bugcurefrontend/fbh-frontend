@@ -9,6 +9,7 @@ import {
 import { Info } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import CurrencySelect from "@/components/CurrencySelect";
+import ToolTipIcon from "../icons/ToolTipIcon";
 
 interface Step1Props {
   occasion: string;
@@ -101,10 +102,10 @@ const Step1: React.FC<Step1Props> = ({
           </span>
           <Tooltip>
             <TooltipTrigger>
-              <Info className="w-4 h-4 text-gray-400" />
+              <ToolTipIcon />
             </TooltipTrigger>
             <TooltipContent side="bottom" className="bg-[#E7F8F0] px-4 py-3">
-              <p className="text-[#0D824B] text-xs md:font-semibold">
+              <p className="text-[#0D824B] text-xs md:font-semibold md:leading-4.5">
                 We will geotag your trees and provide quarterly <br /> growth
                 updates for the next three years.
               </p>

@@ -154,7 +154,7 @@ const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
                         .videoUrl!.replace("watch?v=", "embed/")
                         .replace("youtu.be/", "youtube.com/embed/")
                 }?autoplay=1`}
-                className="w-full min-h-[316px] md:min-h-[423px] max-h-[423px] h-full md:rounded-[8px] rounded-[8px]"
+                className="w-full min-h-[316px] md:min-h-[423px] max-h-[423px] h-full md:rounded-[7.6px] rounded-[8px]"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen
@@ -162,7 +162,7 @@ const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
             ) : (
               <video
                 src={testimonials[current].videoUrl!}
-                className="w-full min-h-[316px] md:min-h-[423px] max-h-[423px] h-full object-cover md:rounded-[8px] rounded-[8px]"
+                className="w-full min-h-[316px] md:min-h-[423px] max-h-[423px] h-full object-cover md:rounded-[7.6px] rounded-[8px]"
                 controls
                 autoPlay
                 playsInline
@@ -187,11 +187,11 @@ const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
                   alt={testimonials[current].name}
                   width={493}
                   height={423}
-                  className="md:rounded-[8px] rounded-[8px] w-full min-h-[316px] md:min-h-[423px] max-h-[423px] h-full object-cover"
+                  className="md:rounded-[7.6px] rounded-[8px] w-full min-h-[316px] md:min-h-[423px] max-h-[423px] h-full object-cover"
                 />
                 {/* Play Button Overlay - show if videoUrl exists */}
                 {testimonials[current].videoUrl && (
-                  <div className="absolute inset-0 flex items-center justify-center md:rounded-[8px] rounded-[8px] pointer-events-none">
+                  <div className="absolute inset-0 flex items-center justify-center md:rounded-[7.6px] rounded-[8px] pointer-events-none">
                     <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center shadow-lg">
                       <svg
                         className="w-7 h-7 text-[#003399] ml-1"

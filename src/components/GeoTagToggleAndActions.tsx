@@ -61,7 +61,7 @@ const GeoTagToggleAndActions: React.FC<GeoTagToggleAndActionsProps> = ({
         className={
           isMobile
             ? "md:hidden bg-white fixed bottom-0 left-0 right-0 border-t border-gray-200 shadow-[0_-6px_24.8px_0_rgba(0,0,0,0.2)] z-50 px-4 pt-4 pb-6 safe-area-inset-bottom"
-            : "max-sm:hidden border border-[#E4E4E4] rounded-2xl px-4 py-6 bg-[#E6EBF54D]"
+            : "max-sm:hidden border border-[#2B56AB26] rounded-2xl px-4 py-6 bg-[#E6EBF54D]"
         }
       >
         <h1 className="flex items-baseline gap-1">
@@ -94,9 +94,9 @@ const GeoTagToggleAndActions: React.FC<GeoTagToggleAndActionsProps> = ({
               <TooltipContent
                 align={isMobile ? "center" : "start"}
                 alignOffset={isMobile ? 0 : -14}
-                className="bg-[#E7F8F0] px-4 py-3"
+                className="bg-[#E7F8F0] px-4 py-3 shadow-[0_12_24_-4_rgba(0,0,0,0.12)]"
               >
-                <p className="text-[#0D824B] text-xs md:font-semibold max-sm:max-w-36 text-center">
+                <p className="text-[#0D824B] text-xs md:font-semibold max-sm:max-w-36 max-md:text-center md:leading-4.5">
                   We will geotag your trees and provide quarterly{" "}
                   <br className="max-sm:hidden" /> growth updates for the next
                   three years.
@@ -139,7 +139,7 @@ const GeoTagToggleAndActions: React.FC<GeoTagToggleAndActionsProps> = ({
             <Button
               onClick={onGiftTree}
               variant="outline"
-              className={`flex-1 w-full border-gray-300 font-bold py-3 md:h-12 rounded-[8px] uppercase text-[#003399] hover:text-[#002266] ${
+              className={`flex-1 w-full border-[#003399] font-bold py-3 md:h-12 rounded-[8px] uppercase text-[#003399] hover:text-[#002266] ${
                 isMobile ? "text-sm gap-2" : "text-base"
               }`}
             >

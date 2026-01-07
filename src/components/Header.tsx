@@ -279,21 +279,28 @@ export default function Header() {
           </div>
         </div>
         <AlertDialog open={showSignOutAlert} onOpenChange={setShowSignOutAlert}>
-          <AlertDialogContent className="md:w-[533px] md:h-[204px] max-md:p-4">
+          <AlertDialogContent className="md:min-w-[533px] md:h-[204px] max-md:p-4 rounded-[16px] md:pb-5">
             <AlertDialogHeader>
               <AlertDialogTitle
                 className="flex items-center justify-between
               uppercase font-bold text-base md:text-2xl mb-2 md:mb-5"
               >
-                <div className="flex items-center gap-2">
-                  <TriangleAlert className="text-[#F78F08] md:w-8 md:h-8 w-6 h-6" />
+                <div className="flex items-center gap-2 md:gap-4 text-[#232D26]">
+                  <TriangleAlert
+                    strokeWidth="1.5px"
+                    className="text-[#F78F08] md:w-8 md:h-8 w-6 h-6"
+                  />
                   Confirmation
                 </div>
                 <button
                   onClick={() => setShowSignOutAlert(false)}
                   className="p-1 rounded-full hover:bg-gray-100 transition"
                 >
-                  <X size={24} className="text-black max-md:text-lg" />
+                  <X
+                    size={24}
+                    strokeWidth="1.5px"
+                    className="text-black max-md:text-lg"
+                  />
                 </button>
               </AlertDialogTitle>
               <AlertDialogDescription className="text-[#090C0F] md:text-xl text-lg text-start">
@@ -306,13 +313,13 @@ export default function Header() {
                   setDropdownOpen(false);
                   logout({ redirect: true, targetPath: "/" });
                 }}
-                className="bg-[#003399] hover:bg-[#032d80] h-9 md:h-12 md:w-[146px] rounded-[8px] font-bold text-sm md:text-base leading-6.5"
+                className="bg-[#003399] hover:bg-[#032d80] h-9 md:h-12 md:w-[146px] rounded-[8px] font-bold text-sm md:text-base leading-6.5 uppercase"
               >
                 Sign Out
               </AlertDialogAction>
               <AlertDialogCancel
                 onClick={() => setDropdownOpen(false)}
-                className="h-9 md:h-12 md:w-[146px] rounded-[8px] font-bold text-sm md:text-base leading-6.5"
+                className="h-9 md:h-12 md:w-[146px] rounded-[8px] font-bold text-sm md:text-base leading-6.5 uppercase border-[#B7B9BB]"
               >
                 Cancel
               </AlertDialogCancel>

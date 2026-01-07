@@ -69,7 +69,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ heroContents }) => {
   const scrollNext = () => emblaApi?.scrollNext();
 
   return (
-    <div className="md:h-[540px] h-[403px] relative overflow-hidden">
+    <div className="md:h-[540px] h-[403px] relative overflow-hidden shadow-[0px_0px_0px_4px_rgba(149,170,213,0.2)]">
       {/* Carousel background */}
       <div ref={emblaRef} className="absolute inset-0 overflow-hidden">
         <div className="flex">
