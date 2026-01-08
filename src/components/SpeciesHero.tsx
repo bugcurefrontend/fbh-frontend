@@ -5,6 +5,9 @@ import Image from "next/image";
 import { Trees, ChevronLeft, ChevronRight } from "lucide-react";
 import GeoTagToggleAndActions from "./GeoTagToggleAndActions";
 import ShareButton from "../../app/case-studies/[slug]/ShareButton";
+import LifeSpan from "./icons/LifeSpan";
+import Height from "./icons/Height";
+import Oxygen from "./icons/Oxygen";
 
 interface SpeciesHeroProps {
   name: string;
@@ -335,7 +338,7 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
                 popClass="right-12 top-2"
               />
             </div>
-            <p className="text-gray-700 md:text-base text-sm leading-6 line-clamp-5">
+            <p className="text-gray-700 md:text-base text-sm leading-6 line-clamp-4">
               {description}
             </p>
           </div>
@@ -344,13 +347,7 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
           <div className="border border-[#E4E4E4] rounded-[8px] md:rounded-2xl flex items-center justify-between md:p-6 p-4 max-lg:mt-6">
             <div className="text-center space-y-2 md:space-y-4 flex-1">
               <div className="md:w-10 w-8 md:h-10 h-8 mx-auto">
-                <Image
-                  src="/images/lifespan.png"
-                  alt="tree"
-                  width={40}
-                  height={40}
-                  className="md:w-10 w-8 h-8 md:h-10 mx-auto"
-                />
+                <LifeSpan className="md:w-10 w-8 h-8 md:h-10 mx-auto" />
               </div>
               <div className="md:text-2xl text-lg font-bold md:font-semibold text-black">
                 {characteristics.lifespan} yrs
@@ -364,13 +361,7 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
 
             <div className="text-center space-y-2 md:space-y-4 flex-1">
               <div className="md:w-10 w-8 md:h-10 h-8 mx-auto">
-                <Image
-                  src="/images/oxygen.png"
-                  alt="tree"
-                  width={40}
-                  height={40}
-                  className="md:w-10 w-8 h-8 md:h-10 mx-auto"
-                />
+                <Oxygen className="md:w-10 w-8 h-8 md:h-10 mx-auto" />
               </div>
               <div className="md:text-2xl text-lg font-bold md:font-semibold text-black">
                 {characteristics.oxygenReleased}
@@ -383,14 +374,8 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
             <div className="w-px md:h-[140px] h-[96px] bg-gray-300 md:mx-6 mx-1"></div>
 
             <div className="text-center space-y-2 md:space-y-4 flex-1">
-              <div className="md:w-10 w-8 md:h-10 h-8 mx-auto">
-                <Image
-                  src="/images/height.png"
-                  alt="tree"
-                  width={40}
-                  height={40}
-                  className="md:w-10 w-8 h-8 md:h-10 mx-auto"
-                />
+              <div className="md:w-10 w-8 md:h-10 h-8 mx-auto flex items-center justify-center">
+                <Height className="md:w-10 w-8 h-8 md:h-10 mx-auto" />
               </div>
               <div className="md:text-2xl text-lg font-bold md:font-semibold text-black">
                 <span className="max-md:hidden">

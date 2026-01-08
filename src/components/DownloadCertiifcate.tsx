@@ -122,21 +122,21 @@ const DownloadCertificate: React.FC = () => {
 
       <DialogContent
         showCloseButton={false}
-        className="md:w-[533px] md:h-[442px] px-4 md:px-6 py-4 gap-0"
+        className="md:w-[533px] md:h-[442px] py-4 px-2 gap-0"
       >
-        <DialogTitle className="uppercase font-bold sm:text-2xl">
+        <DialogTitle className="flex items-center justify-between uppercase font-bold sm:text-2xl px-2 md:px-4">
           Download Certificate
+          <DialogClose asChild>
+            <button className="border-none rounded-full transition">
+              <X size={24} className="text-black max-sm:w-4.5" />
+            </button>
+          </DialogClose>
         </DialogTitle>
-        <DialogClose asChild>
-          <button className="absolute right-3 sm:right-5 top-1.5 sm:top-2.5 p-2 border-none rounded-full hover:bg-gray-100 transition">
-            <X size={24} className="text-black max-sm:w-4.5" />
-          </button>
-        </DialogClose>
-        <div className="flex justify-end gap-2 text-[#003399] cursor-pointer max-sm:text-sm font-medium mb-2.5 mt-4">
+        <div className="flex gap-2 text-[#003399] cursor-pointer max-sm:text-sm font-semibold mb-2.5 mt-4 px-2 md:px-4 w-fit ml-auto">
           <p>Download All </p>
           <DownloadIcon size={20} />
         </div>
-        <div className="max-md:h-[236px] overflow-y-scroll">
+        <div className="max-md:h-[236px] overflow-y-scroll px-2 md:pl-4">
           <div className="space-y-4 w-full">
             {donorsData.map((donor) => (
               <div

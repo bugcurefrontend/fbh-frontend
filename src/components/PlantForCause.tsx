@@ -60,7 +60,7 @@ const PlantForCause: React.FC<PlantForCauseProps> = ({ attributes }) => {
               key={image.id}
               className="basis-1/1 sm:basis-1/4 lg:basis-1/5 md:pl-14 pl-8 space-y-2"
             >
-              <div className="border-[0.76px] overflow-hidden border-[#B7B9BB] rounded-[16px] cursor-pointer hover:shadow-[0_1px_8px_rgba(0,0,0,0.3)]">
+              <div className="border-[0.76px] overflow-hidden border-[#B7B9BB] rounded-[16px] cursor-pointer">
                 <Image
                   src={image.image}
                   alt={image.name}

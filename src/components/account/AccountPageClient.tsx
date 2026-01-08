@@ -48,18 +48,18 @@ const AccountPageClient = () => {
         </p>
       </div>
 
-      <Tabs defaultValue="dashboard" className="sm:mt-6 mt-4 relative">
-        <TabsList className="items-center min-[400px]:justify-start w-full bg-transparent h-auto p-0 min-w-fit relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:border-b-2 after:border-gray-200">
+      <Tabs defaultValue="dashboard" className="min-[400px]:mt-6 mt-4 relative">
+        <TabsList className="items-center min-[400px]:justify-start w-full bg-transparent h-auto p-0 min-w-fit min-[400px]:relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 min-[400px]:after:border-b-2 after:border-gray-200">
           <TabsTrigger
             value="dashboard"
-            className="relative flex items-center gap-2 px-4 pb-[18px] pt-4 text-sm font-semibold text-[#6B7280] rounded-none data-[state=active]:text-[#003399] data-[state=active]:after:content-[''] data-[state=active]:after:absolute data-[state=active]:after:bottom-0 data-[state=active]:after:left-0 data-[state=active]:after:right-0 data-[state=active]:after:border-b-2 data-[state=active]:after:border-[#003399] data-[state=active]:after:z-10"
+            className="max-[400px]:border-b-[2px] max-[400px]:border-gray-200 max-[400px]:data-[state=active]:border-[#003399] min-[400px]:relative flex items-center gap-2 px-4 pb-[18px] pt-4 text-sm font-semibold text-[#6B7280] rounded-none data-[state=active]:text-[#003399] data-[state=active]:after:content-[''] data-[state=active]:after:absolute data-[state=active]:after:bottom-0 data-[state=active]:after:left-0 data-[state=active]:after:right-0 min-[400px]:data-[state=active]:after:border-b-2 data-[state=active]:after:border-[#003399] data-[state=active]:after:z-10"
           >
             <PanelsTopLeft className="w-6 h-6" />
             <span className="font-bold text-base">Dashboard</span>{" "}
           </TabsTrigger>
           <TabsTrigger
             value="donations"
-            className="relative flex items-center gap-2 px-4 pb-[18px] pt-4 text-sm font-semibold text-[#6B7280] rounded-none data-[state=active]:text-[#003399] data-[state=active]:after:content-[''] data-[state=active]:after:absolute data-[state=active]:after:bottom-0 data-[state=active]:after:left-0 data-[state=active]:after:right-0 data-[state=active]:after:border-b-2 data-[state=active]:after:border-[#003399] data-[state=active]:after:z-10"
+            className="max-[400px]:border-b-[2px] max-[400px]:border-gray-200 max-[400px]:data-[state=active]:border-[#003399] min-[400px]:relative flex items-center gap-2 px-4 pb-[18px] pt-4 text-sm font-semibold text-[#6B7280] rounded-none data-[state=active]:text-[#003399] data-[state=active]:after:content-[''] data-[state=active]:after:absolute data-[state=active]:after:bottom-0 data-[state=active]:after:left-0 data-[state=active]:after:right-0 min-[400px]:data-[state=active]:after:border-b-2 data-[state=active]:after:border-[#003399] data-[state=active]:after:z-10"
           >
             <DonateIcon className="w-6 h-6" />
             <span className="font-bold text-base">Donation History</span>

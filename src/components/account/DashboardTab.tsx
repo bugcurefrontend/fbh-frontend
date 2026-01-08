@@ -18,7 +18,10 @@ export const DashboardTab = () => {
             >
               <div className="flex items-center justify-between">
                 <p className="max-sm:text-lg font-semibold sm:font-bold text-[#454950]">
-                  {stat.label}
+                  {stat.label} {""}
+                  {stat.label === "CO2 Sequested" && (
+                    <span className="text-red-500 md:hidden">*</span>
+                  )}
                 </p>
                 <Image
                   src={stat.icon}

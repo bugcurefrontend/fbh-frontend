@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -75,7 +75,7 @@ const JourneyTimeline: React.FC<{
 
       <div className="relative">
         {/* Center line */}
-        <div className="absolute md:left-1/2 transform md:-translate-x-1/2 h-full w-1 bg-[#9DE1C2] rounded-full"></div>
+        <div className="absolute left-3 md:left-1/2 transform md:-translate-x-1/2 h-full md:w-1 w-[3px] bg-[#9DE1C2] rounded-full"></div>
 
         {/* Timeline items */}
         <div className="flex flex-col md:gap-12 gap-6">
@@ -91,7 +91,7 @@ const JourneyTimeline: React.FC<{
                 {item.position === "left" ? (
                   <div className="flex items-center">
                     {/* Left content */}
-                    <div className="md:w-1/2 max-md:pl-8 md:pr-8 max-md:text-left md:text-right">
+                    <div className="md:w-1/2 max-md:pl-10 md:pr-8 max-md:text-left md:text-right">
                       <div className="inline-block">
                         {item.image && item.image.url ? (
                           <Image
@@ -120,7 +120,7 @@ const JourneyTimeline: React.FC<{
                     </div>
 
                     {/* Center dot */}
-                    <div className="absolute flex items-center justify-center md:top-[60%] md:left-1/2 -left-2 transform md:-translate-x-1/2 md:w-8 md:h-8 w-[18px] h-[18px] border-[#9DE1C2] rounded-full border-[0.4px] bg-[#E7F8F0] z-10">
+                    <div className="absolute flex items-center justify-center md:top-[60%] md:left-1/2 left-1 transform md:-translate-x-1/2 md:w-8 md:h-8 w-[18px] h-[18px] border-[#9DE1C2] rounded-full border-[0.4px] bg-[#E7F8F0] z-10">
                       <div className="bg-[#007A3F] rounded-full md:h-[18.5px] md:w-[18.5px] h-[10.5px] w-[10.5px]"></div>
                     </div>
 
@@ -133,12 +133,12 @@ const JourneyTimeline: React.FC<{
                     <div className="md:w-1/2 md:pr-8"></div>
 
                     {/* Center dot */}
-                    <div className="absolute flex items-center justify-center md:top-[60%] md:left-1/2 -left-2 transform md:-translate-x-1/2 md:w-8 md:h-8 w-[18px] h-[18px] border-[#9DE1C2] rounded-full border-[0.4px] bg-[#E7F8F0] z-10">
+                    <div className="absolute flex items-center justify-center md:top-[60%] md:left-1/2 left-1 transform md:-translate-x-1/2 md:w-8 md:h-8 w-[18px] h-[18px] border-[#9DE1C2] rounded-full border-[0.4px] bg-[#E7F8F0] z-10">
                       <div className="bg-[#007A3F] rounded-full md:h-[18.5px] md:w-[18.5px] h-[10.5px] w-[10.5px]"></div>
                     </div>
 
                     {/* Right content */}
-                    <div className="md:w-1/2 md:pl-8 pl-8">
+                    <div className="md:w-1/2 md:pl-8 pl-10">
                       <div className="inline-block text-left">
                         {item.image && item.image.url ? (
                           <Image
@@ -180,7 +180,7 @@ const JourneyTimeline: React.FC<{
             className="p-3 text-[#003399] font-bold text-sm text:bg-[#00339990] transition-colors flex items-center gap-2 uppercase"
           >
             View More
-            <ChevronDown size={20} />
+            <ChevronUp />
           </button>
         ) : (
           <button
@@ -188,7 +188,7 @@ const JourneyTimeline: React.FC<{
             className="p-3 text-[#003399] font-bold text-xs text:bg-[#00339990] transition-colors flex items-center gap-2 uppercase"
           >
             View Less
-            <ChevronDown size={20} />
+            <ChevronDown />
           </button>
         )}
       </div>

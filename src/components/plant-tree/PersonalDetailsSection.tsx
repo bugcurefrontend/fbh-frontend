@@ -30,7 +30,7 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
   pincodeError,
 }) => {
   return (
-    <div className="bg-white border border-[#E8E8E9] rounded-[8px] mb-8">
+    <div className="bg-white border border-[#E8E8E9] rounded-[16px] md:rounded-[8px] mb-8">
       <h2 className="border-b border-[#E8E8E9] md:text-lg font-semibold md:font-bold py-4 px-4 md:px-6">
         Personal Details
       </h2>
@@ -78,7 +78,7 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
             </div>
           </div>
 
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between max-sm:gap-10">
             <span className="text-[#212529]">
               I want my name to be displayed on the donors list
             </span>

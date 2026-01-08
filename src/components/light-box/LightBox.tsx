@@ -242,11 +242,11 @@ const LightBox: React.FC = () => {
           <AlertDialogTitle className="hidden" />
           <div
             onClick={() => setShowBox(false)}
-            className="cursor-pointer absolute md:right-0 right-5
-             top-3
-             md:-top-10 flex items-center justify-center h-8 w-8 rounded-full bg-[#E4E4E4] hover:bg-gray-100 transition"
+            className="cursor-pointer absolute md:right-0 right-4
+             top-2
+             md:-top-10 flex items-center justify-center h-8 w-8 rounded-full md:bg-[#E4E4E4] md:hover:bg-gray-100 transition"
           >
-            <X size={18} className="text-black" />
+            <X size={18} className="text-black max-md:stroke-[1.3]" />
           </div>
           <div className="max-lg:hidden max-w-100 w-full h-full">
             <Image
@@ -260,9 +260,13 @@ const LightBox: React.FC = () => {
           {step > 1 && (
             <button
               onClick={handleBack}
-              className="bg-white hover:bg-gray-100 flex rounded-[8px] items-center justify-self-center absolute gap-1 md:top-10 top-3 left-3 md:left-10 md:px-4 md:py-2 text-lg leading-6.5 font-medium"
+              className="bg-white hover:bg-gray-100 flex rounded-[8px] items-center justify-self-center absolute gap-1 md:top-10 top-3 left-3 md:left-10 md:px-4 md:py-2 md:text-lg leading-4.5 md:leading-6.5 font-bold md:font-medium max-md:text-[#003399]"
             >
-              <ChevronLeft size={24} className="w-6 h-6" /> Back
+              <ChevronLeft
+                size={24}
+                className="w-4.5 h4.5 md:w-6 md:h-6 md:text-[#090C0F]"
+              />
+              Back
             </button>
           )}
 

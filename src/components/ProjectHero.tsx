@@ -7,6 +7,7 @@ import LandscapeIcon from "./icons/LandscapeIcon";
 import TreeSpeciesIcon from "./icons/TreeSpeciesIcon";
 import GeoTagToggleAndActions from "./GeoTagToggleAndActions";
 import ShareButton from "../../app/case-studies/[slug]/ShareButton";
+import TotalTreesIcon from "./icons/TotalTreesIcon";
 
 interface ProjectHeroProps {
   title: string;
@@ -390,15 +391,7 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
             <div className="sm:w-px w-[0.5px] md:h-[140px] h-[96px] bg-gray-300 mx-6"></div>
 
             <div className="text-center space-y-2 xl:space-y-4 flex-1">
-              <div className="md:w-10 w-8 md:h-10 h-8 mx-auto">
-                <Image
-                  src="/images/tree.png"
-                  alt="tree"
-                  width={40}
-                  height={40}
-                  className="md:w-10 w-8 h-8 md:h-10 mx-auto"
-                />
-              </div>
+              <TotalTreesIcon className="md:w-10 w-8 h-8 md:h-10 mx-auto" />
               <div className="md:text-2xl text-lg font-bold md:font-semibold text-black">
                 {stats.totalTrees.toLocaleString()}
               </div>

@@ -60,8 +60,8 @@ const ProceedToPay: React.FC<ProceedToPayProps> = ({
     // Simulate processing delay then show error
     setTimeout(() => {
       setStatus("error");
-      setCountdown(50);
-    }, 50000);
+      setCountdown(5);
+    }, 5000);
   };
 
   const handleSaveAdjust = () => {
@@ -120,7 +120,9 @@ const ProceedToPay: React.FC<ProceedToPayProps> = ({
                 </p>
                 <p className="max-sm:text-sm text-[#454950] font-medium">
                   Redirecting you to Homepage in{" "}
-                  <span className="text-[#0D824B]">00:0{countdown}</span>
+                  <span className="text-[#0D824B] font-bold">
+                    00:0{countdown}
+                  </span>
                 </p>
               </div>
             </>

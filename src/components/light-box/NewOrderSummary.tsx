@@ -29,7 +29,7 @@ const NewOrderSummary: React.FC<NewOrderSummaryProps> = ({
   return (
     <div className="md:space-y-2 space-y-6">
       <div className="space-y-2">
-        <div className="space-y-4 border border-[#E5EBF5] bg-[#F7F9FF] rounded-[8px] overflow-hidden p-4">
+        <div className="space-y-4 border border-[#E5EBF5] bg-[#F7F9FF] rounded-[16px] md:rounded-[8px] overflow-hidden p-4">
           <div className="flex items-center justify-between pb-4 border-b border-[#95AAD5]">
             <div className="max-md:text-sm space-y-6 text-[#0A0A0B] leading-5 font-semibold">
               <h2>Occassion / Cause :</h2>

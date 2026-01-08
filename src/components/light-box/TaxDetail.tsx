@@ -62,7 +62,7 @@ const TaxDetail: React.FC<TaxDetailProps> = ({
   };
 
   return (
-    <div className="space-y-6">
+    <div className="md:space-y-6 space-y-2">
       <div className="grid md:grid-cols-2 gap-6">
         <div>
           <label className="mb-1.5 block text-xs text-[#454950] font-semibold">
@@ -98,7 +98,7 @@ const TaxDetail: React.FC<TaxDetailProps> = ({
         </div>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-6">
+      <div className="grid md:grid-cols-2 gap-6 max-md:mt-6">
         <div>
           <label className="mb-1.5 block text-xs text-[#454950] font-semibold">
             {taxDetails.idType === "PAN CARD"

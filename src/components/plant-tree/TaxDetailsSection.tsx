@@ -56,7 +56,7 @@ const TaxDetailsSection: React.FC<TaxDetailsSectionProps> = ({
   };
 
   return (
-    <div className="bg-white border border-[#E8E8E9] rounded-2xl">
+    <div className="bg-white border border-[#E8E8E9] rounded-[16px] md:rounded-[8px]">
       <h2 className="border-b border-[#E8E8E9] text-lg font-bold py-4 px-4 md:px-6">
         Tax Details
       </h2>

@@ -31,7 +31,7 @@ const CertificatePreview: React.FC<Props> = ({ imageUrl, blurImageUrl }) => {
         >
           <div className="absolute inset-0 backdrop-blur-[5.29px] bg-white/20" />
 
-          <button className="relative z-10 hidden md:flex items-center gap-1.5 text-sm font-semibold md:font-bold">
+          <button className="relative z-10 flex items-center gap-1.5 text-sm font-semibold md:font-bold">
             View Sample Certificate
             <Eye className="w-4 h-4" />
           </button>
@@ -55,7 +55,7 @@ const CertificatePreview: React.FC<Props> = ({ imageUrl, blurImageUrl }) => {
           alt="Certificate"
           width={623}
           height={442}
-          className="w-full h-auto object-contain"
+          className="w-full h-auto object-contain border border-[#E4E4E4]"
         />
       </DialogContent>
     </Dialog>

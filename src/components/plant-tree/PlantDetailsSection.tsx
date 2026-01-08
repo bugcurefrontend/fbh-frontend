@@ -19,7 +19,7 @@ const PlantDetailsSection: React.FC<PlantDetailsSectionProps> = ({
   onManualInputFocus,
 }) => {
   return (
-    <div className="bg-white border border-[#E8E8E9] rounded-[8px]">
+    <div className="bg-white border border-[#E8E8E9] md:rounded-[8px] rounded-[16px]">
       <h2 className="border-b border-[#E8E8E9] md:text-lg font-semibold md:font-bold py-4 md:px-6 px-4">
         Plant Details
       </h2>
