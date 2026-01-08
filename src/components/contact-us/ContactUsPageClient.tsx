@@ -157,7 +157,8 @@ const ContactUsPageClient = () => {
                 Email
               </h3>
               <p className="mb-2 max-md:text-sm text-[#454950] md:leading-6">
-                Send us your questions, suggestions, or collaboration proposals
+                Send us your questions, suggestions,{" "}
+                <br className="sm:hidden" /> or collaboration proposals
               </p>
               <a href="mailto:fbh@heartfulness.org">
                 <p className="font-bold text-[#003399] hover:underline py-[11px]">
@@ -181,7 +182,8 @@ const ContactUsPageClient = () => {
                 Whatsapp
               </h3>
               <p className="mb-2 max-md:text-sm text-[#454950] md:leading-6">
-                Reach out to us directly for quick responses and inquiries
+                Reach out to us directly for quick <br className="sm:hidden" />{" "}
+                responses and inquiries
               </p>
               <a href="https://wa.me/919391003685">
                 <p className="font-bold text-[#003399] hover:underline py-[11px]">

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -15,6 +14,7 @@ import {
 } from "@/components/ui/tooltip";
 import { Switch } from "@/components/ui/switch";
 import { Species } from "./types";
+import ToolTipIcon from "../icons/ToolTipIcon";
 
 interface SpeciesSelectionDialogProps {
   speciesData: Species[];
@@ -63,8 +63,8 @@ const SpeciesSelectionDialog: React.FC<SpeciesSelectionDialogProps> = ({
                 I want my trees to be geo-tagged.
               </span>
               <Tooltip>
-                <TooltipTrigger asChild>
-                  <Info className="w-4 h-4 text-gray-400" />
+                <TooltipTrigger>
+                  <ToolTipIcon />
                 </TooltipTrigger>
                 <TooltipContent
                   align="start"
@@ -111,10 +111,12 @@ const SpeciesSelectionDialog: React.FC<SpeciesSelectionDialogProps> = ({
                     alt={tree.name}
                     width={60}
                     height={60}
-                    className="rounded-[3.55px] sm:rounded-[8px] object-cover max-sm:w-[46px]"
+                    className="rounded-[3.55px] object-cover max-sm:w-[46px]"
                   />
                   <div>
-                    <h4 className="font-semibold">{tree.name}</h4>
+                    <h4 className="font-semibold text-lg md:text-2xl">
+                      {tree.name}
+                    </h4>
                     <div className="flex items-center gap-1 text-gray-600">
                       <Image
                         src="/images/Frame.png"

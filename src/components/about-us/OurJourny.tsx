@@ -177,7 +177,7 @@ const JourneyTimeline: React.FC<{
         {!showAll ? (
           <button
             onClick={() => setShowAll(true)}
-            className="p-3 text-[#003399] font-bold text-sm text:bg-[#00339990] transition-colors flex items-center gap-2 uppercase"
+            className="leading-4.5 h-[42px] px-3 py-[11px] text-[#003399] font-bold text-sm text:bg-[#00339990] transition-colors flex items-center gap-2 uppercase"
           >
             View More
             <ChevronUp />
@@ -185,7 +185,7 @@ const JourneyTimeline: React.FC<{
         ) : (
           <button
             onClick={() => setShowAll(false)}
-            className="p-3 text-[#003399] font-bold text-xs text:bg-[#00339990] transition-colors flex items-center gap-2 uppercase"
+            className="leading-4.5 h-[42px] px-3 py-[11px] text-[#003399] font-bold text-xs text:bg-[#00339990] transition-colors flex items-center gap-2 uppercase"
           >
             View Less
             <ChevronDown />

@@ -37,7 +37,7 @@ const PlantDetailsSection: React.FC<PlantDetailsSectionProps> = ({
                 onClick={() => onQuantitySelect(qty)}
                 className={`px-[22px] sm:py-[11px] py-2 rounded-[8px] border transition-colors ${
                   selectedQuantity === qty
-                    ? "text-[#003399] border-[#003399]"
+                    ? "text-[#003399] border-[#95AAD5]"
                     : "border-[#B7B9BB]"
                 }`}
               >
@@ -54,7 +54,7 @@ const PlantDetailsSection: React.FC<PlantDetailsSectionProps> = ({
             onFocus={onManualInputFocus}
             className={`text-center max-sm:py-2 pl-4 border rounded-[8px] w-full sm:w-[30%] placeholder:text-black truncate transition-colors ${
               manualQuantity
-                ? "border-[#003399] text-[#003399]"
+                ? "border-[#95AAD5] text-[#003399]"
                 : selectedQuantity
                 ? "border-gray-300 text-gray-400"
                 : "border-[#B7B9BB] text-black"

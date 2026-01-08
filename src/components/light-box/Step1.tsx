@@ -72,7 +72,7 @@ const Step1: React.FC<Step1Props> = ({
                 onClick={() => handleQuantitySelect(qty)}
                 className={`sm:px-[22px] w-full sm:py-[11px] px-3 py-2 rounded-[8px] border transition-colors ${
                   selectedQuantity === qty
-                    ? "text-[#003399] border-[#003399]"
+                    ? "text-[#003399] border-[#95AAD5]"
                     : "border-[#B7B9BB]"
                 }`}
               >
@@ -88,7 +88,7 @@ const Step1: React.FC<Step1Props> = ({
             min="1"
             className={`text-center py-[11px] pl-4 border rounded-[8px] w-full placeholder:text-black truncate transition-colors ${
               manualQuantity
-                ? "border-[#003399] text-[#003399]"
+                ? "border-[#95AAD5] text-[#003399]"
                 : "border-[#B7B9BB] text-black"
             }`}
           />
@@ -112,11 +112,7 @@ const Step1: React.FC<Step1Props> = ({
             </TooltipContent>
           </Tooltip>
         </div>
-        <Switch
-          checked={isGeoTagged}
-          onCheckedChange={handleGeoTaggedChange}
-          className={isGeoTagged ? "bg-[#003399]" : ""}
-        />
+        <Switch checked={isGeoTagged} onCheckedChange={handleGeoTaggedChange} />
       </div>
 
       <div className="bg-[#95AAD5] h-[1px] w-full mt-5" />

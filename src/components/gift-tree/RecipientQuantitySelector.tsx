@@ -31,7 +31,7 @@ const RecipientQuantitySelector: React.FC<RecipientQuantitySelectorProps> = ({
             key={qty}
             onClick={() => onQuantitySelect(qty)}
             className={`px-6 py-2.5 rounded-[8px] border transition-colors font-medium ${
-              selectedQuantity === qty ? "text-[#003399] border-[#003399]" : ""
+              selectedQuantity === qty ? "text-[#003399] border-[#95AAD5]" : ""
             }`}
           >
             {qty}
@@ -46,7 +46,7 @@ const RecipientQuantitySelector: React.FC<RecipientQuantitySelectorProps> = ({
           min="1"
           className={`text-center px-4 py-2.5 border rounded-[8px] flex-1 min-w-[140px] transition-colors ${
             manualQuantity
-              ? "border-[#003399] text-[#003399]"
+              ? "border-[#003399] text-[#95AAD5]"
               : "border-gray-300"
           } ${
             errors?.selectedQuantity || errors?.manualQuantity
