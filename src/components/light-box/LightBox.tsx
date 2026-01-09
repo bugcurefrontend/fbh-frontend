@@ -314,13 +314,13 @@ const LightBox: React.FC<LightBoxProps> = ({
             {triggerLabel}
           </span>
         </AlertDialogTrigger>
-        <AlertDialogContent className="lg:max-w-[944px] lg:min-w-[944px] lg:h-[640px] h-fit max-md:max-h-[90%] flex border border-[#BED4FF] shadow-[0_24px_48px_0_rgba(133,133,133,0.2)] md:rounded-4xl dialog-pop gap-6 max-md:p-4">
+        <AlertDialogContent className="lg:max-w-[944px] lg:min-w-[944px] lg:h-[640px] h-fit max-md:max-h-[90%] flex border border-[#BED4FF] shadow-[0_24px_48px_0_rgba(133,133,133,0.2)] md:rounded-4xl dialog-pop gap-6 max-md:pl-2 max-md:pr-[5px] max-md:py-4">
           <AlertDialogTitle className="hidden" />
           <div
             onClick={() => handleOpenChange(false)}
             className="cursor-pointer absolute md:right-0 right-4
-             top-2
-             md:-top-10 flex items-center justify-center h-8 w-8 rounded-full md:bg-[#E4E4E4] md:hover:bg-gray-100 transition"
+             top-4
+             md:-top-10 flex items-center justify-center md:h-8 md:w-8 rounded-full md:bg-[#E4E4E4] md:hover:bg-gray-100 transition"
           >
             <X size={18} className="text-black max-md:stroke-[1.3]" />
           </div>
@@ -346,7 +346,7 @@ const LightBox: React.FC<LightBoxProps> = ({
             </button>
           )}
 
-          <div className="w-full space-y-4 max-md:mt-8 md:px-2 overflow-hidden max-md:overflow-y-scroll">
+          <div className="w-full space-y-4 max-md:mt-8 max-md:pl-2 max-md:pr-[5px] md:px-2 overflow-hidden max-md:overflow-y-scroll">
             <div className="flex items-center justify-center w-full gap-2">
               <div className="h-3 w-full bg-[#E7F8F0] rounded-full overflow-hidden">
                 <div
@@ -359,6 +359,7 @@ const LightBox: React.FC<LightBoxProps> = ({
                 alt="tree-progress"
                 height={32}
                 width={32}
+                className="max-md:w-6"
               />
             </div>
 

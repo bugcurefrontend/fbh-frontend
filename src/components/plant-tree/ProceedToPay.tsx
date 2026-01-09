@@ -101,29 +101,31 @@ const ProceedToPay: React.FC<ProceedToPayProps> = ({
       </Button>
 
       <AlertDialog open={isStatusOpen} onOpenChange={setIsStatusOpen}>
-        <AlertDialogContent className="md:max-w-[533px] sm:h-[402px] h-[415px] border border-[#E4E4E4] rounded-[8px] md:rounded-2xl dialog-pop gap-4 max-sm:px-4 max-sm:py-20">
+        <AlertDialogContent className="md:max-w-[533px] sm:h-[402px] h-[415px] border border-[#E4E4E4] rounded-[8px] md:rounded-2xl dialog-pop gap-4 px-4 sm:px-8 max-sm:py-20">
           {status === "error" ? (
             <>
               <div className="w-[125.25px] sm:w-[155px] h-[125.25px] sm:h-[155px] mx-auto">
                 <Lottie animationData={plantAnimation} loop={true} />
               </div>
 
-              <AlertDialogTitle>
-                <p className="md:text-[32px] text-2xl leading-9 font-semibold md:font-bold text-[#232D26]">
-                  Uh-oh!
-                </p>
-              </AlertDialogTitle>
+              <div className="space-y-4">
+                <AlertDialogTitle>
+                  <p className="md:text-[32px] text-2xl leading-9 font-semibold md:font-bold text-[#232D26]">
+                    Uh-oh!
+                  </p>
+                </AlertDialogTitle>
 
-              <div className="space-y-3">
-                <p className="md:text-xl font-semibold text-[#19212C]">
-                  Looks like all trees have been planted!{" "}
-                </p>
-                <p className="max-sm:text-sm text-[#454950] font-medium">
-                  Redirecting you to Homepage in{" "}
-                  <span className="text-[#0D824B] font-bold">
-                    00:0{countdown}
-                  </span>
-                </p>
+                <div className="space-y-3">
+                  <p className="md:text-xl font-semibold text-[#19212C]">
+                    Looks like all trees have been planted!{" "}
+                  </p>
+                  <p className="max-sm:text-sm text-[#454950] font-medium">
+                    Redirecting you to Homepage in{" "}
+                    <span className="text-[#0D824B] font-bold">
+                      00:0{countdown}
+                    </span>
+                  </p>
+                </div>
               </div>
             </>
           ) : (
@@ -132,20 +134,22 @@ const ProceedToPay: React.FC<ProceedToPayProps> = ({
                 <Lottie animationData={plantAnimation} loop={true} />
               </div>
 
-              <AlertDialogTitle>
-                <p className="md:text-[32px] text-2xl leading-9 font-semibold md:font-bold text-[#232D26]">
-                  Please wait
-                </p>
-              </AlertDialogTitle>
+              <div className="space-y-4">
+                <AlertDialogTitle>
+                  <p className="md:text-[32px] text-2xl leading-9 font-semibold md:font-bold text-[#090C0F]">
+                    Please wait
+                  </p>
+                </AlertDialogTitle>
 
-              <div className="space-y-3">
-                <p className="md:text-xl font-semibold text-[#19212C]">
-                  Holding your trees and taking you to payment.
-                </p>
-                <p className="max-sm:text-sm text-[#454950] font-medium">
-                  Please do not refresh this page or click on browser’s back
-                  button.{" "}
-                </p>
+                <div className="space-y-3">
+                  <p className="md:text-xl font-semibold text-[#19212C]">
+                    Holding your trees and taking you to payment.
+                  </p>
+                  <p className="max-sm:text-sm text-[#454950] font-medium">
+                    Please do not refresh this page or click on browser’s back
+                    button.{" "}
+                  </p>
+                </div>
               </div>
             </>
           )}

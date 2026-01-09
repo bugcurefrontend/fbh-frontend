@@ -1,24 +1,15 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
-import { MapPin } from "lucide-react";
 import Link from "next/link";
 import ProjectCard from "./ProjectCard";
 import { generateProjectSlug } from "@/services/projects";
-
-interface Project {
-  id: string;
-  title: string;
-  location: string;
-  plantedCount: number;
-  category: string;
-  imageUrl: string;
-  imageAlt: string;
-}
+import MobileProjectsCarousel, {
+  ProjectForCarousel,
+} from "./MobileProjectsCarousel";
 
 interface RelatedProjectsProps {
-  projects: Project[];
+  projects: ProjectForCarousel[];
   onPlantTree: (projectId: string) => void;
   onViewAll: () => void;
 }
@@ -64,62 +55,7 @@ const RelatedProjects: React.FC<RelatedProjectsProps> = ({
       </div>
 
       {/* Mobile Carousel */}
-      <div className="sm:hidden overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-        <div className="flex gap-6 w-max">
-          {projects.map((project, idx) => (
-            <Link
-              key={idx}
-              href={`/projects/${generateProjectSlug(project.title)}`}
-              className="flex-1 min-w-[314px] max-w-[314px] min-h-[272px] border border-gray-200 rounded-[16px] flex-shrink-0 overflow-hidden"
-            >
-              <div className="relative h-[160px]">
-                <Image
-                  src={project.imageUrl}
-                  alt={project.imageAlt}
-                  fill
-                  className="object-cover rounded-t-md max-h-[160px]"
-                />
-
-                <div className="absolute top-4 left-4 flex gap-1">
-                  <div className="bg-[#006161] shadow-[0_20px_40px_-4px_rgba(133,133,133,0.12)] text-white text-xs font-semibold px-2 py-1 rounded-full md:text-base md:font-semibold md:leading-6 md:align-middle md:text-[#FFFFFF] capitalize">
-                    {project.plantedCount >= 100
-                      ? "100+ planted"
-                      : `${project.plantedCount} planted`}
-                  </div>
-                  {project.category && (
-                    <div className="bg-[#006161] shadow-[0_20px_40px_-4px_rgba(133,133,133,0.12)] text-white text-xs font-semibold px-2 py-1 rounded-full md:text-base md:font-semibold md:leading-6 md:align-middle md:text-[#FFFFFF] capitalize">
-                      {project.category}
-                    </div>
-                  )}
-                </div>
-              </div>
-              <div className="px-2.5 py-3.5 flex flex-col gap-3">
-                <div className="flex justify-between items-center">
-                  <p className="font-bold text-lg text-black truncate md:font-bold md:text-lg md:leading-[26px] md:align-middle md:text-[#090C0F]">
-                    {project.title}
-                  </p>
-                  <div className="flex items-center gap-2">
-                    <MapPin width={13} height={16} color="#19212c" />
-                    <span className="text-base font-semibold text-black md:text-base md:font-semibold md:leading-6 md:align-middle md:text-[#19212C]">
-                      {project.location.split(" ")[0].replace(/,$/, "")}
-                    </span>
-                  </div>
-                </div>
-                <button className="bg-[#003399] h-[44px] text-white font-bold text-sm py-2 rounded-[8px] w-full hover:bg-[#002080] gap-2 flex items-center justify-center md:font-bold md:text-base md:leading-[26px] md:text-[#FFFFFF]">
-                  PLANT A TREE
-                  <Image
-                    src="/images/donate.png"
-                    alt="donate"
-                    width={24}
-                    height={24}
-                    className=""
-                  />{" "}
-                </button>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </div>
+      <MobileProjectsCarousel projects={projects} />
     </div>
   );
 };

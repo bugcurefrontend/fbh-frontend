@@ -13,6 +13,7 @@ import {
 import Link from "next/link";
 import { SpeciesSimplified } from "@/types/species";
 import { generateSlug } from "@/services/species";
+import MobileSpeciesCarousel from "./MobileSpeciesCarousel";
 
 interface SpeciesSectionProps {
   species: SpeciesSimplified[];
@@ -113,42 +114,7 @@ const SpeciesSection: React.FC<SpeciesSectionProps> = ({ species }) => {
       </Carousel>
 
       {/* Mobile Carousel */}
-      <div className="sm:hidden mb-6 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-        <div className="flex gap-6 w-max">
-          {species.map((item) => (
-            <Link
-              key={item.documentId}
-              href={`/species/${generateSlug(item.name)}`}
-            >
-              <div className="flex-1 border border-gray-200 rounded-[16px] flex-shrink-0 overflow-hidden">
-                <div className="pt-3 px-3">
-                  <Image
-                    src={item.image}
-                    alt={item.name}
-                    width={282}
-                    height={160}
-                    className="rounded-[8px] object-cover max-h-[160px]"
-                  />
-                </div>
-                <div className="p-4 flex sm:flex-root flex-col justify-between sm:items-center max-sm:gap-2">
-                  <p className="font-semibold truncate md:text-lg md:font-bold md:leading-[26px] md:align-middle text-[#19212C]">
-                    {item.name}
-                  </p>
-                  <button className="py-[11px] pr-[12px] flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer">
-                    Know More{" "}
-                    <ArrowRightIcon
-                      width={24}
-                      height={24}
-                      color="#003399"
-                      className="max-sm:w-6"
-                    />
-                  </button>
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </div>
+      <MobileSpeciesCarousel species={species} />
     </section>
   );
 };
