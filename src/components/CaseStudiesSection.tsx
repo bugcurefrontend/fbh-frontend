@@ -94,31 +94,31 @@ const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({
         <CarouselContent className="-ml-4">
           {caseStudies.map((study, idx) => (
             <CarouselItem key={idx} className="basis-1/1 sm:basis-1/2 pl-4">
-              <div className="w-full rounded-[16px] border border-[#e4e4e4] flex flex-col lg:flex-row overflow-hidden p-4 md:p-[16px] gap-6 md:gap-[24px] shadow-none">
-                <div className="w-full h-[200px] md:w-[245px] md:h-[304px] flex-shrink-0 rounded-[8px] overflow-hidden relative md:flex-shrink-0">
-                  <Image
-                    src={study.image}
-                    alt={study.title}
-                    fill
-                    sizes="(max-width: 600px) 120px, 245px"
-                    className="object-cover"
-                  />
-                </div>
-
-                <div className="flex flex-col gap-4 md:gap-[24px] flex-1 min-w-0">
-                  <div>
-                    <h3 className="text-[18px] md:text-[18px] font-bold text-[#333333] leading-tight md:text-lg md:font-bold md:leading-[26px] md:align-middle">
-                      {study.title}
-                    </h3>
-                    <p className="text-[16px] md:text-[16px] font-semibold text-[#4b5563] leading-tight md:text-base md:font-semibold md:leading-6 md:align-middle">
-                      {study.subtitle}
-                    </p>
+              <Link href={`/case-studies/${study.slug}`}>
+                <div className="w-full rounded-[16px] border border-[#e4e4e4] flex flex-col lg:flex-row overflow-hidden p-4 md:p-[16px] gap-6 md:gap-[24px] shadow-none">
+                  <div className="w-full h-[200px] md:w-[245px] md:h-[304px] flex-shrink-0 rounded-[8px] overflow-hidden relative md:flex-shrink-0">
+                    <Image
+                      src={study.image}
+                      alt={study.title}
+                      fill
+                      sizes="(max-width: 600px) 120px, 245px"
+                      className="object-cover"
+                    />
                   </div>
 
-                  <p className="text-[16px] font-normal leading-[20px] text-[#454950] md:text-base md:font-normal md:leading-6 md:text-[#454950] line-clamp-7">
-                    {study.description}
-                  </p>
-                  <Link href={`/case-studies/${study.slug}`} className="w-fit">
+                  <div className="flex flex-col gap-4 md:gap-[24px] flex-1 min-w-0">
+                    <div>
+                      <h3 className="text-[18px] md:text-[18px] font-bold text-[#333333] leading-tight md:text-lg md:font-bold md:leading-[26px] md:align-middle">
+                        {study.title}
+                      </h3>
+                      <p className="text-[16px] md:text-[16px] font-semibold text-[#4b5563] leading-tight md:text-base md:font-semibold md:leading-6 md:align-middle">
+                        {study.subtitle}
+                      </p>
+                    </div>
+
+                    <p className="text-[16px] font-normal leading-[20px] text-[#454950] md:text-base md:font-normal md:leading-6 md:text-[#454950] line-clamp-7">
+                      {study.description}
+                    </p>
                     <button className="flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer md:font-bold md:text-xs md:leading-[18px] md:uppercase md:text-[#003399]">
                       read More{" "}
                       <ArrowRightIcon
@@ -128,9 +128,9 @@ const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({
                         className="max-sm:w-6"
                       />
                     </button>
-                  </Link>
+                  </div>
                 </div>
-              </div>
+              </Link>
             </CarouselItem>
           ))}
         </CarouselContent>

@@ -6,10 +6,10 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Info } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import CurrencySelect from "@/components/CurrencySelect";
 import ToolTipIcon from "../icons/ToolTipIcon";
+import { Attribute } from "@/types/attribute";
 
 interface Step1Props {
   occasion: string;
@@ -25,6 +25,8 @@ interface Step1Props {
   geotaggedRate: number;
   nonGeotaggedRate: number;
   handleSaveAndNext: () => void;
+  attributes?: Attribute[];
+  preSelectedAttribute?: Attribute | null;
 }
 
 const Step1: React.FC<Step1Props> = ({
@@ -41,6 +43,7 @@ const Step1: React.FC<Step1Props> = ({
   geotaggedRate,
   nonGeotaggedRate,
   handleSaveAndNext,
+  attributes = [],
 }) => {
   return (
     <div className="flex flex-col w-full md:space-y-8 space-y-4">
@@ -52,10 +55,14 @@ const Step1: React.FC<Step1Props> = ({
           value={occasion}
           onChange={setOccasion}
           placeholder="Occasion / Cause"
-          options={[
-            { text: "Birthday", image: "/images/celebration.png" },
-            { text: "Climate Healing", image: "/images/healing.png" },
-          ]}
+          options={
+            attributes && attributes.length > 0
+              ? attributes.map((a) => ({ text: a.name, image: a.image }))
+              : [
+                  { text: "Birthday", image: "/images/celebration.png" },
+                  { text: "Climate Healing", image: "/images/healing.png" },
+                ]
+          }
           contentClassName="md:w-[450px] min-w-fit"
         />
       </div>
@@ -86,6 +93,7 @@ const Step1: React.FC<Step1Props> = ({
             value={manualQuantity}
             onChange={handleManualQuantityChange}
             min="1"
+            max="9999"
             className={`text-center py-[11px] pl-4 border rounded-[8px] w-full placeholder:text-black truncate transition-colors ${
               manualQuantity
                 ? "border-[#95AAD5] text-[#003399]"

@@ -44,11 +44,12 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
               </label>
               <input
                 type="text"
+                maxLength={30}
                 value={personalDetails.firstName}
                 onChange={(e) => {
                   const value = e.target.value
                     .replace(/[^A-Za-z\s'-]/g, "")
-                    .slice(0, 40);
+                    .slice(0, 30);
                   if (/^[A-Za-z\s'-]*$/.test(value)) {
                     onPersonalDetailsChange("firstName", value);
                   }
@@ -63,11 +64,12 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
               </label>
               <input
                 type="text"
+                maxLength={30}
                 value={personalDetails.lastName}
                 onChange={(e) => {
                   const value = e.target.value
                     .replace(/[^A-Za-z\s'-]/g, "")
-                    .slice(0, 40);
+                    .slice(0, 30);
                   if (/^[A-Za-z\s'-]*$/.test(value)) {
                     onPersonalDetailsChange("lastName", value);
                   }
@@ -107,6 +109,7 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
             <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-[#63676C] w-5 h-5" />
             <input
               type="text"
+              maxLength={50}
               value={personalDetails.email}
               onChange={(e) =>
                 onPersonalDetailsChange("email", e.target.value.trimStart())
@@ -162,6 +165,7 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
               {/* Phone Number Input */}
               <input
                 type="tel"
+                maxLength={15}
                 value={personalDetails.phoneNumber}
                 onChange={(e) =>
                   onPersonalDetailsChange(
@@ -228,11 +232,12 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
           </label>
           <input
             type="text"
+            maxLength={100}
             value={personalDetails.doorNo}
             onChange={(e) =>
               onPersonalDetailsChange(
                 "doorNo",
-                e.target.value.replace(/[^A-Za-z0-9\s,./#-]/g, "").slice(0, 120)
+                e.target.value.replace(/[^A-Za-z0-9\s,./#-]/g, "").slice(0, 100)
               )
             }
             className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F] shadow-xs"
@@ -288,6 +293,7 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
             </label>
             <input
               type="text"
+              maxLength={10}
               value={personalDetails.pincode}
               onChange={(e) =>
                 onPersonalDetailsChange(

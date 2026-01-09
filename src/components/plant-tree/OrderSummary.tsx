@@ -25,8 +25,8 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
 
           <div className="space-y-6 p-4 md:p-6 bg-[#F9FCFE]">
             <div className="text-[#4C4748] flex justify-between">
-              <div className="space-y-5 text-sm">
-                <h2 className="font-semibold md:font-bold md:text-base">
+              <div className="space-y-3 md:space-y-4 text-sm leading-5.5">
+                <h2 className="mb-4.5 md:mb-6 font-semibold md:font-bold md:text-base">
                   Donation for :
                 </h2>
                 <h2>Number Of Trees :</h2>
@@ -36,8 +36,10 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
                 <h2>Total Amount :</h2>
               </div>
 
-              <div className="space-y-4 font-semibold text-sm leading-5.5">
-                <h2 className="md:text-base md:font-bold">Shivgarh, MP</h2>
+              <div className="space-y-3 md:space-y-4 font-semibold text-sm leading-5.5">
+                <h2 className="mb-4.5 md:mb-6 md:text-base md:font-bold">
+                  Shivgarh, MP
+                </h2>
                 <h2>
                   {orderSummary.numberOfTrees > 0
                     ? String(orderSummary.numberOfTrees).padStart(2, "0")

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { Suspense, useRef, useState } from "react";
 import Image from "next/image";
 
 import {
@@ -12,6 +12,7 @@ import {
 } from "./ui/carousel";
 
 import { Attribute } from "@/types/attribute";
+import LightBox from "./light-box/LightBox";
 
 interface PlantForCauseProps {
   attributes: Attribute[];
@@ -19,6 +20,11 @@ interface PlantForCauseProps {
 
 const PlantForCause: React.FC<PlantForCauseProps> = ({ attributes }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [selectedAttribute, setSelectedAttribute] = useState<Attribute | null>(
+    null
+  );
+  const [isLightBoxOpen, setIsLightBoxOpen] = useState(false);
+  const lightBoxRef = useRef<any>(null);
 
   // If no attributes are provided, render nothing or fallback?
   // User asked not to change UI, but empty carousel is bad.
@@ -33,6 +39,11 @@ const PlantForCause: React.FC<PlantForCauseProps> = ({ attributes }) => {
         ? 100
         : ((currentIndex + visibleSlides) / totalSlides) * 100
       : 0;
+
+  const handleCardClick = (attribute: Attribute) => {
+    setSelectedAttribute(attribute);
+    setIsLightBoxOpen(true);
+  };
 
   return (
     <section className="max-w-7xl mx-auto px-4 md:px-8 relative mt-8 md:mt-16">
@@ -60,7 +71,10 @@ const PlantForCause: React.FC<PlantForCauseProps> = ({ attributes }) => {
               key={image.id}
               className="basis-1/1 sm:basis-1/4 lg:basis-1/5 md:pl-14 pl-8 space-y-2"
             >
-              <div className="border-[0.76px] overflow-hidden border-[#B7B9BB] rounded-[16px] cursor-pointer">
+              <div
+                onClick={() => handleCardClick(image)}
+                className="border-[0.76px] overflow-hidden border-[#B7B9BB] rounded-[16px] cursor-pointer"
+              >
                 <Image
                   src={image.image}
                   alt={image.name}
@@ -96,19 +110,40 @@ const PlantForCause: React.FC<PlantForCauseProps> = ({ attributes }) => {
       {/*Mobile Carousel */}
       <div className="flex gap-4 sm:hidden overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         {imagesArray.map((image) => (
-          <div key={image.id} className="space-y-2">
+          <div
+            key={image.id}
+            className="space-y-2 cursor-pointer"
+            onClick={() => handleCardClick(image)}
+          >
             <Image
               src={image.image}
               alt={image.name}
               width={150}
               height={150}
-              className="min-w-[150px] object-cover border-[0.7px] overflow-hidden border-[#B7B9BB] rounded-[12px]"
+              className="min-w-[150px] object-cover border-[0.7px] overflow-hidden border-[#B7B9BB] rounded-[12px] transition-all hover:shadow-lg hover:scale-105 hover:border-[#003399]"
             />
             <h3 className="text-center text-base font-semibold leading-[26px] text-[#090C0F] truncate">
               {image.name}
             </h3>
           </div>
         ))}
+      </div>
+
+      {/* LightBox Component - Hidden Trigger Button */}
+      <div className="hidden">
+        <Suspense fallback={null}>
+          <LightBox
+            attributes={attributes}
+            preSelectedAttribute={selectedAttribute}
+            isOpen={isLightBoxOpen}
+            onOpenChange={setIsLightBoxOpen}
+            triggerLabel={
+              selectedAttribute
+                ? `Plant for ${selectedAttribute.name}`
+                : "Plant For A Cause"
+            }
+          />
+        </Suspense>
       </div>
     </section>
   );

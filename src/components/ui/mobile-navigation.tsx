@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -121,7 +121,9 @@ export function MobileNavigation({
 
             <div className="flex-1 overflow-y-auto py-4">
               <div className="p-4">
-                <LightBox />
+                <Suspense fallback={null}>
+                  <LightBox />
+                </Suspense>{" "}
               </div>
               {navigationItems.map((item, index) => {
                 const hasSub = !!item.sub;

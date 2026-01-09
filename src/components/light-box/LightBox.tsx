@@ -21,12 +21,36 @@ import TaxDetail from "@/components/light-box/TaxDetail";
 import Step1 from "@/components/light-box/Step1";
 import Step2 from "@/components/light-box/Step2";
 import NewOrderSummary from "@/components/light-box/NewOrderSummary";
+import { Attribute } from "@/types/attribute";
 
-const LightBox: React.FC = () => {
+interface LightBoxProps {
+  attributes?: Attribute[];
+  preSelectedAttribute?: Attribute | null;
+  isOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  triggerLabel?: string;
+}
+
+const LightBox: React.FC<LightBoxProps> = ({
+  attributes = [],
+  preSelectedAttribute = null,
+  isOpen: controlledIsOpen,
+  onOpenChange,
+  triggerLabel = "Plant For A Cause",
+}) => {
   const [step, setStep] = useState(1);
   const [selectedQuantity, setSelectedQuantity] = useState<number | null>(null);
   const [manualQuantity, setManualQuantity] = useState("");
   const [showBox, setShowBox] = React.useState(false);
+
+  // Handle controlled/uncontrolled open state
+  const isOpen = controlledIsOpen !== undefined ? controlledIsOpen : showBox;
+  const handleOpenChange = (open: boolean) => {
+    if (controlledIsOpen === undefined) {
+      setShowBox(open);
+    }
+    onOpenChange?.(open);
+  };
 
   const { currency, currencySymbol } = useCurrency();
 
@@ -59,11 +83,14 @@ const LightBox: React.FC = () => {
   });
 
   const [isGeoTagged, setIsGeoTagged] = useState(true);
+  const [localAttributes, setLocalAttributes] = useState<Attribute[]>(
+    attributes || []
+  );
   const [isLoginDialogOpen, setIsLoginDialogOpen] = useState(false);
   const [hasChosenGuest, setHasChosenGuest] = useState(false);
   const { isAuthenticated, isLoading, login } = useAuth();
 
-  const [occasion, setOccasion] = useState("");
+  const [occasion, setOccasion] = useState(preSelectedAttribute?.name || "");
 
   const BASE_GEOTAGGED_RATE_INR = 175;
   const BASE_NON_GEOTAGGED_RATE_INR = 150;
@@ -79,6 +106,55 @@ const LightBox: React.FC = () => {
       : BASE_NON_GEOTAGGED_RATE_INR;
 
   const quantities = [10, 25, 50, 100];
+
+  // If no attributes were passed in props (header case), fetch them client-side
+  useEffect(() => {
+    if (attributes && attributes.length > 0) {
+      setLocalAttributes(attributes);
+      return;
+    }
+
+    const fetchAttrs = async () => {
+      try {
+        const base = process.env.NEXT_PUBLIC_FBH_API_URL || "";
+        const url = base
+          ? `${base}/api/attributes?populate=*&pagination[pageSize]=100`
+          : `/api/attributes?populate=*&pagination[pageSize]=100`;
+
+        const res = await fetch(url);
+        if (!res.ok) return;
+        const data = await res.json();
+        const items = Array.isArray(data.data) ? data.data : [];
+        const mapped: Attribute[] = items.map((item: any) => {
+          const imgAttr =
+            item.attributes?.image?.data?.attributes?.url ||
+            item.attributes?.image ||
+            "";
+          const imageUrl =
+            imgAttr && imgAttr.startsWith("/") && base
+              ? `${base}${imgAttr}`
+              : imgAttr;
+          return {
+            id: item.id,
+            name: item.attributes?.name || item.name || "",
+            type: item.attributes?.type || "",
+            image: imageUrl,
+          };
+        });
+        setLocalAttributes(mapped);
+      } catch (e) {
+        console.error("Failed to fetch attributes", e);
+      }
+    };
+
+    fetchAttrs();
+  }, [attributes]);
+
+  useEffect(() => {
+    if (preSelectedAttribute && preSelectedAttribute.name) {
+      setOccasion(preSelectedAttribute.name);
+    }
+  }, [preSelectedAttribute]);
 
   const handleQuantitySelect = (qty: number) => {
     const normalizedQty = Math.max(1, qty);
@@ -229,19 +305,19 @@ const LightBox: React.FC = () => {
 
   return (
     <main>
-      <AlertDialog onOpenChange={setShowBox} open={showBox}>
+      <AlertDialog onOpenChange={handleOpenChange} open={isOpen}>
         <AlertDialogTrigger className="w-fit relative rounded-full p-[1px] bg-gradient-to-r to-[#128748] from-[#80CB00] h-[37px]">
           <span
             className="block rounded-full px-5 py-2 text-white text-xs leading-4.5 font-bold bg-gradient-to-r from-[#0D824B] to-[#80CB00] transition-all duration-300 hover:brightness-110 active:scale-95
         "
           >
-            Plant For A Cause
+            {triggerLabel}
           </span>
         </AlertDialogTrigger>
         <AlertDialogContent className="lg:max-w-[944px] lg:min-w-[944px] lg:h-[640px] h-fit max-md:max-h-[90%] flex border border-[#BED4FF] shadow-[0_24px_48px_0_rgba(133,133,133,0.2)] md:rounded-4xl dialog-pop gap-6 max-md:p-4">
           <AlertDialogTitle className="hidden" />
           <div
-            onClick={() => setShowBox(false)}
+            onClick={() => handleOpenChange(false)}
             className="cursor-pointer absolute md:right-0 right-4
              top-2
              md:-top-10 flex items-center justify-center h-8 w-8 rounded-full md:bg-[#E4E4E4] md:hover:bg-gray-100 transition"
@@ -301,6 +377,8 @@ const LightBox: React.FC = () => {
                 geotaggedRate={geotaggedRate}
                 nonGeotaggedRate={nonGeotaggedRate}
                 handleSaveAndNext={handleSaveAndNext}
+                attributes={localAttributes}
+                preSelectedAttribute={preSelectedAttribute}
               />
             )}
 

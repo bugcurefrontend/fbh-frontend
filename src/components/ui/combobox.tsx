@@ -66,7 +66,7 @@ export function ComboBox({
                   alt={selectedOption.text}
                   width={16}
                   height={16}
-                  className="mr-2"
+                  className="mr-2 rounded"
                 />
                 {selectedOption.text}
               </div>
@@ -103,7 +103,7 @@ export function ComboBox({
                       alt={text}
                       width={16}
                       height={16}
-                      className="mr-1"
+                      className="mr-1 rounded"
                     />
                   )}
                   {text}

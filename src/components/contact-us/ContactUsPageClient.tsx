@@ -39,11 +39,12 @@ const ContactUsPageClient = () => {
               </label>
               <input
                 type="text"
+                maxLength={30}
                 value={personalDetails.firstName}
                 onChange={(e) => {
                   const value = e.target.value
                     .replace(/[^A-Za-z\s'-]/g, "")
-                    .slice(0, 40);
+                    .slice(0, 30);
                   if (/^[A-Za-z\s'-]*$/.test(value)) {
                     onPersonalDetailsChange("firstName", value);
                   }
@@ -58,11 +59,12 @@ const ContactUsPageClient = () => {
               </label>
               <input
                 type="text"
+                maxLength={30}
                 value={personalDetails.lastName}
                 onChange={(e) => {
                   const value = e.target.value
                     .replace(/[^A-Za-z\s'-]/g, "")
-                    .slice(0, 40);
+                    .slice(0, 30);
                   if (/^[A-Za-z\s'-]*$/.test(value)) {
                     onPersonalDetailsChange("lastName", value);
                   }
@@ -82,6 +84,7 @@ const ContactUsPageClient = () => {
               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-[#63676C] w-5 h-5" />
               <input
                 type="text"
+                maxLength={50}
                 value={personalDetails.email}
                 onChange={(e) => {
                   const value = e.target.value.trimStart();

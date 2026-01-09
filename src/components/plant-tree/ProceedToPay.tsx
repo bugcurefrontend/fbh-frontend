@@ -197,6 +197,7 @@ const ProceedToPay: React.FC<ProceedToPayProps> = ({
                 type="number"
                 placeholder="Enter Manually"
                 min="1"
+                max="9999"
                 value={adjustInput}
                 onChange={(e) => setAdjustInput(e.target.value)}
                 className={`text-center border-[#003399] text-[#003399] px-4 py-2.5 border rounded-[8px] flex-1 sm:max-w-[128px] max-w-[80px] transition-colors`}

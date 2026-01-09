@@ -51,6 +51,7 @@ const PlantDetailsSection: React.FC<PlantDetailsSectionProps> = ({
             value={manualQuantity}
             onChange={onManualQuantityChange}
             min="1"
+            max="9999"
             onFocus={onManualInputFocus}
             className={`text-center max-sm:py-2 pl-4 border rounded-[8px] w-full sm:w-[30%] placeholder:text-black truncate transition-colors ${
               manualQuantity

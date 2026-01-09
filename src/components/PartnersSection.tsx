@@ -41,7 +41,7 @@ const PartnersSection: React.FC<PartnersSectionProps> = ({
 
   const mobilePartners =
     apiPartners && apiPartners.length > 0
-      ? apiPartners.slice(0, 6).map((p) => ({ name: p.name, logo: p.logo }))
+      ? apiPartners.map((p) => ({ name: p.name, logo: p.logo }))
       : fallbackMobilePartners;
 
   const items = partners.map((partner) => ({
@@ -63,27 +63,35 @@ const PartnersSection: React.FC<PartnersSectionProps> = ({
 
   return (
     <section className="max-w-7xl mx-auto px-4 md:px-8">
-      <div className="bg-white rounded-[16px] border border-gray-200 max-sm:p-[30px] sm:py-4 text-center space-y-6 sm:space-y-14 h-[232px]">
+      <div className="bg-white rounded-[16px] border border-gray-200 max-sm:p-[30px] sm:py-4 text-center max-sm:flex flex-col gap-8 sm:space-y-14 sm:h-[232px]">
         <h2 className="text-[22px] sm:text-[32px] font-[Playfair_Display] font-semibold text-black md:text-[32px] md:font-semibold md:leading-[48px] md:text-center md:align-middle md:text-[#090C0F]">
           Our Supporting Partners
         </h2>
 
         {/* Mobile 2 Layout */}
-        <div className="grid grid-cols-3 sm:hidden space-y-2.5 gap-x-2">
-          {mobilePartners.map((partner) => (
-            <div
-              key={partner.name}
-              className="flex items-center justify-center my-4"
-            >
-              <Image
-                src={partner.logo}
-                alt={partner.name}
-                width={70}
-                height={24}
-                className="object-contain max-w-[80px] max-h-[30px]"
-              />
-            </div>
-          ))}
+        <div className="grid grid-cols-3 sm:hidden gap-x-2 gap-y-8">
+          {mobilePartners.map((partner, index) => {
+            const shouldCenterLast =
+              mobilePartners.length % 3 === 1 &&
+              index === mobilePartners.length - 1;
+
+            return (
+              <div
+                key={partner.name}
+                className={`flex items-center justify-center ${
+                  shouldCenterLast ? "col-span-3" : ""
+                }`}
+              >
+                <Image
+                  src={partner.logo}
+                  alt={partner.name}
+                  width={70}
+                  height={24}
+                  className="object-contain max-w-[80px] max-h-[30px]"
+                />
+              </div>
+            );
+          })}
         </div>
 
         {/* Desktop Infinite Scroll */}
@@ -91,7 +99,7 @@ const PartnersSection: React.FC<PartnersSectionProps> = ({
           <InfiniteMovingCards
             items={items}
             direction="left"
-            speed="fast"
+            speed="normal"
             pauseOnHover={true}
             className="bg-transparent"
           />

@@ -69,6 +69,7 @@ const RecipientForm: React.FC<RecipientFormProps> = ({
               </label>
               <input
                 type="text"
+                maxLength={30}
                 value={formData.firstName}
                 onChange={(e) => onInputChange("firstName", e.target.value)}
                 className={`w-full px-3.5 py-2.5 border rounded-[8px] ${
@@ -86,6 +87,7 @@ const RecipientForm: React.FC<RecipientFormProps> = ({
               </label>
               <input
                 type="text"
+                maxLength={30}
                 value={formData.lastName}
                 onChange={(e) => onInputChange("lastName", e.target.value)}
                 className={`w-full px-3.5 py-2.5 border rounded-[8px] ${
@@ -108,6 +110,7 @@ const RecipientForm: React.FC<RecipientFormProps> = ({
               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 w-5 h-5" />
               <input
                 type="email"
+                maxLength={50}
                 value={formData.email}
                 onChange={(e) => onInputChange("email", e.target.value)}
                 placeholder="example@email.com"
@@ -139,6 +142,7 @@ const RecipientForm: React.FC<RecipientFormProps> = ({
 
               <input
                 type="tel"
+                maxLength={15}
                 value={formData.phoneNumber}
                 onChange={(e) => onInputChange("phoneNumber", e.target.value)}
                 placeholder="98765 43210"

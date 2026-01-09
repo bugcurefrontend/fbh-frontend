@@ -57,6 +57,7 @@ const Step2: React.FC<Step2Props> = ({
             </label>
             <input
               type="text"
+              maxLength={30}
               value={personalDetails.firstName}
               onChange={(e) =>
                 handlePersonalDetailsChange("firstName", e.target.value)
@@ -71,6 +72,7 @@ const Step2: React.FC<Step2Props> = ({
             </label>
             <input
               type="text"
+              maxLength={30}
               value={personalDetails.lastName}
               onChange={(e) =>
                 handlePersonalDetailsChange("lastName", e.target.value)
@@ -89,6 +91,7 @@ const Step2: React.FC<Step2Props> = ({
               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-[#63676C] w-5 h-5" />
               <input
                 type="text"
+                maxLength={50}
                 value={personalDetails.email}
                 onChange={(e) =>
                   handlePersonalDetailsChange("email", e.target.value)
@@ -124,6 +127,7 @@ const Step2: React.FC<Step2Props> = ({
               </Select>
               <input
                 type="tel"
+                maxLength={15}
                 value={personalDetails.phoneNumber}
                 onChange={(e) =>
                   handlePersonalDetailsChange(
@@ -148,6 +152,7 @@ const Step2: React.FC<Step2Props> = ({
           </label>
           <input
             type="text"
+            maxLength={100}
             value={personalDetails.doorNo}
             onChange={(e) =>
               handlePersonalDetailsChange("doorNo", e.target.value)
@@ -200,6 +205,7 @@ const Step2: React.FC<Step2Props> = ({
             </label>
             <input
               type="text"
+              maxLength={10}
               value={personalDetails.pincode}
               onChange={(e) =>
                 handlePersonalDetailsChange(

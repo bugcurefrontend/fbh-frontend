@@ -44,6 +44,7 @@ const RecipientQuantitySelector: React.FC<RecipientQuantitySelectorProps> = ({
           value={manualQuantity}
           onChange={onManualQuantityChange}
           min="1"
+          max="9999"
           className={`text-center px-4 py-2.5 border rounded-[8px] flex-1 min-w-[140px] transition-colors ${
             manualQuantity
               ? "border-[#003399] text-[#95AAD5]"

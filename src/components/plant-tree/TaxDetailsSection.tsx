@@ -114,6 +114,7 @@ const TaxDetailsSection: React.FC<TaxDetailsSectionProps> = ({
             </label>
             <input
               type="text"
+              maxLength={20}
               value={taxDetails.idNumber}
               onChange={(e) =>
                 onTaxDetailsChange("idNumber", formatIdValue(e.target.value))
@@ -141,6 +142,7 @@ const TaxDetailsSection: React.FC<TaxDetailsSectionProps> = ({
             </label>
             <input
               type="text"
+              maxLength={20}
               value={taxDetails.abhyashiNumber}
               onChange={(e) =>
                 onTaxDetailsChange(

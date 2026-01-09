@@ -8,6 +8,7 @@ import Link from "next/link";
 import { LogOut, TriangleAlert, User, X } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 import CurrencySelect from "./CurrencySelect";
+import { Suspense } from "react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -108,7 +109,9 @@ export default function Header() {
         {/* Desktop navigation */}
         <CustomNavigationMenu navigationItems={navigationItems} />
         <div className="max-md:hidden flex items-center gap-3">
-          <LightBox />
+          <Suspense fallback={null}>
+            <LightBox />
+          </Suspense>
           <CurrencySelect
             className="h-9 w-[88.88px] gap-1 rounded-[5px]"
             className2="px-1.5 gap-1"

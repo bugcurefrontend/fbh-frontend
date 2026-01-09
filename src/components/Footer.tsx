@@ -5,6 +5,9 @@ import { usePathname } from "next/navigation";
 import { FooterMenuItem } from "@/types/footer-menu";
 import { SocialLinkSimplified } from "@/types/social-link";
 import { UsefulLinkItem } from "@/types/useful-link";
+import GooglePay from "./icons/GooglePay";
+import AppStore from "./icons/AppStore";
+import FooterLogo from "./icons/FooterLogo";
 
 interface FooterProps {
   menuItems?: FooterMenuItem[];
@@ -82,31 +85,13 @@ const Footer: React.FC<FooterProps> = ({
     <footer className={footerClass}>
       <div className="md:px-12 max-w-7xl mx-auto px-4 py-8 md:py-16 flex flex-col md:flex-row sm:justify-between max-md:gap-8">
         <div className="flex flex-col gap-6 md:min-w-[389px] w-full sm:w-auto">
-          <Image
-            src="/images/footer-logo.png"
-            alt="Forests by Heartfulness"
-            width={216}
-            height={63}
-            className="max-sm:w-[170.65px] max-sm:h-[50px]"
-          />
+          <FooterLogo className="max-sm:w-[170.65px] max-sm:h-[50px]" />
           <div className="flex gap-4">
             <a href={playStoreUrl} target="_blank" rel="noopener noreferrer">
-              <Image
-                src="/images/g-play.png"
-                alt="Google Play"
-                width={154}
-                height={52}
-                className="cursor-pointer max-sm:w-[134px] max-sm:max-h-[41px] rounded-[4px]"
-              />
+              <GooglePay className="cursor-pointer max-sm:w-[134px] max-sm:max-h-[41px] rounded-[4px]" />
             </a>
             <a href={appStoreUrl} target="_blank" rel="noopener noreferrer">
-              <Image
-                src="/images/app-store.png"
-                alt="App Store"
-                width={154}
-                height={52}
-                className="cursor-pointer max-sm:w-[134px] max-sm:max-h-[41px] rounded-[4px]"
-              />
+              <AppStore className="cursor-pointer max-sm:w-[134px] max-sm:max-h-[41px] rounded-[4px]" />
             </a>
           </div>
         </div>
