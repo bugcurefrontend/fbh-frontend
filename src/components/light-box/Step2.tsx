@@ -167,7 +167,11 @@ const Step2: React.FC<Step2Props> = ({
               City
             </label>
             <ComboBox
-              value={personalDetails.city}
+              value={
+                typeof personalDetails.city === "string"
+                  ? personalDetails.city
+                  : personalDetails.city?.name || ""
+              }
               onChange={(value) => handlePersonalDetailsChange("city", value)}
               options={["Nagpur", "Pune", "Mumbai"]}
               placeholder="Select City"
@@ -191,7 +195,11 @@ const Step2: React.FC<Step2Props> = ({
               Country
             </label>
             <ComboBox
-              value={personalDetails.country}
+              value={
+                typeof personalDetails.country === "string"
+                  ? personalDetails.country
+                  : personalDetails.country?.name || ""
+              }
               onChange={(value) =>
                 handlePersonalDetailsChange("country", value)
               }

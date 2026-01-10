@@ -4,6 +4,8 @@ export interface OrderSummary {
   totalAmount: string;
 }
 
+import { City, Country } from "@/lib/location-utils";
+
 export interface PersonalDetails {
   firstName: string;
   lastName: string;
@@ -14,13 +16,13 @@ export interface PersonalDetails {
   region: string;
   phoneNumber: string;
   currency: string;
-  country: string;
+  country: string | Country | null;
   state: string;
-  city: string;
+  city: string | City | null;
 }
 
 export interface TaxDetails {
-  citizenship: string;
+  citizenship: string | Country | null;
   idType: string;
   idNumber: string;
   abhyashiNumber: string;

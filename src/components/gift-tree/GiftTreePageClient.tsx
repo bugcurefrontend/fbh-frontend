@@ -46,8 +46,8 @@ const GiftTreePageClient = ({ co2PerTree, sampleCertificateUrl }: Props) => {
   });
 
   const [taxDetails, setTaxDetails] = useState<TaxDetails>({
-    citizenship: "",
-    idType: "PAN CARD",
+    citizenship: null,
+    idType: "",
     idNumber: "",
     abhyashiNumber: "",
   });
@@ -131,17 +131,22 @@ const GiftTreePageClient = ({ co2PerTree, sampleCertificateUrl }: Props) => {
 
   const handlePersonalDetailsChange = (
     field: keyof PersonalDetails,
-    value: string | boolean
+    value: string | boolean | import("@/lib/location-utils").Country | import("@/lib/location-utils").City | null
   ) => {
     setPersonalDetails((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleTaxDetailsChange = (field: keyof TaxDetails, value: string) => {
+  const handleTaxDetailsChange = (field: keyof TaxDetails, value: any) => {
     if (field === "citizenship") {
+      // When citizenship changes, reset ID type and ID number
+      const isIndian =
+        typeof value === "object" &&
+        value?.id === 358; // India country ID
+
       setTaxDetails((prev) => ({
         ...prev,
         citizenship: value,
-        idType: value === "Indian" ? "PAN CARD" : "PASSPORT NUMBER",
+        idType: isIndian ? "pan" : "passport",
         idNumber: "",
       }));
       return;
@@ -159,7 +164,10 @@ const GiftTreePageClient = ({ co2PerTree, sampleCertificateUrl }: Props) => {
     personalDetails.lastName.trim() !== "" &&
     personalDetails.email?.trim() !== "" &&
     personalDetails.phoneNumber.trim() !== "" &&
-    taxDetails.citizenship.trim() !== "" &&
+    taxDetails.citizenship !== null &&
+    (typeof taxDetails.citizenship === "object"
+      ? taxDetails.citizenship.name
+      : taxDetails.citizenship).trim() !== "" &&
     taxDetails.idNumber.trim() !== "";
 
   // Show login dialog when page loads if user is not authenticated
