@@ -4,7 +4,7 @@ import React, { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import { Trees, ChevronLeft, ChevronRight } from "lucide-react";
 import GeoTagToggleAndActions from "./GeoTagToggleAndActions";
-import ShareButton from "../../app/case-studies/[slug]/ShareButton";
+import ShareButton from "./icons/ShareButton";
 import LifeSpan from "./icons/LifeSpan";
 import Height from "./icons/Height";
 import Oxygen from "./icons/Oxygen";
