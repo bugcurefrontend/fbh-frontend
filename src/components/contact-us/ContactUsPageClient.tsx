@@ -163,7 +163,7 @@ const ContactUsPageClient = () => {
                 }
                 required
                 placeholder="Enter Message"
-                className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px]"
+                className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] placeholder:font-normal placeholder:text-base placeholder:text-[#454950]"
               />
             </div>
 

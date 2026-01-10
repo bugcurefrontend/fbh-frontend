@@ -36,7 +36,7 @@ const TeamPageClient = ({ headerImageUrl }: Props) => {
       <section
         className="relative h-[213px] md:h-[288px] flex items-center justify-center"
         style={{
-          backgroundImage: ` url('${
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('${
             headerImageUrl ?? "/images/meet-team.png"
           }')`,
           backgroundSize: "cover",

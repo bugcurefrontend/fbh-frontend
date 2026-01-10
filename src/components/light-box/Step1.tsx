@@ -123,7 +123,7 @@ const Step1: React.FC<Step1Props> = ({
         <Switch checked={isGeoTagged} onCheckedChange={handleGeoTaggedChange} />
       </div>
 
-      <div className="bg-[#95AAD5] h-[1px] w-full mt-5" />
+      <div className="bg-[#95AAD5] h-[1px] w-full mt-4.5" />
 
       <div className="flex justify-between items-center">
         <CurrencySelect
