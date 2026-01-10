@@ -68,19 +68,27 @@ const PartnersSection: React.FC<PartnersSectionProps> = ({
           Our Supporting Partners
         </h2>
 
-        {/* Mobile 2 Layout */}
+        {/* Mobile Layout - 3 columns grid */}
         <div className="grid grid-cols-3 sm:hidden gap-x-2 gap-y-8">
           {mobilePartners.map((partner, index) => {
-            const shouldCenterLast =
-              mobilePartners.length % 3 === 1 &&
-              index === mobilePartners.length - 1;
+            const remainingItems = mobilePartners.length % 3;
+            const isInLastRow = index >= mobilePartners.length - remainingItems;
+
+            // If 1 item in last row, center it (col-span-3)
+            // If 2 items in last row, center them (col-start-1 for 7th item, col-start-2 for 8th item)
+            const shouldCenterSingle = remainingItems === 1 && isInLastRow;
+            const shouldCenterPair = remainingItems === 2 && isInLastRow;
+            const isFirstOfPair = shouldCenterPair && index === mobilePartners.length - 2;
 
             return (
               <div
                 key={partner.name}
-                className={`flex items-center justify-center ${
-                  shouldCenterLast ? "col-span-3" : ""
-                }`}
+                className={`flex items-center justify-center ${shouldCenterSingle
+                  ? "col-span-3"
+                  : shouldCenterPair && isFirstOfPair
+                    ? "col-start-2"
+                    : ""
+                  }`}
               >
                 <Image
                   src={partner.logo}
