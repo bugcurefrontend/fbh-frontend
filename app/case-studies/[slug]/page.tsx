@@ -15,7 +15,7 @@ import {
   fetchCaseStudyBySlug,
   fetchCaseStudySlugs,
 } from "@/services/case-studies";
-import ShareButton from "./ShareButton";
+import ShareButton from "../../../src/components/icons/ShareButton";
 
 interface CaseStudyPageProps {
   params: Promise<{ slug: string }>;

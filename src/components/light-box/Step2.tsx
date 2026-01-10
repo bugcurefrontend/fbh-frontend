@@ -136,7 +136,7 @@ const Step2: React.FC<Step2Props> = ({
                   )
                 }
                 placeholder="Enter Number"
-                className="pl-20 w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F] shadow-xs"
+                className="pl-22 w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F] shadow-xs"
               />
             </div>
             {!phoneValid && personalDetails.phoneNumber && (

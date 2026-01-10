@@ -15,12 +15,13 @@ interface NewOrderSummaryProps {
   currentStep: number;
   isFormValid: boolean;
   handleProceed: () => Promise<void> | void;
+  onClose?: () => void;
 }
 
 const NewOrderSummary: React.FC<NewOrderSummaryProps> = ({
   orderSummary,
   isFormValid,
-  handleProceed,
+  onClose,
 }) => {
   const [selectedTrees, setSelectedTrees] = useState(
     orderSummary.numberOfTrees
@@ -76,6 +77,7 @@ const NewOrderSummary: React.FC<NewOrderSummaryProps> = ({
         numberOfTrees={selectedTrees}
         onTreeCountChange={setSelectedTrees}
         className="uppercase"
+        onNavigate={onClose}
       />
     </div>
   );

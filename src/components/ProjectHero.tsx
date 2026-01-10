@@ -6,7 +6,7 @@ import { MapPin, ChevronLeft, ChevronRight } from "lucide-react";
 import LandscapeIcon from "./icons/LandscapeIcon";
 import TreeSpeciesIcon from "./icons/TreeSpeciesIcon";
 import GeoTagToggleAndActions from "./GeoTagToggleAndActions";
-import ShareButton from "../../app/case-studies/[slug]/ShareButton";
+import ShareButton from "./icons/ShareButton";
 import TotalTreesIcon from "./icons/TotalTreesIcon";
 
 interface ProjectHeroProps {

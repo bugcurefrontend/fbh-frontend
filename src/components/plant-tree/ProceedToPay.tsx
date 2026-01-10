@@ -21,6 +21,7 @@ interface ProceedToPayProps {
   onTreeCountChange?: (count: number) => void;
   availableTrees?: number;
   className?: string;
+  onNavigate?: () => void;
 }
 
 const ProceedToPay: React.FC<ProceedToPayProps> = ({
@@ -29,6 +30,7 @@ const ProceedToPay: React.FC<ProceedToPayProps> = ({
   onTreeCountChange,
   availableTrees = 10,
   className,
+  onNavigate,
 }) => {
   const router = useRouter();
   const [isStatusOpen, setIsStatusOpen] = useState(false);
@@ -80,6 +82,7 @@ const ProceedToPay: React.FC<ProceedToPayProps> = ({
         timer = setTimeout(() => setCountdown((prev) => prev - 1), 1000);
       } else {
         setIsStatusOpen(false);
+        onNavigate?.();
         router.push("/");
       }
     }

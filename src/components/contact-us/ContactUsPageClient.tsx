@@ -5,6 +5,7 @@ import { Mail, MailOpen, MapPin, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import Image from "next/image";
+import CircleRightTickIcon from "../icons/CircleRightTickIcon";
 
 const ContactUsPageClient = () => {
   const [personalDetails, setPersonalDetails] = useState({
@@ -13,125 +14,168 @@ const ContactUsPageClient = () => {
     email: "",
     message: "",
   });
+
   const [emailError, setEmailError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const onPersonalDetailsChange = (key: string, value: string) => {
     setPersonalDetails((prev) => ({ ...prev, [key]: value }));
   };
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Basic validation
+    if (
+      !personalDetails.firstName ||
+      !personalDetails.lastName ||
+      !personalDetails.email ||
+      !personalDetails.message
+    ) {
+      return;
+    }
+
+    if (emailError) return;
+
+    try {
+      setIsSubmitting(true);
+
+      //  Replace this with real API call
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
+      setIsSuccess(true);
+
+      // Reset form
+      setPersonalDetails({
+        firstName: "",
+        lastName: "",
+        email: "",
+        message: "",
+      });
+    } catch (error) {
+      console.error("Form submission failed", error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <main className="md:space-y-16 space-y-8">
-      <div className="bg-[#E6EBF580] flex flex-col gap-6 sm:gap-10 items-center justify-center sm:p-8 p-4">
+      <div className="bg-[#E6EBF580] flex flex-col gap-6 sm:gap-8 items-center justify-center sm:p-8 p-4">
         <div className="sm:space-y-4 text-center">
           <h2 className="text-[22px] sm:text-[32px] font-[Playfair_Display] font-semibold text-black md:text-[32px] md:font-semibold md:leading-[48px] max-md:text-center md:text-[#090C0F]">
-            Get In Touch
+            Get in Touch
           </h2>
           <p className="text-[#454950] font-medium leading-6.5 md:text-lg max-sm:hidden">
             Join us in our mission to restore and conserve Earth's biodiversity.
           </p>
         </div>
 
-        <div className="max-w-[706px] w-full bg-white border border-[#E8E8E9] rounded-2xl p-4 space-y-6">
-          <div className="grid md:grid-cols-2 gap-6 md:gap-8">
+        {isSuccess ? (
+          <div className="max-w-[706px] w-full bg-white border border-[#E8E8E9] rounded-[8px] p-6 md:p-4 pb-6 space-y-2 md:space-y-4 flex items-center justify-center flex-col text-center">
+            <CircleRightTickIcon className="md:w-50 w-25 h-25 md:h-50" />
+            <h3 className="md:text-2xl font-semibold leading-6 text-[#090C0F]">
+              Message Sent !
+            </h3>
+            <p className="md:font-medium max-md:leading-6 text-[#454950]">
+              Someone from our team will reach out to you shortly.
+            </p>
+          </div>
+        ) : (
+          <form
+            onSubmit={handleSubmit}
+            className="max-w-[706px] w-full bg-white border border-[#E8E8E9] rounded-[8px] p-4 space-y-6"
+          >
+            <div className="grid md:grid-cols-2 gap-6 md:gap-8">
+              <div>
+                <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
+                  First Name
+                </label>
+                <input
+                  type="text"
+                  maxLength={30}
+                  value={personalDetails.firstName}
+                  onChange={(e) =>
+                    onPersonalDetailsChange("firstName", e.target.value)
+                  }
+                  required
+                  placeholder="Jason"
+                  className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px]"
+                />
+              </div>
+
+              <div>
+                <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
+                  Last Name
+                </label>
+                <input
+                  type="text"
+                  maxLength={30}
+                  value={personalDetails.lastName}
+                  onChange={(e) =>
+                    onPersonalDetailsChange("lastName", e.target.value)
+                  }
+                  required
+                  placeholder="Manson"
+                  className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px]"
+                />
+              </div>
+            </div>
+
             <div>
               <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-                First Name
+                Email
               </label>
-              <input
-                type="text"
-                maxLength={30}
-                value={personalDetails.firstName}
-                onChange={(e) => {
-                  const value = e.target.value
-                    .replace(/[^A-Za-z\s'-]/g, "")
-                    .slice(0, 30);
-                  if (/^[A-Za-z\s'-]*$/.test(value)) {
-                    onPersonalDetailsChange("firstName", value);
-                  }
-                }}
-                placeholder="jason"
-                className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F] shadow-xs"
-              />
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-[#63676C] w-5 h-5" />
+                <input
+                  type="email"
+                  maxLength={50}
+                  value={personalDetails.email}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    onPersonalDetailsChange("email", value);
+                    if (value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+                      setEmailError("Please enter a valid email address.");
+                    } else {
+                      setEmailError("");
+                    }
+                  }}
+                  required
+                  placeholder="olivia@heartfulness.com"
+                  className="w-full pl-10 px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px]"
+                />
+              </div>
+              {emailError && (
+                <p className="text-xs text-red-500 mt-1">{emailError}</p>
+              )}
             </div>
+
             <div>
               <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-                Last Name
+                Message
               </label>
-              <input
-                type="text"
-                maxLength={30}
-                value={personalDetails.lastName}
-                onChange={(e) => {
-                  const value = e.target.value
-                    .replace(/[^A-Za-z\s'-]/g, "")
-                    .slice(0, 30);
-                  if (/^[A-Za-z\s'-]*$/.test(value)) {
-                    onPersonalDetailsChange("lastName", value);
-                  }
-                }}
-                className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F] shadow-xs"
-                placeholder="Manson"
+              <Textarea
+                value={personalDetails.message}
+                onChange={(e) =>
+                  onPersonalDetailsChange("message", e.target.value)
+                }
+                required
+                placeholder="Enter Message"
+                className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] placeholder:font-normal placeholder:text-base placeholder:text-[#454950]"
               />
             </div>
-          </div>
 
-          <div>
-            <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-              Email
-            </label>
-
-            <div className="relative w-full">
-              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-[#63676C] w-5 h-5" />
-              <input
-                type="text"
-                maxLength={50}
-                value={personalDetails.email}
-                onChange={(e) => {
-                  const value = e.target.value.trimStart();
-                  onPersonalDetailsChange("email", value);
-                  if (value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-                    setEmailError("Please enter a valid email address.");
-                  } else {
-                    setEmailError("");
-                  }
-                }}
-                placeholder="olivia@heartfulness.com"
-                className="w-full pl-10 px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F] shadow-xs"
-              />
-            </div>
-            {emailError && (
-              <p className="text-xs text-red-500 font-medium mt-1">
-                {emailError}
-              </p>
-            )}
-          </div>
-
-          <div>
-            <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-              Message
-            </label>
-
-            <Textarea
-              value={personalDetails.message}
-              onChange={(e) => {
-                const value = e.target.value.slice(0, 1000);
-                onPersonalDetailsChange("message", value);
-              }}
-              placeholder="Type your message here..."
-              className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F] shadow-xs"
-            />
-
-            {emailError && (
-              <p className="text-xs text-red-500 font-medium mt-1">
-                {emailError}
-              </p>
-            )}
-          </div>
-
-          <Button className="w-full h-11 md:h-12 border-1 disabled:border-[#E8E8E9] disabled:bg-white border-[#95AAD5] text-white bg-[#003399] disabled:text-[#94979A] rounded-[8px] text-base font-bold hover:bg-[#013eb9] transition-colors disabled:cursor-not-allowed disabled:opacity-100 uppercase">
-            Submit
-          </Button>
-        </div>
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full h-11 md:h-12 border-1 text-white bg-[#003399] rounded-[8px] text-base font-bold hover:bg-[#013eb9] transition-colors disabled:cursor-not-allowed uppercase"
+            >
+              {isSubmitting ? "Sending..." : "Submit"}
+            </Button>
+          </form>
+        )}
       </div>
       <div className="max-w-7xl mx-auto flex justify-center md:px-16 px-4">
         <div className="w-full rounded-2xl border border-[#95AAD5] bg-white md:px-6 md:py-8">

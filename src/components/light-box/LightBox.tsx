@@ -201,6 +201,42 @@ const LightBox: React.FC<LightBoxProps> = ({
     );
   }, [isGeoTagged, currency]);
 
+  useEffect(() => {
+    if (!isOpen) {
+      setStep(1);
+      setSelectedQuantity(null);
+      setManualQuantity("");
+      setOrderSummary({
+        numberOfTrees: 0,
+        totalCo2Offset: "--",
+        totalAmount: "--",
+      });
+      setPersonalDetails({
+        firstName: "",
+        lastName: "",
+        displayOnDonorsList: false,
+        email: "",
+        doorNo: "",
+        pincode: "",
+        region: "",
+        phoneNumber: "",
+        currency: currency,
+        country: "",
+        state: "",
+        city: "",
+      });
+      setTaxDetails({
+        citizenship: "",
+        idType: "PAN CARD",
+        idNumber: "",
+        abhyashiNumber: "",
+      });
+      setIsGeoTagged(true);
+      setOccasion(preSelectedAttribute?.name || "");
+      setHasChosenGuest(false);
+    }
+  }, [isOpen, currency, preSelectedAttribute]);
+
   const handleSaveAndNext = () => {
     if (
       step === 1 &&
@@ -394,7 +430,7 @@ const LightBox: React.FC<LightBoxProps> = ({
               alt="lightbox"
               height={592}
               width={400}
-              className="rounded-2xl max-w-100 min-h-[592px] object-cover"
+              className="rounded-2xl max-w-100 min-h-full object-cover"
             />
           </div>
           {step > 1 && (
@@ -475,6 +511,7 @@ const LightBox: React.FC<LightBoxProps> = ({
                   currentStep={step}
                   isFormValid={isStep3Valid}
                   handleProceed={handleProceed}
+                  onClose={() => handleOpenChange(false)}
                 />
               </div>
             )}
