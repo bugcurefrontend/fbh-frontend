@@ -1,5 +1,7 @@
 import React from "react";
-import { ComboBox } from "../ui/combobox";
+import CountryAutocomplete from "@/components/ui/CountryAutocomplete";
+import validations from "@/utils/validations";
+import { indianIdTypes, foreignIdTypes, INDIA_COUNTRY_CODE } from "@/utils/tax-constants";
 import {
   Select,
   SelectTrigger,
@@ -9,7 +11,7 @@ import {
 } from "../ui/select";
 
 export interface TaxDetails {
-  citizenship: string;
+  citizenship: string | import("@/lib/location-utils").Country | null;
   idType: string;
   idNumber: string;
   abhyashiNumber: string;
@@ -17,7 +19,7 @@ export interface TaxDetails {
 
 interface TaxDetailProps {
   taxDetails: TaxDetails;
-  onTaxDetailsChange: (field: keyof TaxDetails, value: string) => void;
+  onTaxDetailsChange: (field: keyof TaxDetails, value: any) => void;
   idNumberError?: string;
 }
 
@@ -26,39 +28,47 @@ const TaxDetail: React.FC<TaxDetailProps> = ({
   onTaxDetailsChange,
   idNumberError,
 }) => {
-  const idTypeOptions =
-    taxDetails.citizenship === "Indian"
-      ? [
-          "PAN CARD",
-          "AADHAR CARD",
-          "DRIVING LICENSE",
-          "VOTER ID CARD",
-          "PASSPORT NUMBER",
-          "RATION CARD",
-        ]
-      : ["PAN CARD", "PASSPORT NUMBER"];
+  // Determine if citizenship is Indian based on country numeric code
+  const isIndianCitizen =
+    typeof taxDetails.citizenship === "object" &&
+    taxDetails.citizenship?.id === INDIA_COUNTRY_CODE;
 
-  const formatIdValue = (rawValue: string) => {
-    const trimmed = rawValue.trim();
-    if (taxDetails.idType === "PAN CARD") {
-      return trimmed
-        .replace(/[^A-Za-z0-9]/g, "")
-        .toUpperCase()
-        .slice(0, 10);
+  // Get ID type options based on citizenship
+  const idTypeOptions = isIndianCitizen ? indianIdTypes : foreignIdTypes;
+
+  const getValidationPattern = (type?: string) => {
+    switch (type) {
+      case "pan":
+        return validations.panNo;
+      case "aadhar":
+        return validations.aadhar;
+      case "license":
+        return validations.license;
+      case "voter":
+        return validations.voterId;
+      case "passport":
+        return validations.passport;
+      case "ration":
+        return validations.ration;
+      default:
+        return { value: /.*/, message: "" };
     }
-    if (taxDetails.idType === "AADHAR CARD") {
+  };
+
+  const formatIdValue = (rawValue: string, idType?: string) => {
+    const trimmed = rawValue.trim().toUpperCase();
+
+    if (idType === "pan") {
+      return trimmed.replace(/[^A-Za-z0-9]/g, "").slice(0, 10);
+    }
+    if (idType === "aadhar") {
       return trimmed.replace(/[^0-9]/g, "").slice(0, 12);
     }
-    if (taxDetails.idType === "PASSPORT NUMBER") {
-      return trimmed
-        .replace(/[^A-Za-z0-9]/g, "")
-        .toUpperCase()
-        .slice(0, 9);
+    if (idType === "passport") {
+      return trimmed.replace(/[^A-Za-z0-9-]/g, "").slice(0, 20);
     }
-    return trimmed
-      .replace(/[^A-Za-z0-9]/g, "")
-      .toUpperCase()
-      .slice(0, 20);
+    // For other ID types (license, voter, ration)
+    return trimmed.replace(/[^A-Za-z0-9-]/g, "").slice(0, 20);
   };
 
   return (
@@ -68,10 +78,9 @@ const TaxDetail: React.FC<TaxDetailProps> = ({
           <label className="mb-1.5 block text-xs text-[#454950] font-semibold">
             Citizenship <span className="text-red-500">*</span>
           </label>
-          <ComboBox
-            value={taxDetails.citizenship}
+          <CountryAutocomplete
+            value={typeof taxDetails.citizenship === "object" ? taxDetails.citizenship : null}
             onChange={(value) => onTaxDetailsChange("citizenship", value)}
-            options={["Indian", "NRI", "Other"]}
             placeholder="Select Citizenship"
           />
         </div>
@@ -89,8 +98,8 @@ const TaxDetail: React.FC<TaxDetailProps> = ({
 
             <SelectContent>
               {idTypeOptions.map((option) => (
-                <SelectItem key={option} value={option}>
-                  {option}
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -101,35 +110,20 @@ const TaxDetail: React.FC<TaxDetailProps> = ({
       <div className="grid md:grid-cols-2 gap-6 max-md:mt-6">
         <div>
           <label className="mb-1.5 block text-xs text-[#454950] font-semibold">
-            {taxDetails.idType === "PAN CARD"
-              ? "PAN Card Number"
-              : taxDetails.idType === "AADHAR CARD"
-              ? "Aadhar Number"
-              : taxDetails.idType === "PASSPORT NUMBER"
-              ? "Passport Number"
-              : taxDetails.idType === "RATION CARD"
-              ? "Ration Card Number"
-              : taxDetails.idType === "DRIVING LICENSE"
-              ? "Driving License Number"
-              : "ID Number"}{" "}
+            {taxDetails.idType
+              ? `${idTypeOptions.find(opt => opt.value === taxDetails.idType)?.label || "ID"} Number`
+              : "ID Number"}
           </label>
           <input
             type="text"
             maxLength={20}
             value={taxDetails.idNumber}
             onChange={(e) =>
-              onTaxDetailsChange("idNumber", formatIdValue(e.target.value))
+              onTaxDetailsChange("idNumber", formatIdValue(e.target.value, taxDetails.idType))
             }
             className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F] shadow-xs"
-            placeholder={`Enter ${
-              taxDetails.idType === "PAN CARD"
-                ? "PAN"
-                : taxDetails.idType === "AADHAR CARD"
-                ? "Aadhar"
-                : taxDetails.idType === "PASSPORT NUMBER"
-                ? "Passport"
-                : "ID"
-            } details`}
+            placeholder={`Enter ${idTypeOptions.find(opt => opt.value === taxDetails.idType)?.label || "ID"} Number`}
+            disabled={!taxDetails.idType}
           />
           {idNumberError && (
             <p className="text-xs text-red-500 font-medium mt-1">
@@ -148,11 +142,11 @@ const TaxDetail: React.FC<TaxDetailProps> = ({
             onChange={(e) =>
               onTaxDetailsChange(
                 "abhyashiNumber",
-                formatIdValue(e.target.value)
+                e.target.value.trim().toUpperCase()
               )
             }
             className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F] shadow-xs"
-            placeholder="Enter ID details"
+            placeholder="Enter Abhyasi ID"
           />
         </div>
       </div>

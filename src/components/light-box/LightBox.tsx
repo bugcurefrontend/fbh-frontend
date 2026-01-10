@@ -6,7 +6,10 @@ import {
   PersonalDetails,
   TaxDetails,
 } from "@/components/plant-tree/types";
+import { City, Country } from "@/lib/location-utils";
 import { useAuth } from "@/lib/auth-context";
+import validations from "@/utils/validations";
+import { INDIA_COUNTRY_CODE } from "@/utils/tax-constants";
 import LoginDialog from "@/components/LoginDialog";
 import {
   AlertDialog,
@@ -70,14 +73,14 @@ const LightBox: React.FC<LightBoxProps> = ({
     region: "",
     phoneNumber: "",
     currency: currency,
-    country: "",
+    country: null,
     state: "",
-    city: "",
+    city: null,
   });
 
   const [taxDetails, setTaxDetails] = useState<TaxDetails>({
-    citizenship: "",
-    idType: "PAN CARD",
+    citizenship: null,
+    idType: "",
     idNumber: "",
     abhyashiNumber: "",
   });
@@ -216,12 +219,30 @@ const LightBox: React.FC<LightBoxProps> = ({
 
   const handlePersonalDetailsChange = (
     field: keyof PersonalDetails,
-    value: string | boolean
+    value: string | boolean | City | Country | null
   ) => {
     setPersonalDetails((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleTaxDetailsChange = (field: keyof TaxDetails, value: string) => {
+  const handleTaxDetailsChange = (field: keyof TaxDetails, value: any) => {
+    if (field === "citizenship") {
+      // When citizenship changes, reset ID type and ID number
+      const isIndian =
+        typeof value === "object" &&
+        value?.id === INDIA_COUNTRY_CODE;
+
+      setTaxDetails((prev) => ({
+        ...prev,
+        citizenship: value,
+        idType: isIndian ? "pan" : "passport",
+        idNumber: "",
+      }));
+      return;
+    }
+    if (field === "idType") {
+      setTaxDetails((prev) => ({ ...prev, idType: value, idNumber: "" }));
+      return;
+    }
     setTaxDetails((prev) => ({ ...prev, [field]: value }));
   };
 
@@ -254,6 +275,18 @@ const LightBox: React.FC<LightBoxProps> = ({
     [personalDetails.pincode]
   );
 
+  const countryValue =
+    typeof personalDetails.country === "string"
+      ? personalDetails.country.trim()
+      : personalDetails.country?.name?.trim() ||
+      personalDetails.country?.code?.trim() ||
+      "";
+  const cityValue =
+    typeof personalDetails.city === "string"
+      ? personalDetails.city.trim()
+      : personalDetails.city?.name?.trim() || "";
+  const stateValue = personalDetails.state?.trim() || "";
+
   const isStep2Valid = useMemo(() => {
     return (
       personalDetails.firstName.trim() !== "" &&
@@ -265,23 +298,54 @@ const LightBox: React.FC<LightBoxProps> = ({
       pincodeValid &&
       personalDetails.phoneNumber.trim() !== "" &&
       phoneValid &&
-      personalDetails.country.trim() !== "" &&
-      personalDetails.state.trim() !== "" &&
-      personalDetails.city.trim() !== ""
+      countryValue !== "" &&
+      stateValue !== "" &&
+      cityValue !== ""
     );
-  }, [personalDetails, emailValid, phoneValid, pincodeValid]);
+  }, [personalDetails, emailValid, phoneValid, pincodeValid, countryValue, cityValue, stateValue]);
 
   const idNumberValid = useMemo(() => {
     if (!taxDetails.idNumber) return false;
-    if (taxDetails.idType === "PAN CARD") {
-      return /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/i.test(taxDetails.idNumber);
+
+    // Get validation pattern based on ID type
+    switch (taxDetails.idType) {
+      case "pan":
+        return validations.panNo.value instanceof RegExp
+          ? validations.panNo.value.test(taxDetails.idNumber)
+          : true;
+      case "aadhar":
+        return validations.aadhar.value instanceof RegExp
+          ? validations.aadhar.value.test(taxDetails.idNumber)
+          : true;
+      case "passport":
+        return validations.passport.value instanceof RegExp
+          ? validations.passport.value.test(taxDetails.idNumber)
+          : true;
+      case "license":
+        return validations.license.value instanceof RegExp
+          ? validations.license.value.test(taxDetails.idNumber)
+          : true;
+      case "voter":
+        return validations.voterId.value instanceof RegExp
+          ? validations.voterId.value.test(taxDetails.idNumber)
+          : true;
+      case "ration":
+        return validations.ration.value instanceof RegExp
+          ? validations.ration.value.test(taxDetails.idNumber)
+          : true;
+      default:
+        return false;
     }
-    // Add other ID validations if necessary
-    return true;
   }, [taxDetails.idNumber, taxDetails.idType]);
 
   const isStep3Valid = useMemo(() => {
-    return taxDetails.citizenship.trim() !== "" && idNumberValid;
+    return (
+      taxDetails.citizenship !== null &&
+      (typeof taxDetails.citizenship === "object"
+        ? taxDetails.citizenship.name
+        : taxDetails.citizenship).trim() !== "" &&
+      idNumberValid
+    );
   }, [taxDetails, idNumberValid]);
 
   // Login dialog logic...

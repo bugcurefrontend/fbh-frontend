@@ -1,5 +1,8 @@
 import { useState, useMemo, useEffect, ChangeEvent } from "react";
+import { City, Country } from "@/lib/location-utils";
 import { useAuth } from "@/lib/auth-context";
+import validations from "@/utils/validations";
+import { INDIA_COUNTRY_CODE } from "@/utils/tax-constants";
 import {
   OrderSummary as OrderSummaryType,
   PersonalDetails,
@@ -28,14 +31,14 @@ export const useTreeCheckout = (co2PerTree?: number) => {
     region: "",
     phoneNumber: "",
     currency: "",
-    country: "",
+    country: null,
     state: "",
-    city: "",
+    city: null,
   });
 
   const [taxDetails, setTaxDetails] = useState<TaxDetails>({
-    citizenship: "",
-    idType: "PAN CARD",
+    citizenship: null,
+    idType: "",
     idNumber: "",
     abhyashiNumber: "",
   });
@@ -117,7 +120,7 @@ export const useTreeCheckout = (co2PerTree?: number) => {
 
   const handlePersonalDetailsChange = (
     field: keyof PersonalDetails,
-    value: string | boolean
+    value: string | boolean | City | Country | null
   ) => {
     if (typeof value === "string") {
       let sanitizedValue = value;
@@ -141,17 +144,23 @@ export const useTreeCheckout = (co2PerTree?: number) => {
     setPersonalDetails((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleTaxDetailsChange = (field: keyof TaxDetails, value: string) => {
+  const handleTaxDetailsChange = (field: keyof TaxDetails, value: any) => {
     if (field === "citizenship") {
+      // When citizenship changes, reset ID type and ID number
+      const isIndian =
+        typeof value === "object" &&
+        value?.id === INDIA_COUNTRY_CODE;
+
       setTaxDetails((prev) => ({
         ...prev,
         citizenship: value,
-        idType: value === "Indian" ? "PAN CARD" : "PASSPORT NUMBER",
+        idType: isIndian ? "pan" : "passport", // Default to PAN for Indian, Passport for others
         idNumber: "",
       }));
       return;
     }
     if (field === "idType") {
+      // When ID type changes, clear the ID number
       setTaxDetails((prev) => ({ ...prev, idType: value, idNumber: "" }));
       return;
     }
@@ -210,19 +219,50 @@ export const useTreeCheckout = (co2PerTree?: number) => {
 
   const idNumberValid = useMemo(() => {
     if (!taxDetails.idNumber) return true;
-    if (taxDetails.idType === "PAN CARD") {
-      return /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/i.test(taxDetails.idNumber);
+
+    // Get validation pattern based on ID type
+    switch (taxDetails.idType) {
+      case "pan":
+        return validations.panNo.value instanceof RegExp
+          ? validations.panNo.value.test(taxDetails.idNumber)
+          : true;
+      case "aadhar":
+        return validations.aadhar.value instanceof RegExp
+          ? validations.aadhar.value.test(taxDetails.idNumber)
+          : true;
+      case "passport":
+        return validations.passport.value instanceof RegExp
+          ? validations.passport.value.test(taxDetails.idNumber)
+          : true;
+      case "license":
+        return validations.license.value instanceof RegExp
+          ? validations.license.value.test(taxDetails.idNumber)
+          : true;
+      case "voter":
+        return validations.voterId.value instanceof RegExp
+          ? validations.voterId.value.test(taxDetails.idNumber)
+          : true;
+      case "ration":
+        return validations.ration.value instanceof RegExp
+          ? validations.ration.value.test(taxDetails.idNumber)
+          : true;
+      default:
+        return true;
     }
-    if (taxDetails.idType === "AADHAR CARD") {
-      return /^[0-9]{12}$/.test(taxDetails.idNumber);
-    }
-    if (taxDetails.idType === "PASSPORT NUMBER") {
-      return /^[A-PR-WYa-pr-wy][1-9]\d\s?\d{4}[1-9]$/i.test(
-        taxDetails.idNumber
-      );
-    }
-    return /^[A-Za-z0-9]{5,20}$/.test(taxDetails.idNumber);
   }, [taxDetails.idNumber, taxDetails.idType]);
+
+  const countryValue =
+    typeof personalDetails.country === "string"
+      ? personalDetails.country.trim()
+      : personalDetails.country?.name?.trim() ||
+      personalDetails.country?.code?.trim() ||
+      "";
+  const cityValue =
+    typeof personalDetails.city === "string"
+      ? personalDetails.city.trim()
+      : personalDetails.city?.name?.trim() || "";
+  const currencyValue = personalDetails.currency?.trim() || "";
+  const stateValue = personalDetails.state?.trim() || "";
 
   const isFormValid =
     personalDetails.firstName.trim() !== "" &&
@@ -234,11 +274,12 @@ export const useTreeCheckout = (co2PerTree?: number) => {
     pincodeValid &&
     personalDetails.phoneNumber.trim() !== "" &&
     phoneValid &&
-    personalDetails.currency.trim() !== "" &&
-    personalDetails.country.trim() !== "" &&
-    personalDetails.state.trim() !== "" &&
-    personalDetails.city.trim() !== "" &&
-    taxDetails.citizenship.trim() !== "" &&
+    currencyValue !== "" &&
+    countryValue !== "" &&
+    stateValue !== "" &&
+    cityValue !== "" &&
+    taxDetails.citizenship !== null &&
+    (typeof taxDetails.citizenship === "object" ? taxDetails.citizenship.name : taxDetails.citizenship).trim() !== "" &&
     taxDetails.idNumber.trim() !== "" &&
     idNumberValid;
 
