@@ -1,7 +1,11 @@
 import React from "react";
 import CountryAutocomplete from "@/components/ui/CountryAutocomplete";
 import validations from "@/utils/validations";
-import { indianIdTypes, foreignIdTypes, INDIA_COUNTRY_CODE } from "@/utils/tax-constants";
+import {
+  indianIdTypes,
+  foreignIdTypes,
+  INDIA_COUNTRY_CODE,
+} from "@/utils/tax-constants";
 import {
   Select,
   SelectTrigger,
@@ -79,7 +83,11 @@ const TaxDetail: React.FC<TaxDetailProps> = ({
             Citizenship <span className="text-red-500">*</span>
           </label>
           <CountryAutocomplete
-            value={typeof taxDetails.citizenship === "object" ? taxDetails.citizenship : null}
+            value={
+              typeof taxDetails.citizenship === "object"
+                ? taxDetails.citizenship
+                : null
+            }
             onChange={(value) => onTaxDetailsChange("citizenship", value)}
             placeholder="Select Citizenship"
           />
@@ -111,7 +119,10 @@ const TaxDetail: React.FC<TaxDetailProps> = ({
         <div>
           <label className="mb-1.5 block text-xs text-[#454950] font-semibold">
             {taxDetails.idType
-              ? `${idTypeOptions.find(opt => opt.value === taxDetails.idType)?.label || "ID"} Number`
+              ? `${
+                  idTypeOptions.find((opt) => opt.value === taxDetails.idType)
+                    ?.label || "ID"
+                } Number`
               : "ID Number"}
           </label>
           <input
@@ -119,10 +130,16 @@ const TaxDetail: React.FC<TaxDetailProps> = ({
             maxLength={20}
             value={taxDetails.idNumber}
             onChange={(e) =>
-              onTaxDetailsChange("idNumber", formatIdValue(e.target.value, taxDetails.idType))
+              onTaxDetailsChange(
+                "idNumber",
+                formatIdValue(e.target.value, taxDetails.idType)
+              )
             }
             className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F] shadow-xs"
-            placeholder={`Enter ${idTypeOptions.find(opt => opt.value === taxDetails.idType)?.label || "ID"} Number`}
+            placeholder={`Enter ${
+              idTypeOptions.find((opt) => opt.value === taxDetails.idType)
+                ?.label || "ID"
+            } Number`}
             disabled={!taxDetails.idType}
           />
           {idNumberError && (

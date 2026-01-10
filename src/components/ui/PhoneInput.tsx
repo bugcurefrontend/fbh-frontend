@@ -2,10 +2,22 @@
 
 import * as React from "react";
 import { cn } from "@/lib/utils";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Input } from "@/components/ui/input";
-import { Command, CommandInput, CommandList, CommandItem } from "@/components/ui/command";
-import { type CountryCode, parsePhoneNumberFromString } from "libphonenumber-js";
+import {
+  Command,
+  CommandInput,
+  CommandList,
+  CommandItem,
+} from "@/components/ui/command";
+import {
+  type CountryCode,
+  parsePhoneNumberFromString,
+} from "libphonenumber-js";
 import { getCountryCallingCode } from "libphonenumber-js/max";
 import ReactCountryFlag from "react-country-flag";
 import countries from "@/assets/data/countries.json";
@@ -24,7 +36,8 @@ interface CountryData {
   numeric: number;
 }
 
-interface PhoneInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange"> {
+interface PhoneInputProps
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange"> {
   name: string;
   required?: boolean;
   error?: string;
@@ -55,8 +68,11 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
     ref
   ) => {
     const countriesData: CountryData[] = countries as unknown as CountryData[];
-    const [selectedCountry, setSelectedCountry] = React.useState<CountryCode>(country);
-    const [phoneNumber, setPhoneNumber] = React.useState<string>(String(value || ""));
+    const [selectedCountry, setSelectedCountry] =
+      React.useState<CountryCode>(country);
+    const [phoneNumber, setPhoneNumber] = React.useState<string>(
+      String(value || "")
+    );
     const [isValid, setIsValid] = React.useState(true);
     const [open, setOpen] = React.useState(false);
     const [searchTerm, setSearchTerm] = React.useState("");
@@ -95,7 +111,9 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
       setSearchTerm("");
     };
 
-    const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handlePhoneNumberChange = (
+      e: React.ChangeEvent<HTMLInputElement>
+    ) => {
       const newValue = e.target.value.replace(/\D/g, "");
       setPhoneNumber(newValue);
       validatePhoneNumber(newValue, selectedCountry);
@@ -108,7 +126,10 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
         return;
       }
       try {
-        const phoneNumberParsed = parsePhoneNumberFromString(number, countryCode);
+        const phoneNumberParsed = parsePhoneNumberFromString(
+          number,
+          countryCode
+        );
         const valid = phoneNumberParsed ? phoneNumberParsed.isValid() : false;
         setIsValid(valid);
         onChange?.({ countryCode, phoneNumber: number, isValid: valid });
@@ -124,7 +145,10 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
           <label htmlFor={name} className="field-label">
             {label} {required && <span className="required"> *</span>}
             {help_text && (
-              <span className="text-muted-foreground ml-1 cursor-help" title={help_text}>
+              <span
+                className="text-muted-foreground ml-1 cursor-help"
+                title={help_text}
+              >
                 ℹ️
               </span>
             )}
@@ -133,7 +157,7 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
         <div className="flex items-start gap-2">
           <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
-              <button className="countryCode font-base-size h-[40px] rounded-[8px] border border-[#D1D1D1] bg-white px-2 py-2 !text-base text-[#4C4748]">
+              <button className="countryCode font-base-size h-[40px] w-28 rounded-[8px] border border-[#D1D1D1] bg-white px-2 py-2 !text-base text-[#4C4748]">
                 <span className="flex items-center gap-2 !text-[16px]">
                   <ReactCountryFlag
                     countryCode={String(selectedCountry)}
@@ -171,7 +195,8 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
                         className="h-4 w-6 rounded-sm object-contain"
                       />
                       <span className="ml-2">
-                        +{getCountryCallingCode(country.countryCode)} {country.englishShortName}
+                        +{getCountryCallingCode(country.countryCode)}{" "}
+                        {country.englishShortName}
                       </span>
                     </CommandItem>
                   ))}
@@ -187,7 +212,7 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
             value={phoneNumber || value}
             onChange={handlePhoneNumberChange}
             className={cn(
-              "h-[40px] rounded-[8px] bg-white px-3 py-2 !text-base text-[#0A0A0B] placeholder:text-gray-400",
+              "h-[40px] w-full rounded-[8px] bg-white px-3 py-2 !text-base text-[#0A0A0B] placeholder:text-gray-400",
               `${error ? "error-field" : "border border-[#D1D1D1]"}`,
               isValid && phoneNumber && "border-green-500",
               !isValid && phoneNumber && "border-red-500"
@@ -197,7 +222,9 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
           />
         </div>
         {(error || (!isValid && phoneNumber)) && (
-          <p className="required mt-1 text-sm">{error || "Please enter a valid phone number"}</p>
+          <p className="required mt-1 text-sm">
+            {error || "Please enter a valid phone number"}
+          </p>
         )}
         {hint && <p className="text-sm text-muted">{hint}</p>}
       </div>
