@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import SpeciesDetailPage from "../../../src/components/SpeciesDetailPage";
 import { fetchAllSpecies, fetchSpeciesBySlug, generateSlug } from "@/services/species";
-import { fetchAllPlantRates } from "@/services/plant-rate";
+import { fetchAllPlantRates } from "@/services/plant-rates";
 import { SpeciesSimplified } from "@/types/species";
 
 type Params = { slug: string };

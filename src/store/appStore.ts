@@ -25,7 +25,7 @@ class AppStore {
     }
 
     setCurrency(currency: CurrencyCode) {
-        this.state.currency = currency;
+        this.state = { ...this.state, currency };
         if (typeof window !== "undefined") {
             localStorage.setItem("fbh_currency", currency);
         }

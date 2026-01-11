@@ -6,7 +6,7 @@ import ProjectTabs from "./ProjectTabs";
 import ProjectAccordion from "./ProjectAccordion";
 import GeoTagToggleAndActions from "./GeoTagToggleAndActions";
 import { useCurrency } from "./CurrencySelect";
-import { PlantRates } from "@/types/plant-rate";
+import { PlantRate } from "@/types/plant-rate";
 
 interface Project {
   id: string;
@@ -61,7 +61,7 @@ interface ProjectDetailPageProps {
   relatedProjects: Project[];
   projectUpdates?: ProjectUpdateUI[];
   projectSpecies?: ProjectSpeciesUI[];
-  plantRates: PlantRates;
+  plantRates: PlantRate[];
 }
 
 const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
@@ -76,7 +76,10 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
   const { currency, currencySymbol } = useCurrency();
 
   // Get rates based on selected currency
-  const currentRate = plantRates[currency];
+  const currentRate = Array.isArray(plantRates)
+    ? plantRates.find((r) => r.currency_code === currency)
+    : (plantRates as any)[currency];
+
   const geotaggedRate = currentRate?.geotagged_rate;
   const nonGeotaggedRate = currentRate?.non_geotagged_rate;
 

@@ -6,7 +6,7 @@ import RelatedSpecies from "./RelatedSpecies";
 import FAQSection from "./FAQSection";
 import GeoTagToggleAndActions from "./GeoTagToggleAndActions";
 import { useCurrency } from "./CurrencySelect";
-import { PlantRates } from "@/types/plant-rate";
+import { PlantRate } from "@/types/plant-rate";
 
 interface FAQ {
   id: string;
@@ -40,7 +40,7 @@ interface SpeciesDetailData {
 
 interface SpeciesDetailPageProps {
   speciesData: SpeciesDetailData;
-  plantRates: PlantRates;
+  plantRates: PlantRate[];
 }
 
 const SpeciesDetailPage: React.FC<SpeciesDetailPageProps> = ({

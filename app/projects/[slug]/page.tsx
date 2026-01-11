@@ -8,7 +8,7 @@ import {
   generateProjectSlug,
 } from "@/services/projects";
 import { generateSlug as generateSpeciesSlug } from "@/services/species";
-import { fetchAllPlantRates } from "@/services/plant-rate";
+import { fetchAllPlantRates } from "@/services/plant-rates";
 import { ProjectSimplified, ProjectUpdate } from "@/types/project";
 
 type Params = { slug: string };
