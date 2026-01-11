@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useMemo } from "react";
+import { useSearchParams } from "next/navigation";
 import ProgressSteps from "@/components/plant-tree/ProgressSteps";
 import PlantInfoCard from "@/components/plant-tree/PlantInfoCard";
 import PersonalDetailsSection from "@/components/plant-tree/PersonalDetailsSection";
@@ -17,6 +18,9 @@ import {
 } from "@/components/plant-tree/types";
 import { useAuth } from "@/lib/auth-context";
 import LoginDialog from "@/components/LoginDialog";
+import { useCurrency } from "@/components/CurrencySelect";
+import { fetchAllPlantRates } from "@/services/plant-rates";
+import { PlantRate } from "@/types/plant-rate";
 
 interface Props {
   co2PerTree?: number | null;
@@ -53,11 +57,36 @@ const GiftTreePageClient = ({ co2PerTree, sampleCertificateUrl }: Props) => {
     abhyashiNumber: "",
   });
 
-  const [isGeoTagged, setIsGeoTagged] = useState(true);
+  const searchParams = useSearchParams();
+  const [isGeoTagged, setIsGeoTagged] = useState(() => {
+    const geoParam = searchParams.get("geo");
+    if (geoParam === "false") return false;
+    return true; // Default to true
+  });
   const [selectedSpeciesId, setSelectedSpeciesId] = useState<number>(1);
   const [isLoginDialogOpen, setIsLoginDialogOpen] = useState(false);
   const [hasChosenGuest, setHasChosenGuest] = useState(false);
   const { isAuthenticated, isLoading, login } = useAuth();
+  const { currency } = useCurrency();
+
+  // Sync currency
+  useEffect(() => {
+    setPersonalDetails(prev => ({ ...prev, currency }));
+  }, [currency]);
+
+  // Fetch Plant Rates
+  const [plantRates, setPlantRates] = useState<PlantRate[]>([]);
+  useEffect(() => {
+    fetchAllPlantRates().then(setPlantRates);
+  }, []);
+
+  const currentRate = useMemo(
+    () => plantRates.find((r) => r.currency_code === currency),
+    [plantRates, currency]
+  );
+
+  const geotaggedRate = currentRate ? currentRate.geotagged_rate : (currency === "INR" ? 175 : 10);
+  const nonGeotaggedRate = currentRate ? currentRate.non_geotagged_rate : (currency === "INR" ? 150 : 5);
 
   const speciesData: Species[] = [
     {
@@ -113,12 +142,19 @@ const GiftTreePageClient = ({ co2PerTree, sampleCertificateUrl }: Props) => {
   const updateOrderSummary = (qty: number) => {
     const perTreeCo2 = typeof co2PerTree === "number" ? co2PerTree : 16.67; // fallback
     const co2Offset = Math.round(qty * perTreeCo2);
-    const amount = qty * 16.67; // price per tree remains unchanged
+
+    // Dynamic Rate Calculation
+    const rate = isGeoTagged ? geotaggedRate : nonGeotaggedRate;
+    const amount = qty * rate;
+
+    // Use passed currency symbol if available, else derive from currency code
+    const symbol = currency === "INR" ? "₹" : "$";
+
     const co2Label = co2Offset === 1 ? `${co2Offset} Kg` : `${co2Offset} Kg(s)`;
     setOrderSummary({
       numberOfTrees: qty,
       totalCo2Offset: co2Label,
-      totalAmount: `INR ${amount.toFixed(2)}`,
+      totalAmount: `${symbol} ${amount.toFixed(2)}`,
     });
   };
 

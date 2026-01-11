@@ -1,4 +1,6 @@
 import { useState, useMemo, useEffect, ChangeEvent } from "react";
+import { useSearchParams } from "next/navigation";
+import { useCurrency } from "@/components/CurrencySelect";
 import { City, Country } from "@/lib/location-utils";
 import { useAuth } from "@/lib/auth-context";
 import validations from "@/utils/validations";
@@ -9,6 +11,8 @@ import {
   TaxDetails,
 } from "@/components/plant-tree/types";
 import { SPECIES_DATA } from "./constants";
+import { fetchAllPlantRates } from "@/services/plant-rates";
+import { PlantRate } from "@/types/plant-rate";
 
 export const useTreeCheckout = (co2PerTree?: number) => {
   const [step, setStep] = useState(1);
@@ -43,12 +47,38 @@ export const useTreeCheckout = (co2PerTree?: number) => {
     abhyashiNumber: "",
   });
 
-  const [isGeoTagged, setIsGeoTagged] = useState(true);
+  const searchParams = useSearchParams();
+  const [isGeoTagged, setIsGeoTagged] = useState(() => {
+    const geoParam = searchParams.get("geo");
+    if (geoParam === "false") return false;
+    return true; // Default to true
+  });
+
   const [selectedSpeciesId, setSelectedSpeciesId] = useState<number>(1);
   const [availabilityMessage, setAvailabilityMessage] = useState("");
   const [isLoginDialogOpen, setIsLoginDialogOpen] = useState(false);
   const [hasChosenGuest, setHasChosenGuest] = useState(false);
   const { isAuthenticated, isLoading, login } = useAuth();
+  const { currency } = useCurrency();
+
+  // Sync currency from hook to form state
+  useEffect(() => {
+    setPersonalDetails(prev => ({ ...prev, currency }));
+  }, [currency]);
+
+  // Fetch Plant Rates
+  const [plantRates, setPlantRates] = useState<PlantRate[]>([]);
+  useEffect(() => {
+    fetchAllPlantRates().then(setPlantRates);
+  }, []);
+
+  const currentRate = useMemo(
+    () => plantRates.find((r) => r.currency_code === currency),
+    [plantRates, currency]
+  );
+
+  const geotaggedRate = currentRate ? currentRate.geotagged_rate : (currency === "INR" ? 175 : 10);
+  const nonGeotaggedRate = currentRate ? currentRate.non_geotagged_rate : (currency === "INR" ? 150 : 5);
 
   const selectedSpecies = useMemo(
     () => SPECIES_DATA.find((species) => species.id === selectedSpeciesId),
@@ -65,12 +95,19 @@ export const useTreeCheckout = (co2PerTree?: number) => {
   const updateOrderSummary = (qty: number) => {
     const perTreeCo2 = typeof co2PerTree === "number" ? co2PerTree : 16.67; // fallback
     const co2Offset = Math.round(qty * perTreeCo2);
-    const amount = qty * 16.67; // price per tree remains unchanged
+
+    // Dynamic Rate Calculation
+    const rate = isGeoTagged ? geotaggedRate : nonGeotaggedRate;
+    const amount = qty * rate;
+
+    // Use passed currency symbol if available, else derive from currency code
+    const symbol = currency === "INR" ? "₹" : "$";
+
     const co2Label = co2Offset === 1 ? `${co2Offset} Kg` : `${co2Offset} Kg(s)`;
     setOrderSummary({
       numberOfTrees: qty,
       totalCo2Offset: co2Label,
-      totalAmount: `INR ${amount.toFixed(2)}`,
+      totalAmount: `${symbol} ${amount.toFixed(2)}`,
     });
   };
 
@@ -315,6 +352,18 @@ export const useTreeCheckout = (co2PerTree?: number) => {
       handleContinueAsGuest();
     }
   };
+
+  // Update summary when dependencies change
+  useEffect(() => {
+    if (selectedQuantity !== null) {
+      updateOrderSummary(selectedQuantity);
+    } else if (manualQuantity) {
+      const parsed = parseInt(manualQuantity, 10);
+      if (!isNaN(parsed)) {
+        updateOrderSummary(parsed);
+      }
+    }
+  }, [isGeoTagged, currency, plantRates]); // Re-run when rates/currency/tag changes
 
   return {
     step,

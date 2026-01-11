@@ -41,6 +41,7 @@ interface NavigationMenuProps {
   login?: () => void;
   onSignOut?: () => void;
   defaultAttribute?: Attribute | null;
+  co2Sequestration?: number;
 }
 
 export function MobileNavigation({
@@ -50,6 +51,7 @@ export function MobileNavigation({
   login,
   onSignOut,
   defaultAttribute,
+  co2Sequestration,
 }: NavigationMenuProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileExpandedMenu, setMobileExpandedMenu] = useState<string | null>(
@@ -124,7 +126,12 @@ export function MobileNavigation({
             <div className="flex-1 overflow-y-auto py-4">
               <div className="p-4">
                 <Suspense fallback={null}>
-                  <LightBox preSelectedAttribute={defaultAttribute || null} />
+                  <Suspense fallback={null}>
+                    <LightBox
+                      preSelectedAttribute={defaultAttribute || null}
+                      co2Sequestration={co2Sequestration}
+                    />
+                  </Suspense>{" "}
                 </Suspense>{" "}
               </div>
               {navigationItems.map((item, index) => {
@@ -165,8 +172,8 @@ export function MobileNavigation({
                       {hasSub && (
                         <div
                           className={`overflow-hidden transition-all duration-300 ease-in-out ${mobileExpandedMenu === item.label
-                              ? "max-h-96"
-                              : "max-h-0"
+                            ? "max-h-96"
+                            : "max-h-0"
                             }`}
                         >
                           <ul className="pl-12 list-disc">

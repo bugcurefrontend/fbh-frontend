@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect, useSyncExternalStore } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
 import { ChevronDown } from "lucide-react";
+import appStoreInstance, { appActions, CurrencyCode as StoreCurrencyCode } from "@/store/appStore";
 
-export type CurrencyCode = "INR" | "USD";
+export type CurrencyCode = StoreCurrencyCode;
 
 const currencies: { code: CurrencyCode; flag: string }[] = [
   { code: "INR", flag: "/images/flag.png" },
@@ -13,27 +14,54 @@ const currencies: { code: CurrencyCode; flag: string }[] = [
 ];
 
 /**
- * Hook to get and set currency from URL search params
- * Default: INR
+ * Hook to get and set currency
+ * - Syncs with URL search params
+ * - Syncs with AppStore (LocalStorage)
  */
 export function useCurrency() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
 
-  const currency = (searchParams.get("currency") as CurrencyCode) || "INR";
-  const currencySymbol = currency === "INR" ? "₹" : "$";
+  // Subscribe to store updates
+  const storeState = useSyncExternalStore(
+    (cb) => appStoreInstance.subscribe(cb),
+    () => appStoreInstance.getState(),
+    () => appStoreInstance.getState() // Server snapshot
+  );
+
+  const urlCurrency = searchParams.get("currency") as CurrencyCode | null;
+
+  // Synchronization Logic
+  useEffect(() => {
+    // 1. If URL has currency, update Store if different
+    if (urlCurrency && (urlCurrency === "INR" || urlCurrency === "USD")) {
+      if (storeState.currency !== urlCurrency) {
+        appActions.setCurrency(urlCurrency);
+      }
+    }
+    // 2. If URL is missing currency but Store has valid currency, sync URL
+    else if (!urlCurrency && storeState.currency) {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("currency", storeState.currency);
+      router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+    }
+  }, [urlCurrency, storeState.currency, router, pathname, searchParams]);
 
   const setCurrency = useCallback(
     (newCurrency: CurrencyCode) => {
+      // Update Store (which updates LS)
+      appActions.setCurrency(newCurrency);
+
+      // Update URL
       const params = new URLSearchParams(searchParams.toString());
       params.set("currency", newCurrency);
       router.push(`${pathname}?${params.toString()}`, { scroll: false });
     },
-    [searchParams, router, pathname]
+    [router, pathname, searchParams]
   );
 
-  return { currency, currencySymbol, setCurrency };
+  return { currency: storeState.currency, currencySymbol: storeState.currency === "INR" ? "₹" : "$", setCurrency };
 }
 
 interface CurrencySelectProps {
@@ -48,6 +76,7 @@ export default function CurrencySelect({
   const { currency, setCurrency } = useCurrency();
   const [open, setOpen] = useState(false);
 
+  // Ensure selected is valid, fallback to first option
   const selected = currencies.find((c) => c.code === currency) || currencies[0];
 
   const handleSelect = (currencyOption: (typeof currencies)[0]) => {

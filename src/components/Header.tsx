@@ -120,7 +120,10 @@ export default function Header() {
         <CustomNavigationMenu navigationItems={navigationItems} />
         <div className="max-md:hidden flex items-center gap-3">
           <Suspense fallback={null}>
-            <LightBox preSelectedAttribute={globalData?.default_attribute || null} />
+            <LightBox
+              preSelectedAttribute={globalData?.default_attribute || null}
+              co2Sequestration={globalData?.co2_sequestation}
+            />
           </Suspense>
           <CurrencySelect
             className="h-9 w-[88.88px] gap-1 rounded-[5px]"
@@ -348,6 +351,7 @@ export default function Header() {
           login={login}
           onSignOut={() => setShowSignOutAlert(true)}
           defaultAttribute={globalData?.default_attribute || null}
+          co2Sequestration={globalData?.co2_sequestation}
         />
       </div>
     </header>

@@ -35,6 +35,7 @@ interface LightBoxProps {
   isOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
   triggerLabel?: string;
+  co2Sequestration?: number;
 }
 
 const LightBox: React.FC<LightBoxProps> = ({
@@ -43,6 +44,7 @@ const LightBox: React.FC<LightBoxProps> = ({
   isOpen: controlledIsOpen,
   onOpenChange,
   triggerLabel = "Plant For A Cause",
+  co2Sequestration = 16.67,
 }) => {
   const [step, setStep] = useState(1);
   const [selectedQuantity, setSelectedQuantity] = useState<number | null>(null);
@@ -166,7 +168,7 @@ const LightBox: React.FC<LightBoxProps> = ({
   const updateOrderSummary = (qty: number) => {
     const rate = isGeoTagged ? geotaggedRate : nonGeotaggedRate;
     const amount = qty * rate;
-    const co2Offset = Math.round(qty * 16.67);
+    const co2Offset = Math.round(qty * co2Sequestration);
     const co2Label = co2Offset === 1 ? `${co2Offset} Kg` : `${co2Offset} Kg(s)`;
     setOrderSummary({
       numberOfTrees: qty,
@@ -179,7 +181,7 @@ const LightBox: React.FC<LightBoxProps> = ({
     updateOrderSummary(
       (selectedQuantity || parseInt(manualQuantity, 10) || 0) as number
     );
-  }, [isGeoTagged, currency]);
+  }, [isGeoTagged, currency, co2Sequestration]);
 
   useEffect(() => {
     if (!isOpen) {

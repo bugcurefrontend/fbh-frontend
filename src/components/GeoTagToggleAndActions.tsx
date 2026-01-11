@@ -118,12 +118,11 @@ const GeoTagToggleAndActions: React.FC<GeoTagToggleAndActionsProps> = ({
 
         {/* Action Buttons */}
         <div className={`flex gap-4`}>
-          <Link href="/plant-tree" className="w-full">
+          <Link href={`/plant-tree?geo=${isGeoTagged}`} className="w-full">
             <Button
               onClick={onPlantTree}
-              className={`flex-1 w-full bg-[#003399] hover:bg-[#002266] text-white font-bold py-3 md:h-12 rounded-[8px] uppercase ${
-                isMobile ? "text-sm gap-2" : "text-base"
-              }`}
+              className={`flex-1 w-full bg-[#003399] hover:bg-[#002266] text-white font-bold py-3 md:h-12 rounded-[8px] uppercase ${isMobile ? "text-sm gap-2" : "text-base"
+                }`}
             >
               PLANT A TREE
               <Image
@@ -135,13 +134,12 @@ const GeoTagToggleAndActions: React.FC<GeoTagToggleAndActionsProps> = ({
               />
             </Button>
           </Link>
-          <Link href="/gift-tree" className="w-full">
+          <Link href={`/gift-tree?geo=${isGeoTagged}`} className="w-full">
             <Button
               onClick={onGiftTree}
               variant="outline"
-              className={`flex-1 w-full border-[#003399] font-bold py-3 md:h-12 rounded-[8px] uppercase text-[#003399] hover:text-[#002266] ${
-                isMobile ? "text-sm gap-2" : "text-base"
-              }`}
+              className={`flex-1 w-full border-[#003399] font-bold py-3 md:h-12 rounded-[8px] uppercase text-[#003399] hover:text-[#002266] ${isMobile ? "text-sm gap-2" : "text-base"
+                }`}
             >
               GIFT A TREE
               <Image
