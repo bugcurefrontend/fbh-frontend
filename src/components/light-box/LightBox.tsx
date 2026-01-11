@@ -25,6 +25,9 @@ import Step1 from "@/components/light-box/Step1";
 import Step2 from "@/components/light-box/Step2";
 import NewOrderSummary from "@/components/light-box/NewOrderSummary";
 import { Attribute } from "@/types/attribute";
+import { fetchAllAttributes } from "@/services/attributes";
+import { fetchAllPlantRates } from "@/services/plant-rates";
+import { PlantRate } from "@/types/plant-rate";
 
 interface LightBoxProps {
   attributes?: Attribute[];
@@ -95,18 +98,19 @@ const LightBox: React.FC<LightBoxProps> = ({
 
   const [occasion, setOccasion] = useState(preSelectedAttribute?.name || "");
 
-  const BASE_GEOTAGGED_RATE_INR = 175;
-  const BASE_NON_GEOTAGGED_RATE_INR = 150;
-  const INR_TO_USD_RATE = 80;
+  const [plantRates, setPlantRates] = useState<PlantRate[]>([]);
 
-  const geotaggedRate =
-    currency === "USD"
-      ? BASE_GEOTAGGED_RATE_INR / INR_TO_USD_RATE
-      : BASE_GEOTAGGED_RATE_INR;
-  const nonGeotaggedRate =
-    currency === "USD"
-      ? BASE_NON_GEOTAGGED_RATE_INR / INR_TO_USD_RATE
-      : BASE_NON_GEOTAGGED_RATE_INR;
+  useEffect(() => {
+    fetchAllPlantRates().then(setPlantRates);
+  }, []);
+
+  const currentRate = useMemo(
+    () => plantRates.find((r) => r.currency_code === currency),
+    [plantRates, currency]
+  );
+
+  const geotaggedRate = currentRate ? currentRate.geotagged_rate : (currency === "INR" ? 175 : 10);
+  const nonGeotaggedRate = currentRate ? currentRate.non_geotagged_rate : (currency === "INR" ? 150 : 5);
 
   const quantities = [10, 25, 50, 100];
 
@@ -119,31 +123,7 @@ const LightBox: React.FC<LightBoxProps> = ({
 
     const fetchAttrs = async () => {
       try {
-        const base = process.env.NEXT_PUBLIC_FBH_API_URL || "";
-        const url = base
-          ? `${base}/api/attributes?populate=*&pagination[pageSize]=100`
-          : `/api/attributes?populate=*&pagination[pageSize]=100`;
-
-        const res = await fetch(url);
-        if (!res.ok) return;
-        const data = await res.json();
-        const items = Array.isArray(data.data) ? data.data : [];
-        const mapped: Attribute[] = items.map((item: any) => {
-          const imgAttr =
-            item.attributes?.image?.data?.attributes?.url ||
-            item.attributes?.image ||
-            "";
-          const imageUrl =
-            imgAttr && imgAttr.startsWith("/") && base
-              ? `${base}${imgAttr}`
-              : imgAttr;
-          return {
-            id: item.id,
-            name: item.attributes?.name || item.name || "",
-            type: item.attributes?.type || "",
-            image: imageUrl,
-          };
-        });
+        const mapped = await fetchAllAttributes();
         setLocalAttributes(mapped);
       } catch (e) {
         console.error("Failed to fetch attributes", e);
@@ -403,6 +383,8 @@ const LightBox: React.FC<LightBoxProps> = ({
     setIsLoginDialogOpen(false);
   };
 
+  const selectedAttribute = localAttributes.find((a) => a.name === occasion);
+
   return (
     <main>
       <AlertDialog onOpenChange={handleOpenChange} open={isOpen}>
@@ -426,7 +408,7 @@ const LightBox: React.FC<LightBoxProps> = ({
           </div>
           <div className="max-lg:hidden max-w-100 w-full h-full">
             <Image
-              src="/images/gallery/5.png"
+              src={selectedAttribute?.image || "/images/gallery/5.png"}
               alt="lightbox"
               height={592}
               width={400}

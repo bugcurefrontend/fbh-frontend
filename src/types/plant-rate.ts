@@ -10,6 +10,7 @@ export interface PlantRate {
   geotagged_rate: number;
   non_geotagged_rate: number;
   deleted: boolean;
+  country_icon: string;
 }
 
 export interface PlantRates {

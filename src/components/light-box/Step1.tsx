@@ -57,11 +57,11 @@ const Step1: React.FC<Step1Props> = ({
           placeholder="Occasion / Cause"
           options={
             attributes && attributes.length > 0
-              ? attributes.map((a) => ({ text: a.name, image: a.image }))
+              ? attributes.map((a) => ({ text: a.name, image: a.icon || a.image }))
               : [
-                  { text: "Birthday", image: "/images/celebration.png" },
-                  { text: "Climate Healing", image: "/images/healing.png" },
-                ]
+                { text: "Birthday", image: "/images/celebration.png" },
+                { text: "Climate Healing", image: "/images/healing.png" },
+              ]
           }
           contentClassName="md:w-[450px] min-w-fit"
         />
@@ -77,11 +77,10 @@ const Step1: React.FC<Step1Props> = ({
               <button
                 key={qty}
                 onClick={() => handleQuantitySelect(qty)}
-                className={`sm:px-[22px] w-full sm:py-[11px] px-3 py-2 rounded-[8px] border transition-colors ${
-                  selectedQuantity === qty
+                className={`sm:px-[22px] w-full sm:py-[11px] px-3 py-2 rounded-[8px] border transition-colors ${selectedQuantity === qty
                     ? "text-[#003399] border-[#95AAD5]"
                     : "border-[#B7B9BB]"
-                }`}
+                  }`}
               >
                 {qty}
               </button>
@@ -94,11 +93,10 @@ const Step1: React.FC<Step1Props> = ({
             onChange={handleManualQuantityChange}
             min="1"
             max="9999"
-            className={`text-center py-[11px] pl-4 border rounded-[8px] w-full placeholder:text-black truncate transition-colors ${
-              manualQuantity
+            className={`text-center py-[11px] pl-4 border rounded-[8px] w-full placeholder:text-black truncate transition-colors ${manualQuantity
                 ? "border-[#95AAD5] text-[#003399]"
                 : "border-[#B7B9BB] text-black"
-            }`}
+              }`}
           />
         </div>
       </div>

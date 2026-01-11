@@ -20,12 +20,22 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import LightBox from "./light-box/LightBox";
+import { fetchGlobal } from "@/services/global";
+import { GlobalContent } from "@/types/global";
 
 export default function Header() {
   const { isAuthenticated, userProfile, isLoading, login, logout } = useAuth();
   const [dropdownOpen, setDropdownOpen] = React.useState(false);
   const dropdownRef = React.useRef<HTMLDivElement>(null);
   const [showSignOutAlert, setShowSignOutAlert] = React.useState(false);
+  const [globalData, setGlobalData] = React.useState<GlobalContent | null>(null);
+  // Fetch global data for default attribute
+  React.useEffect(() => {
+    fetchGlobal().then((data) => {
+      if (data) setGlobalData(data);
+    });
+  }, []);
+
   React.useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -110,7 +120,7 @@ export default function Header() {
         <CustomNavigationMenu navigationItems={navigationItems} />
         <div className="max-md:hidden flex items-center gap-3">
           <Suspense fallback={null}>
-            <LightBox />
+            <LightBox preSelectedAttribute={globalData?.default_attribute || null} />
           </Suspense>
           <CurrencySelect
             className="h-9 w-[88.88px] gap-1 rounded-[5px]"
@@ -255,8 +265,8 @@ export default function Header() {
                             (e.currentTarget.style.backgroundColor = "#E6EBF5")
                           }
                           onMouseLeave={(e) =>
-                            (e.currentTarget.style.backgroundColor =
-                              "transparent")
+                          (e.currentTarget.style.backgroundColor =
+                            "transparent")
                           }
                         >
                           <span>SIGN OUT</span>
@@ -337,6 +347,7 @@ export default function Header() {
           userProfile={userProfile}
           login={login}
           onSignOut={() => setShowSignOutAlert(true)}
+          defaultAttribute={globalData?.default_attribute || null}
         />
       </div>
     </header>

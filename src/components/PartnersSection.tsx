@@ -12,49 +12,74 @@ const PartnersSection: React.FC<PartnersSectionProps> = ({
   partners: apiPartners,
 }) => {
   const fallbackPartners = [
-    { name: "Google", logo: "/images/partners/google1.png" },
-    { name: "Accenture", logo: "/images/partners/accenture.png" },
-    { name: "Amazon", logo: "/images/partners/amazon.png" },
-    { name: "Bank of America", logo: "/images/partners/america.png" },
-    { name: "WWF", logo: "/images/partners/wwf.png" },
-    { name: "Zscaler", logo: "/images/partners/zscaler.png" },
-    { name: "FedEX", logo: "/images/partners/fedex.png" },
-    { name: "Microsoft", logo: "/images/partners/microsoft.png" },
-    { name: "Samsung", logo: "/images/partners/samsung.png" },
-    { name: "MPG", logo: "/images/partners/mp.png" },
+    { name: "Google", logo: "/images/partners/google1.png", url: undefined },
+    { name: "Accenture", logo: "/images/partners/accenture.png", url: undefined },
+    { name: "Amazon", logo: "/images/partners/amazon.png", url: undefined },
+    { name: "Bank of America", logo: "/images/partners/america.png", url: undefined },
+    { name: "WWF", logo: "/images/partners/wwf.png", url: undefined },
+    { name: "Zscaler", logo: "/images/partners/zscaler.png", url: undefined },
+    { name: "FedEX", logo: "/images/partners/fedex.png", url: undefined },
+    { name: "Microsoft", logo: "/images/partners/microsoft.png", url: undefined },
+    { name: "Samsung", logo: "/images/partners/samsung.png", url: undefined },
+    { name: "MPG", logo: "/images/partners/mp.png", url: undefined },
   ];
 
   const fallbackMobilePartners = [
-    { name: "Samsung", logo: "/images/partners/samsung.png" },
-    { name: "Google", logo: "/images/partners/google1.png" },
-    { name: "Amazon", logo: "/images/partners/amazon.png" },
-    { name: "Microsoft", logo: "/images/partners/microsoft.png" },
-    { name: "FedEX", logo: "/images/partners/fedex.png" },
-    { name: "HubSpot", logo: "/images/partners/hubSpot.png" },
+    { name: "Samsung", logo: "/images/partners/samsung.png", url: undefined },
+    { name: "Google", logo: "/images/partners/google1.png", url: undefined },
+    { name: "Amazon", logo: "/images/partners/amazon.png", url: undefined },
+    { name: "Microsoft", logo: "/images/partners/microsoft.png", url: undefined },
+    { name: "FedEX", logo: "/images/partners/fedex.png", url: undefined },
+    { name: "HubSpot", logo: "/images/partners/hubSpot.png", url: undefined },
   ];
 
   // Use API data if available, otherwise use fallback
   const partners =
     apiPartners && apiPartners.length > 0
-      ? apiPartners.map((p) => ({ name: p.name, logo: p.logo }))
+      ? apiPartners.map((p) => ({
+        name: p.name,
+        logo: p.logo,
+        url: p.companyUrl
+      }))
       : fallbackPartners;
 
   const mobilePartners =
     apiPartners && apiPartners.length > 0
-      ? apiPartners.map((p) => ({ name: p.name, logo: p.logo }))
+      ? apiPartners.map((p) => ({
+        name: p.name,
+        logo: p.logo,
+        url: p.companyUrl
+      }))
       : fallbackMobilePartners;
 
   const items = partners.map((partner) => ({
     id: partner.name,
     quote: (
       <div className="flex items-center justify-center">
-        <Image
-          src={partner.logo}
-          alt={partner.name}
-          width={300}
-          height={150}
-          className="object-contain max-w-[120px] max-h-[50px] sm:max-h-[80px] sm:max-w-[180px] w-fit h-fit"
-        />
+        {partner.url ? (
+          <a
+            href={partner.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block hover:opacity-80 transition-opacity"
+          >
+            <Image
+              src={partner.logo}
+              alt={partner.name}
+              width={300}
+              height={150}
+              className="object-contain max-w-[120px] max-h-[50px] sm:max-h-[80px] sm:max-w-[180px] w-fit h-fit"
+            />
+          </a>
+        ) : (
+          <Image
+            src={partner.logo}
+            alt={partner.name}
+            width={300}
+            height={150}
+            className="object-contain max-w-[120px] max-h-[50px] sm:max-h-[80px] sm:max-w-[180px] w-fit h-fit"
+          />
+        )}
       </div>
     ),
     name: partner.name,
@@ -90,13 +115,30 @@ const PartnersSection: React.FC<PartnersSectionProps> = ({
                     : ""
                   }`}
               >
-                <Image
-                  src={partner.logo}
-                  alt={partner.name}
-                  width={70}
-                  height={24}
-                  className="object-contain max-w-[80px] max-h-[30px]"
-                />
+                {partner.url ? (
+                  <a
+                    href={partner.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:opacity-80 transition-opacity"
+                  >
+                    <Image
+                      src={partner.logo}
+                      alt={partner.name}
+                      width={70}
+                      height={24}
+                      className="object-contain max-w-[80px] max-h-[30px]"
+                    />
+                  </a>
+                ) : (
+                  <Image
+                    src={partner.logo}
+                    alt={partner.name}
+                    width={70}
+                    height={24}
+                    className="object-contain max-w-[80px] max-h-[30px]"
+                  />
+                )}
               </div>
             );
           })}

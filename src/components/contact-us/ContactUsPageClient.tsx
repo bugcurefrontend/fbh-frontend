@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import Image from "next/image";
 import CircleRightTickIcon from "../icons/CircleRightTickIcon";
+import { submitContactForm } from "@/services/contacts";
 
 const ContactUsPageClient = () => {
   const [personalDetails, setPersonalDetails] = useState({
@@ -41,8 +42,13 @@ const ContactUsPageClient = () => {
     try {
       setIsSubmitting(true);
 
-      //  Replace this with real API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      // Submit to Strapi API
+      await submitContactForm({
+        first_name: personalDetails.firstName,
+        last_name: personalDetails.lastName,
+        email: personalDetails.email,
+        message: personalDetails.message,
+      });
 
       setIsSuccess(true);
 
@@ -55,6 +61,7 @@ const ContactUsPageClient = () => {
       });
     } catch (error) {
       console.error("Form submission failed", error);
+      // You could add error state here to show user-friendly error message
     } finally {
       setIsSubmitting(false);
     }
