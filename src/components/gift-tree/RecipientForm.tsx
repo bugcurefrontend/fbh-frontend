@@ -1,6 +1,7 @@
 import React from "react";
 import { Mail, Trash2, X } from "lucide-react";
 import RecipientQuantitySelector from "./RecipientQuantitySelector";
+import { PhoneInput } from "@/components/ui/PhoneInput";
 import { RecipientFormData } from "./types";
 
 interface RecipientFormProps {
@@ -37,8 +38,8 @@ const RecipientForm: React.FC<RecipientFormProps> = ({
           {editingId
             ? "Edit Recipient"
             : recipientsCount > 0
-            ? "Add Recipient"
-            : "Recipient Details"}
+              ? "Add Recipient"
+              : "Recipient Details"}
         </h2>
         {recipientsCount > 0 && (
           <button
@@ -72,9 +73,8 @@ const RecipientForm: React.FC<RecipientFormProps> = ({
                 maxLength={30}
                 value={formData.firstName}
                 onChange={(e) => onInputChange("firstName", e.target.value)}
-                className={`w-full px-3.5 py-2.5 border rounded-[8px] ${
-                  errors.firstName ? "border-red-500" : ""
-                }`}
+                className={`w-full px-3.5 py-2.5 border rounded-[8px] ${errors.firstName ? "border-red-500" : ""
+                  }`}
                 placeholder="First Name"
               />
               {errors.firstName && (
@@ -90,9 +90,8 @@ const RecipientForm: React.FC<RecipientFormProps> = ({
                 maxLength={30}
                 value={formData.lastName}
                 onChange={(e) => onInputChange("lastName", e.target.value)}
-                className={`w-full px-3.5 py-2.5 border rounded-[8px] ${
-                  errors.lastName ? "border-red-500" : ""
-                }`}
+                className={`w-full px-3.5 py-2.5 border rounded-[8px] ${errors.lastName ? "border-red-500" : ""
+                  }`}
                 placeholder="Last Name"
               />
               {errors.lastName && (
@@ -114,9 +113,8 @@ const RecipientForm: React.FC<RecipientFormProps> = ({
                 value={formData.email}
                 onChange={(e) => onInputChange("email", e.target.value)}
                 placeholder="example@email.com"
-                className={`w-full pl-10 pr-3.5 py-2.5 border rounded-[8px] ${
-                  errors.email ? "border-red-500" : ""
-                }`}
+                className={`w-full pl-10 pr-3.5 py-2.5 border rounded-[8px] ${errors.email ? "border-red-500" : ""
+                  }`}
               />
             </div>
             {errors.email && (
@@ -129,31 +127,19 @@ const RecipientForm: React.FC<RecipientFormProps> = ({
             <label className="mb-1.5 block text-xs text-gray-700 font-semibold">
               Phone number
             </label>
-            <div className="flex relative">
-              <select
-                value={formData.region}
-                onChange={(e) => onInputChange("region", e.target.value)}
-                className="absolute left-3 top-1/2 -translate-y-1/2 border-none bg-transparent p-0 pr-1 h-auto focus:ring-0 focus:outline-none text-sm font-medium z-10 cursor-pointer"
-              >
-                <option value="in">🇮🇳 +91</option>
-                <option value="us">🇺🇸 +1</option>
-                <option value="uk">🇬🇧 +44</option>
-              </select>
-
-              <input
-                type="tel"
-                maxLength={15}
+            <div className="relative">
+              <PhoneInput
+                name="phoneNumber"
                 value={formData.phoneNumber}
-                onChange={(e) => onInputChange("phoneNumber", e.target.value)}
-                placeholder="98765 43210"
-                className={`pl-24 w-full px-3.5 py-2.5 border rounded-[8px] ${
-                  errors.phoneNumber ? "border-red-500" : ""
-                }`}
+                country={(formData.region?.toUpperCase() as any) || "IN"}
+                onChange={({ countryCode, phoneNumber }) => {
+                  onInputChange("phoneNumber", phoneNumber);
+                  onInputChange("region", countryCode);
+                }}
+                className="w-full"
+                error={errors.phoneNumber}
               />
             </div>
-            {errors.phoneNumber && (
-              <p className="text-red-500 text-xs mt-1">{errors.phoneNumber}</p>
-            )}
           </div>
           {/* Save Button */}
           <button

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { getCountryCallingCode } from "libphonenumber-js/max";
 import { Plus } from "lucide-react";
 import RecipientCard from "./gift-tree/RecipientCard";
 import RecipientForm from "./gift-tree/RecipientForm";
@@ -28,7 +29,7 @@ const AddRecipient: React.FC<AddRecipientProps> = ({
     firstName: "",
     lastName: "",
     email: "",
-    region: "in",
+    region: "IN",
     phoneNumber: "",
   });
 
@@ -76,7 +77,7 @@ const AddRecipient: React.FC<AddRecipientProps> = ({
       firstName: "",
       lastName: "",
       email: "",
-      region: "in",
+      region: "IN",
       phoneNumber: "",
     });
     setErrors({});
@@ -129,12 +130,12 @@ const AddRecipient: React.FC<AddRecipientProps> = ({
     field: keyof RecipientFormData,
     value: string
   ): void => {
-    setFormData({
-      ...formData,
+    setFormData((prev) => ({
+      ...prev,
       [field]: value,
-    });
+    }));
     // Clear error for this field when user starts typing
-    setErrors({ ...errors, [field]: undefined });
+    setErrors((prevErrors) => ({ ...prevErrors, [field]: undefined }));
   };
 
   const getTreeCount = (): number => {
@@ -142,8 +143,12 @@ const AddRecipient: React.FC<AddRecipientProps> = ({
   };
 
   const getRegionCode = (): string => {
-    const codes: Record<string, string> = { in: "+91", us: "+1", uk: "+44" };
-    return codes[formData.region] || "+91";
+    try {
+      // Ensure we have a valid region code, defaulting to IN if somehow empty or invalid
+      return `+${getCountryCallingCode((formData.region?.toUpperCase() || "IN") as any)}`;
+    } catch (error) {
+      return "+91";
+    }
   };
 
   const validateEmail = (email: string): boolean => {

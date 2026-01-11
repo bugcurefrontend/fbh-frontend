@@ -46,7 +46,18 @@ function OneAuth() {
             "state",
             "email",
             "id",
+            "abhyas_stage",
+            "name",
             "photo_url",
+            "postal_code",
+            "street",
+            "street2",
+            "mobile",
+            "city",
+            "country",
+            "citizen_of_country",
+            "identity",
+            "ref",
           ],
         });
 

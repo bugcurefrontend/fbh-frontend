@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import ProgressSteps from "@/components/plant-tree/ProgressSteps";
 import PlantInfoCard from "@/components/plant-tree/PlantInfoCard";
 import PersonalDetailsSection from "@/components/plant-tree/PersonalDetailsSection";
@@ -8,6 +8,7 @@ import TaxDetailsSection from "@/components/plant-tree/TaxDetailsSection";
 import OrderSummary from "@/components/plant-tree/OrderSummary";
 import CertificatePreview from "@/components/gift-tree/CertificatePreview";
 import AddRecipient from "@/components/AddRecipient";
+import validations from "@/utils/validations";
 import {
   OrderSummary as OrderSummaryType,
   PersonalDetails,
@@ -158,6 +159,40 @@ const GiftTreePageClient = ({ co2PerTree, sampleCertificateUrl }: Props) => {
     setTaxDetails((prev) => ({ ...prev, [field]: value }));
   };
 
+  const idNumberValid = useMemo(() => {
+    if (!taxDetails.idNumber) return true;
+
+    // Get validation pattern based on ID type
+    switch (taxDetails.idType) {
+      case "pan":
+        return validations.panNo.value instanceof RegExp
+          ? validations.panNo.value.test(taxDetails.idNumber)
+          : true;
+      case "aadhar":
+        return validations.aadhar.value instanceof RegExp
+          ? validations.aadhar.value.test(taxDetails.idNumber)
+          : true;
+      case "passport":
+        return validations.passport.value instanceof RegExp
+          ? validations.passport.value.test(taxDetails.idNumber)
+          : true;
+      case "license":
+        return validations.license.value instanceof RegExp
+          ? validations.license.value.test(taxDetails.idNumber)
+          : true;
+      case "voter":
+        return validations.voterId.value instanceof RegExp
+          ? validations.voterId.value.test(taxDetails.idNumber)
+          : true;
+      case "ration":
+        return validations.ration.value instanceof RegExp
+          ? validations.ration.value.test(taxDetails.idNumber)
+          : true;
+      default:
+        return true;
+    }
+  }, [taxDetails.idNumber, taxDetails.idType]);
+
   const isFormValid =
     orderSummary.numberOfTrees > 0 &&
     personalDetails.firstName.trim() !== "" &&
@@ -168,7 +203,8 @@ const GiftTreePageClient = ({ co2PerTree, sampleCertificateUrl }: Props) => {
     (typeof taxDetails.citizenship === "object"
       ? taxDetails.citizenship.name
       : taxDetails.citizenship).trim() !== "" &&
-    taxDetails.idNumber.trim() !== "";
+    taxDetails.idNumber.trim() !== "" &&
+    idNumberValid;
 
   // Show login dialog when page loads if user is not authenticated
   useEffect(() => {
@@ -258,6 +294,11 @@ const GiftTreePageClient = ({ co2PerTree, sampleCertificateUrl }: Props) => {
               <TaxDetailsSection
                 taxDetails={taxDetails}
                 onTaxDetailsChange={handleTaxDetailsChange}
+                idNumberError={
+                  !idNumberValid && taxDetails.idNumber
+                    ? "Enter a valid ID number for the selected ID type."
+                    : ""
+                }
               />
             </>
           )}

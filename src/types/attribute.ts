@@ -5,5 +5,6 @@ export interface Attribute {
   id: number;
   name: string;
   type: string;
-  image: string; // Image URL
+  image: string; // Main Image URL
+  icon: string; // Icon URL
 }

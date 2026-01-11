@@ -3,20 +3,18 @@ import { Button } from "@/components/ui/button";
 import { ComboBox } from "@/components/ui/combobox";
 import { Switch } from "@/components/ui/switch";
 import { Mail } from "lucide-react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { PhoneInput } from "@/components/ui/PhoneInput";
+import CountryAutocomplete from "@/components/ui/CountryAutocomplete";
+import CityAutocomplete from "@/components/ui/CityAutocomplete";
+import { City, Country } from "@/lib/location-utils";
+import countriesData from "@/assets/data/countries.json";
 import { PersonalDetails } from "@/components/plant-tree/types";
 
 interface Step2Props {
   personalDetails: PersonalDetails;
   handlePersonalDetailsChange: (
     field: keyof PersonalDetails,
-    value: string | boolean
+    value: string | boolean | City | Country | null
   ) => void;
   isStep2Valid: boolean;
   handleSaveAndNext: () => void;
@@ -34,6 +32,51 @@ const Step2: React.FC<Step2Props> = ({
   phoneValid,
   pincodeValid,
 }) => {
+  // Helper function to find country by code
+  const findCountryByCode = (code: string): Country | null => {
+    const countryData = countriesData.find(
+      (c: any) => c.countryCode === code.toUpperCase()
+    );
+    if (countryData) {
+      return {
+        id: countryData.numeric,
+        name: countryData.englishShortName,
+        code: countryData.countryCode,
+        active: true,
+        numeric: countryData.numeric,
+      };
+    }
+    return null;
+  };
+
+  const countryValue =
+    typeof personalDetails.country === "object" && personalDetails.country !== null
+      ? personalDetails.country
+      : personalDetails.country
+        ? findCountryByCode(personalDetails.country as string) || {
+          id: personalDetails.country,
+          name: personalDetails.country,
+          code: personalDetails.country,
+          active: true,
+        }
+        : null;
+
+  const cityValue =
+    typeof personalDetails.city === "object" && personalDetails.city !== null
+      ? personalDetails.city
+      : personalDetails.city
+        ? ({ id: "", name: personalDetails.city } as City)
+        : null;
+
+  const cityDefaultCountry =
+    (typeof personalDetails.country === "object" && personalDetails.country?.code)
+      ? personalDetails.country.code
+      : (typeof personalDetails.country === "string" && personalDetails.country.length === 2)
+        ? personalDetails.country
+        : (typeof personalDetails.region === "string" && personalDetails.region.length === 2)
+          ? personalDetails.region
+          : undefined;
+
   return (
     <div className="flex flex-col space-y-4">
       <div className="flex items-center justify-between gap-2">
@@ -110,40 +153,20 @@ const Step2: React.FC<Step2Props> = ({
             <label className="mb-1.5 block text-xs text-[#454950] font-semibold">
               Phone number
             </label>
-            <div className="flex relative w-full">
-              <Select
-                value={personalDetails.region}
-                onValueChange={(value) =>
-                  handlePersonalDetailsChange("region", value)
-                }
-              >
-                <SelectTrigger className="absolute left-3 top-1/2 -translate-y-1/2 w-auto border-none bg-transparent p-0 h-auto">
-                  <SelectValue placeholder="+91" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="+91">🇮🇳 +91</SelectItem>
-                  <SelectItem value="+1">🇺🇸 +1</SelectItem>
-                </SelectContent>
-              </Select>
-              <input
-                type="tel"
-                maxLength={15}
-                value={personalDetails.phoneNumber}
-                onChange={(e) =>
-                  handlePersonalDetailsChange(
-                    "phoneNumber",
-                    e.target.value.replace(/[^0-9]/g, "")
-                  )
-                }
-                placeholder="Enter Number"
-                className="pl-22 w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F] shadow-xs"
-              />
-            </div>
-            {!phoneValid && personalDetails.phoneNumber && (
-              <p className="text-xs text-red-500 font-medium mt-1">
-                Please enter a valid phone number.
-              </p>
-            )}
+            <PhoneInput
+              name="phoneNumber"
+              value={personalDetails.phoneNumber}
+              country={(personalDetails.region || "IN").toUpperCase() as "IN" | "US" | "GB" | "AE"}
+              onChange={({ phoneNumber, countryCode }) => {
+                handlePersonalDetailsChange("phoneNumber", phoneNumber);
+                handlePersonalDetailsChange("region", countryCode);
+              }}
+              error={
+                !phoneValid && personalDetails.phoneNumber
+                  ? "Please enter a valid phone number."
+                  : undefined
+              }
+            />
           </div>
         </div>
         <div>
@@ -181,29 +204,24 @@ const Step2: React.FC<Step2Props> = ({
             <label className="mb-1.5 block text-xs text-[#454950] font-semibold">
               State
             </label>
-            <ComboBox
+            <input
+              type="text"
               value={personalDetails.state}
-              onChange={(value) => handlePersonalDetailsChange("state", value)}
-              options={["Maharashtra", "Madhya Pradesh", "Gujarat"]}
+              onChange={(e) => handlePersonalDetailsChange("state", e.target.value)}
+              className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F] shadow-xs"
               placeholder="Select State"
             />
           </div>
         </div>
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <label className="mb-1.5 block text-xs text-[#454950] font-semibold">
-              Country
-            </label>
-            <ComboBox
-              value={
-                typeof personalDetails.country === "string"
-                  ? personalDetails.country
-                  : personalDetails.country?.name || ""
-              }
-              onChange={(value) =>
-                handlePersonalDetailsChange("country", value)
-              }
-              options={["India", "USA", "Canada"]}
+            <CountryAutocomplete
+              value={countryValue}
+              onChange={(country) => {
+                handlePersonalDetailsChange("country", country);
+                if (country?.code) handlePersonalDetailsChange("region", country.code);
+              }}
+              label="Country"
               placeholder="Select Country"
             />
           </div>

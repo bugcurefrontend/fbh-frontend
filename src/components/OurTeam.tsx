@@ -9,87 +9,104 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import LinkedInIcon from "./icons/LinkedinLogo";
+import { fetchAllTeams } from "@/services/teams";
+import { TeamMemberSimplified } from "@/types/team";
 
-const teamData = [
-  {
-    value: "leadership",
-    title: "Leadership Team",
-    members: [
-      {
-        id: "lt-1",
-        name: "Sangeeth Kumar Parvatam",
-        role: "Co-Founder, Heartfulness",
-        image: "/images/sangeeth.png",
-        linkedin: "#",
-        description1:
-          "Dr. V Ramakantha was a member of the Indian Forest Service and has superannuated as the Principal Chief Conservator of Forests. He is an academician, author and internationally acclaimed wildlife photographer. He has had the experience of managing a few of the ecologically important, species-rich ecosystems of India. Post his superannuation, he moved to Kanha Shanti Vanam and as a key member of the greening team he now holds the position of Director, Forests by Heartfulness.",
-        description2:
-          " He specializes in both ex-situ and in-situ conservation of red-listed species and has successfully created a swathe of rain-forest in the inhospitable soil conditions and dry / torrid climate of Ranga Reddy District of Telangana.",
-      },
-      {
-        id: "lt-3",
-        name: "Dr Sairam Reddy Palicherla",
-        role: "Co-Founder, Heartfulness Movement",
-        image: "/images/sangeeth.png",
-        linkedin: "#",
-        description1:
-          "Dr. V Ramakantha was a member of the Indian Forest Service and has superannuated as the Principal Chief Conservator of Forests. He is an academician, author and internationally acclaimed wildlife photographer. He has had the experience of managing a few of the ecologically important, species-rich ecosystems of India. Post his superannuation, he moved to Kanha Shanti Vanam and as a key member of the greening team he now holds the position of Director, Forests by Heartfulness.",
-        description2:
-          " He specializes in both ex-situ and in-situ conservation of red-listed species and has successfully created a swathe of rain-forest in the inhospitable soil conditions and dry / torrid climate of Ranga Reddy District of Telangana.",
-      },
-      {
-        id: "lt-2",
-        name: "Dr Sairam Reddy Palicherla",
-        role: "Co-Founder, Heartfulness Movement",
-        image: "/images/sangeeth.png",
-        linkedin: "#",
-        description1:
-          "Dr. V Ramakantha was a member of the Indian Forest Service and has superannuated as the Principal Chief Conservator of Forests. He is an academician, author and internationally acclaimed wildlife photographer. He has had the experience of managing a few of the ecologically important, species-rich ecosystems of India. Post his superannuation, he moved to Kanha Shanti Vanam and as a key member of the greening team he now holds the position of Director, Forests by Heartfulness.",
-        description2:
-          " He specializes in both ex-situ and in-situ conservation of red-listed species and has successfully created a swathe of rain-forest in the inhospitable soil conditions and dry / torrid climate of Ranga Reddy District of Telangana.",
-      },
-    ],
-  },
-  {
-    value: "delivery",
-    title: "Delivery Team",
-    members: [
-      {
-        id: "dt-1",
-        name: "Delivery Member Name",
-        role: "Project Lead",
-        image: "/images/sangeeth.png",
-        linkedin: "#",
-        description1:
-          "Dr. V Ramakantha was a member of the Indian Forest Service and has superannuated as the Principal Chief Conservator of Forests. He is an academician, author and internationally acclaimed wildlife photographer. He has had the experience of managing a few of the ecologically important, species-rich ecosystems of India. Post his superannuation, he moved to Kanha Shanti Vanam and as a key member of the greening team he now holds the position of Director, Forests by Heartfulness.",
-        description2:
-          " He specializes in both ex-situ and in-situ conservation of red-listed species and has successfully created a swathe of rain-forest in the inhospitable soil conditions and dry / torrid climate of Ranga Reddy District of Telangana.",
-      },
-    ],
-  },
-  {
-    value: "experts",
-    title: "Domain Experts",
-    members: [
-      {
-        id: "de-1",
-        name: "Domain Expert Name",
-        role: "Ecology Specialist",
-        image: "/images/sangeeth.png",
-        linkedin: "#",
-        description1:
-          "Dr. V Ramakantha was a member of the Indian Forest Service and has superannuated as the Principal Chief Conservator of Forests. He is an academician, author and internationally acclaimed wildlife photographer. He has had the experience of managing a few of the ecologically important, species-rich ecosystems of India. Post his superannuation, he moved to Kanha Shanti Vanam and as a key member of the greening team he now holds the position of Director, Forests by Heartfulness.",
-        description2:
-          " He specializes in both ex-situ and in-situ conservation of red-listed species and has successfully created a swathe of rain-forest in the inhospitable soil conditions and dry / torrid climate of Ranga Reddy District of Telangana.",
-      },
-    ],
-  },
-];
+interface TeamMember {
+  id: string;
+  name: string;
+  role: string;
+  image: string;
+  linkedin: string;
+  description1: string;
+  description2: string;
+}
+
+interface TeamTab {
+  value: string;
+  title: string;
+  members: TeamMember[];
+}
 
 const TeamSection = () => {
-  const [activeTab, setActiveTab] = useState(teamData[0].value);
+  const [teamData, setTeamData] = useState<TeamTab[]>([
+    { value: "leadership", title: "Leadership Team", members: [] },
+    { value: "delivery", title: "Delivery Team", members: [] },
+    { value: "experts", title: "Domain Experts", members: [] },
+  ]);
+  const [activeTab, setActiveTab] = useState("leadership");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let mounted = true;
+
+    fetchAllTeams()
+      .then((members: TeamMemberSimplified[]) => {
+        if (!mounted) return;
+
+        // Filter members by category
+        const leadershipMembers = members
+          .filter((m) => m.category === "Leadership Team")
+          .map((m) => ({
+            id: m.id,
+            name: m.name,
+            role: m.role,
+            image: m.image,
+            linkedin: m.linkedin,
+            description1: m.description,
+            description2: "", // Keep for future use
+          }));
+
+        const deliveryMembers = members
+          .filter((m) => m.category === "Delivery Team")
+          .map((m) => ({
+            id: m.id,
+            name: m.name,
+            role: m.role,
+            image: m.image,
+            linkedin: m.linkedin,
+            description1: m.description,
+            description2: "",
+          }));
+
+        const expertMembers = members
+          .filter((m) => m.category === "Domain Experts")
+          .map((m) => ({
+            id: m.id,
+            name: m.name,
+            role: m.role,
+            image: m.image,
+            linkedin: m.linkedin,
+            description1: m.description,
+            description2: "",
+          }));
+
+        setTeamData([
+          { value: "leadership", title: "Leadership Team", members: leadershipMembers },
+          { value: "delivery", title: "Delivery Team", members: deliveryMembers },
+          { value: "experts", title: "Domain Experts", members: expertMembers },
+        ]);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Failed to load team members:", err);
+        setLoading(false);
+      });
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center py-12">
+        <p className="text-gray-500">Loading team members...</p>
+      </div>
+    );
+  }
 
   return (
     <Tabs value={activeTab} onValueChange={setActiveTab}>
@@ -131,9 +148,8 @@ const TeamSection = () => {
             {tab.members.map((member, index) => (
               <div
                 key={member.id}
-                className={`flex flex-col md:flex-row justify-center md:gap-8 gap-6 items-center ${
-                  index % 2 !== 0 ? "md:flex-row-reverse" : ""
-                }`}
+                className={`flex flex-col md:flex-row justify-center md:gap-8 gap-6 items-center ${index % 2 !== 0 ? "md:flex-row-reverse" : ""
+                  }`}
               >
                 <Image
                   src={member.image}
@@ -157,7 +173,9 @@ const TeamSection = () => {
                     <a
                       href={member.linkedin}
                       target="_blank"
-                      className="w-[33.48px] h-8"
+                      rel="noopener noreferrer"
+                      className="w-[33.48px] h-8 relative z-10"
+                      onClick={(e) => e.stopPropagation()}
                     >
                       <LinkedInIcon fill="#003399" width={33.5} hanging={32} />
                     </a>
@@ -200,7 +218,9 @@ const TeamSection = () => {
                       <a
                         href={member.linkedin}
                         target="_blank"
-                        className="shrink-0"
+                        rel="noopener noreferrer"
+                        className="shrink-0 relative z-10"
+                        onClick={(e) => e.stopPropagation()}
                       >
                         <LinkedInIcon />
                       </a>

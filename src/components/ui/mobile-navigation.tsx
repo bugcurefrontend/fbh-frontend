@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import CurrencySelect from "../CurrencySelect";
 import LightBox from "../light-box/LightBox";
+import { Attribute } from "@/types/attribute";
 
 interface SubItem {
   label: string;
@@ -39,6 +40,7 @@ interface NavigationMenuProps {
   userProfile?: UserProfile | null;
   login?: () => void;
   onSignOut?: () => void;
+  defaultAttribute?: Attribute | null;
 }
 
 export function MobileNavigation({
@@ -47,6 +49,7 @@ export function MobileNavigation({
   userProfile,
   login,
   onSignOut,
+  defaultAttribute,
 }: NavigationMenuProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileExpandedMenu, setMobileExpandedMenu] = useState<string | null>(
@@ -96,9 +99,8 @@ export function MobileNavigation({
       {/* Drawer */}
       {mobileMenuOpen && (
         <div
-          className={`h-screen overflow-y-scroll fixed top-0 right-0 w-full bg-white z-50 shadow-xl transform transition-transform duration-300 ease-in-out ${
-            mobileMenuOpen ? "translate-x-0" : "translate-x-full"
-          } ${isClosing ? "translate-x-full" : ""}`}
+          className={`h-screen overflow-y-scroll fixed top-0 right-0 w-full bg-white z-50 shadow-xl transform transition-transform duration-300 ease-in-out ${mobileMenuOpen ? "translate-x-0" : "translate-x-full"
+            } ${isClosing ? "translate-x-full" : ""}`}
         >
           <div className="flex flex-col h-full">
             {/* Header with close button */}
@@ -122,7 +124,7 @@ export function MobileNavigation({
             <div className="flex-1 overflow-y-auto py-4">
               <div className="p-4">
                 <Suspense fallback={null}>
-                  <LightBox />
+                  <LightBox preSelectedAttribute={defaultAttribute || null} />
                 </Suspense>{" "}
               </div>
               {navigationItems.map((item, index) => {
@@ -162,11 +164,10 @@ export function MobileNavigation({
                       {/* SUB MENU */}
                       {hasSub && (
                         <div
-                          className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                            mobileExpandedMenu === item.label
+                          className={`overflow-hidden transition-all duration-300 ease-in-out ${mobileExpandedMenu === item.label
                               ? "max-h-96"
                               : "max-h-0"
-                          }`}
+                            }`}
                         >
                           <ul className="pl-12 list-disc">
                             {item.sub!.map((subItem, subIndex) => (

@@ -94,12 +94,12 @@ const StatisticsSection: React.FC<StatisticsSectionProps> = ({
   // Convert API metrics to display format and keep their order for layout
   const apiStatsFromApi: StatItem[] = hasApiData
     ? apiMetrics.map((m) => ({
-        icon: <Image src={m.icon} alt={m.label} width={40} height={40} />,
-        mobileIcon: <Image src={m.icon} alt={m.label} width={32} height={32} />,
-        number: formatNumber(m.value),
-        label: m.label,
-        order: m.order ?? 0,
-      }))
+      icon: <Image src={m.icon} alt={m.label} width={40} height={40} />,
+      mobileIcon: <Image src={m.icon} alt={m.label} width={32} height={32} />,
+      number: formatNumber(m.value),
+      label: m.label,
+      order: m.order ?? 0,
+    }))
     : [];
 
   // Unified apiStats typed as StatItem[] (fallback cast to StatItem[])
@@ -124,37 +124,37 @@ const StatisticsSection: React.FC<StatisticsSectionProps> = ({
 
   const aboutRowStats = hasAboutStats
     ? [
-        {
-          icon: <TreeSpeciesIcon width={36} height={36} color="#206f32" />,
-          mobileIcon: (
-            <TreeSpeciesIcon width={28} height={28} color="#206f32" />
-          ),
-          number: aboutStats?.trees || "-",
-          label: "Trees planted",
-        },
-        {
-          icon: <PlantingSites width={40} height={40} color="#206f32" />,
-          mobileIcon: <PlantingSites width={32} height={32} color="#206f32" />,
-          number: aboutStats?.plantingSites || "-",
-          label: "Planting sites",
-        },
-        {
-          icon: <VolunteerEngaged width={36} height={40} color="#206f32" />,
-          mobileIcon: (
-            <VolunteerEngaged width={28} height={32} color="#206f32" />
-          ),
-          number: aboutStats?.volunteers || "-",
-          label: "Volunteers",
-        },
-        {
-          icon: <PartnerOrganization width={40} height={40} color="#206f32" />,
-          mobileIcon: (
-            <PartnerOrganization width={32} height={32} color="#206f32" />
-          ),
-          number: aboutStats?.partners || "-",
-          label: "Partner organisations",
-        },
-      ]
+      {
+        icon: <TreeSpeciesIcon width={36} height={36} color="#206f32" />,
+        mobileIcon: (
+          <TreeSpeciesIcon width={28} height={28} color="#206f32" />
+        ),
+        number: aboutStats?.trees || "-",
+        label: "Trees planted",
+      },
+      {
+        icon: <PlantingSites width={40} height={40} color="#206f32" />,
+        mobileIcon: <PlantingSites width={32} height={32} color="#206f32" />,
+        number: aboutStats?.plantingSites || "-",
+        label: "Planting sites",
+      },
+      {
+        icon: <VolunteerEngaged width={36} height={40} color="#206f32" />,
+        mobileIcon: (
+          <VolunteerEngaged width={28} height={32} color="#206f32" />
+        ),
+        number: aboutStats?.volunteers || "-",
+        label: "Volunteers Engaged",
+      },
+      {
+        icon: <PartnerOrganization width={40} height={40} color="#206f32" />,
+        mobileIcon: (
+          <PartnerOrganization width={32} height={32} color="#206f32" />
+        ),
+        number: aboutStats?.partners || "-",
+        label: "Partner organisations",
+      },
+    ]
     : [];
 
   // Split into top and bottom rows using the ordered metrics
@@ -243,8 +243,49 @@ const StatisticsSection: React.FC<StatisticsSectionProps> = ({
         <div className="flex flex-col sm:hidden gap-12">
           {hasAboutStats
             ? Array.from({ length: 2 }).map((_, rowIdx) => {
-                const leftItem = aboutRowStats[rowIdx * 2];
-                const rightItem = aboutRowStats[rowIdx * 2 + 1];
+              const leftItem = aboutRowStats[rowIdx * 2];
+              const rightItem = aboutRowStats[rowIdx * 2 + 1];
+              return (
+                <div
+                  key={rowIdx}
+                  className="flex justify-between items-center gap-4"
+                >
+                  {leftItem && (
+                    <div className="flex flex-col items-center gap-3 text-center flex-1">
+                      <div className="w-8 h-8 flex items-center justify-center">
+                        {leftItem.mobileIcon}
+                      </div>
+                      <p className="text-lg text-[#090C0F] font-bold">
+                        {leftItem.number}
+                      </p>
+                      <p className="text-[10px] max-[500px]:w-20 font-semibold text-[#454950]">
+                        {leftItem.label}
+                      </p>
+                    </div>
+                  )}
+                  {leftItem && rightItem && (
+                    <div className="h-[96px] w-[0.5px] bg-[#D1D5DB] rounded" />
+                  )}
+                  {rightItem && (
+                    <div className="flex flex-col items-center gap-3 text-center flex-1">
+                      <div className="w-8 h-8 flex items-center justify-center">
+                        {rightItem.mobileIcon}
+                      </div>
+                      <p className="text-lg text-[#090C0F] font-bold">
+                        {rightItem.number}
+                      </p>
+                      <p className="text-[10px] max-[500px]:w-26 font-semibold text-[#454950]">
+                        {rightItem.label}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              );
+            })
+            : Array.from({ length: Math.ceil(apiStats.length / 2) }).map(
+              (_, rowIdx) => {
+                const leftItem = apiStats[rowIdx * 2];
+                const rightItem = apiStats[rowIdx * 2 + 1];
                 return (
                   <div
                     key={rowIdx}
@@ -264,7 +305,7 @@ const StatisticsSection: React.FC<StatisticsSectionProps> = ({
                       </div>
                     )}
                     {leftItem && rightItem && (
-                      <div className="h-[96px] w-[0.5px] bg-[#D1D5DB] rounded" />
+                      <div className="h-[96px] w-[0.5px] bg-[#D1D5DB] rounded"></div>
                     )}
                     {rightItem && (
                       <div className="flex flex-col items-center gap-3 text-center flex-1">
@@ -281,49 +322,8 @@ const StatisticsSection: React.FC<StatisticsSectionProps> = ({
                     )}
                   </div>
                 );
-              })
-            : Array.from({ length: Math.ceil(apiStats.length / 2) }).map(
-                (_, rowIdx) => {
-                  const leftItem = apiStats[rowIdx * 2];
-                  const rightItem = apiStats[rowIdx * 2 + 1];
-                  return (
-                    <div
-                      key={rowIdx}
-                      className="flex justify-between items-center gap-4"
-                    >
-                      {leftItem && (
-                        <div className="flex flex-col items-center gap-3 text-center flex-1">
-                          <div className="w-8 h-8 flex items-center justify-center">
-                            {leftItem.mobileIcon}
-                          </div>
-                          <p className="text-lg text-[#090C0F] font-bold">
-                            {leftItem.number}
-                          </p>
-                          <p className="text-[10px] max-[500px]:w-20 font-semibold text-[#454950]">
-                            {leftItem.label}
-                          </p>
-                        </div>
-                      )}
-                      {leftItem && rightItem && (
-                        <div className="h-[96px] w-[0.5px] bg-[#D1D5DB] rounded"></div>
-                      )}
-                      {rightItem && (
-                        <div className="flex flex-col items-center gap-3 text-center flex-1">
-                          <div className="w-8 h-8 flex items-center justify-center">
-                            {rightItem.mobileIcon}
-                          </div>
-                          <p className="text-lg text-[#090C0F] font-bold">
-                            {rightItem.number}
-                          </p>
-                          <p className="text-[10px] max-[500px]:w-26 font-semibold text-[#454950]">
-                            {rightItem.label}
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  );
-                }
-              )}
+              }
+            )}
         </div>
       </div>
     </div>
