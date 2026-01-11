@@ -227,7 +227,7 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
                 <SelectValue placeholder="Currency" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="india">
+                <SelectItem value="INR">
                   <Image
                     src="/images/flag.png"
                     alt="ind"
@@ -239,7 +239,7 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
                     INR
                   </span>
                 </SelectItem>
-                <SelectItem value="us">
+                <SelectItem value="USD">
                   <Image
                     src="/images/us.png"
                     alt="usa"
