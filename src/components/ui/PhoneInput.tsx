@@ -157,21 +157,21 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
         <div className="flex items-start gap-2">
           <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
-              <button className="countryCode font-base-size h-[40px] w-28 rounded-[8px] border border-[#D1D1D1] bg-white px-2 py-2 !text-base text-[#4C4748]">
+              <button className="countryCode font-base-size h-[40px] w-28 rounded-[8px] border border-[#D0D5DD] bg-white px-2 py-2 !text-base text-[#090C0F] shadow-xs">
                 <span className="flex items-center gap-2 !text-[16px]">
                   <ReactCountryFlag
                     countryCode={String(selectedCountry)}
                     svg
                     className="h-4 w-6 rounded-sm object-contain"
                   />
-                  <span className="!text-[16px] text-[#2E4049]">
+                  <span className="!text-[16px] text-[#090C0F]">
                     +{getCountryCallingCode(selectedCountry)}
                   </span>
                 </span>
               </button>
             </PopoverTrigger>
             <PopoverContent
-              className="popover-size relative z-10 overflow-y-auto rounded-t-none bg-white p-0 !text-base"
+              className="popover-size relative !z-[100] overflow-y-auto rounded-t-none bg-white p-0 !text-base"
               align="start"
               side="bottom"
             >
