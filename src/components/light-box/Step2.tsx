@@ -5,7 +5,6 @@ import { Switch } from "@/components/ui/switch";
 import { Mail } from "lucide-react";
 import { PhoneInput } from "@/components/ui/PhoneInput";
 import CountryAutocomplete from "@/components/ui/CountryAutocomplete";
-import CityAutocomplete from "@/components/ui/CityAutocomplete";
 import { City, Country } from "@/lib/location-utils";
 import countriesData from "@/assets/data/countries.json";
 import { PersonalDetails } from "@/components/plant-tree/types";
@@ -96,30 +95,40 @@ const Step2: React.FC<Step2Props> = ({
         <div className="grid md:grid-cols-2 gap-6">
           <div>
             <label className="mb-1.5 block text-xs text-[#454950] font-semibold">
-              First Name
+              First Name <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
-              maxLength={30}
+              maxLength={15}
               value={personalDetails.firstName}
-              onChange={(e) =>
-                handlePersonalDetailsChange("firstName", e.target.value)
-              }
+              onChange={(e) => {
+                const value = e.target.value
+                  .replace(/[^A-Za-z\s'-]/g, "")
+                  .slice(0, 15);
+                if (/^[A-Za-z\s'-]*$/.test(value)) {
+                  handlePersonalDetailsChange("firstName", value);
+                }
+              }}
               placeholder="First Name"
               className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F] shadow-xs"
             />
           </div>
           <div>
             <label className="mb-1.5 block text-xs text-[#454950] font-semibold">
-              Last Name
+              Last Name <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
-              maxLength={30}
+              maxLength={15}
               value={personalDetails.lastName}
-              onChange={(e) =>
-                handlePersonalDetailsChange("lastName", e.target.value)
-              }
+              onChange={(e) => {
+                const value = e.target.value
+                  .replace(/[^A-Za-z\s'-]/g, "")
+                  .slice(0, 15);
+                if (/^[A-Za-z\s'-]*$/.test(value)) {
+                  handlePersonalDetailsChange("lastName", value);
+                }
+              }}
               className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F] shadow-xs"
               placeholder="Last Name"
             />
@@ -128,7 +137,7 @@ const Step2: React.FC<Step2Props> = ({
         <div className="grid md:grid-cols-2 gap-6">
           <div>
             <label className="mb-1.5 block text-xs text-[#454950] font-semibold">
-              Email
+              Email <span className="text-red-500">*</span>
             </label>
             <div className="relative w-full">
               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-[#63676C] w-5 h-5" />
@@ -151,7 +160,7 @@ const Step2: React.FC<Step2Props> = ({
           </div>
           <div>
             <label className="mb-1.5 block text-xs text-[#454950] font-semibold">
-              Phone number
+              Phone number <span className="text-red-500">*</span>
             </label>
             <PhoneInput
               name="phoneNumber"
@@ -171,7 +180,7 @@ const Step2: React.FC<Step2Props> = ({
         </div>
         <div>
           <label className="mb-1.5 block text-xs text-[#454950] font-semibold">
-            Door no, Street Address
+            Door no, Street Address <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -187,7 +196,7 @@ const Step2: React.FC<Step2Props> = ({
         <div className="grid md:grid-cols-2 gap-6">
           <div>
             <label className="mb-1.5 block text-xs text-[#454950] font-semibold">
-              City
+              City <span className="text-red-500">*</span>
             </label>
             <ComboBox
               value={
@@ -202,7 +211,7 @@ const Step2: React.FC<Step2Props> = ({
           </div>
           <div>
             <label className="mb-1.5 block text-xs text-[#454950] font-semibold">
-              State
+              State <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
@@ -227,7 +236,7 @@ const Step2: React.FC<Step2Props> = ({
           </div>
           <div>
             <label className="mb-1.5 block text-xs text-[#454950] font-semibold">
-              Pincode
+              Pincode <span className="text-red-500">*</span>
             </label>
             <input
               type="text"

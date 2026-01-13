@@ -211,8 +211,7 @@ export default function CountryAutocomplete({
             htmlFor={name}
             className="block text-xs text-[#344054] font-semibold mb-1.5"
           >
-            {label}
-            {required && <span className="text-red-500"> *</span>}
+            {label} <span className="text-red-500">*</span>
             {help_text && (
               <span
                 className="text-muted-foreground ml-1 cursor-help"

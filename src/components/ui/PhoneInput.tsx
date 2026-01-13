@@ -157,7 +157,7 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
         <div className="flex items-start gap-2">
           <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
-              <button className="countryCode font-base-size h-[40px] w-28 rounded-[8px] border border-[#D0D5DD] bg-white px-2 py-2 !text-base text-[#090C0F] shadow-xs">
+              <button className="countryCode font-base-size h-[45.5px] w-28 rounded-[8px] border border-[#D0D5DD] bg-white px-2 py-2 !text-base text-[#090C0F] shadow-xs">
                 <span className="flex items-center gap-2 !text-[16px]">
                   <ReactCountryFlag
                     countryCode={String(selectedCountry)}
@@ -212,7 +212,7 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
             value={phoneNumber || value}
             onChange={handlePhoneNumberChange}
             className={cn(
-              "h-[40px] w-full rounded-[8px] bg-white px-3 py-2 !text-base text-[#0A0A0B] placeholder:text-gray-400",
+              "h-[45.5px] w-full rounded-[8px] bg-white px-3 py-2 !text-base text-[#0A0A0B] placeholder:text-[#7d8083] ",
               `${error ? "error-field" : "border border-[#D1D1D1]"}`,
               isValid && phoneNumber && "border-green-500",
               !isValid && phoneNumber && "border-red-500"

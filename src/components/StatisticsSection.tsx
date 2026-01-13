@@ -234,7 +234,7 @@ const StatisticsSection: React.FC<StatisticsSectionProps> = ({
 
   return (
     <div ref={sectionRef} className="px-4 max-w-7xl md:px-14 mx-auto mb-6 md:mb-4">
-      <div className="border border-[#E4E4E4] rounded-[8px] relative -top-4.5 sm:top-[-48px] z-10 bg-white sm:rounded-[16px] shadow-[0_12px_24px_-4px_rgba(133,133,133,0.12)] p-5 sm:p-8 flex flex-col gap-8 sm:gap-16 sm:mx-auto sm:max-w-[1400px]">
+      <div className="hover:shadow-[0_1px_8px_rgba(0,0,0,0.1)] border border-[#E4E4E4] rounded-[8px] relative -top-4.5 sm:top-[-48px] z-10 bg-white sm:rounded-[16px] p-5 sm:p-8 flex flex-col gap-8 sm:gap-16 sm:mx-auto sm:max-w-[1400px]">
         {/* Desktop Layout */}
         <div className="hidden sm:flex flex-col gap-14">
           {hasAboutStats ? (

@@ -85,7 +85,7 @@ const TaxDetailsSection: React.FC<TaxDetailsSectionProps> = ({
           </div>
           <div>
             <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-              ID Type
+              ID Type <span className="text-red-500">*</span>
             </label>
             <Select
               value={taxDetails.idType}
@@ -111,7 +111,7 @@ const TaxDetailsSection: React.FC<TaxDetailsSectionProps> = ({
             <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
               {taxDetails.idType
                 ? `${idTypeOptions.find(opt => opt.value === taxDetails.idType)?.label || "ID"} Number`
-                : "ID Number"}
+                : "ID Number"} <span className="text-red-500">*</span>
             </label>
             <input
               type="text"

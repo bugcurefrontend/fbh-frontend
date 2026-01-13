@@ -104,16 +104,6 @@ const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
     setVideoPlaying(false);
   };
 
-  const slideVariants = {
-    enter: { opacity: 0, x: 40 },
-    center: { opacity: 1, x: 0 },
-    exit: { opacity: 0, x: -40 },
-  };
-  const imageSlideVariants = {
-    enter: { opacity: 0, x: 20 },
-    center: { opacity: 1, x: 0 },
-    exit: { opacity: 0, x: -20 },
-  };
 
   return (
     <section
@@ -172,15 +162,16 @@ const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
               </video>
             )
           ) : (
+            
+                            
             <AnimatePresence mode="wait">
               <motion.div
                 key={`image-${current}`}
-                variants={imageSlideVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{ duration: 0.3, ease: "easeInOut" }}
-                className="relative"
+                 initial={{ x: 100, opacity: 0 }}
+                 animate={{ x: 0, opacity: 1 }}
+                 exit={{ x: -100, opacity: 0 }}
+                 transition={{ duration: 0.3, ease: "easeInOut" }}
+                 className="relative"
               >
                 <Image
                   src={testimonials[current].src}
@@ -223,11 +214,10 @@ const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
 
           <AnimatePresence mode="wait">
             <motion.div
-              variants={slideVariants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{ duration: 0.6, ease: "easeInOut" }}
+               initial={{ x: 100, opacity: 0 }}
+                 animate={{ x: 0, opacity: 1 }}
+                 exit={{ x: -100, opacity: 0 }}
+                 transition={{ duration: 0.6, ease: "easeInOut" }}
               className="flex flex-col gap-4"
             >
               <div className="flex flex-col sm:gap-1">

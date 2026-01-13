@@ -12,6 +12,7 @@ import {
   AlertDialogTitle,
 } from "../ui/alert-dialog";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { Recipient } from "@/components/gift-tree/types";
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
@@ -22,6 +23,10 @@ interface ProceedToPayProps {
   availableTrees?: number;
   className?: string;
   onNavigate?: () => void;
+  userName?: string;
+  userEmail?: string;
+  recipients?: Recipient[];
+  onRecipientsUpdate?: (recipients: Recipient[]) => void;
 }
 
 const ProceedToPay: React.FC<ProceedToPayProps> = ({
@@ -31,6 +36,10 @@ const ProceedToPay: React.FC<ProceedToPayProps> = ({
   availableTrees = 10,
   className,
   onNavigate,
+  userName,
+  userEmail,
+  recipients,
+  onRecipientsUpdate,
 }) => {
   const router = useRouter();
   const [isStatusOpen, setIsStatusOpen] = useState(false);
@@ -40,15 +49,23 @@ const ProceedToPay: React.FC<ProceedToPayProps> = ({
   // Adjust Trees State
   const [isAdjustOpen, setIsAdjustOpen] = useState(false);
   const [adjustInput, setAdjustInput] = useState(String(numberOfTrees));
+  const [localRecipients, setLocalRecipients] = useState<Recipient[]>([]);
 
-  // Sync input when prop changes
+  // Sync input/recipients when prop changes
   useEffect(() => {
     setAdjustInput(String(numberOfTrees));
-  }, [numberOfTrees]);
+    if (recipients) {
+      setLocalRecipients(recipients);
+    }
+  }, [numberOfTrees, recipients]);
 
   const onProceed = () => {
     if (numberOfTrees > availableTrees) {
+      // Re-sync local state before opening
       setAdjustInput(String(numberOfTrees));
+      if (recipients) {
+        setLocalRecipients(recipients);
+      }
       setIsAdjustOpen(true);
     } else {
       startProcessing();
@@ -67,12 +84,31 @@ const ProceedToPay: React.FC<ProceedToPayProps> = ({
   };
 
   const handleSaveAdjust = () => {
-    const val = parseInt(adjustInput, 10);
-    if (!isNaN(val) && onTreeCountChange) {
-      onTreeCountChange(val);
+    if (recipients && recipients.length > 0) {
+      // Handle multi-recipient save
+      const newTotal = localRecipients.reduce((sum, r) => sum + r.trees, 0);
+      if (onTreeCountChange) {
+        onTreeCountChange(newTotal);
+      }
+      if (onRecipientsUpdate) {
+        onRecipientsUpdate(localRecipients);
+      }
+    } else {
+      // Handle single user save
+      const val = parseInt(adjustInput, 10);
+      if (!isNaN(val) && onTreeCountChange) {
+        onTreeCountChange(val);
+      }
     }
     setIsAdjustOpen(false);
     startProcessing();
+  };
+
+  const handleRecipientTreeChange = (id: number, val: string) => {
+    const trees = parseInt(val, 10);
+    setLocalRecipients((prev) =>
+      prev.map((r) => (r.id === id ? { ...r, trees: isNaN(trees) ? 0 : trees } : r))
+    );
   };
 
   useEffect(() => {
@@ -89,9 +125,13 @@ const ProceedToPay: React.FC<ProceedToPayProps> = ({
     return () => clearTimeout(timer);
   }, [isStatusOpen, status, countdown, router]);
 
-  const currentInputTrees = parseInt(adjustInput, 10) || 0;
+  // Calculations for validation
+  const currentTotalTrees = recipients && recipients.length > 0
+    ? localRecipients.reduce((sum, r) => sum + r.trees, 0)
+    : parseInt(adjustInput, 10) || 0;
+    
   const isAdjustmentValid =
-    currentInputTrees > 0 && currentInputTrees <= availableTrees;
+    currentTotalTrees > 0 && currentTotalTrees <= availableTrees;
 
   return (
     <>
@@ -172,7 +212,7 @@ const ProceedToPay: React.FC<ProceedToPayProps> = ({
               <TriangleAlert className="md:min-w-8 min-w-6 h-full" />
               <p className="font-medium max-sm:text-sm">
                 You've exceeded the maximum trees quantity. Please reduce the
-                quantity for recipient.
+                quantity for {recipients && recipients.length > 0 ? "recipients" : "recipient"}.
               </p>
             </div>
             <div className="flex items-center gap-4">
@@ -188,28 +228,58 @@ const ProceedToPay: React.FC<ProceedToPayProps> = ({
                 } max-sm:flex-col md:text-lg leading-6.5 rounded-[8px] w-full sm:p-3 max-sm:py-2 max-sm:px-3 flex justify-between sm:items-center gap-1 sm:gap-4 transition-colors`}
               >
                 <span className="font-medium">Trees Selected:</span>
-                <span className="font-bold ">{currentInputTrees}</span>
+                <span className="font-bold ">{currentTotalTrees}</span>
               </div>
             </div>
-            <div className="flex items-center justify-between border border-[#E8E8E9] px-4 py-2 rounded-[8px]">
-              <div className="space-y-1">
-                <h1 className="text-[#090C0F] font-semibold leading-5">
-                  Jane Cooper
-                </h1>
-                <p className="text-[#454950] font-medium leading-6 text-sm">
-                  janecooper@gamil.com
-                </p>
-              </div>
-              <input
-                type="number"
-                placeholder="Enter Manually"
-                min="1"
-                max="9999"
-                value={adjustInput}
-                onChange={(e) => setAdjustInput(e.target.value)}
-                className={`text-center border-[#003399] text-[#003399] px-4 py-2.5 border rounded-[8px] flex-1 sm:max-w-[128px] max-w-[80px] transition-colors`}
-              />
+
+            <div className="max-h-[300px] overflow-y-auto space-y-3">
+              {recipients && recipients.length > 0 ? (
+                // Multi-recipient list
+                localRecipients.map((recipient) => (
+                  <div key={recipient.id} className="flex items-center justify-between border border-[#E8E8E9] px-4 py-2 rounded-[8px]">
+                    <div className="space-y-1">
+                      <h1 className="text-[#090C0F] font-semibold leading-5 text-sm md:text-base">
+                        {recipient.firstName} {recipient.lastName}
+                      </h1>
+                      <p className="text-[#454950] font-medium leading-6 text-xs md:text-sm truncate max-w-[150px]">
+                        {recipient.email}
+                      </p>
+                    </div>
+                    <input
+                      type="number"
+                      placeholder="Qty"
+                      min="1"
+                      max="9999"
+                      value={recipient.trees || ""}
+                      onChange={(e) => handleRecipientTreeChange(recipient.id, e.target.value)}
+                      className={`text-center border-[#003399] text-[#003399] px-2 py-2 border rounded-[8px] w-[70px] sm:w-[80px] transition-colors`}
+                    />
+                  </div>
+                ))
+              ) : (
+                // Single user input (existing)
+                <div className="flex items-center justify-between border border-[#E8E8E9] px-4 py-2 rounded-[8px]">
+                  <div className="space-y-1">
+                    <h1 className="text-[#090C0F] font-semibold leading-5 text-sm md:text-base">
+                      {userName || "User"}
+                    </h1>
+                    <p className="text-[#454950] font-medium leading-6 text-xs md:text-sm">
+                      {userEmail || ""}
+                    </p>
+                  </div>
+                  <input
+                    type="number"
+                    placeholder="Enter Manually"
+                    min="1"
+                    max="9999"
+                    value={adjustInput}
+                    onChange={(e) => setAdjustInput(e.target.value)}
+                    className={`text-center border-[#003399] text-[#003399] px-4 py-2.5 border rounded-[8px] flex-1 sm:max-w-[128px] max-w-[80px] transition-colors`}
+                  />
+                </div>
+              )}
             </div>
+
             <Button
               onClick={handleSaveAdjust}
               disabled={!isAdjustmentValid}

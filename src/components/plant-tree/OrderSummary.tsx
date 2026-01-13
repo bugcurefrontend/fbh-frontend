@@ -4,16 +4,28 @@ import React, { useState } from "react";
 import { OrderSummary as OrderSummaryType } from "./types";
 import ProceedToPay from "./ProceedToPay";
 
+import { Recipient } from "@/components/gift-tree/types";
+
 interface OrderSummaryProps {
   orderSummary: OrderSummaryType;
   currentStep: number;
   isFormValid: boolean;
+  userName?: string;
+  userEmail?: string;
+  recipients?: Recipient[];
+  onTreeCountChange?: (count: number) => void;
+  onRecipientsUpdate?: (recipients: Recipient[]) => void;
 }
 
 const OrderSummary: React.FC<OrderSummaryProps> = ({
   orderSummary,
   currentStep,
   isFormValid,
+  userName,
+  userEmail,
+  recipients,
+  onTreeCountChange,
+  onRecipientsUpdate,
 }) => {
   return (
     <div className="lg:w-[45%] sticky top-20 self-start space-y-6">
@@ -62,6 +74,11 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
         <ProceedToPay
           isFormValid={isFormValid}
           numberOfTrees={orderSummary.numberOfTrees}
+          userName={userName}
+          userEmail={userEmail}
+          recipients={recipients}
+          onTreeCountChange={onTreeCountChange}
+          onRecipientsUpdate={onRecipientsUpdate}
         />
       )}
     </div>

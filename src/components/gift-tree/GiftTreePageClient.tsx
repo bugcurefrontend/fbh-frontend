@@ -21,6 +21,7 @@ import LoginDialog from "@/components/LoginDialog";
 import { useCurrency } from "@/components/CurrencySelect";
 import { fetchAllPlantRates } from "@/services/plant-rates";
 import { PlantRate } from "@/types/plant-rate";
+import { Recipient } from "@/components/gift-tree/types";
 
 interface Props {
   co2PerTree?: number | null;
@@ -38,7 +39,7 @@ const GiftTreePageClient = ({ co2PerTree, sampleCertificateUrl }: Props) => {
   const [personalDetails, setPersonalDetails] = useState<PersonalDetails>({
     firstName: "",
     lastName: "",
-    displayOnDonorsList: false,
+    displayOnDonorsList: true,
     email: "",
     doorNo: "",
     pincode: "",
@@ -56,6 +57,30 @@ const GiftTreePageClient = ({ co2PerTree, sampleCertificateUrl }: Props) => {
     idNumber: "",
     abhyashiNumber: "",
   });
+
+  const [recipients, setRecipients] = useState<Recipient[]>([]);
+
+  // Load recipients from localStorage on mount
+  useEffect(() => {
+    const stored = localStorage.getItem("recipients");
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        setRecipients(parsed);
+      } catch (e) {
+        console.error("Failed to parse stored recipients:", e);
+      }
+    }
+  }, []);
+
+  // Sync back to localStorage
+  useEffect(() => {
+    if (recipients.length > 0) {
+      localStorage.setItem("recipients", JSON.stringify(recipients));
+    } else {
+      localStorage.removeItem("recipients");
+    }
+  }, [recipients]);
 
   const searchParams = useSearchParams();
   const [isGeoTagged, setIsGeoTagged] = useState(() => {
@@ -282,7 +307,7 @@ const GiftTreePageClient = ({ co2PerTree, sampleCertificateUrl }: Props) => {
           Checkout
         </h1>
 
-        <ProgressSteps currentStep={step} />
+        <ProgressSteps currentStep={step} onStepClick={(s) => setStep(s)} />
       </div>
       <div className="lg:flex max-lg:space-y-8 md:gap-12 xl:gap-15">
         {/* Left Section */}
@@ -316,6 +341,8 @@ const GiftTreePageClient = ({ co2PerTree, sampleCertificateUrl }: Props) => {
               <AddRecipient
                 onQuantityChange={handleRecipientQuantityChange}
                 onNextStep={handleNextStep}
+                recipients={recipients}
+                onRecipientsChange={setRecipients}
               />
             </>
           )}
@@ -345,6 +372,11 @@ const GiftTreePageClient = ({ co2PerTree, sampleCertificateUrl }: Props) => {
           orderSummary={orderSummary}
           currentStep={step}
           isFormValid={isFormValid}
+          userName={`${personalDetails.firstName} ${personalDetails.lastName}`.trim()}
+          userEmail={personalDetails.email}
+          recipients={recipients}
+          onTreeCountChange={updateOrderSummary}
+          onRecipientsUpdate={setRecipients}
         />
       </div>
       <LoginDialog

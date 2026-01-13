@@ -8,6 +8,7 @@ import ShareButton from "./icons/ShareButton";
 import LifeSpan from "./icons/LifeSpan";
 import Height from "./icons/Height";
 import Oxygen from "./icons/Oxygen";
+import { AnimatePresence, motion } from "framer-motion";
 
 // Hook for counting animation
 const useCountUp = (end: number, duration: number = 2000, shouldStart: boolean = false) => {
@@ -289,12 +290,23 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
                 </video>
               )
             ) : activeImage && items.length > 0 ? (
-              <Image
-                src={activeImage}
-                alt={items[activeIndex]?.imageAlt || "Species image"}
-                fill
-                className="object-cover transition-all duration-500"
-              />
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeImage}
+                  initial={{ x: 100, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  exit={{ x: -100, opacity: 0 }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                  className="absolute inset-0"
+                >
+                  <Image
+                    src={activeImage}
+                    alt={items[activeIndex]?.imageAlt || "Species image"}
+                    fill
+                    className="object-cover transition-all duration-500"
+                  />
+                </motion.div>
+              </AnimatePresence>
             ) : (
               // Placeholder if no image is available
               <div className="w-full h-full flex items-center justify-center bg-gray-100 text-gray-400 min-h-[360px]">

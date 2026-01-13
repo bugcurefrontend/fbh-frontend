@@ -113,12 +113,12 @@ const FAQs = () => {
         </div>
 
         {faqData.map((tab) => (
-          <TabsContent key={tab.value} value={tab.value} className="md:pt-6">
+          <TabsContent key={tab.value} value={tab.value} className="md:pt-6 md:pb-1">
             <div className="space-y-6">
               {tab.faqs.map((faq) => (
                 <div
                   key={faq.id}
-                  className="border border-[#E4E4E4] rounded-[8px] overflow-hidden"
+                  className="hover:shadow-[0_1px_8px_rgba(0,0,0,0.1)] border border-[#E4E4E4] rounded-[8px] overflow-hidden"
                 >
                   <button
                     onClick={() => toggleItem(faq.id)}

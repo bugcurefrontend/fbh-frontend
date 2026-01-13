@@ -71,7 +71,7 @@ const LightBox: React.FC<LightBoxProps> = ({
   const [personalDetails, setPersonalDetails] = useState<PersonalDetails>({
     firstName: "",
     lastName: "",
-    displayOnDonorsList: false,
+    displayOnDonorsList: true,
     email: "",
     doorNo: "",
     pincode: "",
@@ -196,7 +196,7 @@ const LightBox: React.FC<LightBoxProps> = ({
       setPersonalDetails({
         firstName: "",
         lastName: "",
-        displayOnDonorsList: false,
+        displayOnDonorsList: true,
         email: "",
         doorNo: "",
         pincode: "",
@@ -419,8 +419,9 @@ const LightBox: React.FC<LightBoxProps> = ({
           </div>
           {step > 1 && (
             <button
+              type="button"
               onClick={handleBack}
-              className="bg-white hover:bg-gray-100 flex rounded-[8px] items-center justify-self-center absolute gap-1 md:top-10 top-3 left-3 md:left-10 md:px-4 md:py-2 md:text-lg leading-4.5 md:leading-6.5 font-bold md:font-medium max-md:text-[#003399]"
+              className="bg-white hover:bg-gray-100 flex rounded-[8px] items-center justify-self-center absolute gap-1 md:top-10 top-3 left-3 md:left-10 md:px-4 md:py-2 md:text-lg leading-4.5 md:leading-6.5 font-bold md:font-medium max-md:text-[#003399] z-[60] cursor-pointer"
             >
               <ChevronLeft
                 size={24}
@@ -496,6 +497,10 @@ const LightBox: React.FC<LightBoxProps> = ({
                   isFormValid={isStep3Valid}
                   handleProceed={handleProceed}
                   onClose={() => handleOpenChange(false)}
+                  userName={`${personalDetails.firstName} ${personalDetails.lastName}`.trim()}
+                  userEmail={personalDetails.email}
+                  occasion={occasion}
+                  occasionImage={selectedAttribute?.icon || selectedAttribute?.image}
                 />
               </div>
             )}

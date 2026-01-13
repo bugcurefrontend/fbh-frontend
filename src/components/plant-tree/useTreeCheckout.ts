@@ -367,6 +367,7 @@ export const useTreeCheckout = (co2PerTree?: number) => {
 
   return {
     step,
+    setStep,
     selectedQuantity,
     manualQuantity,
     orderSummary,

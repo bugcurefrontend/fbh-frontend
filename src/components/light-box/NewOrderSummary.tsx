@@ -16,12 +16,20 @@ interface NewOrderSummaryProps {
   isFormValid: boolean;
   handleProceed: () => Promise<void> | void;
   onClose?: () => void;
+  userName?: string;
+  userEmail?: string;
+  occasion?: string;
+  occasionImage?: string;
 }
 
 const NewOrderSummary: React.FC<NewOrderSummaryProps> = ({
   orderSummary,
   isFormValid,
   onClose,
+  userName,
+  userEmail,
+  occasion,
+  occasionImage,
 }) => {
   const [selectedTrees, setSelectedTrees] = useState(
     orderSummary.numberOfTrees
@@ -43,12 +51,12 @@ const NewOrderSummary: React.FC<NewOrderSummaryProps> = ({
             <div className="max-md:text-sm space-y-6 text-[#4C4748] leading-5.5 font-semibold">
               <div className="flex gap-2">
                 <Image
-                  src="/images/celebration.png"
-                  alt="celebration"
+                  src={occasionImage || (occasion?.toLowerCase().includes("healing") ? "/images/healing.png" : "/images/celebration.png")}
+                  alt="occasion"
                   height={20}
                   width={20}
                 />
-                <h2>Birthday</h2>
+                <h2>{occasion || "Occasion"}</h2>
               </div>
               <h2>
                 {selectedTrees > 0
@@ -78,6 +86,8 @@ const NewOrderSummary: React.FC<NewOrderSummaryProps> = ({
         onTreeCountChange={setSelectedTrees}
         className="uppercase"
         onNavigate={onClose}
+        userName={userName}
+        userEmail={userEmail}
       />
     </div>
   );

@@ -46,6 +46,7 @@ const TreeCheckoutClient = ({ co2PerTree, sampleCertificateUrl }: Props) => {
     handleDialogClose,
     handleSignIn,
     handleContinueAsGuest,
+    setStep,
   } = useTreeCheckout(co2PerTree ?? undefined);
 
   return (
@@ -55,7 +56,7 @@ const TreeCheckoutClient = ({ co2PerTree, sampleCertificateUrl }: Props) => {
           Checkout
         </h1>
 
-        <ProgressSteps currentStep={step} />
+        <ProgressSteps currentStep={step} onStepClick={(s) => setStep(s)} />
       </div>
 
       <div className="lg:flex max-lg:space-y-8 md:gap-12 xl:gap-15">
@@ -135,6 +136,8 @@ const TreeCheckoutClient = ({ co2PerTree, sampleCertificateUrl }: Props) => {
           orderSummary={orderSummary}
           currentStep={step}
           isFormValid={isFormValid}
+          userName={`${personalDetails.firstName} ${personalDetails.lastName}`.trim()}
+          userEmail={personalDetails.email}
         />
       </div>
 

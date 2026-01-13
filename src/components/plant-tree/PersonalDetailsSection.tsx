@@ -93,16 +93,16 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
           <div className="grid md:grid-cols-2 gap-6 md:gap-8">
             <div>
               <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-                First Name
+                First Name <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
-                maxLength={30}
+                maxLength={15}
                 value={personalDetails.firstName}
                 onChange={(e) => {
                   const value = e.target.value
                     .replace(/[^A-Za-z\s'-]/g, "")
-                    .slice(0, 30);
+                    .slice(0, 15);
                   if (/^[A-Za-z\s'-]*$/.test(value)) {
                     onPersonalDetailsChange("firstName", value);
                   }
@@ -113,16 +113,16 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
             </div>
             <div>
               <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-                Last Name
+                Last Name <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
-                maxLength={30}
+                maxLength={15}
                 value={personalDetails.lastName}
                 onChange={(e) => {
                   const value = e.target.value
                     .replace(/[^A-Za-z\s'-]/g, "")
-                    .slice(0, 30);
+                    .slice(0, 15);
                   if (/^[A-Za-z\s'-]*$/.test(value)) {
                     onPersonalDetailsChange("lastName", value);
                   }
@@ -155,7 +155,7 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
         </div>
         <div className="">
           <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-            Email
+            Email <span className="text-red-500">*</span>
           </label>
 
           <div className="relative w-full">
@@ -181,7 +181,7 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
         <div className="grid md:grid-cols-2 gap-6 md:gap-8">
           <div>
             <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-              Phone number
+              Phone number <span className="text-red-500">*</span>
             </label>
 
             <PhoneInput
@@ -215,7 +215,7 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
           </div>
           <div>
             <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-              Currency
+              Currency <span className="text-red-500">*</span>
             </label>
             <Select
               value={personalDetails.currency}
@@ -258,7 +258,7 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
 
         <div className="">
           <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-            Door no, Street Address
+            Door no, Street Address <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -275,7 +275,7 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
           />
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6 md:gap-8">
+        <div className="grid md:grid-cols-2 gap-6 md:gap-8 overflow-hidden">
           <div>
             <CityAutocomplete
               value={cityValue}
@@ -296,7 +296,7 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
           </div>
           <div>
             <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-              State
+              State <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
@@ -320,13 +320,10 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
               placeholder="Select Country"
             />
           </div>
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-6 md:gap-8">
 
           <div>
-            <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-              Pin / Zip Code
+            <label className="mb-1.5 md:mb-2 block text-xs text-[#344054] font-semibold">
+              Pin / Zip Code <span className="text-red-500">*</span>
             </label>
             <input
               type="text"

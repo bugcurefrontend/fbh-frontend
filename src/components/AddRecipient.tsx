@@ -8,13 +8,16 @@ import { Recipient, RecipientFormData } from "./gift-tree/types";
 interface AddRecipientProps {
   onQuantityChange?: (totalTrees: number) => void;
   onNextStep?: () => void;
+  recipients: Recipient[];
+  onRecipientsChange: (recipients: Recipient[]) => void;
 }
 
 const AddRecipient: React.FC<AddRecipientProps> = ({
   onQuantityChange,
   onNextStep,
+  recipients,
+  onRecipientsChange,
 }) => {
-  const [recipients, setRecipients] = useState<Recipient[]>([]);
   const [showForm, setShowForm] = useState<boolean>(true);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [errors, setErrors] = useState<
@@ -33,30 +36,15 @@ const AddRecipient: React.FC<AddRecipientProps> = ({
     phoneNumber: "",
   });
 
-  // Load from localStorage on mount
-  useEffect(() => {
-    const stored = localStorage.getItem("recipients");
-    if (stored) {
-      try {
-        const parsed = JSON.parse(stored);
-        setRecipients(parsed);
-        if (parsed.length > 0) {
-          setShowForm(false);
-          updateOrderSummary(parsed);
-        }
-      } catch (e) {
-        console.error("Failed to parse stored recipients:", e);
-      }
-    }
-  }, []);
 
-  // Save to localStorage whenever recipients change
+
+  // Update summary whenever recipients change
   useEffect(() => {
     if (recipients.length > 0) {
-      localStorage.setItem("recipients", JSON.stringify(recipients));
+      setShowForm(false);
       updateOrderSummary(recipients);
     } else {
-      localStorage.removeItem("recipients");
+      setShowForm(true);
       if (onQuantityChange) {
         onQuantityChange(0);
       }
@@ -234,11 +222,11 @@ const AddRecipient: React.FC<AddRecipientProps> = ({
     };
 
     if (editingId) {
-      setRecipients(
+      onRecipientsChange(
         recipients.map((r) => (r.id === editingId ? recipientData : r))
       );
     } else {
-      setRecipients([...recipients, recipientData]);
+      onRecipientsChange([...recipients, recipientData]);
     }
 
     resetForm();
@@ -247,7 +235,7 @@ const AddRecipient: React.FC<AddRecipientProps> = ({
 
   const handleDelete = (id: number): void => {
     if (window.confirm("Are you sure you want to delete this recipient?")) {
-      setRecipients(recipients.filter((r) => r.id !== id));
+      onRecipientsChange(recipients.filter((r) => r.id !== id));
 
       // If we're editing this recipient, close the form
       if (editingId === id) {

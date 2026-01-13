@@ -49,7 +49,7 @@ const Step1: React.FC<Step1Props> = ({
     <div className="flex flex-col w-full md:space-y-8 space-y-4">
       <div className="space-y-4">
         <p className="text-base md:text-lg text-[#454950] md:font-medium">
-          What Occasion / Cause are you donating for?
+          What Occasion / Cause are you donating for? <span className="text-red-500">*</span>
         </p>
         <ComboBox
           value={occasion}
@@ -69,7 +69,7 @@ const Step1: React.FC<Step1Props> = ({
 
       <div className="space-y-4">
         <p className="text-base md:text-lg text-[#454950] md:font-medium">
-          How many trees would you like to plant?
+          How many trees would you like to plant? <span className="text-red-500">*</span>
         </p>
         <div className="space-y-4">
           <div className="flex justify-between gap-6">

@@ -8,6 +8,7 @@ import TreeSpeciesIcon from "./icons/TreeSpeciesIcon";
 import GeoTagToggleAndActions from "./GeoTagToggleAndActions";
 import ShareButton from "./icons/ShareButton";
 import TotalTreesIcon from "./icons/TotalTreesIcon";
+import { AnimatePresence, motion } from "framer-motion";
 
 // Hook for counting animation
 const useCountUp = (end: number, duration: number = 2000, shouldStart: boolean = false) => {
@@ -282,12 +283,23 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
                 </video>
               )
             ) : activeImage ? (
-              <Image
-                src={activeImage}
-                alt={items[activeIndex].imageAlt}
-                fill
-                className="object-cover transition-all duration-500"
-              />
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeImage}
+                  initial={{ x: 100, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  exit={{ x: -100, opacity: 0 }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                  className="absolute inset-0"
+                >
+                  <Image
+                    src={activeImage}
+                    alt={items[activeIndex].imageAlt}
+                    fill
+                    className="object-cover"
+                  />
+                </motion.div>
+              </AnimatePresence>
             ) : mapCode ? (
               // Show map iframe for last thumbnail
               <iframe
