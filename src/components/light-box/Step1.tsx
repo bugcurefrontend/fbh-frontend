@@ -128,7 +128,7 @@ const Step1: React.FC<Step1Props> = ({
           className="md:h-[46px] h-[36px] md:w-[116px] w-[88.81px] md:gap-2 gap-1 rounded-[8px]"
           className2="gap-2 px-3.5"
         />
-        <h1 className="flex items-baseline gap-1">
+        <h1 className="flex h-[35px] items-baseline gap-1">
           <span className="font-bold text-2xl md:text-[40px] md:leading-[36px] text-[#090C0F]">
             {currencySymbol} {isGeoTagged ? geotaggedRate : nonGeotaggedRate} /
           </span>
