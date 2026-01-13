@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Check, Share2 } from "lucide-react";
 import LinkIcon from "@/components/icons/LinkIcon";
+import { AnimatePresence, motion } from "framer-motion";
 
 interface ShareButtonProps {
   className?: string;
@@ -20,16 +21,22 @@ const ShareButton: React.FC<ShareButtonProps> = ({ className, popClass }) => {
 
   return (
     <div>
-      {isCopied && (
-        <div
-          className={`
-           flex items-center justify-center gap-2 absolute md:h-12 h-10 w-[107px] md:w-[134px] leading-4.5 rounded-[8px] shadow-xs bg-white text-[#003399] md:text-sm text-xs font-semibold ${popClass}
-          `}
-        >
-          <LinkIcon />
-          Link Copied
-        </div>
-      )}
+      <AnimatePresence>
+        {isCopied && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className={`
+             flex items-center justify-center gap-2 absolute md:h-12 h-10 w-[107px] md:w-[134px] leading-4.5 rounded-[8px] shadow-xs bg-white text-[#003399] md:text-sm text-xs font-semibold ${popClass}
+            `}
+          >
+            <LinkIcon />
+            Link Copied
+          </motion.div>
+        )}
+      </AnimatePresence>
       <button
         onClick={handleShare}
         className={`flex items-center justify-center absolute md:h-12 md:w-12 h-10 w-10 rounded md:rounded-[8px] text-white bg-[#003399] hover:bg-[#002266] transition-colors shadow-xs ${className}`}

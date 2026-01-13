@@ -172,7 +172,7 @@ const AllSpeciesPage: React.FC<AllSpeciesPageProps> = ({
                         <p className="text-lg font-semibold text-black truncate md:text-lg md:font-bold md:text-[#19212C]">
                           {item.name}
                         </p>
-                        <button className="md:mr-4 flex items-center gap-2 text-[#003399] font-bold text-xs uppercase cursor-pointer">
+                        <button className="flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer md:mr-4 mr-2">
                           Know More
                           <ArrowRightIcon
                             width={24}

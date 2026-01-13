@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import LandscapeIcon from "./icons/LandscapeIcon";
 import TreeSpeciesIcon from "./icons/TreeSpeciesIcon";
@@ -27,10 +27,80 @@ const formatNumber = (value: number): string => {
   return value.toLocaleString() + "+";
 };
 
+// Parse a formatted string like "10,000+" to get the numeric value
+const parseFormattedNumber = (str: string): number => {
+  const cleaned = str.replace(/[^0-9]/g, "");
+  return parseInt(cleaned, 10) || 0;
+};
+
+// Hook for counting animation
+const useCountUp = (end: number, duration: number = 2000, shouldStart: boolean = false) => {
+  const [count, setCount] = useState(0);
+  const countRef = useRef(0);
+  const startTimeRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (!shouldStart || end === 0) return;
+
+    const animate = (timestamp: number) => {
+      if (!startTimeRef.current) startTimeRef.current = timestamp;
+      const progress = Math.min((timestamp - startTimeRef.current) / duration, 1);
+      
+      // Easing function for smooth animation
+      const easeOutQuad = (t: number) => t * (2 - t);
+      const easedProgress = easeOutQuad(progress);
+      
+      countRef.current = Math.floor(easedProgress * end);
+      setCount(countRef.current);
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        setCount(end);
+      }
+    };
+
+    requestAnimationFrame(animate);
+  }, [end, duration, shouldStart]);
+
+  return count;
+};
+
+// Animated number component
+const AnimatedNumber: React.FC<{ value: string; isVisible: boolean }> = ({ value, isVisible }) => {
+  const numericValue = parseFormattedNumber(value);
+  const hasSuffix = value.includes("+");
+  const animatedValue = useCountUp(numericValue, 2000, isVisible);
+  
+  return <>{animatedValue.toLocaleString()}{hasSuffix ? "+" : ""}</>;
+};
+
 const StatisticsSection: React.FC<StatisticsSectionProps> = ({
   metrics: apiMetrics,
   aboutStats,
 }) => {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const hasAnimated = useRef(false);
+
+  // Intersection Observer to trigger animation when in view
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasAnimated.current) {
+          setIsVisible(true);
+          hasAnimated.current = true;
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
   const fallbackTopRowStats = [
     {
       icon: <LandscapeIcon width={40} height={40} color="#206f32" />,
@@ -163,7 +233,7 @@ const StatisticsSection: React.FC<StatisticsSectionProps> = ({
   const bottomRowStats = orderedApiStats.slice(3, 6);
 
   return (
-    <div className="px-4 max-w-7xl md:px-14 mx-auto mb-6 md:mb-4">
+    <div ref={sectionRef} className="px-4 max-w-7xl md:px-14 mx-auto mb-6 md:mb-4">
       <div className="border border-[#E4E4E4] rounded-[8px] relative -top-4.5 sm:top-[-48px] z-10 bg-white sm:rounded-[16px] shadow-[0_12px_24px_-4px_rgba(133,133,133,0.12)] p-5 sm:p-8 flex flex-col gap-8 sm:gap-16 sm:mx-auto sm:max-w-[1400px]">
         {/* Desktop Layout */}
         <div className="hidden sm:flex flex-col gap-14">
@@ -176,7 +246,7 @@ const StatisticsSection: React.FC<StatisticsSectionProps> = ({
                       {stat.icon}
                     </div>
                     <p className="text-4xl font-semibold text-black sm:text-[40px]">
-                      {stat.number}
+                      <AnimatedNumber value={stat.number} isVisible={isVisible} />
                     </p>
                     <p className="md:text-base md:font-normal md:leading-6 md:text-center md:align-middle md:text-[#454950] text-base text-gray-500">
                       {stat.label}
@@ -199,7 +269,7 @@ const StatisticsSection: React.FC<StatisticsSectionProps> = ({
                           {stat.icon}
                         </div>
                         <p className="text-4xl font-semibold text-black sm:text-[40px]">
-                          {stat.number}
+                          <AnimatedNumber value={stat.number} isVisible={isVisible} />
                         </p>
                         <p className="md:text-base md:font-normal md:leading-6 md:text-center md:align-middle md:text-[#454950] text-base text-gray-500">
                           {stat.label}
@@ -222,7 +292,7 @@ const StatisticsSection: React.FC<StatisticsSectionProps> = ({
                           {stat.icon}
                         </div>
                         <p className="text-4xl font-semibold text-black sm:text-[40px]">
-                          {stat.number}
+                          <AnimatedNumber value={stat.number} isVisible={isVisible} />
                         </p>
                         <p className="md:text-base md:font-normal md:leading-6 md:text-center md:align-middle md:text-[#454950] text-base text-gray-500">
                           {stat.label}
@@ -297,7 +367,7 @@ const StatisticsSection: React.FC<StatisticsSectionProps> = ({
                           {leftItem.mobileIcon}
                         </div>
                         <p className="text-lg text-[#090C0F] font-bold">
-                          {leftItem.number}
+                          <AnimatedNumber value={leftItem.number} isVisible={isVisible} />
                         </p>
                         <p className="text-[10px] max-[500px]:w-20 font-semibold text-[#454950]">
                           {leftItem.label}
@@ -313,7 +383,7 @@ const StatisticsSection: React.FC<StatisticsSectionProps> = ({
                           {rightItem.mobileIcon}
                         </div>
                         <p className="text-lg text-[#090C0F] font-bold">
-                          {rightItem.number}
+                          <AnimatedNumber value={rightItem.number} isVisible={isVisible} />
                         </p>
                         <p className="text-[10px] max-[500px]:w-26 font-semibold text-[#454950]">
                           {rightItem.label}

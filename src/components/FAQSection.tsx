@@ -62,7 +62,7 @@ const FAQSection: React.FC<FAQSectionProps> = ({ faqs }) => {
             >
               <button
                 onClick={() => toggleItem(faq.id)}
-                className="w-full flex items-center justify-between text-left hover:bg-gray-50 transition-colors p-6"
+                className="w-full flex items-center justify-between text-left transition-colors p-6"
               >
                 <span className="text-[#454950] md:text-lg text-sm md:font-bold font-semibold md:leading-relaxed leading-4.5">
                   {faq.question}
@@ -76,11 +76,18 @@ const FAQSection: React.FC<FAQSectionProps> = ({ faqs }) => {
                 </div>
               </button>
 
-              {openItem === faq.id && (
+              {/* Animated answer container with slide effect */}
+              <div 
+                className="overflow-hidden transition-all duration-300 ease-in-out"
+                style={{ 
+                  maxHeight: openItem === faq.id ? '500px' : '0px',
+                  opacity: openItem === faq.id ? 1 : 0
+                }}
+              >
                 <p className="text-[#454950] max-md:text-sm px-6 pb-6">
                   {faq.answer}
                 </p>
-              )}
+              </div>
             </div>
           ))}
         </div>

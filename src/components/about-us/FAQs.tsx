@@ -122,7 +122,7 @@ const FAQs = () => {
                 >
                   <button
                     onClick={() => toggleItem(faq.id)}
-                    className="w-full flex items-center justify-between text-left hover:bg-gray-50 transition-colors md:p-6 p-3"
+                    className="w-full flex items-center justify-between text-left transition-colors md:p-6 p-3"
                   >
                     <span className="text-[#454950] md:text-lg text-sm md:font-bold font-semibold leading-relaxed">
                       {faq.question}
@@ -141,11 +141,18 @@ const FAQs = () => {
                       )}
                     </div>
                   </button>
-                  {openItem === faq.id && (
+                  {/* Animated answer container with slide effect */}
+                  <div 
+                    className="overflow-hidden transition-all duration-300 ease-in-out"
+                    style={{ 
+                      maxHeight: openItem === faq.id ? '500px' : '0px',
+                      opacity: openItem === faq.id ? 1 : 0
+                    }}
+                  >
                     <p className="text-[#454950] max-md:text-sm md:px-6 px-3 md:pb-6 pb-3">
                       {faq.answer}
                     </p>
-                  )}
+                  </div>
                 </div>
               ))}
             </div>

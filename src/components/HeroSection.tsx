@@ -47,7 +47,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ heroContents }) => {
           href: hc.buttonUrl,
         }))
       : fallbackSlides;
-  const autoplay = useRef(Autoplay({ delay: 5000, stopOnInteraction: false }));
+  const autoplay = useRef(Autoplay({ delay: 5000, stopOnInteraction: false, stopOnMouseEnter: false }));
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [
     autoplay.current,
   ]);

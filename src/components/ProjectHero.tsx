@@ -9,6 +9,43 @@ import GeoTagToggleAndActions from "./GeoTagToggleAndActions";
 import ShareButton from "./icons/ShareButton";
 import TotalTreesIcon from "./icons/TotalTreesIcon";
 
+// Hook for counting animation
+const useCountUp = (end: number, duration: number = 2000, shouldStart: boolean = false) => {
+  const [count, setCount] = useState(0);
+  const startTimeRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (!shouldStart || end === 0) return;
+
+    const animate = (timestamp: number) => {
+      if (!startTimeRef.current) startTimeRef.current = timestamp;
+      const progress = Math.min((timestamp - startTimeRef.current) / duration, 1);
+      
+      // Easing function for smooth animation
+      const easeOutQuad = (t: number) => t * (2 - t);
+      const easedProgress = easeOutQuad(progress);
+      
+      setCount(Math.floor(easedProgress * end));
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        setCount(end);
+      }
+    };
+
+    requestAnimationFrame(animate);
+  }, [end, duration, shouldStart]);
+
+  return count;
+};
+
+// Animated number component  
+const AnimatedNumber: React.FC<{ value: number; isVisible: boolean }> = ({ value, isVisible }) => {
+  const animatedValue = useCountUp(value, 2000, isVisible);
+  return <>{animatedValue.toLocaleString()}</>;
+};
+
 interface ProjectHeroProps {
   title: string;
   location: string;
@@ -86,6 +123,29 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
   const sliderRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+  const [isHovered, setIsHovered] = useState(false);
+  const [statsVisible, setStatsVisible] = useState(false);
+  const statsRef = useRef<HTMLDivElement>(null);
+  const hasAnimatedStats = useRef(false);
+
+  // Intersection Observer for stats count animation
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasAnimatedStats.current) {
+          setStatsVisible(true);
+          hasAnimatedStats.current = true;
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    if (statsRef.current) {
+      observer.observe(statsRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   const checkScrollButtons = () => {
     if (sliderRef.current) {
@@ -107,15 +167,15 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
     }
   };
 
-  // Auto-rotate only when video is not playing
+  // Auto-rotate only when video is not playing and not hovered
   useEffect(() => {
-    if (videoPlaying) return; // Don't auto-rotate when video is playing
+    if (videoPlaying || isHovered) return; // Don't auto-rotate when video is playing or hovered
 
     const interval = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % items.length);
     }, 5000);
     return () => clearInterval(interval);
-  }, [items.length, videoPlaying]);
+  }, [items.length, videoPlaying, isHovered]);
 
   // Update active image when index changes
   useEffect(() => {
@@ -174,7 +234,11 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
     <div className="bg-white md:rounded-[16px] overflow-hidden" ref={heroRef}>
       <div className="flex flex-col lg:flex-row space-x-6 space-y-6 lg:space-y-0">
         {/* Left side - Hero Image / Map / Video */}
-        <div className="lg:w-[546px] w-full relative flex-shrink-0 group/container">
+        <div 
+          className="lg:w-[546px] w-full relative flex-shrink-0 group/container"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
           <div
             className="min-h-[360px] h-full w-full relative overflow-hidden md:rounded-[16px] rounded-[8px] cursor-pointer"
             onClick={() => {
@@ -365,11 +429,11 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
           </div>
 
           {/* Statistics */}
-          <div className="max-md:mt-2 max-sm:h-[140px] border border-[#E4E4E4] rounded-2xl flex items-center justify-between p-6">
+          <div ref={statsRef} className="max-md:mt-2 max-sm:h-[140px] border border-[#E4E4E4] rounded-2xl flex items-center justify-between p-6">
             <div className="text-center space-y-2 xl:space-y-4 flex-1">
               <LandscapeIcon className="md:w-10 w-8 h-8 md:h-10 text-white mx-auto" />
               <div className="md:text-2xl text-lg font-bold md:font-semibold text-black">
-                {stats.treesAvailable.toLocaleString()}
+                <AnimatedNumber value={stats.treesAvailable} isVisible={statsVisible} />
               </div>
               <div className="max-md:font-bold md:text-base text-[10px] text-gray-600">
                 Trees <br className="md:hidden" /> Available
@@ -381,7 +445,7 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
             <div className="text-center space-y-2 xl:space-y-4 flex-1">
               <TreeSpeciesIcon className="md:w-10 w-8 h-8 md:h-10 mx-auto" />
               <div className="md:text-2xl text-lg font-bold md:font-semibold text-black">
-                {stats.treesPlanted.toLocaleString()}
+                <AnimatedNumber value={stats.treesPlanted} isVisible={statsVisible} />
               </div>
               <div className="max-md:font-bold md:text-base text-[10px] text-gray-600">
                 Trees <br className="md:hidden" /> Planted
@@ -393,7 +457,7 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
             <div className="text-center space-y-2 xl:space-y-4 flex-1">
               <TotalTreesIcon className="md:w-10 w-8 h-8 md:h-10 mx-auto" />
               <div className="md:text-2xl text-lg font-bold md:font-semibold text-black">
-                {stats.totalTrees.toLocaleString()}
+                <AnimatedNumber value={stats.totalTrees} isVisible={statsVisible} />
               </div>
               <div className="max-md:font-bold md:text-base text-[10px] text-gray-600">
                 Total <br className="md:hidden" /> Trees

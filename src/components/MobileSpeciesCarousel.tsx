@@ -45,11 +45,11 @@ const MobileSpeciesCarousel: React.FC<MobileSpeciesCarouselProps> = ({
                   className="rounded-[8px] object-cover max-h-[160px]"
                 />
               </div>
-              <div className="p-4 flex sm:flex-root flex-col justify-between sm:items-center max-sm:gap-2">
+              <div className="p-4 flex justify-between items-center gap-2">
                 <p className="font-semibold truncate md:text-lg md:font-bold md:leading-[26px] md:align-middle text-[#19212C]">
                   {item.name}
                 </p>
-                <button className="py-[11px] pr-[12px] flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer">
+                <button className="mr-2 flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer">
                   Know More{" "}
                   <ArrowRightIcon
                     width={24}

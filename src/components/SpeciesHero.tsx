@@ -9,6 +9,52 @@ import LifeSpan from "./icons/LifeSpan";
 import Height from "./icons/Height";
 import Oxygen from "./icons/Oxygen";
 
+// Hook for counting animation
+const useCountUp = (end: number, duration: number = 2000, shouldStart: boolean = false) => {
+  const [count, setCount] = useState(0);
+  const startTimeRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (!shouldStart || end === 0) return;
+
+    const animate = (timestamp: number) => {
+      if (!startTimeRef.current) startTimeRef.current = timestamp;
+      const progress = Math.min((timestamp - startTimeRef.current) / duration, 1);
+      
+      const easeOutQuad = (t: number) => t * (2 - t);
+      const easedProgress = easeOutQuad(progress);
+      
+      setCount(Math.floor(easedProgress * end));
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        setCount(end);
+      }
+    };
+
+    requestAnimationFrame(animate);
+  }, [end, duration, shouldStart]);
+
+  return count;
+};
+
+// Animated characteristic component that parses and animates numeric values from strings
+const AnimatedCharacteristic: React.FC<{ value: string; suffix?: string; isVisible: boolean }> = ({ value, suffix = "", isVisible }) => {
+  // Extract the first number from the string (handles "50", "100 Kg", "10-15", etc.)
+  const numericMatch = value.match(/^\d+/);
+  const numericValue = numericMatch ? parseInt(numericMatch[0], 10) : 0;
+  const restOfString = numericMatch ? value.slice(numericMatch[0].length) : value;
+  
+  const animatedValue = useCountUp(numericValue, 2000, isVisible);
+  
+  if (numericValue === 0) {
+    return <>{value}{suffix}</>;
+  }
+  
+  return <>{animatedValue}{restOfString}{suffix}</>;
+};
+
 interface SpeciesHeroProps {
   name: string;
   scientificName: string;
@@ -79,6 +125,29 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
   const sliderRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+  const [isHovered, setIsHovered] = useState(false);
+  const [statsVisible, setStatsVisible] = useState(false);
+  const statsRef = useRef<HTMLDivElement>(null);
+  const hasAnimatedStats = useRef(false);
+
+  // Intersection Observer for stats count animation
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasAnimatedStats.current) {
+          setStatsVisible(true);
+          hasAnimatedStats.current = true;
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    if (statsRef.current) {
+      observer.observe(statsRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   const checkScrollButtons = () => {
     if (sliderRef.current) {
@@ -100,16 +169,16 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
     }
   };
 
-  // Auto-rotate only when video is not playing
+  // Auto-rotate only when video is not playing and not hovered
   useEffect(() => {
-    if (videoPlaying) return; // Don't auto-rotate when video is playing
+    if (videoPlaying || isHovered) return; // Don't auto-rotate when video is playing or hovered
     if (items.length === 0) return; // Prevent division by zero if items is empty
 
     const interval = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % items.length);
     }, 5000);
     return () => clearInterval(interval);
-  }, [items.length, videoPlaying]);
+  }, [items.length, videoPlaying, isHovered]);
 
   // Update active image when index changes
   useEffect(() => {
@@ -172,7 +241,11 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
     <div className="bg-white md:rounded-[16px] overflow-hidden" ref={heroRef}>
       <div className="flex flex-col lg:flex-row space-x-6 space-y-6 lg:space-y-0">
         {/* Left side - Hero Image / Video */}
-        <div className="lg:w-[546px] w-full relative flex-shrink-0 group/container">
+        <div 
+          className="lg:w-[546px] w-full relative flex-shrink-0 group/container"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
           <div
             className="min-h-[360px] h-full w-full relative overflow-hidden md:rounded-[16px] rounded-[8px] cursor-pointer"
             onClick={() => {
@@ -344,13 +417,13 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
           </div>
 
           {/* Species Characteristics */}
-          <div className="border border-[#E4E4E4] rounded-[8px] md:rounded-2xl flex items-center justify-between md:p-6 p-4 max-lg:mt-6">
+          <div ref={statsRef} className="border border-[#E4E4E4] rounded-[8px] md:rounded-2xl flex items-center justify-between md:p-6 p-4 max-lg:mt-6">
             <div className="text-center space-y-2 md:space-y-4 flex-1">
               <div className="md:w-10 w-8 md:h-10 h-8 mx-auto">
                 <LifeSpan className="md:w-10 w-8 h-8 md:h-10 mx-auto" />
               </div>
               <div className="md:text-2xl text-lg font-bold md:font-semibold text-black">
-                {characteristics.lifespan} yrs
+                <AnimatedCharacteristic value={characteristics.lifespan} suffix=" yrs" isVisible={statsVisible} />
               </div>
               <div className="md:text-base max-md:font-semibold text-xs text-[#4C4748]">
                 Lifespan
@@ -364,7 +437,7 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
                 <Oxygen className="md:w-10 w-8 h-8 md:h-10 mx-auto" />
               </div>
               <div className="md:text-2xl text-lg font-bold md:font-semibold text-black">
-                {characteristics.oxygenReleased}
+                <AnimatedCharacteristic value={characteristics.oxygenReleased} isVisible={statsVisible} />
               </div>
               <div className="md:text-base max-md:font-semibold text-xs text-[#4C4748]">
                 Oxygen <span className="max-md:hidden">Released</span>
@@ -379,9 +452,9 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
               </div>
               <div className="md:text-2xl text-lg font-bold md:font-semibold text-black">
                 <span className="max-md:hidden">
-                  {characteristics.mdHeight}
+                  <AnimatedCharacteristic value={characteristics.mdHeight || ""} suffix="m" isVisible={statsVisible} />
                 </span>
-                <span className="md:hidden">{characteristics.height}</span>m
+                <span className="md:hidden"><AnimatedCharacteristic value={characteristics.height} suffix="m" isVisible={statsVisible} /></span>
               </div>
               <div className="md:text-base max-md:font-semibold text-xs text-[#4C4748]">
                 Height
