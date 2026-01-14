@@ -49,32 +49,35 @@ const Step2: React.FC<Step2Props> = ({
   };
 
   const countryValue =
-    typeof personalDetails.country === "object" && personalDetails.country !== null
+    typeof personalDetails.country === "object" &&
+    personalDetails.country !== null
       ? personalDetails.country
       : personalDetails.country
-        ? findCountryByCode(personalDetails.country as string) || {
+      ? findCountryByCode(personalDetails.country as string) || {
           id: personalDetails.country,
           name: personalDetails.country,
           code: personalDetails.country,
           active: true,
         }
-        : null;
+      : null;
 
   const cityValue =
     typeof personalDetails.city === "object" && personalDetails.city !== null
       ? personalDetails.city
       : personalDetails.city
-        ? ({ id: "", name: personalDetails.city } as City)
-        : null;
+      ? ({ id: "", name: personalDetails.city } as City)
+      : null;
 
   const cityDefaultCountry =
-    (typeof personalDetails.country === "object" && personalDetails.country?.code)
+    typeof personalDetails.country === "object" && personalDetails.country?.code
       ? personalDetails.country.code
-      : (typeof personalDetails.country === "string" && personalDetails.country.length === 2)
-        ? personalDetails.country
-        : (typeof personalDetails.region === "string" && personalDetails.region.length === 2)
-          ? personalDetails.region
-          : undefined;
+      : typeof personalDetails.country === "string" &&
+        personalDetails.country.length === 2
+      ? personalDetails.country
+      : typeof personalDetails.region === "string" &&
+        personalDetails.region.length === 2
+      ? personalDetails.region
+      : undefined;
 
   return (
     <div className="flex flex-col space-y-4">
@@ -90,7 +93,7 @@ const Step2: React.FC<Step2Props> = ({
           className={personalDetails.displayOnDonorsList ? "bg-[#003399]" : ""}
         />
       </div>
-      <div className="flex flex-col md:space-y-[23px] space-y-4">
+      <div className="flex flex-col md:space-y-[22.5px] space-y-4">
         {/* Personal details form fields */}
         <div className="grid md:grid-cols-2 gap-6">
           <div>
@@ -165,7 +168,13 @@ const Step2: React.FC<Step2Props> = ({
             <PhoneInput
               name="phoneNumber"
               value={personalDetails.phoneNumber}
-              country={(personalDetails.region || "IN").toUpperCase() as "IN" | "US" | "GB" | "AE"}
+              country={
+                (personalDetails.region || "IN").toUpperCase() as
+                  | "IN"
+                  | "US"
+                  | "GB"
+                  | "AE"
+              }
               onChange={({ phoneNumber, countryCode }) => {
                 handlePersonalDetailsChange("phoneNumber", phoneNumber);
                 handlePersonalDetailsChange("region", countryCode);
@@ -216,7 +225,9 @@ const Step2: React.FC<Step2Props> = ({
             <input
               type="text"
               value={personalDetails.state}
-              onChange={(e) => handlePersonalDetailsChange("state", e.target.value)}
+              onChange={(e) =>
+                handlePersonalDetailsChange("state", e.target.value)
+              }
               className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F] shadow-xs"
               placeholder="Select State"
             />
@@ -228,7 +239,8 @@ const Step2: React.FC<Step2Props> = ({
               value={countryValue}
               onChange={(country) => {
                 handlePersonalDetailsChange("country", country);
-                if (country?.code) handlePersonalDetailsChange("region", country.code);
+                if (country?.code)
+                  handlePersonalDetailsChange("region", country.code);
               }}
               label="Country"
               placeholder="Select Country"

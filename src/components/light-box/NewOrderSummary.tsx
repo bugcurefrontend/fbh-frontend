@@ -40,7 +40,7 @@ const NewOrderSummary: React.FC<NewOrderSummaryProps> = ({
       <div className="space-y-2">
         <div className="space-y-4 border border-[#E5EBF5] bg-[#F7F9FF] rounded-[16px] md:rounded-[8px] overflow-hidden p-4">
           <div className="flex items-center justify-between pb-4 border-b border-[#95AAD5]">
-            <div className="max-md:text-sm space-y-6 text-[#0A0A0B] leading-5 font-semibold">
+            <div className="max-md:text-sm space-y-[23px] text-[#0A0A0B] leading-5 font-semibold">
               <h2>Occassion / Cause :</h2>
               <h2>Number Of Trees :</h2>
               <h2>
@@ -48,10 +48,15 @@ const NewOrderSummary: React.FC<NewOrderSummaryProps> = ({
               </h2>
             </div>
 
-            <div className="max-md:text-sm space-y-6 text-[#4C4748] leading-5.5 font-semibold">
+            <div className="max-md:text-sm space-y-[23px] text-[#4C4748] leading-5.5 font-semibold">
               <div className="flex gap-2">
                 <Image
-                  src={occasionImage || (occasion?.toLowerCase().includes("healing") ? "/images/healing.png" : "/images/celebration.png")}
+                  src={
+                    occasionImage ||
+                    (occasion?.toLowerCase().includes("healing")
+                      ? "/images/healing.png"
+                      : "/images/celebration.png")
+                  }
                   alt="occasion"
                   height={20}
                   width={20}
