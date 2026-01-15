@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   OrderSummary as OrderSummaryType,
   PersonalDetails,
@@ -235,14 +235,14 @@ const LightBox: React.FC<LightBoxProps> = ({
     setStep((prev) => Math.max(prev - 1, 1));
   };
 
-  const handlePersonalDetailsChange = (
+  const handlePersonalDetailsChange = useCallback((
     field: keyof PersonalDetails,
     value: string | boolean | City | Country | null
   ) => {
     setPersonalDetails((prev) => ({ ...prev, [field]: value }));
-  };
+  }, []);
 
-  const handleTaxDetailsChange = (field: keyof TaxDetails, value: any) => {
+  const handleTaxDetailsChange = useCallback((field: keyof TaxDetails, value: any) => {
     if (field === "citizenship") {
       // When citizenship changes, reset ID type and ID number
       const isIndian =
@@ -262,7 +262,7 @@ const LightBox: React.FC<LightBoxProps> = ({
       return;
     }
     setTaxDetails((prev) => ({ ...prev, [field]: value }));
-  };
+  }, []);
 
   const handleGeoTaggedChange = (value: boolean) => {
     setIsGeoTagged(value);

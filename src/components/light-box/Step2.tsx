@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Button } from "@/components/ui/button";
-import { ComboBox } from "@/components/ui/combobox";
+import CityAutocomplete from "@/components/ui/CityAutocomplete";
 import { Switch } from "@/components/ui/switch";
 import { Mail } from "lucide-react";
 import { PhoneInput } from "@/components/ui/PhoneInput";
@@ -48,36 +48,36 @@ const Step2: React.FC<Step2Props> = ({
     return null;
   };
 
-  const countryValue =
+  const countryValue = useMemo(() =>
     typeof personalDetails.country === "object" &&
-    personalDetails.country !== null
+      personalDetails.country !== null
       ? personalDetails.country
       : personalDetails.country
-      ? findCountryByCode(personalDetails.country as string) || {
+        ? findCountryByCode(personalDetails.country as string) || {
           id: personalDetails.country,
           name: personalDetails.country,
           code: personalDetails.country,
           active: true,
         }
-      : null;
+        : null, [personalDetails.country]);
 
-  const cityValue =
+  const cityValue = useMemo(() =>
     typeof personalDetails.city === "object" && personalDetails.city !== null
       ? personalDetails.city
       : personalDetails.city
-      ? ({ id: "", name: personalDetails.city } as City)
-      : null;
+        ? ({ id: "", name: personalDetails.city } as City)
+        : null, [personalDetails.city]);
 
-  const cityDefaultCountry =
+  const cityDefaultCountry = useMemo(() =>
     typeof personalDetails.country === "object" && personalDetails.country?.code
       ? personalDetails.country.code
       : typeof personalDetails.country === "string" &&
         personalDetails.country.length === 2
-      ? personalDetails.country
-      : typeof personalDetails.region === "string" &&
-        personalDetails.region.length === 2
-      ? personalDetails.region
-      : undefined;
+        ? personalDetails.country
+        : typeof personalDetails.region === "string" &&
+          personalDetails.region.length === 2
+          ? personalDetails.region
+          : undefined, [personalDetails.country, personalDetails.region]);
 
   return (
     <div className="flex flex-col space-y-4">
@@ -170,10 +170,10 @@ const Step2: React.FC<Step2Props> = ({
               value={personalDetails.phoneNumber}
               country={
                 (personalDetails.region || "IN").toUpperCase() as
-                  | "IN"
-                  | "US"
-                  | "GB"
-                  | "AE"
+                | "IN"
+                | "US"
+                | "GB"
+                | "AE"
               }
               onChange={({ phoneNumber, countryCode }) => {
                 handlePersonalDetailsChange("phoneNumber", phoneNumber);
@@ -203,21 +203,42 @@ const Step2: React.FC<Step2Props> = ({
           />
         </div>
         <div className="grid md:grid-cols-2 gap-6">
-          <div>
-            <label className="mb-1.5 block text-xs text-[#454950] font-semibold">
-              City <span className="text-red-500">*</span>
-            </label>
-            <ComboBox
-              value={
-                typeof personalDetails.city === "string"
-                  ? personalDetails.city
-                  : personalDetails.city?.name || ""
+          <CityAutocomplete
+            value={cityValue}
+            defaultCountry={cityDefaultCountry}
+            onChange={(city) => {
+              handlePersonalDetailsChange("city", city || null);
+              if (!city?.id) {
+                handlePersonalDetailsChange("state", "");
+                return;
               }
-              onChange={(value) => handlePersonalDetailsChange("city", value)}
-              options={["Nagpur", "Pune", "Mumbai"]}
-              placeholder="Select City"
-            />
-          </div>
+              if (city?.state) handlePersonalDetailsChange("state", city.state);
+
+              // Sync country if available in city object
+              if (city?.country) {
+                const countryName = city.country.trim();
+                const foundCountry = countriesData.find(
+                  (c: any) =>
+                    c.englishShortName.toLowerCase() ===
+                    countryName.toLowerCase()
+                );
+
+                if (foundCountry) {
+                  const countryObj: Country = {
+                    id: foundCountry.numeric,
+                    name: foundCountry.englishShortName,
+                    code: foundCountry.countryCode,
+                    active: true,
+                    numeric: foundCountry.numeric,
+                  };
+                  handlePersonalDetailsChange("country", countryObj);
+                  handlePersonalDetailsChange("region", foundCountry.countryCode);
+                }
+              }
+            }}
+            label="City"
+            placeholder="Select City"
+          />
           <div>
             <label className="mb-1.5 block text-xs text-[#454950] font-semibold">
               State <span className="text-red-500">*</span>

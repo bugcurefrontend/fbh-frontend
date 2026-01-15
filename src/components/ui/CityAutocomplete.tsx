@@ -1,4 +1,3 @@
-/* eslint-disable max-depth */
 "use client";
 
 import * as React from "react";
@@ -70,16 +69,26 @@ export default function CityAutocomplete({
     };
 
     React.useEffect(() => {
-        if (value?.name) {
-            if (value.name && !value.id) {
+        const currentDisplay = value?.id ? displayCity(value) : (value?.name || "");
+
+        // Only update searchTerm if it's significantly different from the current display value
+        // and we are NOT in the middle of an active search (searchTerm change)
+        if (currentDisplay !== searchTerm) {
+            // If we have a value by name but no id (initial state or manual entry)
+            if (value?.name && !value?.id) {
                 setSearchTerm(value.name);
-            } else if (value.id) {
-                if (value.id && (!value.complete_name || !value.state)) {
+            } else if (value?.id) {
+                // If we have an ID but missing details, fetch them
+                if (!value.complete_name || !value.state) {
                     fetch(`${API_URL}/cities/id/${value.id}.json`)
                         .then((res) => res.json())
                         .then((res) => {
-                            if (res && onChange) {
-                                onChange(res);
+                            if (res && res.id === value.id && onChange) {
+                                // Only call onChange if the ID is still the same to avoid race conditions
+                                // and don't trigger if it's already what we have
+                                if (res.complete_name !== value.complete_name) {
+                                    onChange(res);
+                                }
                             }
                         })
                         .catch(() => {
@@ -88,13 +97,11 @@ export default function CityAutocomplete({
                 } else {
                     setSearchTerm(displayCity(value));
                 }
-            } else {
-                setSearchTerm(displayCity(value));
+            } else if (!value?.name) {
+                setSearchTerm("");
             }
-        } else {
-            setSearchTerm("");
         }
-    }, [value, onChange, API_URL]);
+    }, [value?.id, value?.name, value?.state, value?.complete_name, API_URL]); // Use specific properties to avoid object reference issues
 
     const handleSelect = React.useCallback((city: City) => {
         if (onChange) {
@@ -258,7 +265,7 @@ export default function CityAutocomplete({
                     </div>
                 </PopoverTrigger>
                 <PopoverContent
-                    className="relative z-10 !h-[150px] !w-[280px] overflow-y-auto rounded-[8px] bg-white p-0 !text-base"
+                    className="z-[100] !h-[150px] !w-[280px] overflow-y-auto rounded-[8px] bg-white p-0 !text-base"
                     align="start"
                     side="bottom"
                 >

@@ -287,8 +287,27 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
                   return;
                 }
                 if (city?.state) onPersonalDetailsChange("state", city.state);
-                // Don't update country from city - keep existing country selection
-                // City API returns country name, but we need country object with code for PhoneInput
+                // Sync country if available in city object
+                if (city?.country) {
+                  const countryName = city.country.trim();
+                  const foundCountry = countriesData.find(
+                    (c: any) =>
+                      c.englishShortName.toLowerCase() ===
+                      countryName.toLowerCase()
+                  );
+
+                  if (foundCountry) {
+                    const countryObj: Country = {
+                      id: foundCountry.numeric,
+                      name: foundCountry.englishShortName,
+                      code: foundCountry.countryCode,
+                      active: true,
+                      numeric: foundCountry.numeric,
+                    };
+                    onPersonalDetailsChange("country", countryObj);
+                    onPersonalDetailsChange("region", foundCountry.countryCode);
+                  }
+                }
               }}
               label="City"
               placeholder="Select City"
