@@ -8,7 +8,8 @@ import ShareButton from "./icons/ShareButton";
 import LifeSpan from "./icons/LifeSpan";
 import Height from "./icons/Height";
 import Oxygen from "./icons/Oxygen";
-import { AnimatePresence, motion } from "framer-motion";
+import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
 
 // Hook for counting animation
 const useCountUp = (end: number, duration: number = 2000, shouldStart: boolean = false) => {
@@ -118,9 +119,6 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
 
   const [items, setItems] = useState(buildItems());
   const [activeIndex, setActiveIndex] = useState(0);
-  const [activeImage, setActiveImage] = useState(
-    treeSpecies.length > 0 ? treeSpecies[0].imageUrl : ""
-  );
   const [videoPlaying, setVideoPlaying] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
@@ -130,6 +128,15 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
   const [statsVisible, setStatsVisible] = useState(false);
   const statsRef = useRef<HTMLDivElement>(null);
   const hasAnimatedStats = useRef(false);
+
+  // Initialize Embla Carousel with Autoplay
+  const autoplay = useRef(
+    Autoplay({ delay: 5000, stopOnInteraction: true, stopOnMouseEnter: true })
+  );
+  
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [
+    autoplay.current,
+  ]);
 
   // Intersection Observer for stats count animation
   useEffect(() => {
@@ -170,33 +177,43 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
     }
   };
 
-  // Auto-rotate only when video is not playing and not hovered
+  // Update items when props change
   useEffect(() => {
-    if (videoPlaying || isHovered) return; // Don't auto-rotate when video is playing or hovered
-    if (items.length === 0) return; // Prevent division by zero if items is empty
+    setItems(buildItems());
+  }, [treeSpecies, videoThumbnail, videoUrl]);
 
-    const interval = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % items.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [items.length, videoPlaying, isHovered]);
-
-  // Update active image when index changes
+  // Sync external state (video playing) with autoplay
   useEffect(() => {
-    if (items.length > 0 && activeIndex < items.length) {
-      if (items[activeIndex].id === "video") {
-        setActiveImage(items[activeIndex].imageUrl);
-        // Don't reset videoPlaying here - let the click handler control it
-      } else {
-        setActiveImage(items[activeIndex].imageUrl);
-        setVideoPlaying(false); // Reset video playing only when switching to non-video items
-      }
+    if (!emblaApi) return;
+    const autoplayPlugin = emblaApi.plugins().autoplay;
+    if (!autoplayPlugin) return;
+
+    // Only autoplay if we have more than 1 item and not interacting
+    if (items.length <= 1 || videoPlaying || isHovered) {
+      autoplayPlugin.stop();
     } else {
-      setActiveImage(""); // No images or invalid index
+      autoplayPlugin.play();
     }
-    // Reset activeIndex if it goes out of bounds after items change
-    if (activeIndex >= items.length && items.length > 0) setActiveIndex(0);
-  }, [activeIndex, items]);
+  }, [videoPlaying, isHovered, emblaApi, items.length]);
+
+  // Handle slide change
+  useEffect(() => {
+    if (!emblaApi) return;
+
+    const onSelect = () => {
+      setActiveIndex(emblaApi.selectedScrollSnap());
+      setVideoPlaying(false); 
+    };
+
+    emblaApi.on("select", onSelect);
+    
+    // Initial sync
+    setActiveIndex(emblaApi.selectedScrollSnap());
+
+    return () => {
+      emblaApi.off("select", onSelect);
+    };
+  }, [emblaApi]);
 
   // Intersection observer to stop video when scrolling away
   useEffect(() => {
@@ -248,71 +265,102 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
           onMouseLeave={() => setIsHovered(false)}
         >
           <div
-            className="min-h-[360px] h-full w-full relative overflow-hidden md:rounded-[16px] rounded-[8px] cursor-pointer"
-            onClick={() => {
-              // Only trigger video play when clicking on video item
-              if (
-                items[activeIndex]?.id === "video" &&
-                videoUrl &&
-                !videoPlaying
-              ) {
-                setVideoPlaying(true);
-              }
-            }}
+            className="min-h-[360px] h-full w-full relative overflow-hidden md:rounded-[16px] rounded-[8px]"
           >
-            {/* Show video player when video is selected and playing */}
-            {items[activeIndex]?.id === "video" && videoPlaying && videoUrl ? (
-              videoUrl.includes("youtube.com") ||
-              videoUrl.includes("youtu.be") ? (
-                <iframe
-                  src={`${
-                    videoUrl.includes("embed")
-                      ? videoUrl
-                      : videoUrl
-                          .replace("watch?v=", "embed/")
-                          .replace("youtu.be/", "youtube.com/embed/")
-                  }?autoplay=1`}
-                  className="w-full h-full min-h-[360px]"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
-                />
-              ) : (
-                <video
-                  src={videoUrl}
-                  className="w-full h-full object-cover min-h-[360px]"
-                  controls
-                  autoPlay
-                  playsInline
-                  preload="auto"
-                >
-                  Your browser does not support the video tag.
-                </video>
-              )
-            ) : activeImage && items.length > 0 ? (
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeImage}
-                  initial={{ x: 100, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  exit={{ x: -100, opacity: 0 }}
-                  transition={{ duration: 0.3, ease: "easeInOut" }}
-                  className="absolute inset-0"
-                >
-                  <Image
-                    src={activeImage}
-                    alt={items[activeIndex]?.imageAlt || "Species image"}
-                    fill
-                    className="object-cover transition-all duration-500"
-                  />
-                </motion.div>
-              </AnimatePresence>
-            ) : (
-              // Placeholder if no image is available
-              <div className="w-full h-full flex items-center justify-center bg-gray-100 text-gray-400 min-h-[360px]">
-                <Trees className="w-16 h-16 text-gray-300" />
-              </div>
-            )}
+             {/* Embla Carousel Viewport */}
+             <div className="overflow-hidden h-full" ref={emblaRef}>
+               <div className="flex h-full">
+                 {items.map((item, index) => (
+                   <div
+                     key={`slide-${item.id}-${index}`}
+                     className="flex-[0_0_100%] min-w-0 relative h-full min-h-[360px]"
+                     onClick={() => {
+                       if (
+                         item.id === "video" &&
+                         videoUrl &&
+                         !videoPlaying &&
+                         activeIndex === index
+                       ) {
+                         setVideoPlaying(true);
+                       }
+                     }}
+                   >
+                      <div className={`relative w-full h-full min-h-[360px] ${
+                         item.id === "video" && !videoPlaying ? "cursor-pointer" : ""
+                      }`}>
+                         {/* Video Item */}
+                         {item.id === "video" ? (
+                            videoPlaying && videoUrl && activeIndex === index ? (
+                             videoUrl.includes("youtube.com") ||
+                             videoUrl.includes("youtu.be") ? (
+                               <iframe
+                                 src={`${
+                                   videoUrl.includes("embed")
+                                     ? videoUrl
+                                     : videoUrl
+                                         .replace("watch?v=", "embed/")
+                                         .replace("youtu.be/", "youtube.com/embed/")
+                                 }?autoplay=1`}
+                                 className="w-full h-full min-h-[360px]"
+                                 frameBorder="0"
+                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                 allowFullScreen
+                               />
+                             ) : (
+                               <video
+                                 src={videoUrl}
+                                 className="w-full h-full object-cover min-h-[360px]"
+                                 controls
+                                 autoPlay
+                                 playsInline
+                                 preload="auto"
+                               >
+                                 Your browser does not support the video tag.
+                               </video>
+                             )
+                            ) : (
+                                // Video Thumbnail
+                                <div className="absolute inset-0 w-full h-full">
+                                 <Image
+                                   src={item.imageUrl}
+                                   alt={item.imageAlt}
+                                   fill
+                                   className="object-cover"
+                                 />
+                                 <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-all">
+                                   <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center shadow-lg">
+                                     <svg
+                                       className="w-7 h-7 text-[#003399] ml-1"
+                                       fill="currentColor"
+                                       viewBox="0 0 24 24"
+                                     >
+                                       <path d="M8 5v14l11-7z" />
+                                     </svg>
+                                   </div>
+                                 </div>
+                                </div>
+                            )
+                         ) : (
+                            // Regular Image Item
+                            <div className="absolute inset-0 w-full h-full">
+                               <Image
+                                 src={item.imageUrl}
+                                 alt={item.imageAlt || "Species image"}
+                                 fill
+                                 className="object-cover"
+                               />
+                            </div>
+                         )}
+                      </div>
+                   </div>
+                 ))}
+                 {items.length === 0 && (
+                    <div className="flex-[0_0_100%] min-w-0 relative h-full min-h-[360px] flex items-center justify-center bg-gray-100">
+                        <Trees className="w-16 h-16 text-gray-300" />
+                    </div>
+                 )}
+               </div>
+             </div>
           </div>
 
           {/* Mobile dots (shows on hover) */}
@@ -353,8 +401,8 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
                   <div
                     key={item.id}
                     onClick={() => {
-                      setActiveIndex(i);
-                      setVideoPlaying(false); // Always reset - user must click main view to play
+                      // Select the item
+                      emblaApi?.scrollTo(i);
                     }}
                     className={`w-[112px] h-[112px] flex-shrink-0 rounded-[8px] overflow-hidden border-[0.75px] cursor-pointer ${
                       activeIndex === i ? "border-[#003399]" : "border-white"

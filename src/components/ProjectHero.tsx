@@ -8,7 +8,8 @@ import TreeSpeciesIcon from "./icons/TreeSpeciesIcon";
 import GeoTagToggleAndActions from "./GeoTagToggleAndActions";
 import ShareButton from "./icons/ShareButton";
 import TotalTreesIcon from "./icons/TotalTreesIcon";
-import { AnimatePresence, motion } from "framer-motion";
+import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
 
 // Hook for counting animation
 const useCountUp = (end: number, duration: number = 2000, shouldStart: boolean = false) => {
@@ -118,7 +119,6 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
   const [items, setItems] = useState(buildItems());
 
   const [activeIndex, setActiveIndex] = useState(0);
-  const [activeImage, setActiveImage] = useState(treeSpecies[0]?.imageUrl);
   const [videoPlaying, setVideoPlaying] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
@@ -129,24 +129,54 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
   const statsRef = useRef<HTMLDivElement>(null);
   const hasAnimatedStats = useRef(false);
 
-  // Intersection Observer for stats count animation
+  // Initialize Embla Carousel with Autoplay
+  const autoplay = useRef(
+    Autoplay({ delay: 5000, stopOnInteraction: true, stopOnMouseEnter: true })
+  );
+  
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [
+    autoplay.current,
+  ]);
+
+  // Symc items with props
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !hasAnimatedStats.current) {
-          setStatsVisible(true);
-          hasAnimatedStats.current = true;
-        }
-      },
-      { threshold: 0.3 }
-    );
+    setItems(buildItems());
+  }, [treeSpecies, videoThumbnail, videoUrl, mapCode]);
 
-    if (statsRef.current) {
-      observer.observe(statsRef.current);
+  // Sync external state (video playing) with autoplay
+  useEffect(() => {
+    if (!emblaApi) return;
+    const autoplayPlugin = emblaApi.plugins().autoplay;
+    if (!autoplayPlugin) return;
+
+    if (items.length <= 1 || videoPlaying || isHovered) {
+      autoplayPlugin.stop();
+    } else {
+      autoplayPlugin.play();
     }
+  }, [videoPlaying, isHovered, emblaApi, items.length]);
 
-    return () => observer.disconnect();
-  }, []);
+  // Handle slide change
+  useEffect(() => {
+    if (!emblaApi) return;
+
+    const onSelect = () => {
+      setActiveIndex(emblaApi.selectedScrollSnap());
+      // Only pause video if we moved to a different slide. 
+      // Note: We don't auto-reset videoPlaying here because the carousel loop might cause false positives, 
+      // but in this logic invalidating video on change is safer.
+      setVideoPlaying(false); 
+    };
+
+    emblaApi.on("select", onSelect);
+    
+    // Initial sync
+    setActiveIndex(emblaApi.selectedScrollSnap());
+
+    return () => {
+      emblaApi.off("select", onSelect);
+    };
+  }, [emblaApi]);
 
   const checkScrollButtons = () => {
     if (sliderRef.current) {
@@ -168,28 +198,24 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
     }
   };
 
-  // Auto-rotate only when video is not playing and not hovered
+  // Intersection Observer for stats count animation
   useEffect(() => {
-    if (videoPlaying || isHovered) return; // Don't auto-rotate when video is playing or hovered
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasAnimatedStats.current) {
+          setStatsVisible(true);
+          hasAnimatedStats.current = true;
+        }
+      },
+      { threshold: 0.3 }
+    );
 
-    const interval = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % items.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [items.length, videoPlaying, isHovered]);
-
-  // Update active image when index changes
-  useEffect(() => {
-    if (items[activeIndex].id === "map") {
-      setActiveImage(""); // no image, show map
-    } else if (items[activeIndex].id === "video") {
-      setActiveImage(items[activeIndex].imageUrl);
-      // Don't reset videoPlaying here - let the click handler control it
-    } else {
-      setActiveImage(items[activeIndex].imageUrl);
-      setVideoPlaying(false); // Reset video playing only when switching to non-video items
+    if (statsRef.current) {
+      observer.observe(statsRef.current);
     }
-  }, [activeIndex, items]);
+
+    return () => observer.disconnect();
+  }, []);
 
   // Intersection observer to stop video when scrolling away
   useEffect(() => {
@@ -241,80 +267,112 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
           onMouseLeave={() => setIsHovered(false)}
         >
           <div
-            className="min-h-[360px] h-full w-full relative overflow-hidden md:rounded-[16px] rounded-[8px] cursor-pointer"
-            onClick={() => {
-              // Only trigger video play when clicking on video item
-              if (
-                items[activeIndex].id === "video" &&
-                videoUrl &&
-                !videoPlaying
-              ) {
-                setVideoPlaying(true);
-              }
-            }}
+            className="min-h-[360px] h-full w-full relative overflow-hidden md:rounded-[16px] rounded-[8px]"
           >
-            {/* Show video player when video is selected and playing */}
-            {items[activeIndex].id === "video" && videoPlaying && videoUrl ? (
-              videoUrl.includes("youtube.com") ||
-              videoUrl.includes("youtu.be") ? (
-                <iframe
-                  src={`${
-                    videoUrl.includes("embed")
-                      ? videoUrl
-                      : videoUrl
-                          .replace("watch?v=", "embed/")
-                          .replace("youtu.be/", "youtube.com/embed/")
-                  }?autoplay=1`}
-                  className="w-full h-full min-h-[360px]"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
-                />
-              ) : (
-                <video
-                  src={videoUrl}
-                  className="w-full h-full object-cover min-h-[360px]"
-                  controls
-                  autoPlay
-                  playsInline
-                  preload="auto"
-                >
-                  Your browser does not support the video tag.
-                </video>
-              )
-            ) : activeImage ? (
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeImage}
-                  initial={{ x: 100, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  exit={{ x: -100, opacity: 0 }}
-                  transition={{ duration: 0.3, ease: "easeInOut" }}
-                  className="absolute inset-0"
-                >
-                  <Image
-                    src={activeImage}
-                    alt={items[activeIndex].imageAlt}
-                    fill
-                    className="object-cover"
-                  />
-                </motion.div>
-              </AnimatePresence>
-            ) : mapCode ? (
-              // Show map iframe for last thumbnail
-              <iframe
-                src={`https://www.google.com/maps/embed?pb=${mapCode}`}
-                width="100%"
-                height="100%"
-                className="md:rounded-[16px] rounded-[8px] border-0 min-h-[360px] h-full"
-                allowFullScreen
-              />
-            ) : (
-              // Fallback when no map code
-              <div className="w-full h-full flex items-center justify-center bg-gray-100 text-gray-400 min-h-[360px]">
-                <span>Map not available</span>
+            {/* Embla Carousel Viewport */}
+            <div className="overflow-hidden h-full" ref={emblaRef}>
+              <div className="flex h-full">
+                {items.map((item, index) => (
+                  <div
+                    key={`slide-${item.id}-${index}`}
+                    className="flex-[0_0_100%] min-w-0 relative h-full min-h-[360px]"
+                    onClick={() => {
+                      if (
+                        item.id === "video" &&
+                        videoUrl &&
+                        !videoPlaying &&
+                        activeIndex === index
+                      ) {
+                        setVideoPlaying(true);
+                      }
+                    }}
+                  >
+                     <div className={`relative w-full h-full min-h-[360px] ${
+                        item.id === "video" && !videoPlaying ? "cursor-pointer" : ""
+                     }`}>
+                        {/* Video Item */}
+                        {item.id === "video" ? (
+                           videoPlaying && videoUrl && activeIndex === index ? (
+                            videoUrl.includes("youtube.com") ||
+                            videoUrl.includes("youtu.be") ? (
+                              <iframe
+                                src={`${
+                                  videoUrl.includes("embed")
+                                    ? videoUrl
+                                    : videoUrl
+                                        .replace("watch?v=", "embed/")
+                                        .replace("youtu.be/", "youtube.com/embed/")
+                                }?autoplay=1`}
+                                className="w-full h-full min-h-[360px]"
+                                frameBorder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowFullScreen
+                              />
+                            ) : (
+                              <video
+                                src={videoUrl}
+                                className="w-full h-full object-cover min-h-[360px]"
+                                controls
+                                autoPlay
+                                playsInline
+                                preload="auto"
+                              >
+                                Your browser does not support the video tag.
+                              </video>
+                            )
+                           ) : (
+                               // Video Thumbnail
+                               <div className="absolute inset-0 w-full h-full">
+                                <Image
+                                  src={item.imageUrl}
+                                  alt={item.imageAlt}
+                                  fill
+                                  className="object-cover"
+                                />
+                                <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-all">
+                                  <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center shadow-lg">
+                                    <svg
+                                      className="w-7 h-7 text-[#003399] ml-1"
+                                      fill="currentColor"
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <path d="M8 5v14l11-7z" />
+                                    </svg>
+                                  </div>
+                                </div>
+                               </div>
+                           )
+                        ) : item.id === "map" ? (
+                            // Map Item
+                            mapCode ? (
+                              <iframe
+                                src={`https://www.google.com/maps/embed?pb=${mapCode}`}
+                                width="100%"
+                                height="100%"
+                                className="md:rounded-[16px] rounded-[8px] border-0 min-h-[360px] h-full"
+                                allowFullScreen
+                              />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center bg-gray-100 text-gray-400 min-h-[360px]">
+                                <span>Map not available</span>
+                              </div>
+                            )
+                        ) : (
+                           // Regular Image Item
+                           <div className="absolute inset-0 w-full h-full"> 
+                              <Image
+                                src={item.imageUrl}
+                                alt={item.imageAlt}
+                                fill
+                                className="object-cover"
+                              />
+                           </div>
+                        )}
+                     </div>
+                  </div>
+                ))}
               </div>
-            )}
+            </div>
           </div>
 
           {/* Mobile dots (shows on hover) */}
@@ -355,9 +413,8 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
                   <div
                     key={item.id}
                     onClick={() => {
-                      // Select the item (video thumbnail will show first, click main view to play)
-                      setActiveIndex(i);
-                      setVideoPlaying(false); // Always reset - user must click main view to play
+                      // Select the item
+                      emblaApi?.scrollTo(i);
                     }}
                     className={`w-[112px] h-[112px] flex-shrink-0 rounded-[8px] overflow-hidden border-[0.75px] cursor-pointer ${
                       activeIndex === i ? "border-[#003399]" : "border-white"
