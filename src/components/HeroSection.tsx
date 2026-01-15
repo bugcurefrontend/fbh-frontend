@@ -47,7 +47,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ heroContents }) => {
           href: hc.buttonUrl,
         }))
       : fallbackSlides;
-  const autoplay = useRef(Autoplay({ delay: 5000, stopOnInteraction: false, stopOnMouseEnter: false }));
+  const autoplay = useRef(Autoplay({ delay: 5000, stopOnInteraction: true, stopOnMouseEnter: true }));
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [
     autoplay.current,
   ]);
@@ -69,7 +69,11 @@ const HeroSection: React.FC<HeroSectionProps> = ({ heroContents }) => {
   const scrollNext = () => emblaApi?.scrollNext();
 
   return (
-    <div className="md:h-[540px] h-[403px] relative overflow-hidden shadow-[0px_0px_0px_4px_rgba(149,170,213,0.2)]">
+    <div
+      className="md:h-[540px] h-[403px] relative overflow-hidden shadow-[0px_0px_0px_4px_rgba(149,170,213,0.2)]"
+      onMouseEnter={() => matchMedia("(min-width: 768px)").matches && emblaApi?.plugins().autoplay.stop()}
+      onMouseLeave={() => matchMedia("(min-width: 768px)").matches && emblaApi?.plugins().autoplay.play()}
+    >
       {/* Carousel background */}
       <div ref={emblaRef} className="absolute inset-0 overflow-hidden">
         <div className="flex">

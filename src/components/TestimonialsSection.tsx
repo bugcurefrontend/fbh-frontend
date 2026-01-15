@@ -4,6 +4,8 @@ import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import QuoteIcon from "./icons/QuoteIcon";
 import { TestimonialSimplified } from "@/types/testimonial";
+import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
 
 interface TestimonialsSectionProps {
   testimonials?: TestimonialSimplified[];
@@ -51,38 +53,63 @@ const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
   const [current, setCurrent] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [videoPlaying, setVideoPlaying] = useState(false);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
   const sectionRef = useRef<HTMLElement>(null);
 
-  const startAutoPlay = () => {
-    if (timerRef.current) clearInterval(timerRef.current);
-    timerRef.current = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % testimonials.length);
-    }, 5000); // Autoplay interval
-  };
+  // Initialize Embla Carousel with Autoplay
+  const autoplay = useRef(
+    Autoplay({ delay: 5000, stopOnInteraction: true, stopOnMouseEnter: true })
+  );
+  
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [
+    autoplay.current,
+  ]);
 
-  const stopAutoPlay = () => {
-    if (timerRef.current) clearInterval(timerRef.current);
-  };
-
+  // Sync external state (video playing) with autoplay
   useEffect(() => {
-    if (!isHovered && !videoPlaying) startAutoPlay();
-    else stopAutoPlay();
-    return () => stopAutoPlay();
-  }, [current, isHovered, videoPlaying]);
+    if (!emblaApi) return;
+    const autoplayPlugin = emblaApi.plugins().autoplay;
+    if (!autoplayPlugin) return;
 
-  // Reset video when switching testimonials
-  useEffect(() => {
-    setVideoPlaying(false);
-  }, [current]);
+    if (videoPlaying || isHovered) {
+      autoplayPlugin.stop();
+    } else {
+      autoplayPlugin.play();
+    }
+  }, [videoPlaying, isHovered, emblaApi]);
 
-  // Intersection observer to stop video when scrolling away
+  // Handle slide change to update text content
   useEffect(() => {
+    if (!emblaApi) return;
+
+    const onSelect = () => {
+      setCurrent(emblaApi.selectedScrollSnap());
+      setVideoPlaying(false); // Reset video state on slide change
+    };
+
+    emblaApi.on("select", onSelect);
+    
+    // Initial sync
+    setCurrent(emblaApi.selectedScrollSnap());
+
+    return () => {
+      emblaApi.off("select", onSelect);
+    };
+  }, [emblaApi]);
+
+  // Intersection observer: Stop/Start autoplay based on visibility
+  useEffect(() => {
+    if (!emblaApi) return;
+    const autoplayPlugin = emblaApi.plugins().autoplay;
+    if (!autoplayPlugin) return;
+
     const section = sectionRef.current;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (!entry.isIntersecting) {
           setVideoPlaying(false);
+          autoplayPlugin.stop();
+        } else if (!videoPlaying && !isHovered) {
+           autoplayPlugin.play();
         }
       },
       { threshold: 0.3 }
@@ -97,11 +124,10 @@ const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
         observer.unobserve(section);
       }
     };
-  }, []);
+  }, [videoPlaying, isHovered, emblaApi]);
 
   const handleDotClick = (index: number) => {
-    setCurrent(index);
-    setVideoPlaying(false);
+    emblaApi?.scrollTo(index);
   };
 
 
@@ -115,88 +141,90 @@ const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
       </h2>
 
       <div
-        className="overflow-hidden border border-[#e4e4e4] p-4 rounded-2xl flex flex-col md:flex-row sm:gap-16 gap-4 items-center justify-between"
+        className="hover:shadow-[0_1px_8px_rgba(0,0,0,0.1)] overflow-hidden border border-[#e4e4e4] p-4 rounded-2xl flex flex-col md:flex-row sm:gap-16 gap-4 items-center justify-between"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
         <div
-          className={`md:rounded-[16px] rounded-[8px] w-full md:w-[43.4%] md:max-h-[40%] h-full relative overflow-hidden ${
-            testimonials[current].videoUrl && !videoPlaying
-              ? "cursor-pointer"
-              : ""
-          }`}
-          onClick={(e) => {
-            e.stopPropagation();
-            if (testimonials[current].videoUrl && !videoPlaying) {
-              setVideoPlaying(true);
-            }
-          }}
+          className={`md:rounded-[16px] rounded-[8px] w-full md:w-[43.4%] md:max-h-[40%] h-full relative overflow-hidden`}
         >
-          {/* Show embedded video when playing */}
-          {videoPlaying && testimonials[current].videoUrl ? (
-            testimonials[current].videoUrl!.includes("youtube.com") ||
-            testimonials[current].videoUrl!.includes("youtu.be") ? (
-              <iframe
-                src={`${
-                  testimonials[current].videoUrl!.includes("embed")
-                    ? testimonials[current].videoUrl
-                    : testimonials[current]
-                        .videoUrl!.replace("watch?v=", "embed/")
-                        .replace("youtu.be/", "youtube.com/embed/")
-                }?autoplay=1`}
-                className="w-full min-h-[316px] md:min-h-[423px] max-h-[423px] h-full md:rounded-[7.6px] rounded-[8px]"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowFullScreen
-              />
-            ) : (
-              <video
-                src={testimonials[current].videoUrl!}
-                className="w-full min-h-[316px] md:min-h-[423px] max-h-[423px] h-full object-cover md:rounded-[7.6px] rounded-[8px]"
-                controls
-                autoPlay
-                playsInline
-                preload="auto"
-              >
-                Your browser does not support the video tag.
-              </video>
-            )
-          ) : (
-            
-                            
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={`image-${current}`}
-                 initial={{ x: 100, opacity: 0 }}
-                 animate={{ x: 0, opacity: 1 }}
-                 exit={{ x: -100, opacity: 0 }}
-                 transition={{ duration: 0.3, ease: "easeInOut" }}
-                 className="relative"
-              >
-                <Image
-                  src={testimonials[current].src}
-                  alt={testimonials[current].name}
-                  width={493}
-                  height={423}
-                  className="md:rounded-[7.6px] rounded-[8px] w-full min-h-[316px] md:min-h-[423px] max-h-[423px] h-full object-cover"
-                />
-                {/* Play Button Overlay - show if videoUrl exists */}
-                {testimonials[current].videoUrl && (
-                  <div className="absolute inset-0 flex items-center justify-center md:rounded-[7.6px] rounded-[8px] pointer-events-none">
-                    <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center shadow-lg">
-                      <svg
-                        className="w-7 h-7 text-[#003399] ml-1"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path d="M8 5v14l11-7z" />
-                      </svg>
-                    </div>
+          {/* Embla Carousel Viewport */}
+          <div className="overflow-hidden" ref={emblaRef}>
+            <div className="flex">
+              {testimonials.map((testimonial, index) => (
+                <div 
+                  key={`slide-${index}`}
+                  className="flex-[0_0_100%] min-w-0 relative"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    // Only toggle video if it's the current active slide
+                    if (index === current && testimonial.videoUrl && !videoPlaying) {
+                      setVideoPlaying(true);
+                    }
+                  }}
+                >
+                  <div className={`relative w-full h-full ${
+                      index === current && testimonial.videoUrl && !videoPlaying ? "cursor-pointer" : ""
+                  }`}>
+                     {/* Video or Image Logic */}
+                     {index === current && videoPlaying && testimonial.videoUrl ? (
+                         testimonial.videoUrl.includes("youtube.com") ||
+                         testimonial.videoUrl.includes("youtu.be") ? (
+                           <iframe
+                             src={`${
+                               testimonial.videoUrl.includes("embed")
+                                 ? testimonial.videoUrl
+                                 : testimonial.videoUrl
+                                     .replace("watch?v=", "embed/")
+                                     .replace("youtu.be/", "youtube.com/embed/")
+                             }?autoplay=1`}
+                             className="w-full min-h-[316px] md:min-h-[423px] max-h-[423px] h-full md:rounded-[7.6px] rounded-[8px]"
+                             frameBorder="0"
+                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                             allowFullScreen
+                           />
+                         ) : (
+                           <video
+                             src={testimonial.videoUrl}
+                             className="w-full min-h-[316px] md:min-h-[423px] max-h-[423px] h-full object-cover md:rounded-[7.6px] rounded-[8px]"
+                             controls
+                             autoPlay
+                             playsInline
+                             preload="auto"
+                           >
+                             Your browser does not support the video tag.
+                           </video>
+                         )
+                     ) : (
+                       <div className="relative">
+                           <Image
+                             src={testimonial.src}
+                             alt={testimonial.name}
+                             width={493}
+                             height={423}
+                             className="md:rounded-[7.6px] rounded-[8px] w-full min-h-[316px] md:min-h-[423px] max-h-[423px] h-full object-cover"
+                           />
+                           {/* Play Button Overlay - show if videoUrl exists */}
+                           {testimonial.videoUrl && (
+                             <div className="absolute inset-0 flex items-center justify-center md:rounded-[7.6px] rounded-[8px] pointer-events-none">
+                               <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center shadow-lg">
+                                 <svg
+                                   className="w-7 h-7 text-[#003399] ml-1"
+                                   fill="currentColor"
+                                   viewBox="0 0 24 24"
+                                 >
+                                   <path d="M8 5v14l11-7z" />
+                                 </svg>
+                               </div>
+                             </div>
+                           )}
+                       </div>
+                     )}
                   </div>
-                )}
-              </motion.div>
-            </AnimatePresence>
-          )}
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
         <div
@@ -217,7 +245,7 @@ const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
                initial={{ x: 100, opacity: 0 }}
                  animate={{ x: 0, opacity: 1 }}
                  exit={{ x: -100, opacity: 0 }}
-                 transition={{ duration: 0.6, ease: "easeInOut" }}
+                 transition={{ duration: 0.4, ease: "easeInOut" }}
               className="flex flex-col gap-4"
             >
               <div className="flex flex-col sm:gap-1">
