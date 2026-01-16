@@ -239,7 +239,7 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
                     INR
                   </span>
                 </SelectItem>
-                <SelectItem value="USD">
+                {/* <SelectItem value="USD">
                   <Image
                     src="/images/us.png"
                     alt="usa"
@@ -250,7 +250,7 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
                   <span className="ml-1 text-sm font-normal leading-5 text-center align-middle">
                     USD
                   </span>
-                </SelectItem>
+                </SelectItem> */}
               </SelectContent>
             </Select>
           </div>

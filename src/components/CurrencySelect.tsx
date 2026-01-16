@@ -10,7 +10,7 @@ export type CurrencyCode = StoreCurrencyCode;
 
 const currencies: { code: CurrencyCode; flag: string }[] = [
   { code: "INR", flag: "/images/flag.png" },
-  { code: "USD", flag: "/images/us.png" },
+  // { code: "USD", flag: "/images/us.png" },
 ];
 
 /**
@@ -35,16 +35,17 @@ export function useCurrency() {
   // Synchronization Logic
   useEffect(() => {
     // 1. If URL has currency, update Store if different
-    if (urlCurrency && (urlCurrency === "INR" || urlCurrency === "USD")) {
+    if (urlCurrency && (urlCurrency === "INR" /* || urlCurrency === "USD" */)) {
       if (storeState.currency !== urlCurrency) {
         appActions.setCurrency(urlCurrency);
       }
     }
-    // 2. If URL is missing currency but Store has valid currency, sync URL
-    else if (!urlCurrency && storeState.currency) {
+    // 2. Clear redundant currency from URL if it's the only option or matches default
+    else if (urlCurrency && currencies.length === 1) {
       const params = new URLSearchParams(searchParams.toString());
-      params.set("currency", storeState.currency);
-      router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+      params.delete("currency");
+      const queryString = params.toString();
+      router.replace(`${pathname}${queryString ? `?${queryString}` : ""}`, { scroll: false });
     }
   }, [urlCurrency, storeState.currency, router, pathname, searchParams]);
 
@@ -53,10 +54,20 @@ export function useCurrency() {
       // Update Store (which updates LS)
       appActions.setCurrency(newCurrency);
 
-      // Update URL
-      const params = new URLSearchParams(searchParams.toString());
-      params.set("currency", newCurrency);
-      router.push(`${pathname}?${params.toString()}`, { scroll: false });
+      // Update URL only if we have multiple currencies
+      if (currencies.length > 1) {
+        const params = new URLSearchParams(searchParams.toString());
+        params.set("currency", newCurrency);
+        router.push(`${pathname}?${params.toString()}`, { scroll: false });
+      } else {
+        // Clean URL if it's single currency
+        const params = new URLSearchParams(searchParams.toString());
+        if (params.has("currency")) {
+          params.delete("currency");
+          const queryString = params.toString();
+          router.replace(`${pathname}${queryString ? `?${queryString}` : ""}`, { scroll: false });
+        }
+      }
     },
     [router, pathname, searchParams]
   );
@@ -88,16 +99,18 @@ export default function CurrencySelect({
     <div className="relative inline-block">
       {/* Selected currency button */}
       <button
-        onClick={() => setOpen(!open)}
-        className={`flex items-center justify-center border-[2px] border-[#E6E6E6] bg-white hover:bg-[#E6EBF5] ${className}`}
+        onClick={() => currencies.length > 1 && setOpen(!open)}
+        className={`flex items-center justify-center border-[2px] border-[#E6E6E6] bg-white ${currencies.length > 1 ? "hover:bg-[#E6EBF5] cursor-pointer" : "cursor-default"} ${className}`}
       >
         <Image src={selected.flag} alt={selected.code} width={25} height={25} />
-        <span className="text-sm leading-5 text-[#333333]">
+        <span className="text-sm leading-5 text-[#333333] ml-1">
           {selected.code}
         </span>
-        <span className="text-gray-500">
-          <ChevronDown size={16} />
-        </span>
+        {currencies.length > 1 && (
+          <span className="text-gray-500">
+            <ChevronDown size={16} />
+          </span>
+        )}
       </button>
 
       {/* Dropdown Menu */}

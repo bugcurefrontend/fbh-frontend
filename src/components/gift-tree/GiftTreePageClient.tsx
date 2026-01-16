@@ -187,6 +187,12 @@ const GiftTreePageClient = ({ co2PerTree, sampleCertificateUrl }: Props) => {
     updateOrderSummary(totalTrees);
   };
 
+  // Update summary when dependencies change
+  useEffect(() => {
+    const totalTrees = recipients.reduce((sum, r) => sum + r.trees, 0);
+    updateOrderSummary(totalTrees);
+  }, [isGeoTagged, currency, plantRates, recipients]);
+
   const handleNextStep = () => {
     setStep(2);
   };
