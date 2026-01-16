@@ -27,9 +27,12 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 }) => {
   const formatPlantedCount = (count: number): string => {
     if (count >= 1000) {
-      return `${Math.floor(count / 1000)}k+ planted`;
+      return `${Math.floor(count / 1000)}k+ Planted`;
     }
-    return `${count} planted`;
+    if (count === 0) {
+      return `All Planted`;
+    }
+    return `${count} Planted`;
   };
 
   return (
@@ -41,11 +44,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           <div className="bg-[#006161] shadow-[0_20px_40px_-4px_rgba(133,133,133,0.12)] text-white text-sm font-semibold max-md:h-[26px] h-[30px] md:px-4 md:py-2 px-3 py-1 flex items-center justify-center rounded-full md:text-base md:font-semibold md:leading-[13.62px] md:align-middle md:text-[#FFFFFF] capitalize">
             {formatPlantedCount(plantedCount)}
           </div>
-          {category && (
-            <div className="bg-[#006161] shadow-[0_20px_40px_-4px_rgba(133,133,133,0.12)] text-white text-sm font-semibold max-md:h-[26px] h-[30px] md:px-4 md:py-2 px-3 py-1 flex items-center justify-center rounded-full md:text-base md:font-semibold md:leading-[13.62px] md:align-middle md:text-[#FFFFFF] capitalize">
-              {category}
-            </div>
-          )}
+
+          <div className="bg-[#006161] shadow-[0_20px_40px_-4px_rgba(133,133,133,0.12)] text-white text-sm font-semibold max-md:h-[26px] h-[30px] md:px-4 md:py-2 px-3 py-1 flex items-center justify-center rounded-full md:text-base md:font-semibold md:leading-[13.62px] md:align-middle md:text-[#FFFFFF] capitalize">
+            {category ? category : "No Category"}
+          </div>
         </div>
       </div>
       <div className="px-2.5 md:px-4 pt-4 pb-4 md:pb-6 md:pt-4 flex flex-col md:gap-6 gap-4">

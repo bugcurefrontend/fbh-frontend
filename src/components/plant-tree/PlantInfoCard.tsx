@@ -56,11 +56,6 @@ const PlantInfoCard: React.FC<PlantInfoCardProps> = ({
             availabilityMessage={availabilityMessage}
           />
         </div>
-        {availabilityMessage && (
-          <p className="text-xs text-red-500 font-medium">
-            {availabilityMessage}
-          </p>
-        )}
         <div className="space-y-1">
           <h1 className="text-lg sm:text-2xl text-[#090C0F] md:leading-9 font-semibold">
             Neem

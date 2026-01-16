@@ -33,7 +33,6 @@ const SpeciesSelectionDialog: React.FC<SpeciesSelectionDialogProps> = ({
   isGeoTagged,
   onGeoTaggedChange,
   trigger,
-  availabilityMessage,
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -86,11 +85,6 @@ const SpeciesSelectionDialog: React.FC<SpeciesSelectionDialogProps> = ({
                 className={isGeoTagged ? "bg-[#003399]" : ""}
               />
             </div>
-            {availabilityMessage && (
-              <p className="text-xs text-red-500 font-medium">
-                {availabilityMessage}
-              </p>
-            )}
           </div>
           <div className="mt-2 space-y-4 max-h-[418px] sm:max-h-[420px] overflow-y-auto flex-1 px-2 md:pl-4">
             {speciesData.length === 0 ? (
