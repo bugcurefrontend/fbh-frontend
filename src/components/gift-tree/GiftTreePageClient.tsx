@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useMemo } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import ProgressSteps from "@/components/plant-tree/ProgressSteps";
 import PlantInfoCard from "@/components/plant-tree/PlantInfoCard";
 import PersonalDetailsSection from "@/components/plant-tree/PersonalDetailsSection";
@@ -29,7 +29,30 @@ interface Props {
 }
 
 const GiftTreePageClient = ({ co2PerTree, sampleCertificateUrl }: Props) => {
-  const [step, setStep] = useState(1);
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const [step, setStepState] = useState(() => {
+    const stepParam = searchParams.get("step");
+    return stepParam ? parseInt(stepParam, 10) : 1;
+  });
+
+  const setStep = (newStep: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("step", newStep.toString());
+    router.push(`${pathname}?${params.toString()}`);
+    setStepState(newStep);
+  };
+
+  // Sync state when URL changes (browser back/forward)
+  useEffect(() => {
+    const stepParam = searchParams.get("step");
+    const currentStep = stepParam ? parseInt(stepParam, 10) : 1;
+    if (currentStep !== step) {
+      setStepState(currentStep);
+    }
+  }, [searchParams]);
   const [orderSummary, setOrderSummary] = useState<OrderSummaryType>({
     numberOfTrees: 0,
     totalCo2Offset: "--",
@@ -82,7 +105,6 @@ const GiftTreePageClient = ({ co2PerTree, sampleCertificateUrl }: Props) => {
     }
   }, [recipients]);
 
-  const searchParams = useSearchParams();
   const [isGeoTagged, setIsGeoTagged] = useState(() => {
     const geoParam = searchParams.get("geo");
     if (geoParam === "false") return false;

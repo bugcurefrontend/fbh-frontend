@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect, ChangeEvent } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useCurrency } from "@/components/CurrencySelect";
 import { City, Country } from "@/lib/location-utils";
 import { useAuth } from "@/lib/auth-context";
@@ -15,7 +15,30 @@ import { fetchAllPlantRates } from "@/services/plant-rates";
 import { PlantRate } from "@/types/plant-rate";
 
 export const useTreeCheckout = (co2PerTree?: number) => {
-  const [step, setStep] = useState(1);
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const [step, setStepState] = useState(() => {
+    const stepParam = searchParams.get("step");
+    return stepParam ? parseInt(stepParam, 10) : 1;
+  });
+
+  const setStep = (newStep: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("step", newStep.toString());
+    router.push(`${pathname}?${params.toString()}`);
+    setStepState(newStep);
+  };
+
+  // Sync state when URL changes (browser back/forward)
+  useEffect(() => {
+    const stepParam = searchParams.get("step");
+    const currentStep = stepParam ? parseInt(stepParam, 10) : 1;
+    if (currentStep !== step) {
+      setStepState(currentStep);
+    }
+  }, [searchParams]);
   const [selectedQuantity, setSelectedQuantity] = useState<number | null>(null);
   const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
   const [manualQuantity, setManualQuantity] = useState("");
@@ -47,7 +70,6 @@ export const useTreeCheckout = (co2PerTree?: number) => {
     abhyashiNumber: "",
   });
 
-  const searchParams = useSearchParams();
   const [isGeoTagged, setIsGeoTagged] = useState(() => {
     const geoParam = searchParams.get("geo");
     if (geoParam === "false") return false;
