@@ -7,6 +7,7 @@ import FAQSection from "./FAQSection";
 import GeoTagToggleAndActions from "./GeoTagToggleAndActions";
 import { useCurrency } from "./CurrencySelect";
 import { PlantRate } from "@/types/plant-rate";
+import { SpeciesSimplified } from "@/types/species";
 
 interface FAQ {
   id: string;
@@ -41,11 +42,15 @@ interface SpeciesDetailData {
 interface SpeciesDetailPageProps {
   speciesData: SpeciesDetailData;
   plantRates: PlantRate[];
+  allSpecies: SpeciesSimplified[];
+  currentSpeciesId: string;
 }
 
 const SpeciesDetailPage: React.FC<SpeciesDetailPageProps> = ({
   speciesData,
   plantRates,
+  allSpecies,
+  currentSpeciesId,
 }) => {
   const [isGeoTagged, setIsGeoTagged] = useState(true);
   const { currency, currencySymbol } = useCurrency();
@@ -93,7 +98,10 @@ const SpeciesDetailPage: React.FC<SpeciesDetailPageProps> = ({
       />
 
       <FAQSection faqs={speciesData.faqs} />
-      <RelatedSpecies currentSpeciesId={speciesData.id} />
+      <RelatedSpecies
+        currentSpeciesId={currentSpeciesId}
+        allSpecies={allSpecies}
+      />
 
       {/* Mobile Sticky Actions */}
       <GeoTagToggleAndActions

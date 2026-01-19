@@ -125,10 +125,11 @@ export default async function SpeciesSlugPage({
 }) {
   const { slug } = await params;
 
-  // Fetch species and plant rates (both INR and USD) from Strapi API
-  const [species, plantRates] = await Promise.all([
+  // Fetch species, plant rates, and all species for related section
+  const [species, plantRates, allSpecies] = await Promise.all([
     fetchSpeciesBySlug(slug),
     fetchAllPlantRates(),
+    fetchAllSpecies(),
   ]);
 
   if (!species) {
@@ -141,6 +142,8 @@ export default async function SpeciesSlugPage({
       <SpeciesDetailPage
         speciesData={transformedData}
         plantRates={plantRates}
+        allSpecies={allSpecies}
+        currentSpeciesId={species.documentId}
       />
     </Suspense>
   );

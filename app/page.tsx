@@ -17,6 +17,7 @@ import { fetchPopularSpecies } from "@/services/species";
 import { fetchAllArticles } from "@/services/articles";
 import PlantForCause from "@/components/PlantForCause";
 import { fetchAllAttributes } from "@/services/attributes";
+import { fetchHomeIntroSection } from "@/services/home-intro-section";
 
 export default async function Home() {
   const [
@@ -29,6 +30,7 @@ export default async function Home() {
     species,
     articles,
     attributes,
+    homeIntro,
   ] = await Promise.all([
     fetchAllPartners(),
     fetchAllCaseStudies(),
@@ -39,13 +41,14 @@ export default async function Home() {
     fetchPopularSpecies(),
     fetchAllArticles(),
     fetchAllAttributes(),
+    fetchHomeIntroSection(),
   ]);
 
   return (
     <main className="min-h-screen">
       <HeroSection heroContents={heroContents} />
       <StatisticsSection metrics={metrics} />
-      <AboutSection />
+      <AboutSection content={homeIntro} />
       <PartnersSection partners={partners} />
       <SpeciesSection species={species} />
       <ProjectsSection projects={projects} />

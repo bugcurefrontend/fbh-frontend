@@ -9,9 +9,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import LinkedInIcon from "./icons/LinkedinLogo";
-import { fetchAllTeams } from "@/services/teams";
 import { TeamMemberSimplified } from "@/types/team";
 
 interface TeamMember {
@@ -30,83 +29,55 @@ interface TeamTab {
   members: TeamMember[];
 }
 
-const TeamSection = () => {
-  const [teamData, setTeamData] = useState<TeamTab[]>([
-    { value: "leadership", title: "Leadership Team", members: [] },
-    { value: "delivery", title: "Delivery Team", members: [] },
-    { value: "experts", title: "Domain Experts", members: [] },
-  ]);
+interface TeamSectionProps {
+  teams: TeamMemberSimplified[];
+}
+
+const TeamSection = ({ teams }: TeamSectionProps) => {
   const [activeTab, setActiveTab] = useState("leadership");
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    let mounted = true;
+  // Transform teams data by category
+  const leadershipMembers = teams
+    .filter((m) => m.category === "Leadership Team")
+    .map((m) => ({
+      id: m.id,
+      name: m.name,
+      role: m.role,
+      image: m.image,
+      linkedin: m.linkedin,
+      description1: m.description,
+      description2: "", // Keep for future use
+    }));
 
-    fetchAllTeams()
-      .then((members: TeamMemberSimplified[]) => {
-        if (!mounted) return;
+  const deliveryMembers = teams
+    .filter((m) => m.category === "Delivery Team")
+    .map((m) => ({
+      id: m.id,
+      name: m.name,
+      role: m.role,
+      image: m.image,
+      linkedin: m.linkedin,
+      description1: m.description,
+      description2: "",
+    }));
 
-        // Filter members by category
-        const leadershipMembers = members
-          .filter((m) => m.category === "Leadership Team")
-          .map((m) => ({
-            id: m.id,
-            name: m.name,
-            role: m.role,
-            image: m.image,
-            linkedin: m.linkedin,
-            description1: m.description,
-            description2: "", // Keep for future use
-          }));
+  const expertMembers = teams
+    .filter((m) => m.category === "Domain Experts")
+    .map((m) => ({
+      id: m.id,
+      name: m.name,
+      role: m.role,
+      image: m.image,
+      linkedin: m.linkedin,
+      description1: m.description,
+      description2: "",
+    }));
 
-        const deliveryMembers = members
-          .filter((m) => m.category === "Delivery Team")
-          .map((m) => ({
-            id: m.id,
-            name: m.name,
-            role: m.role,
-            image: m.image,
-            linkedin: m.linkedin,
-            description1: m.description,
-            description2: "",
-          }));
-
-        const expertMembers = members
-          .filter((m) => m.category === "Domain Experts")
-          .map((m) => ({
-            id: m.id,
-            name: m.name,
-            role: m.role,
-            image: m.image,
-            linkedin: m.linkedin,
-            description1: m.description,
-            description2: "",
-          }));
-
-        setTeamData([
-          { value: "leadership", title: "Leadership Team", members: leadershipMembers },
-          { value: "delivery", title: "Delivery Team", members: deliveryMembers },
-          { value: "experts", title: "Domain Experts", members: expertMembers },
-        ]);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Failed to load team members:", err);
-        setLoading(false);
-      });
-
-    return () => {
-      mounted = false;
-    };
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center py-12">
-        <p className="text-gray-500">Loading team members...</p>
-      </div>
-    );
-  }
+  const teamData: TeamTab[] = [
+    { value: "leadership", title: "Leadership Team", members: leadershipMembers },
+    { value: "delivery", title: "Delivery Team", members: deliveryMembers },
+    { value: "experts", title: "Domain Experts", members: expertMembers },
+  ];
 
   return (
     <Tabs value={activeTab} onValueChange={setActiveTab}>
