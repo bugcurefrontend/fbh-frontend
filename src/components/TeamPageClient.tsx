@@ -2,43 +2,23 @@
 
 import Gallery from "@/components/Gallery";
 import TeamSection from "@/components/OurTeam";
-import { useEffect, useState } from "react";
-import { fetchOurTeamContent } from "@/services/our-team-content";
+import { TeamMemberSimplified } from "@/types/team";
 
 type Props = {
   headerImageUrl?: string | null;
+  galleryImages: string[] | null;
+  teams: TeamMemberSimplified[];
 };
 
-const TeamPageClient = ({ headerImageUrl }: Props) => {
-  const [galleryImages, setGalleryImages] = useState<string[] | null>(null);
-
-  useEffect(() => {
-    let mounted = true;
-
-    fetchOurTeamContent()
-      .then((data) => {
-        if (!mounted) return;
-        const imgs =
-          data?.gallery?.map((g: any) => g.url).filter(Boolean) ?? null;
-        setGalleryImages(imgs);
-      })
-      .catch((err) => {
-        console.error("Failed to load Our Team content:", err);
-      });
-
-    return () => {
-      mounted = false;
-    };
-  }, []);
+const TeamPageClient = ({ headerImageUrl, galleryImages, teams }: Props) => {
 
   return (
     <main className="md:space-y-16 space-y-8">
       <section
         className="relative h-[213px] md:h-[288px] flex items-center justify-center"
         style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('${
-            headerImageUrl ?? "/images/meet-team.png"
-          }')`,
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('${headerImageUrl ?? "/images/meet-team.png"
+            }')`,
           backgroundSize: "cover",
           backgroundPosition: "top",
         }}
@@ -48,7 +28,7 @@ const TeamPageClient = ({ headerImageUrl }: Props) => {
         </h1>
       </section>
       <section className="max-w-7xl mx-auto md:px-8 px-4 md:space-y-16 space-y-8">
-        <TeamSection />
+        <TeamSection teams={teams} />
 
         <div className="space-y-6">
           <h1 className="text-center font-[Playfair_Display] text-[22px] md:text-[32px] md:leading-12 leading-[30px] font-semibold">

@@ -1,34 +1,18 @@
-"use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Image from "next/image";
 import ArrowRightIcon from "./icons/ArrowRightIcon";
 import Link from "next/link";
-import { fetchHomeIntroSection } from "@/services/home-intro-section";
 import type { HomeIntroSection } from "@/types/home-intro-section";
 
-const AboutSection: React.FC = () => {
-  const [content, setContent] = useState<HomeIntroSection | null>(null);
+interface AboutSectionProps {
+  content: HomeIntroSection | null;
+}
 
-  useEffect(() => {
-    let mounted = true;
-    fetchHomeIntroSection()
-      .then((data) => {
-        if (!mounted) return;
-        setContent(data);
-      })
-      .catch((err) => {
-        console.error("Failed to load Home Intro Section:", err);
-      });
-
-    return () => {
-      mounted = false;
-    };
-  }, []);
-
+const AboutSection: React.FC<AboutSectionProps> = ({ content }) => {
   const title = content?.title || "What is Forests By Heartfulness?";
   const description =
     content?.description ||
-    "Forests By Heartfulness is rejuvenating Earth’s native, endangered, and endemic species through green action, cutting-edge research, ecological empathy and a reconnection between humans and nature.";
+    "Forests By Heartfulness is rejuvenating Earth's native, endangered, and endemic species through green action, cutting-edge research, ecological empathy and a reconnection between humans and nature.";
   const buttonLabel = content?.button_label || "Know More";
   const buttonUrl = content?.button_url || "/about-us";
   const image = content?.image;

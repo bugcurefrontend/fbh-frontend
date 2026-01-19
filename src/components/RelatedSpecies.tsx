@@ -1,6 +1,3 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import ArrowRightIcon from "./icons/ArrowRightIcon";
 import Link from "next/link";
 import Image from "next/image";
@@ -9,56 +6,40 @@ import { generateSlug } from "@/services/species";
 import MobileSpeciesCarousel from "./MobileSpeciesCarousel";
 
 interface RelatedSpeciesProps {
-  currentSpeciesId?: string;
+  currentSpeciesId: string;
+  allSpecies: SpeciesSimplified[];
   limit?: number;
 }
 
 const RelatedSpecies: React.FC<RelatedSpeciesProps> = ({
   currentSpeciesId,
+  allSpecies,
   limit = 3,
 }) => {
-  const [species, setSpecies] = useState<SpeciesSimplified[]>([]);
-  const [loading, setLoading] = useState(true);
+  // Filter out current species
+  const filtered = allSpecies.filter(
+    (s) => s.documentId !== currentSpeciesId
+  );
 
-  useEffect(() => {
-    const loadRelatedSpecies = async () => {
-      try {
-        const { fetchAllSpecies } = await import("@/services/species");
-        const allSpecies = await fetchAllSpecies();
+  // Separate popular and non-popular
+  const popular = filtered.filter((s) => s.popular);
+  const nonPopular = filtered.filter((s) => !s.popular);
 
-        // Filter out current species
-        const filtered = allSpecies.filter(
-          (s) => s.documentId !== currentSpeciesId
-        );
+  // Take popular first, fill remaining with non-popular
+  const result: SpeciesSimplified[] = [];
 
-        // Separate popular and non-popular
-        const popular = filtered.filter((s) => s.popular);
-        const nonPopular = filtered.filter((s) => !s.popular);
+  // Add popular species (up to limit)
+  result.push(...popular.slice(0, limit));
 
-        // Take popular first, fill remaining with non-popular
-        const result: SpeciesSimplified[] = [];
+  // If not enough popular, fill with non-popular
+  if (result.length < limit) {
+    const remaining = limit - result.length;
+    result.push(...nonPopular.slice(0, remaining));
+  }
 
-        // Add popular species (up to limit)
-        result.push(...popular.slice(0, limit));
+  const species = result;
 
-        // If not enough popular, fill with non-popular
-        if (result.length < limit) {
-          const remaining = limit - result.length;
-          result.push(...nonPopular.slice(0, remaining));
-        }
-
-        setSpecies(result);
-      } catch (error) {
-        console.error("Failed to load related species:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadRelatedSpecies();
-  }, [currentSpeciesId, limit]);
-
-  if (loading || species.length === 0) {
+  if (species.length === 0) {
     return null;
   }
   return (
