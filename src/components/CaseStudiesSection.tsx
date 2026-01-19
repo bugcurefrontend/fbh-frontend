@@ -13,6 +13,7 @@ import {
 } from "./ui/carousel";
 import Link from "next/link";
 import { CaseStudySimplified } from "@/types/case-study";
+import { FALLBACK_CASE_STUDIES } from "@/constants";
 
 interface CaseStudiesSectionProps {
   caseStudies?: CaseStudySimplified[];
@@ -21,49 +22,24 @@ interface CaseStudiesSectionProps {
 const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({
   caseStudies: apiCaseStudies,
 }) => {
-  // Fallback to static data if no case studies from API
-  const fallbackCaseStudies = [
-    {
-      title: "Satna, CoNPCI",
-      subtitle: "Madhya Pradesh",
-      description:
-        "Lorem ipsum dolor sit amet consectetur. Nibh porta dui fermentum in facilisi sed. Pellentesque lectus proin gravida in. Malesuada etiam viverra ut auctor semper lacinia. Eu dictum odio eu quam integer placerat posuere. Faucibus pellentesque sit in porttitor..",
-      image: "/images/case-study-mountain.png",
-    },
-    {
-      title: "Satna, CoNPCI",
-      subtitle: "Madhya Pradesh",
-      description:
-        "Lorem ipsum dolor sit amet consectetur. Nibh porta dui fermentum in facilisi sed. Pellentesque lectus proin gravida in. Malesuada etiam viverra ut auctor semper lacinia. Eu dictum odio eu quam integer placerat posuere. Faucibus pellentesque sit in porttitor.",
-      image: "/images/case-study-field.png",
-    },
-    {
-      title: "Satna, CoNPCI",
-      subtitle: "Madhya Pradesh",
-      description:
-        "Lorem ipsum dolor sit amet consectetur. Nibh porta dui fermentum in facilisi sed. Pellentesque lectus proin gravida in. Malesuada etiam viverra ut auctor semper lacinia. Eu dictum odio eu quam integer placerat posuere. Faucibus pellentesque sit in porttitor.",
-      image: "/images/case-study-field.png",
-    },
-  ];
-
   // Use API data if available, otherwise use fallback
   const caseStudies =
     apiCaseStudies && apiCaseStudies.length > 0
       ? apiCaseStudies.map((cs) => ({
-          title: cs.title,
-          subtitle: cs.address,
-          description: cs.description,
-          image: cs.image,
-          slug: cs.title
-            .toLowerCase()
-            .trim()
-            .replace(/[()]/g, "")
-            .replace(/[^\w\s-]/g, "")
-            .replace(/\s+/g, "-")
-            .replace(/-+/g, "-")
-            .replace(/^-+|-+$/g, ""),
-        }))
-      : fallbackCaseStudies.map((cs) => ({ ...cs, slug: "case-study" }));
+        title: cs.title,
+        subtitle: cs.address,
+        description: cs.description,
+        image: cs.image,
+        slug: cs.title
+          .toLowerCase()
+          .trim()
+          .replace(/[()]/g, "")
+          .replace(/[^\w\s-]/g, "")
+          .replace(/\s+/g, "-")
+          .replace(/-+/g, "-")
+          .replace(/^-+|-+$/g, ""),
+      }))
+      : FALLBACK_CASE_STUDIES.map((cs) => ({ ...cs, slug: "case-study" }));
 
   const [currentIndex, setCurrentIndex] = useState(0);
 

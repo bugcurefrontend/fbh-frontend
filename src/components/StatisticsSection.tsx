@@ -1,16 +1,15 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import LandscapeIcon from "./icons/LandscapeIcon";
-import TreeSpeciesIcon from "./icons/TreeSpeciesIcon";
-import EndangeredSpeciesIcon from "./icons/EndangeredSpeciesIcon";
-import Co2OffsetIcon from "./icons/Co2OffsetIcon";
-import StatesProjectsIcon from "./icons/StatesProjectsIcon";
-import LakesRestoredIcon from "./icons/LakesRestoredIcon";
 import { MetricSimplified } from "@/types/metric";
 import PlantingSites from "./icons/PlantingSites";
 import VolunteerEngaged from "./icons/VolunteersEngaged";
 import PartnerOrganization from "./icons/PartnerOrganization";
+import TreeSpeciesIcon from "./icons/TreeSpeciesIcon";
+import {
+  FALLBACK_TOP_ROW_STATS,
+  FALLBACK_BOTTOM_ROW_STATS,
+} from "@/constants";
 
 interface StatisticsSectionProps {
   metrics?: MetricSimplified[];
@@ -45,11 +44,11 @@ const useCountUp = (end: number, duration: number = 2000, shouldStart: boolean =
     const animate = (timestamp: number) => {
       if (!startTimeRef.current) startTimeRef.current = timestamp;
       const progress = Math.min((timestamp - startTimeRef.current) / duration, 1);
-      
+
       // Easing function for smooth animation
       const easeOutQuad = (t: number) => t * (2 - t);
       const easedProgress = easeOutQuad(progress);
-      
+
       countRef.current = Math.floor(easedProgress * end);
       setCount(countRef.current);
 
@@ -71,7 +70,7 @@ const AnimatedNumber: React.FC<{ value: string; isVisible: boolean }> = ({ value
   const numericValue = parseFormattedNumber(value);
   const hasSuffix = value.includes("+");
   const animatedValue = useCountUp(numericValue, 2000, isVisible);
-  
+
   return <>{animatedValue.toLocaleString()}{hasSuffix ? "+" : ""}</>;
 };
 
@@ -101,53 +100,6 @@ const StatisticsSection: React.FC<StatisticsSectionProps> = ({
 
     return () => observer.disconnect();
   }, []);
-  const fallbackTopRowStats = [
-    {
-      icon: <LandscapeIcon width={40} height={40} color="#206f32" />,
-      mobileIcon: <LandscapeIcon width={32} height={32} color="#206f32" />,
-      number: "10,000+",
-      label: "Acres Afforested",
-    },
-    {
-      icon: <TreeSpeciesIcon width={36} height={36} color="#206f32" />,
-      mobileIcon: <TreeSpeciesIcon width={28} height={28} color="#206f32" />,
-      number: "330+",
-      label: "Native Tree Species Planted",
-    },
-    {
-      icon: <EndangeredSpeciesIcon width={36} height={36} color="#206f32" />,
-      mobileIcon: (
-        <EndangeredSpeciesIcon width={28} height={28} color="#206f32" />
-      ),
-      number: "80+",
-      label: "Endangered Species Curated",
-    },
-  ];
-
-  const fallbackBottomRowStats = [
-    {
-      icon: <Co2OffsetIcon width={40} height={40} color="#206f32" />,
-      mobileIcon: <Co2OffsetIcon width={32} height={32} color="#206f32" />,
-      number: "64,000+",
-      label: (
-        <>
-          Tons of CO<sub>2</sub> Offset
-        </>
-      ),
-    },
-    {
-      icon: <StatesProjectsIcon width={36} height={40} color="#206f32" />,
-      mobileIcon: <StatesProjectsIcon width={28} height={32} color="#206f32" />,
-      number: "12+",
-      label: "States with Implemented Projects",
-    },
-    {
-      icon: <LakesRestoredIcon width={40} height={40} color="#206f32" />,
-      mobileIcon: <LakesRestoredIcon width={32} height={32} color="#206f32" />,
-      number: "35+",
-      label: "Lakes Created and Restored",
-    },
-  ];
 
   // Use API data if available (even 1), otherwise use fallback
   const hasApiData = apiMetrics && apiMetrics.length > 0;
@@ -175,7 +127,7 @@ const StatisticsSection: React.FC<StatisticsSectionProps> = ({
   // Unified apiStats typed as StatItem[] (fallback cast to StatItem[])
   const apiStats: StatItem[] = hasApiData
     ? apiStatsFromApi
-    : ([...fallbackTopRowStats, ...fallbackBottomRowStats] as StatItem[]);
+    : ([...FALLBACK_TOP_ROW_STATS, ...FALLBACK_BOTTOM_ROW_STATS] as StatItem[]);
 
   // If we have API data, sort by the `order` field so positions follow the CMS order.
   // Desktop layout: rows of 3 (first 3 = first row; next 3 = second row)
