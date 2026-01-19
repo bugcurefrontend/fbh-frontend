@@ -8,6 +8,10 @@ import { UsefulLinkItem } from "@/types/useful-link";
 import GooglePay from "./icons/GooglePay";
 import AppStore from "./icons/AppStore";
 import FooterLogo from "./icons/FooterLogo";
+import {
+  FALLBACK_USEFUL_LINKS,
+  FALLBACK_FOOTER_MENU,
+} from "@/constants";
 
 interface FooterProps {
   menuItems?: FooterMenuItem[];
@@ -22,30 +26,11 @@ const Footer: React.FC<FooterProps> = ({
   usefulLinks,
   copyright,
 }) => {
-  // Fallback useful links
-  const fallbackUsefulLinks: UsefulLinkItem[] = [
-    { label: "Heartfulness Institute", url: "#" },
-    { label: "Kanha Shanti Vanam", url: "#" },
-    { label: "Daaji.org", url: "#" },
-    { label: "Heartfulness Magazine", url: "#" },
-    { label: "One Daily Thought", url: "#" },
-    { label: "Donate", url: "#" },
-  ];
-
   const usefulLinksArray =
-    usefulLinks && usefulLinks.length > 0 ? usefulLinks : fallbackUsefulLinks;
-
-  // Fallback if no menu items from Strapi
-  const fallbackLinks = [
-    { label: "About Us", url: "/about" },
-    { label: "Contact Us", url: "/contact" },
-    { label: "Case Study", url: "/case-studies" },
-    { label: "Terms & Conditions", url: "/terms" },
-    { label: "Privacy & Policy", url: "/privacy" },
-  ];
+    usefulLinks && usefulLinks.length > 0 ? usefulLinks : FALLBACK_USEFUL_LINKS;
 
   const moreLinks =
-    menuItems && menuItems.length > 0 ? menuItems : fallbackLinks;
+    menuItems && menuItems.length > 0 ? menuItems : FALLBACK_FOOTER_MENU;
 
   // Build social links array from props or use fallback
   const socialLinksArray = [
@@ -76,10 +61,9 @@ const Footer: React.FC<FooterProps> = ({
   const playStoreUrl = socialLinks?.playstore || "#";
 
   const pathname = usePathname();
-  const footerClass = `bg-[#0F172A] text-[#e6e6e6] md:mt-16 mt-8 ${
-    (pathname.startsWith("/projects/") || pathname.startsWith("/species/")) &&
+  const footerClass = `bg-[#0F172A] text-[#e6e6e6] md:mt-16 mt-8 ${(pathname.startsWith("/projects/") || pathname.startsWith("/species/")) &&
     "max-md:mb-[158px]"
-  }`;
+    }`;
 
   return (
     <footer className={footerClass}>

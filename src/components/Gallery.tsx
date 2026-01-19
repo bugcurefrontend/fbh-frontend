@@ -10,6 +10,7 @@ import {
   CarouselPrevious,
   type CarouselApi,
 } from "./ui/carousel";
+import { FALLBACK_GALLERY_IMAGES } from "@/constants";
 
 interface GalleryProps {
   className?: string;
@@ -24,17 +25,8 @@ const Gallery: React.FC<GalleryProps> = ({
   dotClass,
   images: propImages,
 }) => {
-  const defaultImages = [
-    "/images/gallery/1.png",
-    "/images/gallery/2.png",
-    "/images/gallery/3.png",
-    "/images/gallery/4.png",
-    "/images/gallery/5.png",
-    "/images/gallery/6.png",
-  ];
-
   const images =
-    propImages && propImages.length > 0 ? propImages : defaultImages;
+    propImages && propImages.length > 0 ? propImages : FALLBACK_GALLERY_IMAGES;
 
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [carouselApi, setCarouselApi] = useState<CarouselApi | null>(null);
@@ -97,9 +89,8 @@ const Gallery: React.FC<GalleryProps> = ({
                 }}
               >
                 <div
-                  className={`relative w-full h-[70px] md:h-[116px] rounded-[8px] overflow-hidden ${
-                    selectedIndex === idx ? "" : "opacity-60"
-                  }`}
+                  className={`relative w-full h-[70px] md:h-[116px] rounded-[8px] overflow-hidden ${selectedIndex === idx ? "" : "opacity-60"
+                    }`}
                 >
                   <Image
                     src={img}
@@ -149,9 +140,8 @@ const Gallery: React.FC<GalleryProps> = ({
         {images.map((_, i) => (
           <div
             key={i}
-            className={`w-2 h-2 rounded-full ${
-              i === selectedIndex ? "bg-[#003399]" : "bg-[#E6EBF5]"
-            }`}
+            className={`w-2 h-2 rounded-full ${i === selectedIndex ? "bg-[#003399]" : "bg-[#E6EBF5]"
+              }`}
           />
         ))}
       </div>

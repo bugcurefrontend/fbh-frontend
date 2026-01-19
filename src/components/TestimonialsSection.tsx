@@ -6,6 +6,7 @@ import QuoteIcon from "./icons/QuoteIcon";
 import { TestimonialSimplified } from "@/types/testimonial";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
+import { FALLBACK_TESTIMONIALS } from "@/constants";
 
 interface TestimonialsSectionProps {
   testimonials?: TestimonialSimplified[];
@@ -14,41 +15,17 @@ interface TestimonialsSectionProps {
 const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
   testimonials: apiTestimonials,
 }) => {
-  const fallbackTestimonials = [
-    {
-      quote:
-        "The experience has been flawless. It's incredibly user-friendly and robust. This tool has become indispensable for our daily operations, providing reliable performance and insightful analytics. We couldn't be happier with our decision.",
-      name: "Akshay Shinde",
-      designation: "TIMES OF INDIA",
-      src: "/images/volunteer-testimonial.png",
-    },
-    {
-      quote:
-        "An absolute pleasure to work with. The team went above and beyond to tailor the solution to our specific needs, and the impact on our project delivery has been immediate and positive. Fantastic product and even better people!",
-      name: "James Kim",
-      designation: "Engineering Lead at DataPro",
-      src: "/images/t-2.jpg",
-    },
-    {
-      quote:
-        "This platform is a game-changer! Its intuitive design and powerful features have streamlined our operations, boosting efficiency. The customer support is exceptional. Highly recommended for any business aiming to grow.",
-      name: "Lisa Thompson",
-      designation: "VP of Technology at FutureNet",
-      src: "/images/t-1.webp",
-    },
-  ];
-
   // Use API data if available, otherwise use fallback
   const testimonials =
     apiTestimonials && apiTestimonials.length > 0
       ? apiTestimonials.map((t) => ({
-          quote: t.quote,
-          name: t.name,
-          designation: t.designation,
-          src: t.src,
-          videoUrl: t.videoUrl,
-        }))
-      : fallbackTestimonials.map((t) => ({ ...t, videoUrl: null }));
+        quote: t.quote,
+        name: t.name,
+        designation: t.designation,
+        src: t.src,
+        videoUrl: t.videoUrl,
+      }))
+      : FALLBACK_TESTIMONIALS.map((t) => ({ ...t, videoUrl: null }));
 
   const [current, setCurrent] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
@@ -59,7 +36,7 @@ const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
   const autoplay = useRef(
     Autoplay({ delay: 5000, stopOnInteraction: true, stopOnMouseEnter: true })
   );
-  
+
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [
     autoplay.current,
   ]);
@@ -87,7 +64,7 @@ const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
     };
 
     emblaApi.on("select", onSelect);
-    
+
     // Initial sync
     setCurrent(emblaApi.selectedScrollSnap());
 
@@ -109,7 +86,7 @@ const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
           setVideoPlaying(false);
           autoplayPlugin.stop();
         } else if (!videoPlaying && !isHovered) {
-           autoplayPlugin.play();
+          autoplayPlugin.play();
         }
       },
       { threshold: 0.3 }
@@ -152,7 +129,7 @@ const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
           <div className="overflow-hidden" ref={emblaRef}>
             <div className="flex">
               {testimonials.map((testimonial, index) => (
-                <div 
+                <div
                   key={`slide-${index}`}
                   className="flex-[0_0_100%] min-w-0 relative"
                   onClick={(e) => {
@@ -163,63 +140,61 @@ const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
                     }
                   }}
                 >
-                  <div className={`relative w-full h-full ${
-                      index === current && testimonial.videoUrl && !videoPlaying ? "cursor-pointer" : ""
-                  }`}>
-                     {/* Video or Image Logic */}
-                     {index === current && videoPlaying && testimonial.videoUrl ? (
-                         testimonial.videoUrl.includes("youtube.com") ||
-                         testimonial.videoUrl.includes("youtu.be") ? (
-                           <iframe
-                             src={`${
-                               testimonial.videoUrl.includes("embed")
-                                 ? testimonial.videoUrl
-                                 : testimonial.videoUrl
-                                     .replace("watch?v=", "embed/")
-                                     .replace("youtu.be/", "youtube.com/embed/")
-                             }?autoplay=1`}
-                             className="w-full min-h-[316px] md:min-h-[423px] max-h-[423px] h-full md:rounded-[7.6px] rounded-[8px]"
-                             frameBorder="0"
-                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                             allowFullScreen
-                           />
-                         ) : (
-                           <video
-                             src={testimonial.videoUrl}
-                             className="w-full min-h-[316px] md:min-h-[423px] max-h-[423px] h-full object-cover md:rounded-[7.6px] rounded-[8px]"
-                             controls
-                             autoPlay
-                             playsInline
-                             preload="auto"
-                           >
-                             Your browser does not support the video tag.
-                           </video>
-                         )
-                     ) : (
-                       <div className="relative">
-                           <Image
-                             src={testimonial.src}
-                             alt={testimonial.name}
-                             width={493}
-                             height={423}
-                             className="md:rounded-[7.6px] rounded-[8px] w-full min-h-[316px] md:min-h-[423px] max-h-[423px] h-full object-cover"
-                           />
-                           {/* Play Button Overlay - show if videoUrl exists */}
-                           {testimonial.videoUrl && (
-                             <div className="absolute inset-0 flex items-center justify-center md:rounded-[7.6px] rounded-[8px] pointer-events-none">
-                               <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center shadow-lg">
-                                 <svg
-                                   className="w-7 h-7 text-[#003399] ml-1"
-                                   fill="currentColor"
-                                   viewBox="0 0 24 24"
-                                 >
-                                   <path d="M8 5v14l11-7z" />
-                                 </svg>
-                               </div>
-                             </div>
-                           )}
-                       </div>
-                     )}
+                  <div className={`relative w-full h-full ${index === current && testimonial.videoUrl && !videoPlaying ? "cursor-pointer" : ""
+                    }`}>
+                    {/* Video or Image Logic */}
+                    {index === current && videoPlaying && testimonial.videoUrl ? (
+                      testimonial.videoUrl.includes("youtube.com") ||
+                        testimonial.videoUrl.includes("youtu.be") ? (
+                        <iframe
+                          src={`${testimonial.videoUrl.includes("embed")
+                              ? testimonial.videoUrl
+                              : testimonial.videoUrl
+                                .replace("watch?v=", "embed/")
+                                .replace("youtu.be/", "youtube.com/embed/")
+                            }?autoplay=1`}
+                          className="w-full min-h-[316px] md:min-h-[423px] max-h-[423px] h-full md:rounded-[7.6px] rounded-[8px]"
+                          frameBorder="0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                          allowFullScreen
+                        />
+                      ) : (
+                        <video
+                          src={testimonial.videoUrl}
+                          className="w-full min-h-[316px] md:min-h-[423px] max-h-[423px] h-full object-cover md:rounded-[7.6px] rounded-[8px]"
+                          controls
+                          autoPlay
+                          playsInline
+                          preload="auto"
+                        >
+                          Your browser does not support the video tag.
+                        </video>
+                      )
+                    ) : (
+                      <div className="relative">
+                        <Image
+                          src={testimonial.src}
+                          alt={testimonial.name}
+                          width={493}
+                          height={423}
+                          className="md:rounded-[7.6px] rounded-[8px] w-full min-h-[316px] md:min-h-[423px] max-h-[423px] h-full object-cover"
+                        />
+                        {/* Play Button Overlay - show if videoUrl exists */}
+                        {testimonial.videoUrl && (
+                          <div className="absolute inset-0 flex items-center justify-center md:rounded-[7.6px] rounded-[8px] pointer-events-none">
+                            <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center shadow-lg">
+                              <svg
+                                className="w-7 h-7 text-[#003399] ml-1"
+                                fill="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path d="M8 5v14l11-7z" />
+                              </svg>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}
@@ -242,10 +217,10 @@ const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
 
           <AnimatePresence mode="wait">
             <motion.div
-               initial={{ x: 100, opacity: 0 }}
-                 animate={{ x: 0, opacity: 1 }}
-                 exit={{ x: -100, opacity: 0 }}
-                 transition={{ duration: 0.4, ease: "easeInOut" }}
+              initial={{ x: 100, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: -100, opacity: 0 }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
               className="flex flex-col gap-4"
             >
               <div className="flex flex-col sm:gap-1">
@@ -268,9 +243,8 @@ const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
               <button
                 key={index}
                 onClick={() => handleDotClick(index)}
-                className={`w-10 sm:h-2 h-1.5 rounded transition-all duration-300 ${
-                  index === current ? "bg-[#003399]" : "bg-[#e6ebf5]"
-                }`}
+                className={`w-10 sm:h-2 h-1.5 rounded transition-all duration-300 ${index === current ? "bg-[#003399]" : "bg-[#e6ebf5]"
+                  }`}
               ></button>
             ))}
           </div>
