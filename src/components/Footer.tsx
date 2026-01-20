@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FooterMenuItem } from "@/types/footer-menu";
 import { SocialLinkSimplified } from "@/types/social-link";
@@ -88,9 +89,15 @@ const Footer: React.FC<FooterProps> = ({
                 key={index}
                 className="font-[public_sans] text-base font-medium sm:text-lg text-[#e6e6e6] hover:text-white hover:underline cursor-pointer"
               >
-                <a href={link.url} target="_blank" rel="noopener noreferrer">
-                  {link.label}
-                </a>
+                {link.url.startsWith("http") ? (
+                  <a href={link.url} target="_blank" rel="noopener noreferrer">
+                    {link.label}
+                  </a>
+                ) : (
+                  <Link href={link.url}>
+                    {link.label}
+                  </Link>
+                )}
               </li>
             ))}
           </ul>
@@ -105,13 +112,19 @@ const Footer: React.FC<FooterProps> = ({
                     key={index}
                     className="text-sm leading-5 font-[public_sans] font-normal text-[#e6e6e6] hover:text-white hover:underline cursor-pointer"
                   >
-                    <a
-                      href={link.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {link.label}
-                    </a>
+                    {link.url.startsWith("http") ? (
+                      <a
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {link.label}
+                      </a>
+                    ) : (
+                      <Link href={link.url}>
+                        {link.label}
+                      </Link>
+                    )}
                   </li>
                 ))}
               </ul>
