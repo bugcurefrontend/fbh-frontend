@@ -21,18 +21,10 @@ export default function AuthWrapper({ children }: AuthWrapperProps) {
     await logout();
   };
 
-  // Don't render auth-dependent components until hydration is complete
-  if (!isHydrated) {
-    return (
-      <ErrorBoundary>
-        {children}
-      </ErrorBoundary>
-    );
-  }
-
+  // Always render children immediately - auth components load after
   return (
     <ErrorBoundary>
-      <HFNAuthComponent onUserLoggedOut={handleUserLoggedOut} />
+      {isHydrated && <HFNAuthComponent onUserLoggedOut={handleUserLoggedOut} />}
       {children}
     </ErrorBoundary>
   );

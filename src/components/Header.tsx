@@ -29,6 +29,13 @@ export default function Header() {
   const dropdownRef = React.useRef<HTMLDivElement>(null);
   const [showSignOutAlert, setShowSignOutAlert] = React.useState(false);
   const [globalData, setGlobalData] = React.useState<GlobalContent | null>(null);
+  const [isHydrated, setIsHydrated] = React.useState(false);
+
+  // Ensure component is hydrated before rendering auth-dependent content
+  React.useEffect(() => {
+    setIsHydrated(true);
+  }, []);
+
   // Fetch global data for default attribute
   React.useEffect(() => {
     fetchGlobal().then((data) => {
@@ -77,7 +84,9 @@ export default function Header() {
     },
   ];
 
-  if (isLoading) {
+  // During loading but after hydration, still render the header with content
+  // Only show loading skeleton during the initial SSR phase
+  if (isLoading && !isHydrated) {
     return (
       <header className="sticky top-0 left-0 w-full z-50 bg-[#FFFFFF] backdrop-blur-md shadow-sm h-16">
         <div className="max-w-7xl mx-auto h-full flex items-center justify-between px-4 sm:px-8">
