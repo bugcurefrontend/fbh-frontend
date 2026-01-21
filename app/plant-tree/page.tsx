@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import TreeCheckoutClient from "@/components/plant-tree/TreeCheckoutClient";
 import { fetchGlobal } from "@/services/global";
+import { PageLoader } from "@/components/ui/page-loader";
 
 const PlantTreePage = async () => {
   const global = await fetchGlobal();
@@ -8,7 +9,7 @@ const PlantTreePage = async () => {
   const sampleCertificateUrl = global?.sample_certificate?.url ?? undefined;
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<PageLoader message="Loading checkout..." fullScreen={false} />}>
       <TreeCheckoutClient co2PerTree={co2PerTree} sampleCertificateUrl={sampleCertificateUrl} />
     </Suspense>
   );
