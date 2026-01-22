@@ -138,6 +138,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
           onViewAll={handleViewAll}
           projectUpdates={projectUpdates}
           projectSpecies={projectSpecies}
+          projectId={projectData.id}
         />
       </div>
 
@@ -149,6 +150,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
         onViewAll={handleViewAll}
         projectUpdates={projectUpdates}
         projectSpecies={projectSpecies}
+        projectId={projectData.id}
       />
 
       {/* Mobile Sticky Actions */}

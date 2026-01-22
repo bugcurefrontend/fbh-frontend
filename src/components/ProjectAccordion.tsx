@@ -64,6 +64,7 @@ interface ProjectAccordionProps {
   onViewAll: () => void;
   projectUpdates?: ProjectUpdateUI[];
   projectSpecies?: ProjectSpeciesUI[];
+  projectId?: string | number;
 }
 
 const ProjectAccordion: React.FC<ProjectAccordionProps> = ({
@@ -74,6 +75,7 @@ const ProjectAccordion: React.FC<ProjectAccordionProps> = ({
   onViewAll,
   projectUpdates = [],
   projectSpecies = [],
+  projectId,
 }) => {
   // Get unique years from updates for the dropdown
   const years = Array.from(new Set(projectUpdates.map((u) => u.year))).sort(
@@ -296,7 +298,7 @@ const ProjectAccordion: React.FC<ProjectAccordionProps> = ({
             </div>
           </AccordionTrigger>
           <AccordionContent className="py-3 md:py-4">
-            <DonorsTable />
+            <DonorsTable projectId={projectId} />
           </AccordionContent>
         </AccordionItem>
 

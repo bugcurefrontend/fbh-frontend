@@ -62,6 +62,7 @@ interface ProjectTabsProps {
   onViewAll: () => void;
   projectUpdates?: ProjectUpdateUI[];
   projectSpecies?: ProjectSpeciesUI[];
+  projectId?: string | number;
 }
 
 const ProjectTabs: React.FC<ProjectTabsProps> = ({
@@ -72,6 +73,7 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({
   onViewAll,
   projectUpdates = [],
   projectSpecies = [],
+  projectId,
 }) => {
   const [galleryImages, setGalleryImages] = useState<string[] | null>(null);
 
@@ -321,7 +323,7 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({
         </TabsContent>
 
         <TabsContent value="donors" className="mt-8 px-10">
-          <DonorsTable />
+          <DonorsTable projectId={projectId} />
         </TabsContent>
       </Tabs>
     </div>
