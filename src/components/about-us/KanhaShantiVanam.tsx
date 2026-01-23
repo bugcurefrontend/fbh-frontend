@@ -53,7 +53,7 @@ const KanhaShantiVanam = () => {
             return (
               <div
                 key={index}
-                className="relative text-center p-4 max-md:space-y-2"
+                className="relative text-center p-4"
               >
                 {/* Icon with circle background */}
                 <div className="flex justify-center">
@@ -66,7 +66,7 @@ const KanhaShantiVanam = () => {
                 </div>
 
                 {/* Title */}
-                <h3 className="md:text-2xl text-lg font-semibold my-4">
+                <h3 className="md:text-2xl text-lg font-bold md:font-semibold md:mb-4 md:mt-4 mt-3 mb-2">
                   {feature.title}
                 </h3>
 

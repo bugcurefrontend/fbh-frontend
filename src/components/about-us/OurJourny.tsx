@@ -78,13 +78,13 @@ const JourneyTimeline: React.FC<{
         <div className="absolute left-3 md:left-1/2 transform md:-translate-x-1/2 h-full md:w-1 w-[3px] bg-[#9DE1C2] rounded-full"></div>
 
         {/* Timeline items */}
-        <div className="flex flex-col md:gap-12 gap-6">
+        <div className="flex flex-col max-md:gap-6">
           {timelineData.map((item, index) => (
             <div
               key={index}
               className={`relative ${
-                index >= 2 && !showAll ? "max-md:hidden" : ""
-              }`}
+                index >= 2 && !showAll ? "max-md:hidden -mt-20" : ""
+              } ${index >= 1 && "md:-mt-12"}`}
             >
               {/* Desktop layout */}
               <div className="">
