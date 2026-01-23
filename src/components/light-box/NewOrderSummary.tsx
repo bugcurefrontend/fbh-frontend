@@ -40,11 +40,11 @@ const NewOrderSummary: React.FC<NewOrderSummaryProps> = ({
       <div className="space-y-2">
         <div className="space-y-4 border border-[#E5EBF5] bg-[#F7F9FF] rounded-[16px] md:rounded-[8px] overflow-hidden p-4">
           <div className="flex items-center justify-between pb-4 border-b border-[#95AAD5]">
-            <div className="max-md:text-sm space-y-[23px] text-[#0A0A0B] leading-5 font-semibold">
-              <h2>Occassion / Cause :</h2>
-              <h2>Number Of Trees :</h2>
-              <h2>
-                Total Co2 Sequested <span className="text-red-500">*</span> :
+            <div className="max-md:text-sm space-y-[23px] text-[#0A0A0B] leading-5 font-semibold max-sm:mr-2">
+              <h2 className="truncate">Occassion / Cause :</h2>
+              <h2 className="truncate">Number Of Trees :</h2>
+              <h2 className="truncate">
+                Total Co2 <span className="sm:hidden">Offset</span> <span className="max-sm:hidden">Sequested</span> <span className="text-red-500 max-sm:hidden">*</span> :
               </h2>
             </div>
 
@@ -61,7 +61,7 @@ const NewOrderSummary: React.FC<NewOrderSummaryProps> = ({
                   height={20}
                   width={20}
                 />
-                <h2>{occasion || "Occasion"}</h2>
+                <h2 className="truncate">{occasion || "Occasion"}</h2>
               </div>
               <h2>
                 {selectedTrees > 0
