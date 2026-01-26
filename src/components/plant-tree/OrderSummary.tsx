@@ -15,6 +15,7 @@ interface OrderSummaryProps {
   recipients?: Recipient[];
   onTreeCountChange?: (count: number) => void;
   onRecipientsUpdate?: (recipients: Recipient[]) => void;
+  onProceedToPayment?: () => Promise<boolean>;
 }
 
 const OrderSummary: React.FC<OrderSummaryProps> = ({
@@ -26,6 +27,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
   recipients,
   onTreeCountChange,
   onRecipientsUpdate,
+  onProceedToPayment,
 }) => {
   return (
     <div className="lg:w-[45%] sticky top-20 self-start space-y-6">
@@ -79,6 +81,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
           recipients={recipients}
           onTreeCountChange={onTreeCountChange}
           onRecipientsUpdate={onRecipientsUpdate}
+          onProceedToPayment={onProceedToPayment}
         />
       )}
     </div>

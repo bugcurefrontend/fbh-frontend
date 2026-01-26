@@ -5,14 +5,14 @@ import Image from "next/image";
 import LocationPinIcon from "./icons/LocationPinIcon";
 
 interface ProjectCardProps {
-  id: string;
+  id: string | number;
   title: string;
   location: string;
   plantedCount: number;
   category: string;
   imageUrl: string;
   imageAlt: string;
-  onPlantTree: (projectId: string) => void;
+  onPlantTree: (projectId: string | number) => void;
 }
 
 const ProjectCard: React.FC<ProjectCardProps> = ({

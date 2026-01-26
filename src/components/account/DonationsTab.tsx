@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { donations } from "./mock-data";
 import DownloadCertificate from "@/components/DownloadCertiifcate";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { fetchDonationHistory, DonationHistoryItem } from "@/services/donations";
 import {
   Pagination,
   PaginationContent,
@@ -21,18 +22,90 @@ import {
 } from "@/components/ui/tooltip";
 import PlantedTrees from "../PlantedTrees";
 import { Donation } from "./types";
+import { useAuth } from "@/lib/auth-context";
 
 export const DonationsTab = () => {
   const ITEMS_PER_PAGE = 6;
-
   const [currentPage, setCurrentPage] = useState(1);
+  const [allDonationsData, setAllDonationsData] = useState<any[]>([]); // Store ALL data
+  const [totalItems, setTotalItems] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [dataLoaded, setDataLoaded] = useState(false); // Track if data is loaded
 
-  const totalPages = Math.ceil(donations.length / ITEMS_PER_PAGE);
+  // Get logged-in user from auth context
+  const { userProfile, isAuthenticated } = useAuth();
 
+  // Fetch ALL donation data ONCE on mount (not on page change)
+  useEffect(() => {
+    // Skip if already loaded or not authenticated
+    if (dataLoaded) return;
+
+    const loadAllDonations = async () => {
+      setLoading(true);
+
+      // Only fetch if user is authenticated and has email
+      if (!isAuthenticated || !userProfile?.email) {
+        setAllDonationsData(donations); // Fallback to mock data
+        setTotalItems(donations.length);
+        setDataLoaded(true);
+        setLoading(false);
+        return;
+      }
+
+      try {
+        // Fetch ALL data at once (backend returns everything anyway)
+        const normalizedEmail = userProfile.email.toLowerCase();
+        const response = await fetchDonationHistory(normalizedEmail, 1, 100); // Large page_size
+
+        if (response && response.results) {
+          // Map API response to component format
+          const mapped = response.results.map((item: DonationHistoryItem) => ({
+            id: item.donation_id,
+            geoTagged: item.is_geotagged ? "true" : "false",
+            logoSrc: item.dep_type === "PROJECT" ? "/images/treelogo.png" :
+              item.dep_type === "SPECIES" ? "/images/specieslogo.png" : "/images/campainlogo.png",
+            name: item.project_name || item.species_name || "Campaign",
+            reference: item.reference_number,
+            trees: item.trees_planted,
+            donationFor: item.donation_type.toUpperCase(),
+            date: new Date(item.donation_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+            accent: "#0D824B",
+            location: "India",
+            status: "ALIVE",
+            statusAccent: "#0D824B",
+            recipientName: item.donation_type === "Received" ?
+              (userProfile?.firstName + " " + userProfile?.lastName) :
+              (item.recipient_details?.recipient_name || userProfile?.firstName + " " + userProfile?.lastName),
+            certificateUrl: item.certificate_url,
+            receiptUrl: item.receipt_url,
+            giftedBy: item.gifted_by,
+          }));
+          setAllDonationsData(mapped);
+          setTotalItems(response.count);
+          setDataLoaded(true);
+        } else {
+          setAllDonationsData(donations);
+          setTotalItems(donations.length);
+          setDataLoaded(true);
+        }
+      } catch (error) {
+        console.error("Error loading donations:", error);
+        setAllDonationsData(donations);
+        setTotalItems(donations.length);
+        setDataLoaded(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadAllDonations();
+  }, [userProfile, isAuthenticated, dataLoaded]);
+
+  // Client-side pagination: Calculate pages and slice data
+  const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
-
-  const currentData = donations.slice(startIndex, endIndex);
+  const currentData = allDonationsData.slice(startIndex, endIndex);
   const [selectedTree, setSelectedTree] = useState<Donation | null>(null);
 
   if (selectedTree) {
@@ -89,7 +162,7 @@ export const DonationsTab = () => {
                     className="bg-[#E7F8F0] px-4 py-3"
                   >
                     <p className="text-[#0D824B] text-xs md:font-semibold max-sm:max-w-36 text-center">
-                      Gifted to you by Kalpit Chandekar
+                      Gifted to you by {donation.giftedBy?.donor_name || "a donor"}
                     </p>
                   </TooltipContent>
                 </Tooltip>
@@ -163,9 +236,14 @@ export const DonationsTab = () => {
               </div>
 
               <div className="flex sm:flex-row flex-col items-center justify-between sm:gap-2 gap-4">
-                <DownloadCertificate />
+                <DownloadCertificate
+                  recipientName={donation.recipientName}
+                  treesPlanted={donation.trees}
+                  certificateUrl={donation.certificateUrl}
+                />
                 <Button
                   variant="outline"
+                  onClick={() => donation.receiptUrl ? window.open(donation.receiptUrl, '_blank') : alert("Receipt not available.")}
                   className="border-[#95AAD5] hover:text-[#003399] text-[#003399] font-bold text-base h-11 px-5 py-3 rounded-[8px] sm:w-[50%] w-full gap-1"
                 >
                   See Receipt

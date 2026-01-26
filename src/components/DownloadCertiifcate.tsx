@@ -1,5 +1,5 @@
 import React from "react";
-import { Download, DownloadIcon, Eye, X } from "lucide-react";
+import { Download, DownloadIcon, X } from "lucide-react";
 import {
   Dialog,
   DialogClose,
@@ -9,108 +9,25 @@ import {
 } from "@/components/ui/dialog";
 import Image from "next/image";
 
-interface Donor {
-  id: string;
-  name: string;
-  location: string;
-  date: string;
-  donationType: "Self" | "Gifting";
+interface DownloadCertificateProps {
+  recipientName: string;
   treesPlanted: number;
-  avatar?: string;
+  certificateUrl: string | null;
 }
 
-const donorsData: Donor[] = [
-  {
-    id: "1",
-    name: "Olivia Rhye",
-    location: "Prakasam",
-    date: "Jan 6, 2024",
-    donationType: "Self",
-    treesPlanted: 177,
-    avatar: "/images/profile.png",
-  },
-  {
-    id: "2",
-    name: "Phoenix Baker",
-    location: "Anantapur",
-    date: "Jan 6, 2024",
-    donationType: "Gifting",
-    treesPlanted: 994,
-  },
-  {
-    id: "3",
-    name: "Lana Steiner",
-    location: "Chittoor",
-    date: "Jan 6, 2024",
-    donationType: "Self",
-    treesPlanted: 492,
-    avatar: "/images/profile.png",
-  },
-  {
-    id: "4",
-    name: "Anonymous",
-    location: "Anonymous",
-    date: "Jan 5, 2024",
-    donationType: "Gifting",
-    treesPlanted: 447,
-  },
-  {
-    id: "5",
-    name: "Candice Wu",
-    location: "Srikakulam",
-    date: "Jan 5, 2024",
-    donationType: "Self",
-    treesPlanted: 583,
-    avatar: "/images/profile.png",
-  },
-  {
-    id: "6",
-    name: "Natali Craig",
-    location: "Vizianagaram",
-    date: "Jan 5, 2024",
-    donationType: "Gifting",
-    treesPlanted: 357,
-    avatar: "/images/profile.png",
-  },
-  {
-    id: "7",
-    name: "Drew Cano",
-    location: "Sri Potti Sriramulu Nellore",
-    date: "Jan 4, 2024",
-    donationType: "Self",
-    treesPlanted: 196,
-    avatar: "/images/profile.png",
-  },
-  {
-    id: "8",
-    name: "Orlando Diggs",
-    location: "YSR Kadapa",
-    date: "Jan 3, 2024",
-    donationType: "Self",
-    treesPlanted: 540,
-    avatar: "/images/profile.png",
-  },
-  {
-    id: "9",
-    name: "Andi Lane",
-    location: "Krishna",
-    date: "Jan 3, 2024",
-    donationType: "Self",
-    treesPlanted: 738,
-    avatar: "/images/profile.png",
-  },
-  {
-    id: "10",
-    name: "Kate Morrison",
-    location: "West Godavari",
-    date: "Jan 3, 2024",
-    donationType: "Self",
-    treesPlanted: 561,
-    avatar: "/images/profile.png",
-  },
-];
+const DownloadCertificate: React.FC<DownloadCertificateProps> = ({
+  recipientName,
+  treesPlanted,
+  certificateUrl,
+}) => {
+  const handleDownload = () => {
+    if (certificateUrl) {
+      window.open(certificateUrl, '_blank');
+    } else {
+      alert("Certificate not available yet.");
+    }
+  };
 
-const DownloadCertificate: React.FC = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -132,59 +49,60 @@ const DownloadCertificate: React.FC = () => {
             </button>
           </DialogClose>
         </DialogTitle>
-        <div className="flex gap-2 text-[#003399] cursor-pointer max-sm:text-sm font-semibold mb-2.5 mt-4 px-2 md:px-4 w-fit ml-auto">
-          <p>Download All </p>
-          <DownloadIcon size={20} />
-        </div>
-        <div className="max-md:h-[236px] overflow-y-scroll px-2 md:pl-4">
+
+        <div className="max-md:h-[236px] overflow-y-scroll px-2 md:pl-4 mt-4">
           <div className="space-y-4 w-full">
-            {donorsData.map((donor) => (
-              <div
-                key={donor.id}
-                className="md:h-[70px] h-[68px] px-4 py-3 border rounded-[8px] hover:bg-gray-50"
-              >
-                <div className="flex items-center">
-                  <div className="flex-1">
-                    <div
+            <div
+              className="md:h-[70px] h-[68px] px-4 py-3 border rounded-[8px] hover:bg-gray-50"
+            >
+              <div className="flex items-center">
+                <div className="flex-1">
+                  <div
+                    style={{
+                      fontFamily: "'Public Sans', sans-serif",
+                      fontWeight: 600,
+                      lineHeight: "22px",
+                      color: "#090C0F",
+                    }}
+                    className="md:text-xl"
+                  >
+                    {recipientName || "Anonymous"}
+                  </div>
+
+                  <div className="mt-1 flex items-center text-[#0D824B]">
+                    <Image
+                      src="/images/leaf.png"
+                      alt="tree"
+                      width={18}
+                      height={18}
+                      className="mr-1"
+                    />
+                    <span
                       style={{
                         fontFamily: "'Public Sans', sans-serif",
                         fontWeight: 600,
+                        fontSize: "14px",
                         lineHeight: "22px",
-                        color: "#090C0F",
+                        color: "#0D824B",
                       }}
-                      className="md:text-xl"
                     >
-                      {donor.name}
-                    </div>
-
-                    <div className="mt-1 flex items-center text-[#0D824B]">
-                      <Image
-                        src="/images/leaf.png"
-                        alt="tree"
-                        width={18}
-                        height={18}
-                        className="mr-1"
-                      />
-                      <span
-                        style={{
-                          fontFamily: "'Public Sans', sans-serif",
-                          fontWeight: 600,
-                          fontSize: "14px",
-                          lineHeight: "22px",
-                          color: "#0D824B",
-                        }}
-                      >
-                        {donor.treesPlanted} Trees Planted
-                      </span>
-                    </div>
+                      {treesPlanted} Trees Planted
+                    </span>
                   </div>
-                  <DownloadIcon
-                    className="text-[#003399] cursor-pointer"
-                    size={20}
-                  />
                 </div>
+                <DownloadIcon
+                  className="text-[#003399] cursor-pointer"
+                  size={20}
+                  onClick={handleDownload}
+                />
               </div>
-            ))}
+            </div>
+
+            {!certificateUrl && (
+              <p className="text-sm text-gray-500 text-center mt-2">
+                Certificate will be available once trees are allocated.
+              </p>
+            )}
           </div>
         </div>
       </DialogContent>

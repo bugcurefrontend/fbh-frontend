@@ -102,6 +102,10 @@ const LightBox: React.FC<LightBoxProps> = ({
 
   const [plantRates, setPlantRates] = useState<PlantRate[]>([]);
 
+  // Track if we've fetched attributes to prevent duplicate calls
+  const hasFetchedAttributes = React.useRef(false);
+  const [isFetchingAttributes, setIsFetchingAttributes] = useState(false);
+
   useEffect(() => {
     fetchAllPlantRates().then(setPlantRates);
   }, []);
@@ -120,20 +124,30 @@ const LightBox: React.FC<LightBoxProps> = ({
   useEffect(() => {
     if (attributes && attributes.length > 0) {
       setLocalAttributes(attributes);
+      hasFetchedAttributes.current = true;
+      return;
+    }
+
+    // Prevent duplicate fetches
+    if (hasFetchedAttributes.current || isFetchingAttributes) {
       return;
     }
 
     const fetchAttrs = async () => {
+      setIsFetchingAttributes(true);
       try {
         const mapped = await fetchAllAttributes();
         setLocalAttributes(mapped);
+        hasFetchedAttributes.current = true;
       } catch (e) {
         console.error("Failed to fetch attributes", e);
+      } finally {
+        setIsFetchingAttributes(false);
       }
     };
 
     fetchAttrs();
-  }, [attributes]);
+  }, []); // Empty dependency array - only run once on mount
 
   useEffect(() => {
     if (preSelectedAttribute && preSelectedAttribute.name) {

@@ -24,6 +24,9 @@ interface SpeciesSelectionDialogProps {
   onGeoTaggedChange: (value: boolean) => void;
   trigger: React.ReactNode;
   availabilityMessage?: string;
+  geotaggedRate?: number;
+  nonGeotaggedRate?: number;
+  currencySymbol?: string;
 }
 
 const SpeciesSelectionDialog: React.FC<SpeciesSelectionDialogProps> = ({
@@ -33,12 +36,19 @@ const SpeciesSelectionDialog: React.FC<SpeciesSelectionDialogProps> = ({
   isGeoTagged,
   onGeoTaggedChange,
   trigger,
+  geotaggedRate = 175,
+  nonGeotaggedRate = 175,
+  currencySymbol = "₹",
 }) => {
   const [open, setOpen] = useState(false);
 
   const handleClose = () => {
     setOpen(false);
   };
+
+  // Calculate current rate based on geotagged toggle
+  const currentRate = isGeoTagged ? geotaggedRate : nonGeotaggedRate;
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>{trigger}</DialogTrigger>
@@ -50,7 +60,7 @@ const SpeciesSelectionDialog: React.FC<SpeciesSelectionDialogProps> = ({
           <div className="space-y-4 px-2 md:px-4">
             <h1 className="flex items-baseline gap-1">
               <span className="font-bold text-2xl sm:text-[28px] leading-[36px] text-[#090C0F]">
-                ₹ 175 /
+                {currencySymbol} {currentRate} /
               </span>
               <span className="font-semibold text-[16px] leading-[36px] text-[#003399]">
                 Tree
@@ -96,11 +106,10 @@ const SpeciesSelectionDialog: React.FC<SpeciesSelectionDialogProps> = ({
                 <div
                   key={tree.id}
                   onClick={() => onSpeciesSelect(tree.id)}
-                  className={`flex items-center gap-3 p-3 rounded-[8px] cursor-pointer border max-sm:h-[70.8px] h-[93px] ${
-                    selectedSpeciesId === tree.id
-                      ? "border-[#2B56AB]"
-                      : "border-gray-200"
-                  }`}
+                  className={`flex items-center gap-3 p-3 rounded-[8px] cursor-pointer border max-sm:h-[70.8px] h-[93px] ${selectedSpeciesId === tree.id
+                    ? "border-[#2B56AB]"
+                    : "border-gray-200"
+                    }`}
                 >
                   <Image
                     src={tree.img}

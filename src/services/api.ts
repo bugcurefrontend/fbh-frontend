@@ -1,9 +1,21 @@
 /**
- * API Service for FBH Frontend
- * Similar to donations-nextjs pattern - direct Strapi API calls at build time
+ * Get API URL based on path
+ * Routes to Django for business logic, Strapi for content
  */
-
 export function getStrapiURL(path: string): string {
+  // Check if path is for Django backend
+  const isDjangoPath =
+    path.startsWith('/api/allocations') ||
+    path.startsWith('/api/donations') ||
+    path.startsWith('/api/donors') ||
+    path.startsWith('/api/admin') ||
+    path.startsWith('/api/certificates') ||
+    path.startsWith('/api/users');
+
+  if (isDjangoPath && process.env.NEXT_PUBLIC_DJANGO_API_URL) {
+    return `${process.env.NEXT_PUBLIC_DJANGO_API_URL}${path}`;
+  }
+
   if (!process.env.NEXT_PUBLIC_FBH_API_URL) {
     console.warn("Please provide Strapi URL in env (NEXT_PUBLIC_FBH_API_URL)");
   }

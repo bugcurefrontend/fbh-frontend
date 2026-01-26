@@ -7,11 +7,11 @@ import { generateProjectSlug } from "@/services/projects";
 import LocationPinIcon from "./icons/LocationPinIcon";
 
 export interface ProjectForCarousel {
-  id: string;
+  id: string | number;
   title: string;
   location: string;
   plantedCount: number;
-  category:string;
+  category: string;
   imageUrl: string;
   imageAlt: string;
 }

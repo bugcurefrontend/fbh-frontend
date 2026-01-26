@@ -10,7 +10,9 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { ArrowLeft } from "lucide-react";
-import { donations, tableData } from "./account/mock-data";
+import { fetchNonGeotaggedTrees, fetchGeotaggedTrees, NonGeotaggedTreeItem, GeotaggedTreeItem } from "@/services/allocations";
+import { useEffect } from "react";
+import { donations } from "./account/mock-data";
 import { Donation } from "./account/types";
 import { TreeUpdate } from "./account/TreeUpdate";
 import Map from "./Map";
@@ -19,6 +21,7 @@ import Image from "next/image";
 interface PlantedTreesProps {
   onBack: () => void;
   donation: {
+    id: number | string;
     reference: string;
     geoTagged: string;
     [key: string]: any;
@@ -27,15 +30,60 @@ interface PlantedTreesProps {
 
 const PlantedTrees = ({ onBack, donation }: PlantedTreesProps) => {
   const ITEMS_PER_PAGE = 5;
+  const [loading, setLoading] = useState(false);
+  const [treeData, setTreeData] = useState<any[]>([]);
+
+  useEffect(() => {
+    const loadTrees = async () => {
+      setLoading(true);
+      if (donation.geoTagged !== "true") {
+        const response = await fetchNonGeotaggedTrees(donation.id);
+        if (response && response.breakdown) {
+          const mappedData = response.breakdown.map((item, index) => ({
+            id: index,
+            treeCode: `${item.total_trees_planted} Trees`,
+            projectName: item.project_name,
+            species: item.species_name,
+            updates: true
+          }));
+          setTreeData(mappedData);
+        } else {
+          setTreeData([]);
+        }
+      } else {
+        // For geotagged, call API #8
+        const response = await fetchGeotaggedTrees(donation.id);
+        if (response && response.trees) {
+          const mappedData = response.trees.map((tree) => ({
+            id: tree.tree_id,
+            treeCode: `FBH-TREE-${tree.tree_id}`,
+            projectName: tree.project_name,
+            species: tree.species_name,
+            lat: tree.latitude,
+            lng: tree.longitude,
+            plantedDate: tree.planted_date,
+            updates: true
+          }));
+          setTreeData(mappedData);
+        } else {
+          setTreeData([]);
+        }
+      }
+      setLoading(false);
+    };
+
+    loadTrees();
+  }, [donation.id, donation.geoTagged]);
 
   const [currentPage, setCurrentPage] = useState(1);
 
-  const totalPages = Math.ceil(tableData.length / ITEMS_PER_PAGE);
+  // Use state data instead of mock tableData
+  const totalPages = Math.ceil(treeData.length / ITEMS_PER_PAGE);
 
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
 
-  const currentData = tableData.slice(startIndex, endIndex);
+  const currentData = treeData.slice(startIndex, endIndex);
 
   const [selectedTree, setSelectedTree] = useState<Donation | null>(null);
 
@@ -163,18 +211,21 @@ const PlantedTrees = ({ onBack, donation }: PlantedTreesProps) => {
                   </div>
                 </td>
                 <td className="text-center h-18 px-3.5">
-                  <button
-                    onClick={() => setSelectedTree(donations[index])}
-                    style={{
-                      fontFamily: "'Public Sans', sans-serif",
-                      fontWeight: 700,
-                      fontSize: "14px",
-                      lineHeight: "22px",
-                      color: "#003399",
-                    }}
-                  >
-                    View
-                  </button>
+                  {/* Hide View button for bulk API data as it has no individual updates */}
+                  {donation.geoTagged === "true" && (
+                    <button
+                      onClick={() => setSelectedTree(donations[index])}
+                      style={{
+                        fontFamily: "'Public Sans', sans-serif",
+                        fontWeight: 700,
+                        fontSize: "14px",
+                        lineHeight: "22px",
+                        color: "#003399",
+                      }}
+                    >
+                      View
+                    </button>
+                  )}
                 </td>
                 {donation.geoTagged === "true" && (
                   <td className="text-center h-18 px-3.5">
@@ -242,7 +293,7 @@ const PlantedTrees = ({ onBack, donation }: PlantedTreesProps) => {
             </PaginationItem>
           </PaginationContent>
         </Pagination>
-      </div>
+      </div >
     );
   };
 
@@ -265,7 +316,7 @@ const PlantedTrees = ({ onBack, donation }: PlantedTreesProps) => {
           <div className="w-full flex md:flex-row flex-col gap-6 md:gap-4">
             <div className="bg-white border md:w-[40%] border-gray-200 rounded-2xl overflow-hidden">
               <div className="md:min-h-[360px] h-full w-full relative overflow-hidden rounded-[8px]">
-                <Map />
+                <Map trees={treeData.filter(t => t.lat && t.lng).map(t => ({ lat: t.lat, lng: t.lng }))} />
               </div>
             </div>
 

@@ -18,7 +18,7 @@ const ProjectsSection: React.FC<ProjectsSectionProps> = ({
 }) => {
   // Transform API data to match existing UI structure
   const projects: ProjectForCarousel[] = apiProjects.map((p) => ({
-    id: p.documentId,
+    id: p.id,
     title: p.name,
     location: p.address,
     plantedCount: p.plantedCount,
@@ -27,7 +27,7 @@ const ProjectsSection: React.FC<ProjectsSectionProps> = ({
     imageAlt: `${p.name} - ${p.archetype}`,
   }));
 
-  const handlePlantTree = (projectId: string) => {
+  const handlePlantTree = (projectId: string | number) => {
     console.log(`Plant tree for project: ${projectId}`);
     // Handle plant tree action
   };

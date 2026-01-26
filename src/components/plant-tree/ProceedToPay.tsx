@@ -27,6 +27,7 @@ interface ProceedToPayProps {
   userEmail?: string;
   recipients?: Recipient[];
   onRecipientsUpdate?: (recipients: Recipient[]) => void;
+  onProceedToPayment?: () => Promise<boolean>; // NEW: Callback for reservation
 }
 
 const ProceedToPay: React.FC<ProceedToPayProps> = ({
@@ -40,6 +41,7 @@ const ProceedToPay: React.FC<ProceedToPayProps> = ({
   userEmail,
   recipients,
   onRecipientsUpdate,
+  onProceedToPayment, // NEW
 }) => {
   const router = useRouter();
   const [isStatusOpen, setIsStatusOpen] = useState(false);
@@ -59,7 +61,7 @@ const ProceedToPay: React.FC<ProceedToPayProps> = ({
     }
   }, [numberOfTrees, recipients]);
 
-  const onProceed = () => {
+  const onProceed = async () => {
     if (numberOfTrees > availableTrees) {
       // Re-sync local state before opening
       setAdjustInput(String(numberOfTrees));
@@ -68,6 +70,16 @@ const ProceedToPay: React.FC<ProceedToPayProps> = ({
       }
       setIsAdjustOpen(true);
     } else {
+      // NEW: Call reservation before payment
+      if (onProceedToPayment) {
+        console.log("🔒 ProceedToPay: Calling reservation handler...");
+        const success = await onProceedToPayment();
+        if (!success) {
+          console.error("❌ Reservation failed in ProceedToPay, not proceeding");
+          return; // Don't proceed if reservation failed
+        }
+        console.log("✅ Reservation successful in ProceedToPay");
+      }
       startProcessing();
     }
   };
@@ -129,7 +141,7 @@ const ProceedToPay: React.FC<ProceedToPayProps> = ({
   const currentTotalTrees = recipients && recipients.length > 0
     ? localRecipients.reduce((sum, r) => sum + r.trees, 0)
     : parseInt(adjustInput, 10) || 0;
-    
+
   const isAdjustmentValid =
     currentTotalTrees > 0 && currentTotalTrees <= availableTrees;
 
@@ -221,11 +233,10 @@ const ProceedToPay: React.FC<ProceedToPayProps> = ({
                 <span className="font-bold ">{availableTrees}</span>
               </div>
               <div
-                className={`${
-                  isAdjustmentValid
+                className={`${isAdjustmentValid
                     ? "bg-[#ECFDF3] text-[#027A48]"
                     : "bg-[#FEECEB] text-[#F04438]"
-                } max-sm:flex-col md:text-lg leading-6.5 rounded-[8px] w-full sm:p-3 max-sm:py-2 max-sm:px-3 flex justify-between sm:items-center gap-1 sm:gap-4 transition-colors`}
+                  } max-sm:flex-col md:text-lg leading-6.5 rounded-[8px] w-full sm:p-3 max-sm:py-2 max-sm:px-3 flex justify-between sm:items-center gap-1 sm:gap-4 transition-colors`}
               >
                 <span className="font-medium">Trees Selected:</span>
                 <span className="font-bold ">{currentTotalTrees}</span>

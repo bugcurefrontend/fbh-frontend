@@ -31,7 +31,7 @@ import {
 } from "./ui/dialog";
 
 interface Project {
-  id: string;
+  id: string | number;
   title: string;
   location: string;
   plantedCount: number;
@@ -60,7 +60,7 @@ interface ProjectAccordionProps {
   projectDescription: string;
   projectDetails: string[];
   relatedProjects: Project[];
-  onPlantTree: (projectId: string) => void;
+  onPlantTree: (projectId: string | number) => void;
   onViewAll: () => void;
   projectUpdates?: ProjectUpdateUI[];
   projectSpecies?: ProjectSpeciesUI[];
