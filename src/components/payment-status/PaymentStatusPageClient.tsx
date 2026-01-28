@@ -1,41 +1,35 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ArrowRightCircle } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { useSearchParams } from "next/navigation";
 
 type PaymentStatus = "success" | "failed";
 
-const PaymentStatusPageClient: React.FC = () => {
-  const [status, setStatus] = useState<PaymentStatus>("success");
+interface PaymentStatusPageClientProps {
+  status: PaymentStatus;
+}
+
+const PaymentStatusPageClient: React.FC<PaymentStatusPageClientProps> = ({
+  status: initialStatus,
+}) => {
+  const searchParams = useSearchParams();
+  const ref = searchParams.get("ref") || searchParams.get("reference");
+  const [status] = useState<PaymentStatus>(initialStatus);
+  const [referenceNumber, setReferenceNumber] = useState<string>("N/A");
+
+  useEffect(() => {
+    if (ref) {
+      setReferenceNumber(ref);
+    } else {
+      setReferenceNumber("N/A");
+    }
+  }, [ref]);
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="w-full">
-        {/* Toggle buttons for demo */}
-        <div className="flex gap-2 mb-12 justify-center">
-          <button
-            onClick={() => setStatus("success")}
-            className={`px-4 py-2 rounded-[8px] text-sm font-medium transition-colors ${
-              status === "success"
-                ? "bg-green-600 text-white"
-                : "bg-white text-gray-600 hover:bg-gray-50"
-            }`}
-          >
-            Show Success
-          </button>
-          <button
-            onClick={() => setStatus("failed")}
-            className={`px-4 py-2 rounded-[8px] text-sm font-medium transition-colors ${
-              status === "failed"
-                ? "bg-red-600 text-white"
-                : "bg-white text-gray-600 hover:bg-gray-50"
-            }`}
-          >
-            Show Failed
-          </button>
-        </div>
-
         {/* Payment Status Card */}
         <div className="text-center flex items-center justify-center">
           {status === "success" ? (
@@ -56,7 +50,7 @@ const PaymentStatusPageClient: React.FC = () => {
 
               <div className="py-2 w-fit mx-auto px-4 my-6 rounded-[8px] bg-[#E7F8F0]">
                 <p className="font-bold md:text-xl leading-9 text-green-700">
-                  Reference Number: SF-1656798
+                  Reference Number: {referenceNumber}
                 </p>
               </div>
 
@@ -94,7 +88,7 @@ const PaymentStatusPageClient: React.FC = () => {
 
               <div className="w-fit mx-auto py-2 px-4 my-6 rounded-[8px] bg-[#FEEDEC]">
                 <p className="font-bold md:text-xl leading-9 text-[#F04438]">
-                  Reference Number: SF-1656798
+                  Reference Number: {referenceNumber}
                 </p>
               </div>
 

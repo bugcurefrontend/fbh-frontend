@@ -27,7 +27,10 @@ interface ProceedToPayProps {
   userEmail?: string;
   recipients?: Recipient[];
   onRecipientsUpdate?: (recipients: Recipient[]) => void;
-  onProceedToPayment?: () => Promise<boolean>; // NEW: Callback for reservation
+  onProceedToPayment?: () => Promise<boolean>;
+  reservationToken?: string; // NEW: Reservation token from useTreeCheckout
+  rate?: number; // NEW: Rate per tree
+  currencyCode?: string; // NEW: Currency code
 }
 
 const ProceedToPay: React.FC<ProceedToPayProps> = ({
@@ -41,7 +44,10 @@ const ProceedToPay: React.FC<ProceedToPayProps> = ({
   userEmail,
   recipients,
   onRecipientsUpdate,
-  onProceedToPayment, // NEW
+  onProceedToPayment,
+  reservationToken, // NEW
+  rate = 100, // Default to 100 if not provided
+  currencyCode = "INR", // Default to INR
 }) => {
   const router = useRouter();
   const [isStatusOpen, setIsStatusOpen] = useState(false);
@@ -63,7 +69,6 @@ const ProceedToPay: React.FC<ProceedToPayProps> = ({
 
   const onProceed = async () => {
     if (numberOfTrees > availableTrees) {
-      // Re-sync local state before opening
       setAdjustInput(String(numberOfTrees));
       if (recipients) {
         setLocalRecipients(recipients);
@@ -75,24 +80,146 @@ const ProceedToPay: React.FC<ProceedToPayProps> = ({
         console.log("🔒 ProceedToPay: Calling reservation handler...");
         const success = await onProceedToPayment();
         if (!success) {
-          console.error("❌ Reservation failed in ProceedToPay, not proceeding");
-          return; // Don't proceed if reservation failed
+          console.error("❌ Reservation failed, not proceeding");
+          setStatus("error");
+          setIsStatusOpen(true);
+          return;
         }
-        console.log("✅ Reservation successful in ProceedToPay");
+        console.log("✅ Reservation successful");
       }
       startProcessing();
     }
   };
 
-  const startProcessing = () => {
+  const startProcessing = async () => {
     setIsStatusOpen(true);
     setStatus("loading");
 
-    // Simulate processing delay then show error
-    setTimeout(() => {
+    // Import payment service dynamically
+    const { initiateDonation, loadRazorpayScript, openRazorpayCheckout } =
+      await import("@/services/payment");
+
+    try {
+      // Step 1: Load Razorpay SDK
+      const scriptLoaded = await loadRazorpayScript();
+      if (!scriptLoaded) {
+        console.error("❌ Failed to load Razorpay");
+        setStatus("error");
+        return;
+      }
+
+      // Step 2: Call HFN Donation Service
+      const baseUrl =
+        typeof window !== "undefined" ? window.location.origin : "";
+      const donationRequest = {
+        userProfile: {
+          firstName: userName || "Guest",
+          emailAddress: userEmail || "guest@example.com",
+          phoneNumber: "+919884166175", // TODO: Get from form
+          addressLine1: "Address Line 1", // TODO: Get from form
+          city: "Chennai", // TODO: Get from form
+          state: "TN", // TODO: Get from form
+          postalCode: "600001", // TODO: Get from form
+          country: "India",
+          citizenshipCountry: "India",
+        },
+        lineItems: [
+          {
+            donationItem: { id: "30" }, // Forest by Heartfulness Fund
+            currency: currencyCode,
+            amount: numberOfTrees * rate, // Use dynamic rate
+            extras: {
+              donorCount: (recipients?.length || 1).toString(),
+              donorName: userName || "Guest",
+              donorEmailAddress: userEmail || "guest@example.com",
+              donorPhoneNumber: "+919884166175",
+              donationType: recipients && recipients.length > 0 ? "gift" : "donate",
+              projectId: "1",
+              donationReceivedFrom: "FBH",
+              reservationToken: reservationToken, // Add reservation token
+            },
+          },
+        ],
+        clientSuccessRedirectUrl: `${baseUrl}/donation/success/`,
+        clientFailureRedirectUrl: `${baseUrl}/donation/failure/`,
+        clientId: "me",
+      };
+
+      console.log("📤 Initiating donation...", donationRequest);
+      const response = await initiateDonation(donationRequest);
+
+      if (!response || !response.paymentGatewayRequestParamMap) {
+        console.error("❌ Donation initiation failed");
+        setStatus("error");
+        return;
+      }
+
+      // Step 3: Extract Razorpay details and trackingId from response
+      const {
+        client_id,
+        id: orderId,
+        amount_due,
+        currency,
+      } = response.paymentGatewayRequestParamMap;
+      const { donationReferenceNumber, trackingId } = response.donation.payment;
+
+      console.log("💳 Payment details:", {
+        client_id,
+        orderId,
+        amount_due,
+        trackingId,
+        donationReferenceNumber,
+      });
+
+      // Step 4: Link trackingId to reservation (CRITICAL for Pub/Sub!)
+      if (reservationToken && trackingId) {
+        console.log("🔗 Linking trackingId to reservation...");
+        try {
+          const linkResponse = await fetch(
+            `${process.env.NEXT_PUBLIC_DJANGO_API_URL}/api/allocations/reservations/link-payment/`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                reservation_token: reservationToken,
+                transaction_id: trackingId,
+              }),
+            }
+          );
+
+          if (linkResponse.ok) {
+            console.log("✅ Linked trackingId to reservation");
+          } else {
+            console.error("❌ Failed to link trackingId:", await linkResponse.text());
+          }
+        } catch (linkError) {
+          console.error("❌ Error linking trackingId:", linkError);
+        }
+      }
+
+      // Close the loading dialog
+      setIsStatusOpen(false);
+
+      // Step 5: Open Razorpay Checkout (this shows QR code/payment scanner)
+      openRazorpayCheckout(
+        client_id, // From API response
+        orderId, // From API response
+        amount_due, // From API response
+        currency,
+        donationReferenceNumber,
+        userEmail || "guest@example.com",
+        "+919884166175",
+        userName || "Guest",
+        `${baseUrl}/donation/success/`,
+        `${baseUrl}/donation/failure/`
+      );
+    } catch (error) {
+      console.error("❌ Payment error:", error);
       setStatus("error");
-      setCountdown(5);
-    }, 5000);
+      setTimeout(() => {
+        setCountdown(5);
+      }, 2000);
+    }
   };
 
   const handleSaveAdjust = () => {
@@ -234,8 +361,8 @@ const ProceedToPay: React.FC<ProceedToPayProps> = ({
               </div>
               <div
                 className={`${isAdjustmentValid
-                    ? "bg-[#ECFDF3] text-[#027A48]"
-                    : "bg-[#FEECEB] text-[#F04438]"
+                  ? "bg-[#ECFDF3] text-[#027A48]"
+                  : "bg-[#FEECEB] text-[#F04438]"
                   } max-sm:flex-col md:text-lg leading-6.5 rounded-[8px] w-full sm:p-3 max-sm:py-2 max-sm:px-3 flex justify-between sm:items-center gap-1 sm:gap-4 transition-colors`}
               >
                 <span className="font-medium">Trees Selected:</span>

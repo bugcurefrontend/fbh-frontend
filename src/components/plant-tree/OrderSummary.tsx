@@ -16,6 +16,8 @@ interface OrderSummaryProps {
   onTreeCountChange?: (count: number) => void;
   onRecipientsUpdate?: (recipients: Recipient[]) => void;
   onProceedToPayment?: () => Promise<boolean>;
+  reservationToken?: string; // NEW: Reservation token
+  currencyCode?: string; // NEW
 }
 
 const OrderSummary: React.FC<OrderSummaryProps> = ({
@@ -28,6 +30,8 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
   onTreeCountChange,
   onRecipientsUpdate,
   onProceedToPayment,
+  reservationToken, // NEW
+  currencyCode,
 }) => {
   return (
     <div className="lg:w-[45%] sticky top-20 self-start space-y-6">
@@ -82,6 +86,9 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
           onTreeCountChange={onTreeCountChange}
           onRecipientsUpdate={onRecipientsUpdate}
           onProceedToPayment={onProceedToPayment}
+          reservationToken={reservationToken}
+          rate={orderSummary.rate}
+          currencyCode={currencyCode}
         />
       )}
     </div>

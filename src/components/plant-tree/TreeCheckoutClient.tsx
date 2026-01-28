@@ -50,6 +50,7 @@ const TreeCheckoutClient = ({ co2PerTree, sampleCertificateUrl, plantRates = [] 
     handleContinueAsGuest,
     handleCreateReservation,
     setStep,
+    reservationData, // NEW: Get reservation data
   } = useTreeCheckout(co2PerTree ?? undefined, plantRates);
 
   return (
@@ -145,6 +146,8 @@ const TreeCheckoutClient = ({ co2PerTree, sampleCertificateUrl, plantRates = [] 
           userName={`${personalDetails.firstName} ${personalDetails.lastName}`.trim()}
           userEmail={personalDetails.email}
           onProceedToPayment={handleCreateReservation}
+          reservationToken={reservationData?.token}
+          currencyCode={personalDetails.currency}
         />
       </div>
 

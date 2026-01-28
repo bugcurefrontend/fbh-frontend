@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import {
   Pagination,
   PaginationContent,
@@ -14,96 +15,92 @@ import { Donation } from "@/components/account/types";
 import { donations } from "@/components/account/mock-data";
 import { TreeUpdate } from "@/components/account/TreeUpdate";
 import Map from "@/components/Map";
+import { validateCertificate, CertificateValidationResponse, GeotaggedTreeDetail, NonGeotaggedTreeDetail } from "@/services/certificates";
 
-interface Data {
-  treeCode: number | string;
-  projectName: string;
-  species: string;
+interface GeotaggedTree {
+  tree_id: number;
+  project_id: number | null;
+  species_id: number | null;
+  latitude: number | null;
+  longitude: number | null;
+  treeCode?: string;
+  projectName?: string;
+  species?: string;
 }
 
-const tableData: Data[] = [
-  {
-    treeCode: "KSVM-2024",
-    projectName: "Kanha Shanti Vanam",
-    species: "Mango",
-  },
-  {
-    treeCode: "KSVM-2024",
-    projectName: "Kanha Shanti Vanam",
-    species: "Neem",
-  },
-  {
-    treeCode: "KSVM-2024",
-    projectName: "Kanha Shanti Vanam",
-    species: "Peepal",
-  },
-  {
-    treeCode: "APRF-2024",
-    projectName: "Andhra Pradesh Reforestation",
-    species: "Banyan",
-  },
-  {
-    treeCode: "APRF-2024",
-    projectName: "Andhra Pradesh Reforestation",
-    species: "Teak",
-  },
-  {
-    treeCode: "MHRF-2024",
-    projectName: "Maharashtra Green Drive",
-    species: "Jamun",
-  },
-  {
-    treeCode: "MHRF-2024",
-    projectName: "Maharashtra Green Drive",
-    species: "Amla",
-  },
-  {
-    treeCode: "MHRF-2024",
-    projectName: "Maharashtra Green Drive",
-    species: "Bamboo",
-  },
-  {
-    treeCode: "TNFR-2024",
-    projectName: "Tamil Nadu Forest Revival",
-    species: "Sandalwood",
-  },
-  {
-    treeCode: "TNFR-2024",
-    projectName: "Tamil Nadu Forest Revival",
-    species: "Neem",
-  },
-  {
-    treeCode: "RJGP-2024",
-    projectName: "Rajasthan Green Plantation",
-    species: "Khejri",
-  },
-  {
-    treeCode: "RJGP-2024",
-    projectName: "Rajasthan Green Plantation",
-    species: "Babool",
-  },
-  {
-    treeCode: "KLRF-2024",
-    projectName: "Kerala Rainforest Restoration",
-    species: "Jackfruit",
-  },
-  {
-    treeCode: "KLRF-2024",
-    projectName: "Kerala Rainforest Restoration",
-    species: "Coconut",
-  },
-  {
-    treeCode: "ODGP-2024",
-    projectName: "Odisha Green Initiative",
-    species: "Sal",
-  },
-];
+interface NonGeotaggedTree {
+  project_id: number | null;
+  species_id: number | null;
+  total_trees_planted: number;
+  projectName?: string;
+  species?: string;
+}
+
+type TreeData = GeotaggedTree | NonGeotaggedTree;
 
 const ValidCertificatePageClient = () => {
   const ITEMS_PER_PAGE = 5;
+  const searchParams = useSearchParams();
+  const certificateId = searchParams.get("certificate");
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [valid, setValid] = useState(true);
+  const [valid, setValid] = useState<boolean | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [certificateData, setCertificateData] = useState<CertificateValidationResponse | null>(null);
+  const [tableData, setTableData] = useState<TreeData[]>([]);
+  const [selectedTree, setSelectedTree] = useState<Donation | null>(null);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  // Fetch certificate data on mount or when certificate param changes
+  useEffect(() => {
+    const fetchCertificateData = async () => {
+      try {
+        setIsLoading(true);
+
+        if (!certificateId) {
+          setValid(false);
+          setErrorMessage("No certificate ID provided");
+          setIsLoading(false);
+          return;
+        }
+
+        const response = await validateCertificate(certificateId);
+
+        if (!response || !response.success) {
+          setValid(false);
+          setErrorMessage(response?.message || "Failed to validate certificate");
+          setCertificateData(response);
+          setTableData([]);
+        } else {
+          setValid(true);
+          setCertificateData(response);
+
+          // Transform tree details based on geotagged status
+          if (response.tree_details && response.tree_details.length > 0) {
+            const transformedTrees = response.tree_details.map((tree: any) => {
+              return {
+                ...tree,
+                treeCode: `TREE-${tree.tree_id || "N/A"}`,
+                projectName: tree.projectName || `Project ${tree.project_id}`,
+                species: tree.species || `Species ${tree.species_id}`,
+              };
+            });
+            setTableData(transformedTrees);
+          }
+        }
+      } catch (error) {
+        console.error("Certificate validation error:", error);
+        setValid(false);
+        setErrorMessage("An error occurred while validating the certificate");
+        setCertificateData(null);
+        setTableData([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchCertificateData();
+  }, [certificateId]);
 
   const totalPages = Math.ceil(tableData.length / ITEMS_PER_PAGE);
 
@@ -111,19 +108,16 @@ const ValidCertificatePageClient = () => {
   const endIndex = startIndex + ITEMS_PER_PAGE;
 
   const currentData = tableData.slice(startIndex, endIndex);
-  const [selectedTree, setSelectedTree] = useState<Donation | null>(null);
-
-  if (selectedTree) {
-    return (
-      <div className="max-w-7xl mx-auto md:px-8 px-4  pt-6">
-        <TreeUpdate tree={selectedTree} onBack={() => setSelectedTree(null)} />
-      </div>
-    );
-  }
 
   return (
     <main className="max-w-7xl mx-auto md:px-8 px-4 mt-8">
-      {valid ? (
+      {isLoading ? (
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="text-center">
+            <p className="text-lg text-[#454950]">Loading certificate details...</p>
+          </div>
+        </div>
+      ) : valid ? (
         <div className="flex flex-col items-center justify-center">
           <div className="inline-flex items-center justify-center w-25 h-25">
             <Image
@@ -144,7 +138,7 @@ const ValidCertificatePageClient = () => {
                 Certificate ID
               </h2>
               <h1 className="text-[#19212C] leading-6.5 md:text-lg md:font-bold font-semibold">
-                3SXNSK4
+                {certificateData?.certificate_id || "N/A"}
               </h1>
             </div>
             <div className="space-y-2">
@@ -152,7 +146,7 @@ const ValidCertificatePageClient = () => {
                 Name
               </h2>
               <h1 className="text-[#19212C] leading-6.5 md:text-lg md:font-bold font-semibold">
-                Kalpit Bhai
+                {certificateData?.recipient_name || "N/A"}
               </h1>
             </div>
             <div className="space-y-2">
@@ -160,7 +154,7 @@ const ValidCertificatePageClient = () => {
                 Trees Planted
               </h2>
               <h1 className="text-[#19212C] leading-6.5 md:text-lg md:font-bold font-semibold">
-                999
+                {certificateData?.trees_planted || 0}
               </h1>
             </div>
             <div className="space-y-2">
@@ -168,7 +162,13 @@ const ValidCertificatePageClient = () => {
                 Planted On
               </h2>
               <h1 className="text-[#19212C] leading-6.5 md:text-lg md:font-bold font-semibold">
-                January 12th , 2026
+                {certificateData?.date
+                  ? new Date(certificateData.date).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric"
+                  })
+                  : "N/A"}
               </h1>
             </div>
           </div>
@@ -178,11 +178,13 @@ const ValidCertificatePageClient = () => {
           </h1>
 
           <div className="w-full flex md:flex-row flex-col gap-6 md:gap-4">
-            <div className="bg-white border md:w-[40%] border-gray-200 rounded-2xl overflow-hidden">
-              <Map />
-            </div>
+            {certificateData?.is_geotagged && (
+              <div className="bg-white border md:w-[40%] border-gray-200 rounded-2xl overflow-hidden">
+                <Map />
+              </div>
+            )}
 
-            <div className="max-md:hidden w-[60%] h-full bg-white shadow-sm rounded-[12px] border border-gray-200 overflow-hidden max-md:overflow-x-scroll justify-between flex flex-col">
+            <div className={`${certificateData?.is_geotagged ? "md:w-[60%]" : "w-full"} h-full bg-white shadow-sm rounded-[12px] border border-gray-200 overflow-hidden max-md:overflow-x-scroll justify-between flex flex-col max-md:hidden`}>
               <table className="w-full">
                 <thead className="border-b border-gray-200">
                   <tr>
@@ -196,7 +198,7 @@ const ValidCertificatePageClient = () => {
                         color: "#454950",
                       }}
                     >
-                      Tree Code
+                      {certificateData?.is_geotagged ? "Tree Code" : "Project"}
                     </th>
                     <th
                       className="w-[20%] py-3 px-6 text-xs font-medium"
@@ -222,34 +224,52 @@ const ValidCertificatePageClient = () => {
                     >
                       Species
                     </th>
-                    <th
-                      className="w-[20%] py-3 px-6 text-xs font-medium"
-                      style={{
-                        fontFamily: "Poppins, sans-serif",
-                        fontWeight: 500,
-                        fontSize: "12px",
-                        lineHeight: "18px",
-                        color: "#454950",
-                      }}
-                    >
-                      Updates
-                    </th>
-                    <th
-                      className="w-[20%] py-3 px-6 text-xs font-medium"
-                      style={{
-                        fontFamily: "Poppins, sans-serif",
-                        fontWeight: 500,
-                        fontSize: "12px",
-                        lineHeight: "18px",
-                        color: "#454950",
-                      }}
-                    >
-                      Directions
-                    </th>
+                    {certificateData?.is_geotagged && (
+                      <>
+                        <th
+                          className="w-[20%] py-3 px-6 text-xs font-medium"
+                          style={{
+                            fontFamily: "Poppins, sans-serif",
+                            fontWeight: 500,
+                            fontSize: "12px",
+                            lineHeight: "18px",
+                            color: "#454950",
+                          }}
+                        >
+                          Updates
+                        </th>
+                        <th
+                          className="w-[20%] py-3 px-6 text-xs font-medium"
+                          style={{
+                            fontFamily: "Poppins, sans-serif",
+                            fontWeight: 500,
+                            fontSize: "12px",
+                            lineHeight: "18px",
+                            color: "#454950",
+                          }}
+                        >
+                          Directions
+                        </th>
+                      </>
+                    )}
+                    {!certificateData?.is_geotagged && (
+                      <th
+                        className="w-[20%] py-3 px-6 text-xs font-medium"
+                        style={{
+                          fontFamily: "Poppins, sans-serif",
+                          fontWeight: 500,
+                          fontSize: "12px",
+                          lineHeight: "18px",
+                          color: "#454950",
+                        }}
+                      >
+                        Trees Planted
+                      </th>
+                    )}
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
-                  {currentData.map((donor, index) => (
+                  {currentData.map((tree: any, index) => (
                     <tr key={startIndex + index}>
                       <td
                         className="h-18 text-center px-3.5 truncate"
@@ -261,7 +281,7 @@ const ValidCertificatePageClient = () => {
                           color: "#090C0F",
                         }}
                       >
-                        {donor.treeCode}
+                        {certificateData?.is_geotagged ? tree.treeCode : tree.projectName}
                       </td>
 
                       <td className="text-center h-18 px-3.5">
@@ -275,7 +295,7 @@ const ValidCertificatePageClient = () => {
                             color: "#454950",
                           }}
                         >
-                          {donor.projectName}
+                          {tree.projectName}
                         </div>
                       </td>
 
@@ -290,36 +310,55 @@ const ValidCertificatePageClient = () => {
                             color: "#454950",
                           }}
                         >
-                          {donor.species}
+                          {tree.species}
                         </div>
                       </td>
-                      <td className="text-center h-18 px-3.5">
-                        <button
-                          onClick={() => setSelectedTree(donations[index])}
-                          style={{
-                            fontFamily: "'Public Sans', sans-serif",
-                            fontWeight: 700,
-                            fontSize: "14px",
-                            lineHeight: "22px",
-                            color: "#003399",
-                          }}
-                        >
-                          View
-                        </button>
-                      </td>
-                      <td className="text-center h-18 px-3.5">
-                        <button
-                          style={{
-                            fontFamily: "'Public Sans', sans-serif",
-                            fontWeight: 700,
-                            fontSize: "14px",
-                            lineHeight: "22px",
-                            color: "#003399",
-                          }}
-                        >
-                          Click Here
-                        </button>
-                      </td>
+                      {certificateData?.is_geotagged && (
+                        <>
+                          <td className="text-center h-18 px-3.5">
+                            <button
+                              onClick={() => setSelectedTree(donations[index])}
+                              style={{
+                                fontFamily: "'Public Sans', sans-serif",
+                                fontWeight: 700,
+                                fontSize: "14px",
+                                lineHeight: "22px",
+                                color: "#003399",
+                              }}
+                            >
+                              View
+                            </button>
+                          </td>
+                          <td className="text-center h-18 px-3.5">
+                            <button
+                              style={{
+                                fontFamily: "'Public Sans', sans-serif",
+                                fontWeight: 700,
+                                fontSize: "14px",
+                                lineHeight: "22px",
+                                color: "#003399",
+                              }}
+                            >
+                              Click Here
+                            </button>
+                          </td>
+                        </>
+                      )}
+                      {!certificateData?.is_geotagged && (
+                        <td className="text-center h-18 px-3.5">
+                          <div
+                            style={{
+                              fontFamily: "'Public Sans', sans-serif",
+                              fontWeight: 600,
+                              fontSize: "14px",
+                              lineHeight: "22px",
+                              color: "#454950",
+                            }}
+                          >
+                            {tree.total_trees_planted}
+                          </div>
+                        </td>
+                      )}
                     </tr>
                   ))}
                 </tbody>
@@ -376,21 +415,23 @@ const ValidCertificatePageClient = () => {
             </div>
 
             <div className="md:hidden flex flex-col gap-6 w-full">
-              {currentData.map((donor, index) => (
+              {currentData.map((tree: any, index) => (
                 <div
                   key={startIndex + index}
                   className="border border-[#E8E8E9] rounded-2xl overflow-hidden bg-white"
                 >
                   <div className="border-b py-3 px-4 border-[#E8E8E9] flex items-center justify-between">
-                    <h2 className="text-lg font-bold">{donor.species} Tree</h2>
-                    <div className="flex items-center justify-center rounded-full h-8 w-8 bg-[#003399]">
-                      <Image
-                        src="/images/direction.png"
-                        alt="map"
-                        width={20}
-                        height={20}
-                      />
-                    </div>
+                    <h2 className="text-lg font-bold">{tree.species} Tree</h2>
+                    {certificateData?.is_geotagged && (
+                      <div className="flex items-center justify-center rounded-full h-8 w-8 bg-[#003399]">
+                        <Image
+                          src="/images/direction.png"
+                          alt="map"
+                          width={20}
+                          height={20}
+                        />
+                      </div>
+                    )}
                   </div>
 
                   <div className="space-y-6 p-4">
@@ -398,31 +439,35 @@ const ValidCertificatePageClient = () => {
                       <div className="space-y-2 text-sm">
                         <h1 className="text-sm font-semibold">Project</h1>
                         <p className="text-[#19212C] font-bold">
-                          {donor.projectName}
+                          {tree.projectName}
                         </p>
                       </div>
 
                       <div className="space-y-2 text-sm">
-                        <h1 className="text-sm font-semibold">Tree Code:</h1>
+                        <h1 className="text-sm font-semibold">
+                          {certificateData?.is_geotagged ? "Tree Code:" : "Trees:"}
+                        </h1>
                         <p className="text-[#19212C] font-bold">
-                          {donor.treeCode}
+                          {certificateData?.is_geotagged ? tree.treeCode : tree.total_trees_planted}
                         </p>
                       </div>
                     </div>
-                    <button
-                      onClick={() =>
-                        setSelectedTree(donations[startIndex + index])
-                      }
-                      className=" w-full border border-[#003399] rounded-sm py-3"
-                      style={{
-                        fontFamily: "'Public Sans', sans-serif",
-                        fontWeight: 700,
-                        lineHeight: "22px",
-                        color: "#003399",
-                      }}
-                    >
-                      Updates
-                    </button>
+                    {certificateData?.is_geotagged && (
+                      <button
+                        onClick={() =>
+                          setSelectedTree(donations[startIndex + index])
+                        }
+                        className=" w-full border border-[#003399] rounded-sm py-3"
+                        style={{
+                          fontFamily: "'Public Sans', sans-serif",
+                          fontWeight: 700,
+                          lineHeight: "22px",
+                          color: "#003399",
+                        }}
+                      >
+                        Updates
+                      </button>
+                    )}
                   </div>
                 </div>
               ))}
@@ -495,10 +540,14 @@ const ValidCertificatePageClient = () => {
             Your Certificate is Invalid!
           </h1>
 
+          <p className="text-center text-[#454950] mt-2 text-sm">
+            {errorMessage || "The certificate could not be validated."}
+          </p>
+
           <div className="flex gap-2 text-sm font-medium mt-4">
             <p className="text-[#454950]">Facing Issues?</p>
             <button className="underline text-[#003399] font-bold">
-              <a href="contact-us">Contact Us</a>
+              <a href="/contact-us">Contact Us</a>
             </button>
           </div>
         </div>

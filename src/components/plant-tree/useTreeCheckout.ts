@@ -258,6 +258,7 @@ export const useTreeCheckout = (co2PerTree?: number, initialPlantRates: PlantRat
       geotaggedRate,
       nonGeotaggedRate,
       currencySymbol: symbol,
+      rate,
     });
   };
 

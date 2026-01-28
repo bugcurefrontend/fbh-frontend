@@ -5,6 +5,7 @@ export interface OrderSummary {
   geotaggedRate?: number;
   nonGeotaggedRate?: number;
   currencySymbol?: string;
+  rate?: number;
 }
 
 import { City, Country } from "@/lib/location-utils";
