@@ -77,7 +77,7 @@ const FAQs = () => {
   };
   return (
     <main className="max-w-7xl mx-auto md:mt-16 mt-8 px-4 md:px-8 overflow-hidden">
-      <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold text-center text-[#232D26] mb-6">
+      <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold sm:text-center text-[#232D26] mb-6">
         FAQs
       </h2>
       <Tabs value={activeTab} onValueChange={setActiveTab}>
@@ -113,7 +113,11 @@ const FAQs = () => {
         </div>
 
         {faqData.map((tab) => (
-          <TabsContent key={tab.value} value={tab.value} className="md:pt-6 md:pb-1">
+          <TabsContent
+            key={tab.value}
+            value={tab.value}
+            className="md:pt-6 md:pb-1"
+          >
             <div className="space-y-6">
               {tab.faqs.map((faq) => (
                 <div
@@ -142,11 +146,11 @@ const FAQs = () => {
                     </div>
                   </button>
                   {/* Animated answer container with slide effect */}
-                  <div 
+                  <div
                     className="overflow-hidden transition-all duration-300 ease-in-out"
-                    style={{ 
-                      maxHeight: openItem === faq.id ? '500px' : '0px',
-                      opacity: openItem === faq.id ? 1 : 0
+                    style={{
+                      maxHeight: openItem === faq.id ? "500px" : "0px",
+                      opacity: openItem === faq.id ? 1 : 0,
                     }}
                   >
                     <p className="text-[#454950] max-md:text-sm md:px-6 px-3 md:pb-6 pb-3">

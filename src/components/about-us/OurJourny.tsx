@@ -69,7 +69,7 @@ const JourneyTimeline: React.FC<{
 
   return (
     <div className="w-full text-center bg-white md:px-8 px-4">
-      <h1 className="text-[22px] sm:text-[32px] font-[Playfair_Display] font-semibold text-black md:text-[32px] md:font-semibold md:leading-[48px] md:align-middle md:text-[#090C0F] md:mb-8 mb-6">
+      <h1 className="text-[22px] sm:text-[32px] font-[Playfair_Display] font-semibold text-black md:text-[32px] md:font-semibold md:leading-[48px] md:align-middle md:text-[#090C0F] md:mb-8 mb-6 max-sm:text-start">
         Our Journey
       </h1>
 

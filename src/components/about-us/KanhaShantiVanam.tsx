@@ -22,7 +22,7 @@ const KanhaShantiVanam = () => {
   ];
 
   return (
-    <main className="md:mt-16 mt-8 space-y-4 md:space-y-8">
+    <main className="md:mt-16 mt-8 space-y-6 md:space-y-8">
       <Image
         src="/images/kanha-shanti.png"
         alt="Kanha Shanti Vanam Forest"
@@ -30,9 +30,9 @@ const KanhaShantiVanam = () => {
         height={400}
         className="w-full h-full min-h-[213px] object-cover"
       />
-      <div className="max-w-7xl mx-auto md:px-8 px-4 space-y-4 md:space-y-8 text-center">
+      <div className="max-w-7xl mx-auto md:px-8 px-4 space-y-6 md:space-y-8 text-center">
         {/* Title */}
-        <h2 className="text-[22px] sm:text-[32px] font-[Playfair_Display] font-semibold text-black md:text-[32px] md:font-semibold md:leading-[48px] md:align-middle md:text-[#090C0F]">
+        <h2 className="text-[22px] sm:text-[32px] font-[Playfair_Display] font-semibold text-black md:text-[32px] md:font-semibold md:leading-[48px] md:align-middle md:text-[#090C0F] max-sm:text-start">
           Kanha Shanti Vanam
         </h2>
 
@@ -51,10 +51,7 @@ const KanhaShantiVanam = () => {
         <div className="grid grid-cols-2 md:grid-cols-4 md:gap-6 border-[#E4E4E4] border rounded-[8px] md:rounded-[16px]">
           {features.map((feature, index) => {
             return (
-              <div
-                key={index}
-                className="relative text-center p-4"
-              >
+              <div key={index} className="relative text-center p-4">
                 {/* Icon with circle background */}
                 <div className="flex justify-center">
                   <div className="sm:w-[33.33px] w-[26.67] sm:h-[33.33px] h-[26.67] rounded-full bg-[#9DE1C2] border-[2.5px] border-[#76D5A9] flex items-center justify-center">

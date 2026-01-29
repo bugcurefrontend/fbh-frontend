@@ -38,11 +38,11 @@ const AboutHeartfulness: React.FC<Props> = ({ stats }) => {
   ];
 
   return (
-    <main className="w-full md:space-y-8 space-y-6 md:px-8 px-4">
+    <main className="w-full md:space-y-8 space-y-4 md:px-8 px-4">
       <div className="grid md:grid-cols-2 items-start md:gap-10 gap-4">
         {/* Left Content */}
-        <div className="flex flex-col justify-between h-full md:px-4 md:py-2 max-md:space-y-2">
-          <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold text-black md:text-[32px] md:font-semibold md:leading-[48px] max-md:text-center md:text-[#090C0F]">
+        <div className="flex flex-col justify-between h-full md:px-4 md:py-2 max-md:space-y-6">
+          <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold text-black md:text-[32px] md:font-semibold md:leading-[48px] md:text-[#090C0F]">
             About Heartfulness
           </h2>
           <p className="text-[#454950] leading-6 max-md:text-sm">
@@ -89,7 +89,7 @@ const AboutHeartfulness: React.FC<Props> = ({ stats }) => {
           })}
         </div>
       </div>
-      <div className="md:space-y-6 md:px-4 space-y-2 text-[#454950] leading-6 max-md:text-sm">
+      <div className="space-y-6 md:px-4 text-[#454950] leading-6 max-md:text-sm">
         <p>
           Numerous books and other publications have been translated into over
           twenty languages. The contributions of Heartfulness Meditation in the
