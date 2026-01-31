@@ -24,89 +24,26 @@ import PlantedTrees from "../PlantedTrees";
 import { Donation } from "./types";
 import { useAuth } from "@/lib/auth-context";
 
-export const DonationsTab = () => {
+interface DonationsTabProps {
+  allDonationsData: any[];
+  totalItems: number;
+  loading: boolean;
+}
+
+export const DonationsTab = ({
+  allDonationsData = [],
+  totalItems = 0,
+  loading = false
+}: DonationsTabProps) => {
   const ITEMS_PER_PAGE = 6;
   const [currentPage, setCurrentPage] = useState(1);
-  const [allDonationsData, setAllDonationsData] = useState<any[]>([]); // Store ALL data
-  const [totalItems, setTotalItems] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const [dataLoaded, setDataLoaded] = useState(false); // Track if data is loaded
-
-  // Get logged-in user from auth context
-  const { userProfile, isAuthenticated } = useAuth();
-
-  // Fetch ALL donation data ONCE on mount (not on page change)
-  useEffect(() => {
-    // Skip if already loaded or not authenticated
-    if (dataLoaded) return;
-
-    const loadAllDonations = async () => {
-      setLoading(true);
-
-      // Only fetch if user is authenticated and has email
-      if (!isAuthenticated || !userProfile?.email) {
-        setAllDonationsData(donations); // Fallback to mock data
-        setTotalItems(donations.length);
-        setDataLoaded(true);
-        setLoading(false);
-        return;
-      }
-
-      try {
-        // Fetch ALL data at once (backend returns everything anyway)
-        const normalizedEmail = userProfile.email.toLowerCase();
-        const response = await fetchDonationHistory(normalizedEmail, 1, 100); // Large page_size
-
-        if (response && response.results) {
-          // Map API response to component format
-          const mapped = response.results.map((item: DonationHistoryItem) => ({
-            id: item.donation_id,
-            geoTagged: item.is_geotagged ? "true" : "false",
-            logoSrc: item.dep_type === "PROJECT" ? "/images/treelogo.png" :
-              item.dep_type === "SPECIES" ? "/images/specieslogo.png" : "/images/campainlogo.png",
-            name: item.project_name || item.species_name || "Campaign",
-            reference: item.reference_number,
-            trees: item.trees_planted,
-            donationFor: item.donation_type.toUpperCase(),
-            date: new Date(item.donation_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-            accent: "#0D824B",
-            location: "India",
-            status: "ALIVE",
-            statusAccent: "#0D824B",
-            recipientName: item.donation_type === "Received" ?
-              (userProfile?.firstName + " " + userProfile?.lastName) :
-              (item.recipient_details?.recipient_name || userProfile?.firstName + " " + userProfile?.lastName),
-            certificateUrl: item.certificate_url,
-            receiptUrl: item.receipt_url,
-            giftedBy: item.gifted_by,
-          }));
-          setAllDonationsData(mapped);
-          setTotalItems(response.count);
-          setDataLoaded(true);
-        } else {
-          setAllDonationsData(donations);
-          setTotalItems(donations.length);
-          setDataLoaded(true);
-        }
-      } catch (error) {
-        console.error("Error loading donations:", error);
-        setAllDonationsData(donations);
-        setTotalItems(donations.length);
-        setDataLoaded(true);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadAllDonations();
-  }, [userProfile, isAuthenticated, dataLoaded]);
+  const [selectedTree, setSelectedTree] = useState<Donation | null>(null);
 
   // Client-side pagination: Calculate pages and slice data
   const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
   const currentData = allDonationsData.slice(startIndex, endIndex);
-  const [selectedTree, setSelectedTree] = useState<Donation | null>(null);
 
   if (selectedTree) {
     return (
