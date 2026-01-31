@@ -10,7 +10,7 @@ import MobileProjectsCarousel, {
 
 interface RelatedProjectsProps {
   projects: ProjectForCarousel[];
-  onPlantTree: (projectId: string) => void;
+  onPlantTree: (projectId: string | number) => void;
   onViewAll: () => void;
 }
 

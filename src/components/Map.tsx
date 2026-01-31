@@ -1,43 +1,29 @@
 "use client";
 
-import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
+interface MapProps {
+  trees?: Array<{ lat: number; lng: number }>;
+  center?: { lat: number; lng: number };
+}
 
-const center = { lat: 17.183633, lng: 78.20529 };
+export default function Map({ trees, center }: MapProps) {
+  // Use provided center or default to first tree location or fallback
+  const mapCenter = center || (trees && trees.length > 0 ? trees[0] : { lat: 17.183633, lng: 78.20529 });
 
-const locations = [
-  { lat: 17.183633, lng: 78.20529 },
-  { lat: 17.183565, lng: 78.205271 },
-  { lat: 17.183427, lng: 78.205236 },
-  { lat: 17.183352, lng: 78.20522 },
-  { lat: 17.183376, lng: 78.205148 },
-  { lat: 17.183447, lng: 78.205164 },
-  { lat: 17.183584, lng: 78.205199 },
-  { lat: 17.183653, lng: 78.205217 },
-  { lat: 17.183793, lng: 78.205254 },
-  { lat: 17.183866, lng: 78.205272 },
-  { lat: 17.183935, lng: 78.205288 },
-  { lat: 17.184006, lng: 78.205307 },
-  { lat: 17.184297, lng: 78.20553 },
-];
-
-export default function Map() {
-  const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
-  });
-
-  if (!isLoaded) return <div>Loading Map...</div>;
+  // Build Google Maps embed URL with center coordinates
+  // Format: https://www.google.com/maps?q=lat,lng&z=zoom
+  const mapUrl = `https://www.google.com/maps?q=${mapCenter.lat},${mapCenter.lng}&z=18&output=embed`;
 
   return (
     <div className="w-full md:h-[475px] h-[338px] rounded-[16px] overflow-hidden">
-      <GoogleMap
-        mapContainerStyle={{ width: "100%", height: "100%" }}
-        center={center}
-        zoom={18}
-      >
-        {locations.map((pos, index) => (
-          <Marker key={index} position={pos} />
-        ))}
-      </GoogleMap>
+      <iframe
+        src={mapUrl}
+        width="100%"
+        height="100%"
+        className="rounded-[16px] border-0"
+        allowFullScreen
+        loading="lazy"
+        referrerPolicy="no-referrer-when-downgrade"
+      />
     </div>
   );
 }

@@ -8,6 +8,7 @@ import {
   fetchProjectBySlug,
   generateProjectSlug,
 } from "@/services/projects";
+import { fetchProjectMetrics } from "@/services/allocations";
 import { generateSlug as generateSpeciesSlug } from "@/services/species";
 import { fetchAllPlantRates } from "@/services/plant-rates";
 import { ProjectSimplified, ProjectUpdate } from "@/types/project";
@@ -116,7 +117,7 @@ function parseRichTextBlock(block: any): string {
 /**
  * Transform API project to ProjectDetailPage format
  */
-function transformToDetailData(project: ProjectSimplified) {
+function transformToDetailData(project: ProjectSimplified, metrics: any = null) {
   // Extract description text from rich text blocks if needed
   let descriptionText = "";
   if (typeof project.description === "string") {
@@ -147,17 +148,24 @@ function transformToDetailData(project: ProjectSimplified) {
     });
   }
 
+  // Use metrics data if available, otherwise fall back to Strapi data
+  const stats = metrics && metrics.success ? {
+    treesAvailable: metrics.geotagged_trees + metrics.non_geotagged_trees,
+    treesPlanted: metrics.total_trees - (metrics.geotagged_trees + metrics.non_geotagged_trees),
+    totalTrees: metrics.total_trees,
+  } : {
+    treesAvailable: 0,
+    treesPlanted: project.plantedCount,
+    totalTrees: project.plantedCount,
+  };
+
   return {
-    id: project.documentId,
+    id: project.id,
     title: project.name,
     location: project.address,
     description: descriptionText,
     treeSpecies,
-    stats: {
-      treesAvailable: 0, // Will need separate API or field
-      treesPlanted: project.plantedCount,
-      totalTrees: project.plantedCount,
-    },
+    stats,
     projectDescription: descriptionText,
     projectDetails: [], // Could be populated from project_updates
     mapCode: project.mapCode,
@@ -177,7 +185,7 @@ function transformToRelatedProjects(
     .filter((p) => p.documentId !== currentId)
     .slice(0, 3)
     .map((p) => ({
-      id: p.documentId,
+      id: p.id,
       title: p.name,
       location: p.address,
       plantedCount: p.plantedCount,
@@ -237,7 +245,7 @@ export default async function ProjectSlugPage({
 }) {
   const { slug } = await params;
 
-  // Fetch project, all projects, and plant rates (both INR and USD) from Strapi API
+  // Fetch project, all projects, and plant rates from APIs
   const [project, allProjects, plantRates] = await Promise.all([
     fetchProjectBySlug(slug),
     fetchAllProjects(),
@@ -248,7 +256,10 @@ export default async function ProjectSlugPage({
     notFound();
   }
 
-  const projectData = transformToDetailData(project);
+  // Fetch metrics for this specific project
+  const metrics = await fetchProjectMetrics(project.id);
+
+  const projectData = transformToDetailData(project, metrics);
   const relatedProjects = transformToRelatedProjects(
     allProjects,
     project.documentId

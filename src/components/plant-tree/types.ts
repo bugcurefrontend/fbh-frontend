@@ -2,6 +2,10 @@ export interface OrderSummary {
   numberOfTrees: number;
   totalCo2Offset: string;
   totalAmount: string;
+  geotaggedRate?: number;
+  nonGeotaggedRate?: number;
+  currencySymbol?: string;
+  rate?: number;
 }
 
 import { City, Country } from "@/lib/location-utils";
@@ -34,4 +38,11 @@ export interface Species {
   botanical: string;
   img: string;
   availableTags?: Array<"geo" | "non-geo">;
+}
+
+export interface ReservationData {
+  token: string;
+  expiresAt: string;
+  reservationId: number;
+  message?: string;
 }

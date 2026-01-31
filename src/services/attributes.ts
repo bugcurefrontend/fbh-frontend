@@ -1,7 +1,12 @@
+import { cache } from "react";
 import { fetchAPI, getStrapiURL } from "./api";
 import { Attribute } from "@/types/attribute";
 
-export async function fetchAllAttributes(): Promise<Attribute[]> {
+/**
+ * Fetch all attributes from Strapi
+ * Wrapped with React cache() to deduplicate requests during a single render pass
+ */
+export const fetchAllAttributes = cache(async (): Promise<Attribute[]> => {
     const path = "/attributes";
     const urlParamsObject = {
         populate: ["image", "icon"],
@@ -45,4 +50,4 @@ export async function fetchAllAttributes(): Promise<Attribute[]> {
         console.error("Error fetching attributes:", error);
         return [];
     }
-}
+});

@@ -13,6 +13,9 @@ interface PlantInfoCardProps {
   isGeoTagged: boolean;
   onGeoTaggedChange: (value: boolean) => void;
   availabilityMessage?: string;
+  geotaggedRate?: number;
+  nonGeotaggedRate?: number;
+  currencySymbol?: string;
 }
 
 const PlantInfoCard: React.FC<PlantInfoCardProps> = ({
@@ -24,14 +27,20 @@ const PlantInfoCard: React.FC<PlantInfoCardProps> = ({
   isGeoTagged,
   onGeoTaggedChange,
   availabilityMessage,
+  geotaggedRate,
+  nonGeotaggedRate,
+  currencySymbol,
 }) => {
   const hasQuantity = selectedQuantity || manualQuantity;
+
+  // Find selected species from the data
+  const selectedSpecies = speciesData.find(s => s.id === selectedSpeciesId);
 
   return (
     <div className="flex md:gap-6 gap-4 mb-8 bg-white border border-[#E4E4E4] rounded-2xl p-4">
       <img
-        src="https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=120&h=120&fit=crop"
-        alt="Neem tree"
+        src={selectedSpecies?.img || "https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=120&h=120&fit=crop"}
+        alt={selectedSpecies?.name || "Tree"}
         className="max-h-[81.62px] max-w-[77px] md:max-w-25 md:max-h-25 rounded-[8px] object-cover"
       />
       <div className="flex flex-col justify-between w-full">
@@ -54,11 +63,14 @@ const PlantInfoCard: React.FC<PlantInfoCardProps> = ({
             onGeoTaggedChange={onGeoTaggedChange}
             trigger={<SquarePen color="#003399" className="cursor-pointer" />}
             availabilityMessage={availabilityMessage}
+            geotaggedRate={geotaggedRate}
+            nonGeotaggedRate={nonGeotaggedRate}
+            currencySymbol={currencySymbol}
           />
         </div>
         <div className="space-y-1">
           <h1 className="text-lg sm:text-2xl text-[#090C0F] md:leading-9 font-semibold">
-            Neem
+            {selectedSpecies?.name || "Neem"}
           </h1>
           <div className="flex items-center gap-1 text-gray-600">
             <Image
@@ -69,7 +81,7 @@ const PlantInfoCard: React.FC<PlantInfoCardProps> = ({
               className="max-sm:w-4"
             />{" "}
             <span className="md:text-base text-sm md:font-semibold">
-              Azadirachta{" "}
+              {selectedSpecies?.botanical || "Azadirachta"}{" "}
             </span>
           </div>
         </div>

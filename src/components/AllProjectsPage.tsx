@@ -15,7 +15,7 @@ import Link from "next/link";
 import { generateProjectSlug } from "@/services/projects";
 
 interface Project {
-  id: string;
+  id: string | number;
   title: string;
   location: string;
   plantedCount: number;
@@ -61,7 +61,7 @@ const AllProjectsPage: React.FC<AllProjectsPageProps> = ({
     );
   }, [searchQuery, allProjects]);
 
-  const handlePlantTree = (projectId: string) => {
+  const handlePlantTree = (projectId: string | number) => {
     console.log(`Plant tree for project: ${projectId}`);
   };
 

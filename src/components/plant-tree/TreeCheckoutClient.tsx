@@ -11,13 +11,15 @@ import { useTreeCheckout } from "@/components/plant-tree/useTreeCheckout";
 import { QUANTITIES } from "@/components/plant-tree/constants";
 import CertificatePreview from "@/components/gift-tree/CertificatePreview";
 import { Button } from "@/components/ui/button";
+import { PlantRate } from "@/types/plant-rate";
 
 interface Props {
   co2PerTree?: number | null;
   sampleCertificateUrl?: string | null;
+  plantRates?: PlantRate[];
 }
 
-const TreeCheckoutClient = ({ co2PerTree, sampleCertificateUrl }: Props) => {
+const TreeCheckoutClient = ({ co2PerTree, sampleCertificateUrl, plantRates = [] }: Props) => {
   const {
     step,
     selectedQuantity,
@@ -46,8 +48,10 @@ const TreeCheckoutClient = ({ co2PerTree, sampleCertificateUrl }: Props) => {
     handleDialogClose,
     handleSignIn,
     handleContinueAsGuest,
+    handleCreateReservation,
     setStep,
-  } = useTreeCheckout(co2PerTree ?? undefined);
+    reservationData, // NEW: Get reservation data
+  } = useTreeCheckout(co2PerTree ?? undefined, plantRates);
 
   return (
     <div className="max-w-7xl mx-auto min-h-screen bg-white sm:px-16 xl:px-28 px-4 md:pt-8 pt-4 space-y-8">
@@ -73,6 +77,9 @@ const TreeCheckoutClient = ({ co2PerTree, sampleCertificateUrl }: Props) => {
                 isGeoTagged={isGeoTagged}
                 onGeoTaggedChange={handleGeoTaggedChange}
                 availabilityMessage={availabilityMessage}
+                geotaggedRate={orderSummary.geotaggedRate}
+                nonGeotaggedRate={orderSummary.nonGeotaggedRate}
+                currencySymbol={orderSummary.currencySymbol}
               />
 
               <CertificatePreview imageUrl={sampleCertificateUrl ?? undefined} blurImageUrl={sampleCertificateUrl ?? undefined} />
@@ -138,14 +145,17 @@ const TreeCheckoutClient = ({ co2PerTree, sampleCertificateUrl }: Props) => {
           isFormValid={isFormValid}
           userName={`${personalDetails.firstName} ${personalDetails.lastName}`.trim()}
           userEmail={personalDetails.email}
+          onProceedToPayment={handleCreateReservation}
+          reservationToken={reservationData?.token}
+          currencyCode={personalDetails.currency}
         />
       </div>
 
       <LoginDialog
         isOpen={isLoginDialogOpen}
         onClose={handleDialogClose}
-        onSignIn={handleSignIn}
         onContinueAsGuest={handleContinueAsGuest}
+        onSignIn={handleSignIn}
       />
     </div>
   );

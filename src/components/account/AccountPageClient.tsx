@@ -8,6 +8,9 @@ import { Button } from "@/components/ui/button";
 import { CircleQuestionMark, Headset, PanelsTopLeft } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 
+import { useState } from "react";
+import { fetchDonationHistory, DonationHistoryItem } from "@/services/donations";
+import { donations as mockDonations } from "./mock-data";
 import DonateIcon from "@/components/icons/DonateIcon";
 import { DashboardTab } from "./DashboardTab";
 import { DonationsTab } from "./DonationsTab";
@@ -16,16 +19,80 @@ import { AccountPageSkeleton } from "./AccountPageSkeleton";
 const AccountPageClient = () => {
   const { isAuthenticated, isLoading, userProfile } = useAuth();
   const router = useRouter();
-  const displayName =
-    userProfile?.firstName || userProfile?.lastName
-      ? `${userProfile?.firstName ?? ""}`.trim()
-      : "";
+
+  // Lifted state for donation history
+  const [allDonationsData, setAllDonationsData] = useState<any[]>([]);
+  const [totalDonationsCount, setTotalDonationsCount] = useState(0);
+  const [donationsLoading, setDonationsLoading] = useState(false);
+  const [donationsLoaded, setDonationsLoaded] = useState(false);
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
       router.push("/");
     }
   }, [isLoading, isAuthenticated, router]);
+
+  // Fetch ALL donation data ONCE on mount
+  useEffect(() => {
+    const userEmail = userProfile?.email;
+    if (donationsLoaded || !isAuthenticated || !userEmail) return;
+
+    const loadAllDonations = async () => {
+      setDonationsLoading(true);
+      try {
+        const normalizedEmail = userEmail.toLowerCase();
+        // Fetch a large enough page size to cover most users (100)
+        const response = await fetchDonationHistory(normalizedEmail, 1, 100);
+
+        if (response && response.results) {
+          const mapped = response.results.map((item: DonationHistoryItem) => ({
+            id: item.donation_id,
+            geoTagged: item.is_geotagged ? "true" : "false",
+            logoSrc: item.dep_type === "PROJECT" ? "/images/treelogo.png" :
+              item.dep_type === "SPECIES" ? "/images/specieslogo.png" : "/images/campainlogo.png",
+            name: item.project_name || item.species_name || "Campaign",
+            reference: item.reference_number,
+            trees: item.trees_planted,
+            donationFor: item.donation_type.toUpperCase(),
+            date: new Date(item.donation_date).toLocaleDateString('en-US', {
+              month: 'short',
+              day: 'numeric',
+              year: 'numeric'
+            }),
+            accent: "#0D824B",
+            location: "India",
+            status: "ALIVE",
+            statusAccent: "#0D824B",
+            recipientName: item.donation_type === "Received" ?
+              (userProfile?.firstName + " " + userProfile?.lastName) :
+              (item.recipient_details?.recipient_name || userProfile?.firstName + " " + userProfile?.lastName),
+            certificateUrl: item.certificate_url,
+            receiptUrl: item.receipt_url,
+            giftedBy: item.gifted_by,
+          }));
+          setAllDonationsData(mapped);
+          setTotalDonationsCount(response.count);
+        } else {
+          setAllDonationsData(mockDonations);
+          setTotalDonationsCount(mockDonations.length);
+        }
+      } catch (error) {
+        console.error("Error loading donations:", error);
+        setAllDonationsData(mockDonations);
+        setTotalDonationsCount(mockDonations.length);
+      } finally {
+        setDonationsLoaded(true);
+        setDonationsLoading(false);
+      }
+    };
+
+    loadAllDonations();
+  }, [userProfile, isAuthenticated, donationsLoaded]);
+
+  const displayName =
+    userProfile?.firstName || userProfile?.lastName
+      ? `${userProfile?.firstName ?? ""}`.trim()
+      : "";
 
   if (isLoading || !isAuthenticated) {
     return <AccountPageSkeleton />;
@@ -83,7 +150,11 @@ const AccountPageClient = () => {
         </TabsContent>
 
         <TabsContent value="donations">
-          <DonationsTab />
+          <DonationsTab
+            allDonationsData={allDonationsData}
+            totalItems={totalDonationsCount}
+            loading={donationsLoading}
+          />
         </TabsContent>
       </Tabs>
     </main>

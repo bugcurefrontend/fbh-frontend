@@ -9,7 +9,7 @@ import { useCurrency } from "./CurrencySelect";
 import { PlantRate } from "@/types/plant-rate";
 
 interface Project {
-  id: string;
+  id: string | number;
   title: string;
   location: string;
   plantedCount: number;
@@ -35,7 +35,7 @@ interface ProjectSpeciesUI {
 }
 
 interface ProjectDetailData {
-  id: string;
+  id: string | number;
   title: string;
   location: string;
   description: string;
@@ -96,7 +96,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
     // Handle gift tree action
   };
 
-  const handleRelatedPlantTree = (projectId: string) => {
+  const handleRelatedPlantTree = (projectId: string | number) => {
     console.log(`Plant tree for related project: ${projectId}`);
     // Handle plant tree action for related projects
   };

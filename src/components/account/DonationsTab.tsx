@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { donations } from "./mock-data";
 import DownloadCertificate from "@/components/DownloadCertiifcate";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { fetchDonationHistory, DonationHistoryItem } from "@/services/donations";
 import {
   Pagination,
   PaginationContent,
@@ -21,19 +22,28 @@ import {
 } from "@/components/ui/tooltip";
 import PlantedTrees from "../PlantedTrees";
 import { Donation } from "./types";
+import { useAuth } from "@/lib/auth-context";
 
-export const DonationsTab = () => {
+interface DonationsTabProps {
+  allDonationsData: any[];
+  totalItems: number;
+  loading: boolean;
+}
+
+export const DonationsTab = ({
+  allDonationsData = [],
+  totalItems = 0,
+  loading = false
+}: DonationsTabProps) => {
   const ITEMS_PER_PAGE = 6;
-
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedTree, setSelectedTree] = useState<Donation | null>(null);
 
-  const totalPages = Math.ceil(donations.length / ITEMS_PER_PAGE);
-
+  // Client-side pagination: Calculate pages and slice data
+  const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
-
-  const currentData = donations.slice(startIndex, endIndex);
-  const [selectedTree, setSelectedTree] = useState<Donation | null>(null);
+  const currentData = allDonationsData.slice(startIndex, endIndex);
 
   if (selectedTree) {
     return (
@@ -89,7 +99,7 @@ export const DonationsTab = () => {
                     className="bg-[#E7F8F0] px-4 py-3"
                   >
                     <p className="text-[#0D824B] text-xs md:font-semibold max-sm:max-w-36 text-center">
-                      Gifted to you by Kalpit Chandekar
+                      Gifted to you by {donation.giftedBy?.donor_name || "a donor"}
                     </p>
                   </TooltipContent>
                 </Tooltip>
@@ -163,9 +173,14 @@ export const DonationsTab = () => {
               </div>
 
               <div className="flex sm:flex-row flex-col items-center justify-between sm:gap-2 gap-4">
-                <DownloadCertificate />
+                <DownloadCertificate
+                  recipientName={donation.recipientName}
+                  treesPlanted={donation.trees}
+                  certificateUrl={donation.certificateUrl}
+                />
                 <Button
                   variant="outline"
+                  onClick={() => donation.receiptUrl ? window.open(donation.receiptUrl, '_blank') : alert("Receipt not available.")}
                   className="border-[#95AAD5] hover:text-[#003399] text-[#003399] font-bold text-base h-11 px-5 py-3 rounded-[8px] sm:w-[50%] w-full gap-1"
                 >
                   See Receipt

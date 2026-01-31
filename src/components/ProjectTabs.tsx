@@ -29,7 +29,7 @@ import { DialogClose } from "@radix-ui/react-dialog";
 import { fetchOurTeamContent } from "@/services/our-team-content";
 
 interface Project {
-  id: string;
+  id: string | number;
   title: string;
   location: string;
   plantedCount: number;
@@ -58,7 +58,7 @@ interface ProjectTabsProps {
   projectDescription: string;
   projectDetails: string[];
   relatedProjects: Project[];
-  onPlantTree: (projectId: string) => void;
+  onPlantTree: (projectId: string | number) => void;
   onViewAll: () => void;
   projectUpdates?: ProjectUpdateUI[];
   projectSpecies?: ProjectSpeciesUI[];
