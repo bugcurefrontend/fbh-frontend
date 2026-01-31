@@ -90,6 +90,7 @@ export interface ProjectMetrics {
     project_id: number;
     project_name: string;
     total_trees: number;
+    available_trees: number;
     geotagged_trees: number;
     non_geotagged_trees: number;
 }

@@ -16,6 +16,7 @@ interface Project {
   category: string;
   imageUrl: string;
   imageAlt: string;
+  availableCount: number;
 }
 
 interface ProjectUpdateUI {

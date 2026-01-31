@@ -14,11 +14,12 @@ import {
 import Link from "next/link";
 import { generateProjectSlug } from "@/services/projects";
 
-interface Project {
+export interface Project {
   id: string | number;
   title: string;
   location: string;
   plantedCount: number;
+  availableCount: number;
   category: string;
   imageUrl: string;
   imageAlt: string;
@@ -131,6 +132,7 @@ const AllProjectsPage: React.FC<AllProjectsPageProps> = ({
                   category={project.category}
                   imageUrl={project.imageUrl}
                   imageAlt={project.imageAlt}
+                  availableCount={project.availableCount}
                   onPlantTree={handlePlantTree}
                 />
               </Link>

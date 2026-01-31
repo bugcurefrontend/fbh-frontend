@@ -7,6 +7,7 @@
 import { cache } from "react";
 import { fetchAPI } from "./api";
 import { Project, ProjectSimplified, TreeCount } from "@/types/project";
+import { fetchProjectMetrics } from "./allocations";
 
 /**
  * Calculate total planted count from tree_counts
@@ -19,7 +20,13 @@ function calculatePlantedCount(treeCounts: TreeCount[]): number {
 /**
  * Transform raw Strapi project data to simplified format
  */
-function transformProject(project: Project): ProjectSimplified {
+function transformProject(project: Project, availableCount: number = 0, totalCount: number = 0): ProjectSimplified {
+  // If metrics provided a totalCount, use it to calculate plantedCount
+  // Otherwise fall back to Strapi's tree_counts
+  const plantedCount = totalCount > 0
+    ? totalCount - availableCount
+    : calculatePlantedCount(project.tree_counts);
+
   return {
     id: project.id,
     documentId: project.documentId,
@@ -32,7 +39,8 @@ function transformProject(project: Project): ProjectSimplified {
     description: project.description,
     address: project.address || "",
     mapCode: project.map_code || "",
-    plantedCount: calculatePlantedCount(project.tree_counts),
+    plantedCount: plantedCount,
+    availableCount: availableCount,
     species: project.species || [],
     projectUpdates: project.project_updates || [],
     deleted: project.deleted || false,
@@ -96,7 +104,17 @@ export const fetchAllProjects = cache(async (): Promise<ProjectSimplified[]> => 
       currentPage++;
     } while (currentPage <= totalPages);
 
-    return allProjects.map((project: Project) => transformProject(project));
+    // Fetch metrics for each project to determine availability
+    const projectsWithMetrics = await Promise.all(
+      allProjects.map(async (project) => {
+        const metrics = await fetchProjectMetrics(project.id);
+        const availableCount = metrics?.success ? metrics.available_trees : 0;
+        const totalCount = metrics?.success ? metrics.total_trees : 0;
+        return transformProject(project, availableCount, totalCount);
+      })
+    );
+
+    return projectsWithMetrics;
   } catch (error) {
     console.error("Error fetching all projects:", error);
     return [];
@@ -125,7 +143,16 @@ export async function fetchLandingProjects(limit: number = 6): Promise<ProjectSi
     });
 
     if (data.data && Array.isArray(data.data)) {
-      return data.data.map((project: Project) => transformProject(project));
+      const projects = data.data as Project[];
+      const projectsWithMetrics = await Promise.all(
+        projects.map(async (project) => {
+          const metrics = await fetchProjectMetrics(project.id);
+          const availableCount = metrics?.success ? metrics.available_trees : 0;
+          const totalCount = metrics?.success ? metrics.total_trees : 0;
+          return transformProject(project, availableCount, totalCount);
+        })
+      );
+      return projectsWithMetrics;
     }
 
     return [];

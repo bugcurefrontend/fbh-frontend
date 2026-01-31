@@ -23,6 +23,7 @@ interface GeoTagToggleAndActionsProps {
   geotaggedRate?: number;
   nonGeotaggedRate?: number;
   currencySymbol?: string;
+  isSoldOut?: boolean;
 }
 
 const GeoTagToggleAndActions: React.FC<GeoTagToggleAndActionsProps> = ({
@@ -36,6 +37,7 @@ const GeoTagToggleAndActions: React.FC<GeoTagToggleAndActionsProps> = ({
   geotaggedRate = 175,
   nonGeotaggedRate = 175,
   currencySymbol = "₹",
+  isSoldOut = false,
 }) => {
   const isMobile = variant === "mobile";
   const [localNotice, setLocalNotice] = useState("");
@@ -57,121 +59,122 @@ const GeoTagToggleAndActions: React.FC<GeoTagToggleAndActionsProps> = ({
 
   return (
     <div>
-      <div
-        className={
-          isMobile
-            ? "md:hidden bg-white fixed bottom-0 left-0 right-0 border-t border-gray-200 shadow-[0_-6px_24.8px_0_rgba(0,0,0,0.2)] z-50 px-4 pt-4 pb-6 safe-area-inset-bottom"
-            : "max-sm:hidden border border-[#2B56AB26] rounded-2xl px-4 py-6 bg-[#E6EBF54D]"
-        }
-      >
-        <h1 className="flex items-baseline gap-1">
-          <span className="font-bold text-[28px] leading-[36px] text-[#090C0F]">
-            {currencySymbol} {isGeoTagged ? geotaggedRate : nonGeotaggedRate} /
-          </span>
-          <span className="font-semibold text-[16px] leading-[36px] text-[#003399]">
-            Tree
-          </span>
-        </h1>
-
-        {/* Geo-tagged Toggle */}
-        <div className="flex items-center justify-between mb-4 mt-1">
-          <div className="flex items-center gap-2">
-            <span
-              className={
-                isMobile
-                  ? "text-gray-800 text-sm font-medium"
-                  : "text-gray-800 text-base"
-              }
-            >
-              I want my trees to be geo-tagged{isMobile ? "" : "."}
+      {!isSoldOut ? (
+        <div
+          className={
+            isMobile
+              ? "md:hidden bg-white fixed bottom-0 left-0 right-0 border-t border-gray-200 shadow-[0_-6px_24.8px_0_rgba(0,0,0,0.2)] z-50 px-4 pt-4 pb-6 safe-area-inset-bottom"
+              : "max-sm:hidden border border-[#2B56AB26] rounded-2xl px-4 py-6 bg-[#E6EBF54D]"
+          }
+        >
+          <h1 className="flex items-baseline gap-1">
+            <span className="font-bold text-[28px] leading-[36px] text-[#090C0F]">
+              {currencySymbol} {isGeoTagged ? geotaggedRate : nonGeotaggedRate} /
             </span>
-            <Tooltip open={isTooltipOpen} onOpenChange={setIsTooltipOpen}>
-              <TooltipTrigger
-                onClick={() => isMobile && setIsTooltipOpen(!isTooltipOpen)}
+            <span className="font-semibold text-[16px] leading-[36px] text-[#003399]">
+              Tree
+            </span>
+          </h1>
+
+          {/* Geo-tagged Toggle */}
+          <div className="flex items-center justify-between mb-4 mt-1">
+            <div className="flex items-center gap-2">
+              <span
+                className={
+                  isMobile
+                    ? "text-gray-800 text-sm font-medium"
+                    : "text-gray-800 text-base"
+                }
               >
-                <ToolTipIcon />
-              </TooltipTrigger>
-              <TooltipContent
-                align={isMobile ? "center" : "start"}
-                alignOffset={isMobile ? 0 : -14}
-                className="bg-[#E7F8F0] px-4 py-3 shadow-[0_12_24_-4_rgba(0,0,0,0.12)]"
-              >
-                <p className="text-[#0D824B] text-xs md:font-semibold max-sm:max-w-36 max-md:text-center md:leading-4.5">
-                  We will geotag your trees and provide quarterly{" "}
-                  <br className="max-sm:hidden" /> growth updates for the next
-                  three years.
-                </p>
-              </TooltipContent>
-            </Tooltip>
+                I want my trees to be geo-tagged{isMobile ? "" : "."}
+              </span>
+              <Tooltip open={isTooltipOpen} onOpenChange={setIsTooltipOpen}>
+                <TooltipTrigger
+                  onClick={() => isMobile && setIsTooltipOpen(!isTooltipOpen)}
+                >
+                  <ToolTipIcon />
+                </TooltipTrigger>
+                <TooltipContent
+                  align={isMobile ? "center" : "start"}
+                  alignOffset={isMobile ? 0 : -14}
+                  className="bg-[#E7F8F0] px-4 py-3 shadow-[0_12_24_-4_rgba(0,0,0,0.12)]"
+                >
+                  <p className="text-[#0D824B] text-xs md:font-semibold max-sm:max-w-36 max-md:text-center md:leading-4.5">
+                    We will geotag your trees and provide quarterly{" "}
+                    <br className="max-sm:hidden" /> growth updates for the next
+                    three years.
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </div>
+            <Switch
+              checked={isGeoTagged}
+              onCheckedChange={handleToggle}
+              className={isGeoTagged ? "bg-[#003399]" : ""}
+            />
           </div>
-          <Switch
-            checked={isGeoTagged}
-            onCheckedChange={handleToggle}
-            className={isGeoTagged ? "bg-[#003399]" : ""}
-          />
-        </div>
-        {(availabilityMessage || localNotice) && (
-          <p className="text-xs text-red-500 font-medium mb-2">
-            {availabilityMessage || localNotice}
-          </p>
-        )}
+          {(availabilityMessage || localNotice) && (
+            <p className="text-xs text-red-500 font-medium mb-2">
+              {availabilityMessage || localNotice}
+            </p>
+          )}
 
-        {/* Action Buttons */}
-        <div className={`flex gap-4`}>
-          <Link href={`/plant-tree?geo=${isGeoTagged}`} className="w-full">
-            <Button
-              onClick={onPlantTree}
-              className={`flex-1 w-full bg-[#003399] hover:bg-[#002266] text-white font-bold py-3 md:h-12 rounded-[8px] uppercase ${isMobile ? "text-sm gap-2" : "text-base"
-                }`}
-            >
-              PLANT A TREE
-              <Image
-                src="/images/donate.png"
-                alt="donate"
-                width={isMobile ? 20 : 24}
-                height={isMobile ? 20 : 24}
-                className=""
-              />
-            </Button>
-          </Link>
-          <Link href={`/gift-tree?geo=${isGeoTagged}`} className="w-full">
-            <Button
-              onClick={onGiftTree}
-              variant="outline"
-              className={`flex-1 w-full border-[#003399] font-bold py-3 md:h-12 rounded-[8px] uppercase text-[#003399] hover:text-[#002266] ${isMobile ? "text-sm gap-2" : "text-base"
-                }`}
-            >
-              GIFT A TREE
-              <Image
-                src="/images/gift.png"
-                alt="gift"
-                width={isMobile ? 18 : 20}
-                height={isMobile ? 18 : 20}
-                className=""
-              />
-            </Button>
-          </Link>
+          {/* Action Buttons */}
+          <div className={`flex gap-4`}>
+            <Link href={`/plant-tree?geo=${isGeoTagged}`} className="w-full">
+              <Button
+                onClick={onPlantTree}
+                className={`flex-1 w-full bg-[#003399] hover:bg-[#002266] text-white font-bold py-3 md:h-12 rounded-[8px] uppercase ${isMobile ? "text-sm gap-2" : "text-base"
+                  }`}
+              >
+                PLANT A TREE
+                <Image
+                  src="/images/donate.png"
+                  alt="donate"
+                  width={isMobile ? 20 : 24}
+                  height={isMobile ? 20 : 24}
+                  className=""
+                />
+              </Button>
+            </Link>
+            <Link href={`/gift-tree?geo=${isGeoTagged}`} className="w-full">
+              <Button
+                onClick={onGiftTree}
+                variant="outline"
+                className={`flex-1 w-full border-[#003399] font-bold py-3 md:h-12 rounded-[8px] uppercase text-[#003399] hover:text-[#002266] ${isMobile ? "text-sm gap-2" : "text-base"
+                  }`}
+              >
+                GIFT A TREE
+                <Image
+                  src="/images/gift.png"
+                  alt="gift"
+                  width={isMobile ? 18 : 20}
+                  height={isMobile ? 18 : 20}
+                  className=""
+                />
+              </Button>
+            </Link>
+          </div>
         </div>
-      </div>
-
-      {/* <div
-        className={`flex items-center justify-center gap-6 ${
-          isMobile
-            ? "md:hidden fixed bottom-0 left-0 right-0 border-t  border-[#3BC484] bg-[#E7F8F0] shadow-lg z-50 px-4 pt-4 pb-6 safe-area-inset-bottom"
+      ) : (
+        <div
+          className={`flex items-center justify-center gap-6 ${isMobile
+            ? "md:hidden bg-[#E7F8F0] fixed bottom-0 left-0 right-0 border-t  border-[#3BC484] shadow-lg z-50 px-4 pt-4 pb-6 safe-area-inset-bottom"
             : "max-sm:hidden gap-6 border-[0.8px] border-[#12B569] bg-[#E7F8F099] rounded-2xl px-4 py-11"
-        }`}
-      >
-        <Image
-          src="/images/congrats.png"
-          alt="celebrate"
-          width={91}
-          height={91}
-          className="w-12 md:w-[91px]"
-        />
-        <p className="text-[#0D824B] font-[Playfair_Display] font-semibold text-[20px] md:text-[32px] md:leading-12 text-center">
-          All the trees have been <br /> successfully planted.
-        </p>
-      </div> */}
+            }`}
+        >
+          <Image
+            src="/images/congrats.png"
+            alt="celebrate"
+            width={91}
+            height={91}
+            className="w-12 md:w-[91px]"
+          />
+          <p className="text-[#0D824B] font-[Playfair_Display] font-semibold text-[20px] md:text-[32px] md:leading-12 text-center">
+            All the trees have been <br /> successfully planted.
+          </p>
+        </div>
+      )}
     </div>
   );
 };

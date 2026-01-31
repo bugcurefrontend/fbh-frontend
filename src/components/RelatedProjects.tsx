@@ -48,6 +48,7 @@ const RelatedProjects: React.FC<RelatedProjectsProps> = ({
               category={project.category}
               imageUrl={project.imageUrl}
               imageAlt={project.imageAlt}
+              availableCount={project.availableCount}
               onPlantTree={onPlantTree}
             />
           </Link>

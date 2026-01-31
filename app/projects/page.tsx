@@ -23,6 +23,7 @@ export default async function ProjectsPage() {
     category: p.archetype,
     imageUrl: p.thumbnail || "/images/test2.jpg",
     imageAlt: `${p.name} - ${p.archetype}`,
+    availableCount: p.availableCount,
   }));
 
   const pagination = {

@@ -22,6 +22,7 @@ const ProjectsSection: React.FC<ProjectsSectionProps> = ({
     title: p.name,
     location: p.address,
     plantedCount: p.plantedCount,
+    availableCount: p.availableCount,
     category: p.archetype,
     imageUrl: p.thumbnail || "/images/test2.jpg",
     imageAlt: `${p.name} - ${p.archetype}`,
@@ -71,6 +72,7 @@ const ProjectsSection: React.FC<ProjectsSectionProps> = ({
               category={project.category}
               imageUrl={project.imageUrl}
               imageAlt={project.imageAlt}
+              availableCount={project.availableCount}
               onPlantTree={handlePlantTree}
             />
           </Link>
@@ -78,7 +80,7 @@ const ProjectsSection: React.FC<ProjectsSectionProps> = ({
       </div>
 
       {/* Mobile Carousel */}
-      <MobileProjectsCarousel projects={projects} />
+      <MobileProjectsCarousel projects={projects} onPlantTree={handlePlantTree} />
     </section>
   );
 };

@@ -22,11 +22,11 @@ const useCountUp = (end: number, duration: number = 2000, shouldStart: boolean =
     const animate = (timestamp: number) => {
       if (!startTimeRef.current) startTimeRef.current = timestamp;
       const progress = Math.min((timestamp - startTimeRef.current) / duration, 1);
-      
+
       // Easing function for smooth animation
       const easeOutQuad = (t: number) => t * (2 - t);
       const easedProgress = easeOutQuad(progress);
-      
+
       setCount(Math.floor(easedProgress * end));
 
       if (progress < 1) {
@@ -133,7 +133,7 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
   const autoplay = useRef(
     Autoplay({ delay: 5000, stopOnInteraction: true, stopOnMouseEnter: true })
   );
-  
+
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [
     autoplay.current,
   ]);
@@ -165,11 +165,11 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
       // Only pause video if we moved to a different slide. 
       // Note: We don't auto-reset videoPlaying here because the carousel loop might cause false positives, 
       // but in this logic invalidating video on change is safer.
-      setVideoPlaying(false); 
+      setVideoPlaying(false);
     };
 
     emblaApi.on("select", onSelect);
-    
+
     // Initial sync
     setActiveIndex(emblaApi.selectedScrollSnap());
 
@@ -261,7 +261,7 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
     <div className="bg-white md:rounded-[16px] overflow-hidden" ref={heroRef}>
       <div className="flex flex-col lg:flex-row space-x-6 space-y-6 lg:space-y-0">
         {/* Left side - Hero Image / Map / Video */}
-        <div 
+        <div
           className="lg:w-[546px] w-full relative flex-shrink-0 group/container"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
@@ -287,88 +287,86 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
                       }
                     }}
                   >
-                     <div className={`relative w-full h-full min-h-[360px] ${
-                        item.id === "video" && !videoPlaying ? "cursor-pointer" : ""
-                     }`}>
-                        {/* Video Item */}
-                        {item.id === "video" ? (
-                           videoPlaying && videoUrl && activeIndex === index ? (
-                            videoUrl.includes("youtube.com") ||
+                    <div className={`relative w-full h-full min-h-[360px] ${item.id === "video" && !videoPlaying ? "cursor-pointer" : ""
+                      }`}>
+                      {/* Video Item */}
+                      {item.id === "video" ? (
+                        videoPlaying && videoUrl && activeIndex === index ? (
+                          videoUrl.includes("youtube.com") ||
                             videoUrl.includes("youtu.be") ? (
-                              <iframe
-                                src={`${
-                                  videoUrl.includes("embed")
-                                    ? videoUrl
-                                    : videoUrl
-                                        .replace("watch?v=", "embed/")
-                                        .replace("youtu.be/", "youtube.com/embed/")
+                            <iframe
+                              src={`${videoUrl.includes("embed")
+                                  ? videoUrl
+                                  : videoUrl
+                                    .replace("watch?v=", "embed/")
+                                    .replace("youtu.be/", "youtube.com/embed/")
                                 }?autoplay=1`}
-                                className="w-full h-full min-h-[360px]"
-                                frameBorder="0"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                allowFullScreen
-                              />
-                            ) : (
-                              <video
-                                src={videoUrl}
-                                className="w-full h-full object-cover min-h-[360px]"
-                                controls
-                                autoPlay
-                                playsInline
-                                preload="auto"
-                              >
-                                Your browser does not support the video tag.
-                              </video>
-                            )
-                           ) : (
-                               // Video Thumbnail
-                               <div className="absolute inset-0 w-full h-full">
-                                <Image
-                                  src={item.imageUrl}
-                                  alt={item.imageAlt}
-                                  fill
-                                  className="object-cover"
-                                />
-                                <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-all">
-                                  <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center shadow-lg">
-                                    <svg
-                                      className="w-7 h-7 text-[#003399] ml-1"
-                                      fill="currentColor"
-                                      viewBox="0 0 24 24"
-                                    >
-                                      <path d="M8 5v14l11-7z" />
-                                    </svg>
-                                  </div>
-                                </div>
-                               </div>
-                           )
-                        ) : item.id === "map" ? (
-                            // Map Item
-                            mapCode ? (
-                              <iframe
-                                src={`https://www.google.com/maps/embed?pb=${mapCode}`}
-                                width="100%"
-                                height="100%"
-                                className="md:rounded-[16px] rounded-[8px] border-0 min-h-[360px] h-full"
-                                allowFullScreen
-                              />
-                            ) : (
-                              <div className="w-full h-full flex items-center justify-center bg-gray-100 text-gray-400 min-h-[360px]">
-                                <span>Map not available</span>
-                              </div>
-                            )
+                              className="w-full h-full min-h-[360px]"
+                              frameBorder="0"
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                              allowFullScreen
+                            />
+                          ) : (
+                            <video
+                              src={videoUrl}
+                              className="w-full h-full object-cover min-h-[360px]"
+                              controls
+                              autoPlay
+                              playsInline
+                              preload="auto"
+                            >
+                              Your browser does not support the video tag.
+                            </video>
+                          )
                         ) : (
-                           // Regular Image Item
-                           <div className="absolute inset-0 w-full h-full"> 
-                              <Image
-                                src={item.imageUrl}
-                                alt={item.imageAlt}
-                                fill
-                                className="object-cover"
-                              />
-                           </div>
-                        )}
-                     </div>
+                          // Video Thumbnail
+                          <div className="absolute inset-0 w-full h-full">
+                            <Image
+                              src={item.imageUrl}
+                              alt={item.imageAlt}
+                              fill
+                              className="object-cover"
+                            />
+                            <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-all">
+                              <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center shadow-lg">
+                                <svg
+                                  className="w-7 h-7 text-[#003399] ml-1"
+                                  fill="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path d="M8 5v14l11-7z" />
+                                </svg>
+                              </div>
+                            </div>
+                          </div>
+                        )
+                      ) : item.id === "map" ? (
+                        // Map Item
+                        mapCode ? (
+                          <iframe
+                            src={`https://www.google.com/maps/embed?pb=${mapCode}`}
+                            width="100%"
+                            height="100%"
+                            className="md:rounded-[16px] rounded-[8px] border-0 min-h-[360px] h-full"
+                            allowFullScreen
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center bg-gray-100 text-gray-400 min-h-[360px]">
+                            <span>Map not available</span>
+                          </div>
+                        )
+                      ) : (
+                        // Regular Image Item
+                        <div className="absolute inset-0 w-full h-full">
+                          <Image
+                            src={item.imageUrl}
+                            alt={item.imageAlt}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                      )}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -380,9 +378,8 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
             {items.map((_, i) => (
               <div
                 key={i}
-                className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                  i === activeIndex ? "bg-[#003399]" : "bg-gray-300"
-                }`}
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${i === activeIndex ? "bg-[#003399]" : "bg-gray-300"
+                  }`}
               />
             ))}
           </div>
@@ -393,11 +390,10 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
               {/* Left Arrow - inside */}
               <button
                 onClick={scrollLeft}
-                className={`absolute left-2 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-white/90 shadow-lg flex items-center justify-center transition-all duration-300 ${
-                  canScrollLeft
+                className={`absolute left-2 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-white/90 shadow-lg flex items-center justify-center transition-all duration-300 ${canScrollLeft
                     ? "opacity-100 hover:bg-white cursor-pointer"
                     : "opacity-0 pointer-events-none"
-                }`}
+                  }`}
                 disabled={!canScrollLeft}
               >
                 <ChevronLeft className="w-5 h-5 text-[#003399]" />
@@ -416,9 +412,8 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
                       // Select the item
                       emblaApi?.scrollTo(i);
                     }}
-                    className={`w-[112px] h-[112px] flex-shrink-0 rounded-[8px] overflow-hidden border-[0.75px] cursor-pointer ${
-                      activeIndex === i ? "border-[#003399]" : "border-white"
-                    }`}
+                    className={`w-[112px] h-[112px] flex-shrink-0 rounded-[8px] overflow-hidden border-[0.75px] cursor-pointer ${activeIndex === i ? "border-[#003399]" : "border-white"
+                      }`}
                   >
                     <div className="relative w-full h-full">
                       {item.id === "map" ? (
@@ -448,11 +443,10 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
               {/* Right Arrow - inside */}
               <button
                 onClick={scrollRight}
-                className={`absolute right-2 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-white/90 shadow-lg flex items-center justify-center transition-all duration-300 ${
-                  canScrollRight
+                className={`absolute right-2 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-white/90 shadow-lg flex items-center justify-center transition-all duration-300 ${canScrollRight
                     ? "opacity-100 hover:bg-white cursor-pointer"
                     : "opacity-0 pointer-events-none"
-                }`}
+                  }`}
                 disabled={!canScrollRight}
               >
                 <ChevronRight className="w-5 h-5 text-[#003399]" />
@@ -544,6 +538,7 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
             geotaggedRate={geotaggedRate}
             nonGeotaggedRate={nonGeotaggedRate}
             currencySymbol={currencySymbol}
+            isSoldOut={stats.treesAvailable === 0}
           />
         </div>
       </div>

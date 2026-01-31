@@ -150,8 +150,8 @@ function transformToDetailData(project: ProjectSimplified, metrics: any = null) 
 
   // Use metrics data if available, otherwise fall back to Strapi data
   const stats = metrics && metrics.success ? {
-    treesAvailable: metrics.geotagged_trees + metrics.non_geotagged_trees,
-    treesPlanted: metrics.total_trees - (metrics.geotagged_trees + metrics.non_geotagged_trees),
+    treesAvailable: metrics.available_trees,
+    treesPlanted: metrics.total_trees - metrics.available_trees,
     totalTrees: metrics.total_trees,
   } : {
     treesAvailable: 0,
@@ -192,6 +192,7 @@ function transformToRelatedProjects(
       category: p.archetype,
       imageUrl: p.thumbnail || "/images/test2.jpg",
       imageAlt: `${p.name} - ${p.archetype}`,
+      availableCount: p.availableCount,
     }));
 }
 

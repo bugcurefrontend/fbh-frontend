@@ -73,6 +73,7 @@ export interface ProjectSimplified {
   address: string;
   mapCode: string;
   plantedCount: number; // Sum of tree_counts.total
+  availableCount: number; // Fetched from Django metrics
   species: any[];
   projectUpdates: ProjectUpdate[];
   deleted: boolean;
