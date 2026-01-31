@@ -42,8 +42,11 @@ const PlantedTrees = ({ onBack, donation }: PlantedTreesProps) => {
           const mappedData = response.breakdown.map((item, index) => ({
             id: index,
             treeCode: `${item.total_trees_planted} Trees`,
+            itemCount: item.total_trees_planted,
             projectName: item.project_name,
             species: item.species_name,
+            projectId: item.project_id,
+            speciesId: item.species_id,
             updates: true
           }));
           setTreeData(mappedData);
@@ -59,6 +62,8 @@ const PlantedTrees = ({ onBack, donation }: PlantedTreesProps) => {
             treeCode: `FBH-TREE-${tree.tree_id}`,
             projectName: tree.project_name,
             species: tree.species_name,
+            projectId: tree.project_id,
+            speciesId: tree.species_id,
             lat: tree.latitude,
             lng: tree.longitude,
             plantedDate: tree.planted_date,
@@ -101,65 +106,36 @@ const PlantedTrees = ({ onBack, donation }: PlantedTreesProps) => {
         <table className="w-full">
           <thead className="border-b border-gray-200">
             <tr>
-              <th
-                className="w-[20%] text-center py-3 px-6 text-xs font-medium"
-                style={{
-                  fontFamily: "Poppins, sans-serif",
-                  fontWeight: 500,
-                  fontSize: "12px",
-                  lineHeight: "18px",
-                  color: "#454950",
-                }}
-              >
-                Tree Code
-              </th>
-              <th
-                className="w-[20%] py-3 px-6 text-xs font-medium"
-                style={{
-                  fontFamily: "Poppins, sans-serif",
-                  fontWeight: 500,
-                  fontSize: "12px",
-                  lineHeight: "18px",
-                  color: "#454950",
-                }}
-              >
-                Project
-              </th>
-              <th
-                className="w-[20%] py-3 px-6 text-xs font-medium"
-                style={{
-                  fontFamily: "Poppins, sans-serif",
-                  fontWeight: 500,
-                  fontSize: "12px",
-                  lineHeight: "18px",
-                  color: "#454950",
-                }}
-              >
-                Species
-              </th>
-              <th
-                className="w-[20%] py-3 px-6 text-xs font-medium"
-                style={{
-                  fontFamily: "Poppins, sans-serif",
-                  fontWeight: 500,
-                  fontSize: "12px",
-                  lineHeight: "18px",
-                  color: "#454950",
-                }}
-              >
+              {donation.geoTagged === "true" ? (
+                <>
+                  <th className="w-[20%] text-center py-3 px-6 text-xs font-medium" style={{ fontFamily: "Poppins, sans-serif", fontWeight: 500, fontSize: "12px", lineHeight: "18px", color: "#454950" }}>
+                    Tree Code
+                  </th>
+                  <th className="w-[20%] py-3 px-6 text-xs font-medium" style={{ fontFamily: "Poppins, sans-serif", fontWeight: 500, fontSize: "12px", lineHeight: "18px", color: "#454950" }}>
+                    Project
+                  </th>
+                  <th className="w-[20%] py-3 px-6 text-xs font-medium" style={{ fontFamily: "Poppins, sans-serif", fontWeight: 500, fontSize: "12px", lineHeight: "18px", color: "#454950" }}>
+                    Species
+                  </th>
+                </>
+              ) : (
+                <>
+                  <th className="w-[25%] py-3 px-6 text-xs font-medium" style={{ fontFamily: "Poppins, sans-serif", fontWeight: 500, fontSize: "12px", lineHeight: "18px", color: "#454950" }}>
+                    Project
+                  </th>
+                  <th className="w-[25%] py-3 px-6 text-xs font-medium" style={{ fontFamily: "Poppins, sans-serif", fontWeight: 500, fontSize: "12px", lineHeight: "18px", color: "#454950" }}>
+                    Species
+                  </th>
+                  <th className="w-[25%] text-center py-3 px-6 text-xs font-medium" style={{ fontFamily: "Poppins, sans-serif", fontWeight: 500, fontSize: "12px", lineHeight: "18px", color: "#454950" }}>
+                    Trees Planted
+                  </th>
+                </>
+              )}
+              <th className="w-[20%] py-3 px-6 text-xs font-medium text-center" style={{ fontFamily: "Poppins, sans-serif", fontWeight: 500, fontSize: "12px", lineHeight: "18px", color: "#454950" }}>
                 Updates
               </th>
               {donation.geoTagged === "true" && (
-                <th
-                  className="w-[20%] py-3 px-6 text-xs font-medium"
-                  style={{
-                    fontFamily: "Poppins, sans-serif",
-                    fontWeight: 500,
-                    fontSize: "12px",
-                    lineHeight: "18px",
-                    color: "#454950",
-                  }}
-                >
+                <th className="w-[20%] py-3 px-6 text-xs font-medium" style={{ fontFamily: "Poppins, sans-serif", fontWeight: 500, fontSize: "12px", lineHeight: "18px", color: "#454950" }}>
                   Directions
                 </th>
               )}
@@ -168,64 +144,56 @@ const PlantedTrees = ({ onBack, donation }: PlantedTreesProps) => {
           <tbody className="divide-y divide-gray-200">
             {currentData.map((donor, index) => (
               <tr key={startIndex + index}>
-                <td
-                  className="h-18 text-center px-3.5 truncate"
-                  style={{
-                    fontFamily: "'Public Sans', sans-serif",
-                    fontWeight: 600,
-                    fontSize: "14px",
-                    lineHeight: "22px",
-                    color: "#090C0F",
-                  }}
-                >
-                  {donor.treeCode}
-                </td>
-
+                {donation.geoTagged === "true" ? (
+                  <>
+                    <td className="h-18 text-center px-3.5 truncate" style={{ fontFamily: "'Public Sans', sans-serif", fontWeight: 600, fontSize: "14px", lineHeight: "22px", color: "#090C0F" }}>
+                      {donor.treeCode}
+                    </td>
+                    <td className="text-center h-18 px-3.5">
+                      <div className="truncate" style={{ fontFamily: "'Public Sans', sans-serif", fontWeight: 600, fontSize: "14px", lineHeight: "22px", color: "#454950" }}>
+                        {donor.projectName}
+                      </div>
+                    </td>
+                    <td className="text-center h-18 px-3.5">
+                      <div className="truncate" style={{ fontFamily: "'Public Sans', sans-serif", fontWeight: 600, fontSize: "14px", lineHeight: "22px", color: "#454950" }}>
+                        {donor.species}
+                      </div>
+                    </td>
+                  </>
+                ) : (
+                  <>
+                    <td className="text-left h-18 px-6">
+                      <div className="truncate" style={{ fontFamily: "'Public Sans', sans-serif", fontWeight: 600, fontSize: "14px", lineHeight: "22px", color: "#454950" }}>
+                        {donor.projectName}
+                      </div>
+                    </td>
+                    <td className="text-left h-18 px-6">
+                      <div className="truncate" style={{ fontFamily: "'Public Sans', sans-serif", fontWeight: 600, fontSize: "14px", lineHeight: "22px", color: "#454950" }}>
+                        {donor.species}
+                      </div>
+                    </td>
+                    <td className="h-18 text-center px-3.5 truncate" style={{ fontFamily: "'Public Sans', sans-serif", fontWeight: 600, fontSize: "14px", lineHeight: "22px", color: "#090C0F" }}>
+                      {donor.itemCount || donor.treeCode.replace(" Trees", "")}
+                    </td>
+                  </>
+                )}
                 <td className="text-center h-18 px-3.5">
-                  <div
-                    className="truncate"
+                  <button
+                    onClick={() => setSelectedTree({
+                      ...donor,
+                      reference: donor.treeCode,
+                      name: donor.projectName
+                    })}
                     style={{
                       fontFamily: "'Public Sans', sans-serif",
-                      fontWeight: 600,
+                      fontWeight: 700,
                       fontSize: "14px",
                       lineHeight: "22px",
-                      color: "#454950",
+                      color: "#003399",
                     }}
                   >
-                    {donor.projectName}
-                  </div>
-                </td>
-
-                <td className="text-center h-18 px-3.5">
-                  <div
-                    className="truncate"
-                    style={{
-                      fontFamily: "'Public Sans', sans-serif",
-                      fontWeight: 600,
-                      fontSize: "14px",
-                      lineHeight: "22px",
-                      color: "#454950",
-                    }}
-                  >
-                    {donor.species}
-                  </div>
-                </td>
-                <td className="text-center h-18 px-3.5">
-                  {/* Hide View button for bulk API data as it has no individual updates */}
-                  {donation.geoTagged === "true" && (
-                    <button
-                      onClick={() => setSelectedTree(donations[index])}
-                      style={{
-                        fontFamily: "'Public Sans', sans-serif",
-                        fontWeight: 700,
-                        fontSize: "14px",
-                        lineHeight: "22px",
-                        color: "#003399",
-                      }}
-                    >
-                      View
-                    </button>
-                  )}
+                    View
+                  </button>
                 </td>
                 {donation.geoTagged === "true" && (
                   <td className="text-center h-18 px-3.5">
@@ -343,24 +311,37 @@ const PlantedTrees = ({ onBack, donation }: PlantedTreesProps) => {
                   </div>
 
                   <div className="space-y-6 p-4">
-                    <div className="text-[#4C4748] flex justify-between">
-                      <div className="space-y-2 text-sm">
+                    <div className="text-[#4C4748] grid grid-cols-2 gap-4">
+                      <div className="space-y-1 text-sm">
                         <h1 className="text-sm font-semibold">Project</h1>
-                        <p className="text-[#19212C] font-bold">
+                        <p className="text-[#19212C] font-bold truncate">
                           {donor.projectName}
                         </p>
                       </div>
 
-                      <div className="space-y-2 text-sm">
-                        <h1 className="text-sm font-semibold">Tree Code:</h1>
+                      <div className="space-y-1 text-sm">
+                        <h1 className="text-sm font-semibold">Species</h1>
+                        <p className="text-[#19212C] font-bold truncate">
+                          {donor.species}
+                        </p>
+                      </div>
+
+                      <div className="space-y-1 text-sm">
+                        <h1 className="text-sm font-semibold">
+                          {donation.geoTagged === "true" ? "Tree Code" : "Trees Planted"}
+                        </h1>
                         <p className="text-[#19212C] font-bold">
-                          {donor.treeCode}
+                          {donation.geoTagged === "true" ? donor.treeCode : (donor.itemCount || donor.treeCode.replace(" Trees", ""))}
                         </p>
                       </div>
                     </div>
                     <button
                       onClick={() =>
-                        setSelectedTree(donations[startIndex + index])
+                        setSelectedTree({
+                          ...donor,
+                          reference: donor.treeCode,
+                          name: donor.projectName
+                        })
                       }
                       className=" w-full border border-[#003399] rounded-sm py-3"
                       style={{
