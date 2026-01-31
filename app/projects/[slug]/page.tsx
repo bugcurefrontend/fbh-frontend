@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import ProjectDetailPage from "../../../src/components/ProjectDetailPage";
+import { PageLoader } from "@/components/ui/page-loader";
 import {
   fetchAllProjects,
   fetchProjectBySlug,
@@ -256,7 +257,7 @@ export default async function ProjectSlugPage({
   const projectSpecies = transformProjectSpecies(project.species);
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<PageLoader message="Loading project details..." fullScreen={false} />}>
       <ProjectDetailPage
         projectData={projectData}
         relatedProjects={relatedProjects}

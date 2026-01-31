@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import GiftTreePageClient from "@/components/gift-tree/GiftTreePageClient";
 import { fetchGlobal } from "@/services/global";
+import { PageLoader } from "@/components/ui/page-loader";
 
 const GiftTreePage = async () => {
   const global = await fetchGlobal();
@@ -8,7 +9,7 @@ const GiftTreePage = async () => {
   const sampleCertificateUrl = global?.sample_certificate?.url ?? undefined;
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<PageLoader message="Loading checkout..." fullScreen={false} />}>
       <GiftTreePageClient co2PerTree={co2PerTree} sampleCertificateUrl={sampleCertificateUrl} />
     </Suspense>
   );

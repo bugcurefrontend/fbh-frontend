@@ -10,7 +10,7 @@ const OurOrigin: React.FC<Props> = ({ imageOne, imageTwo }) => {
     <main className="md:space-y-16 space-y-8">
       <div className="flex max-md:flex-col md:gap-8 gap-6 items-center justify-center max-md:px-4">
         <div className="md:px-4 space-y-6 w-full h-auto md:w-[46%] xl:w-[588px]">
-          <h2 className="text-[22px] sm:text-[32px] font-[Playfair_Display] font-semibold text-black md:text-[32px] md:font-semibold md:leading-[48px] max-md:text-center md:text-[#090C0F]">
+          <h2 className="text-[22px] sm:text-[32px] font-[Playfair_Display] font-semibold text-black md:text-[32px] md:font-semibold md:leading-[48px] md:text-[#090C0F]">
             Our Origin
           </h2>
           <p className="text-[#454950] leading-6 max-md:text-sm">

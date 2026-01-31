@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { Donation } from "./types";
 import { fetchTreeUpdates, treeUpdates } from "./mock-data";
 import Update from "../icons/update";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
 
 export const TreeUpdate = ({
   tree,
@@ -77,7 +78,9 @@ export const TreeUpdate = ({
           </Select>
         )}
         {isLoading ? (
-          <p className="text-gray-500 text-center py-8">Loading updates...</p>
+          <div className="flex items-center justify-center py-12">
+            <LoadingSpinner size="lg" />
+          </div>
         ) : filteredUpdates.length === 0 ? (
           <div className="sm:p-15 p-4 flex items-center justify-center flex-col space-y-4 text-[#B7B9BB]">
             <Update strokeWidth={0.5} className="sm:w-50 w-10 h-10 sm:h-50" />

@@ -5,6 +5,7 @@ import SpeciesDetailPage from "../../../src/components/SpeciesDetailPage";
 import { fetchAllSpecies, fetchSpeciesBySlug, generateSlug } from "@/services/species";
 import { fetchAllPlantRates } from "@/services/plant-rates";
 import { SpeciesSimplified } from "@/types/species";
+import { PageLoader } from "@/components/ui/page-loader";
 
 type Params = { slug: string };
 
@@ -138,7 +139,7 @@ export default async function SpeciesSlugPage({
 
   const transformedData = transformToDetailData(species);
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<PageLoader message="Loading species details..." fullScreen={false} />}>
       <SpeciesDetailPage
         speciesData={transformedData}
         plantRates={plantRates}
