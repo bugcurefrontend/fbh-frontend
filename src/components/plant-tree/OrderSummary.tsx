@@ -18,6 +18,9 @@ interface OrderSummaryProps {
   onProceedToPayment?: () => Promise<boolean>;
   reservationToken?: string; // NEW: Reservation token
   currencyCode?: string; // NEW
+  availableTrees?: number; // NEW
+  personalDetails?: any;
+  taxDetails?: any;
 }
 
 const OrderSummary: React.FC<OrderSummaryProps> = ({
@@ -32,6 +35,9 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
   onProceedToPayment,
   reservationToken, // NEW
   currencyCode,
+  availableTrees,
+  personalDetails,
+  taxDetails,
 }) => {
   return (
     <div className="lg:w-[45%] sticky top-20 self-start space-y-6">
@@ -76,7 +82,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
         </p>
       </div>
 
-      {currentStep === 2 && (
+      {(currentStep === 2 || currentStep === 3) && (
         <ProceedToPay
           isFormValid={isFormValid}
           numberOfTrees={orderSummary.numberOfTrees}
@@ -89,6 +95,9 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
           reservationToken={reservationToken}
           rate={orderSummary.rate}
           currencyCode={currencyCode}
+          availableTrees={availableTrees}
+          personalDetails={personalDetails}
+          taxDetails={taxDetails}
         />
       )}
     </div>

@@ -103,7 +103,7 @@ const TreeCheckoutClient = ({ co2PerTree, sampleCertificateUrl, plantRates = [] 
             </>
           )}
 
-          {step === 2 && (
+          {(step === 2 || step === 3) && (
             <>
               <PersonalDetailsSection
                 personalDetails={personalDetails}
@@ -148,6 +148,8 @@ const TreeCheckoutClient = ({ co2PerTree, sampleCertificateUrl, plantRates = [] 
           onProceedToPayment={handleCreateReservation}
           reservationToken={reservationData?.token}
           currencyCode={personalDetails.currency}
+          personalDetails={personalDetails}
+          taxDetails={taxDetails}
         />
       </div>
 

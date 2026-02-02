@@ -118,6 +118,14 @@ const LightBox: React.FC<LightBoxProps> = ({
   const geotaggedRate = currentRate ? currentRate.geotagged_rate : (currency === "INR" ? 175 : 10);
   const nonGeotaggedRate = currentRate ? currentRate.non_geotagged_rate : (currency === "INR" ? 150 : 5);
 
+  console.log("💰 [LightBox] Rate context:", {
+    currency,
+    currentRate,
+    geotaggedRate,
+    nonGeotaggedRate,
+    isGeoTagged
+  });
+
   const quantities = [10, 25, 50, 100];
 
   // If no attributes were passed in props (header case), fetch them client-side
@@ -187,7 +195,7 @@ const LightBox: React.FC<LightBoxProps> = ({
     setOrderSummary({
       numberOfTrees: qty,
       totalCo2Offset: co2Label,
-      totalAmount: `${currencySymbol} ${amount.toFixed(2)}`,
+      totalAmount: amount > 0 ? `${currencySymbol} ${amount.toLocaleString(currency === 'INR' ? 'en-IN' : 'en-US', { minimumFractionDigits: 2 })}` : "--",
     });
   };
 
@@ -515,6 +523,10 @@ const LightBox: React.FC<LightBoxProps> = ({
                   userEmail={personalDetails.email}
                   occasion={occasion}
                   occasionImage={selectedAttribute?.icon || selectedAttribute?.image}
+                  rate={isGeoTagged ? geotaggedRate : nonGeotaggedRate}
+                  currencyCode={currency}
+                  personalDetails={personalDetails}
+                  taxDetails={taxDetails}
                 />
               </div>
             )}

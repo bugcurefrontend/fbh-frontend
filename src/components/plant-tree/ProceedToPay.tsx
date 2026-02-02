@@ -31,6 +31,8 @@ interface ProceedToPayProps {
   reservationToken?: string; // NEW: Reservation token from useTreeCheckout
   rate?: number; // NEW: Rate per tree
   currencyCode?: string; // NEW: Currency code
+  personalDetails?: any;
+  taxDetails?: any;
 }
 
 const ProceedToPay: React.FC<ProceedToPayProps> = ({
@@ -48,6 +50,8 @@ const ProceedToPay: React.FC<ProceedToPayProps> = ({
   reservationToken, // NEW
   rate = 100, // Default to 100 if not provided
   currencyCode = "INR", // Default to INR
+  personalDetails,
+  taxDetails,
 }) => {
   const router = useRouter();
   const [isStatusOpen, setIsStatusOpen] = useState(false);
@@ -113,15 +117,16 @@ const ProceedToPay: React.FC<ProceedToPayProps> = ({
         typeof window !== "undefined" ? window.location.origin : "";
       const donationRequest = {
         userProfile: {
-          firstName: userName || "Guest",
-          emailAddress: userEmail || "guest@example.com",
-          phoneNumber: "+919884166175", // TODO: Get from form
-          addressLine1: "Address Line 1", // TODO: Get from form
-          city: "Chennai", // TODO: Get from form
-          state: "TN", // TODO: Get from form
-          postalCode: "600001", // TODO: Get from form
-          country: "India",
-          citizenshipCountry: "India",
+          firstName: personalDetails?.firstName || userName || "Guest",
+          lastName: personalDetails?.lastName || "",
+          emailAddress: personalDetails?.email || userEmail || "guest@example.com",
+          phoneNumber: personalDetails?.phoneNumber || "+919884166175",
+          addressLine1: `${personalDetails?.doorNo || ""} ${personalDetails?.region || ""}`.trim() || "Address Line 1",
+          city: personalDetails?.city?.name || "Chennai",
+          state: personalDetails?.state || "TN",
+          postalCode: personalDetails?.pincode || "600001",
+          country: personalDetails?.country?.name || "India",
+          citizenshipCountry: taxDetails?.citizenship?.name || "India",
         },
         lineItems: [
           {
@@ -131,8 +136,8 @@ const ProceedToPay: React.FC<ProceedToPayProps> = ({
             extras: {
               donorCount: (recipients?.length || 1).toString(),
               donorName: userName || "Guest",
-              donorEmailAddress: userEmail || "guest@example.com",
-              donorPhoneNumber: "+919884166175",
+              donorEmailAddress: personalDetails?.email || userEmail || "guest@example.com",
+              donorPhoneNumber: personalDetails?.phoneNumber || "+919884166175",
               donationType: recipients && recipients.length > 0 ? "gift" : "donate",
               projectId: "1",
               donationReceivedFrom: "FBH",
@@ -207,9 +212,9 @@ const ProceedToPay: React.FC<ProceedToPayProps> = ({
         amount_due, // From API response
         currency,
         donationReferenceNumber,
-        userEmail || "guest@example.com",
-        "+919884166175",
-        userName || "Guest",
+        personalDetails?.email || userEmail || "guest@example.com",
+        personalDetails?.phoneNumber || "+919884166175",
+        `${personalDetails?.firstName || ""} ${personalDetails?.lastName || ""}`.trim() || userName || "Guest",
         `${baseUrl}/donation/success/`,
         `${baseUrl}/donation/failure/`
       );

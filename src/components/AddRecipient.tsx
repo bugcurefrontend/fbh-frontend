@@ -10,6 +10,7 @@ interface AddRecipientProps {
   onNextStep?: () => void;
   recipients: Recipient[];
   onRecipientsChange: (recipients: Recipient[]) => void;
+  onEditStateChange?: (id: number | null) => void;
 }
 
 const AddRecipient: React.FC<AddRecipientProps> = ({
@@ -17,6 +18,7 @@ const AddRecipient: React.FC<AddRecipientProps> = ({
   onNextStep,
   recipients,
   onRecipientsChange,
+  onEditStateChange,
 }) => {
   const [showForm, setShowForm] = useState<boolean>(true);
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -36,27 +38,14 @@ const AddRecipient: React.FC<AddRecipientProps> = ({
     phoneNumber: "",
   });
 
-
-
-  // Update summary whenever recipients change
+  // Update form visibility whenever recipients change
   useEffect(() => {
     if (recipients.length > 0) {
       setShowForm(false);
-      updateOrderSummary(recipients);
     } else {
       setShowForm(true);
-      if (onQuantityChange) {
-        onQuantityChange(0);
-      }
     }
   }, [recipients]);
-
-  const updateOrderSummary = (recipientsList: Recipient[]) => {
-    const totalTrees = recipientsList.reduce((sum, r) => sum + r.trees, 0);
-    if (onQuantityChange) {
-      onQuantityChange(totalTrees);
-    }
-  };
 
   const resetForm = (): void => {
     setFormData({
@@ -132,7 +121,6 @@ const AddRecipient: React.FC<AddRecipientProps> = ({
 
   const getRegionCode = (): string => {
     try {
-      // Ensure we have a valid region code, defaulting to IN if somehow empty or invalid
       return `+${getCountryCallingCode((formData.region?.toUpperCase() || "IN") as any)}`;
     } catch (error) {
       return "+91";
@@ -145,7 +133,6 @@ const AddRecipient: React.FC<AddRecipientProps> = ({
   };
 
   const validatePhoneNumber = (phone: string): boolean => {
-    // Remove spaces and check if it's a valid number (at least 6 digits)
     const cleaned = phone.replace(/\s/g, "");
     return /^\d{6,15}$/.test(cleaned);
   };
@@ -154,26 +141,22 @@ const AddRecipient: React.FC<AddRecipientProps> = ({
     const newErrors: Partial<Record<keyof RecipientFormData, string>> = {};
     let isValid = true;
 
-    // Validate tree count
     const treeCount = getTreeCount();
     if (treeCount <= 0) {
       newErrors.selectedQuantity = "Please select or enter number of trees";
       isValid = false;
     }
 
-    // Validate first name
     if (formData.firstName.trim() === "") {
       newErrors.firstName = "First name is required";
       isValid = false;
     }
 
-    // Validate last name
     if (formData.lastName.trim() === "") {
       newErrors.lastName = "Last name is required";
       isValid = false;
     }
 
-    // Validate email
     if (formData.email.trim() === "") {
       newErrors.email = "Email is required";
       isValid = false;
@@ -182,7 +165,6 @@ const AddRecipient: React.FC<AddRecipientProps> = ({
       isValid = false;
     }
 
-    // Validate phone number
     if (formData.phoneNumber.trim() === "") {
       newErrors.phoneNumber = "Phone number is required";
       isValid = false;
@@ -229,6 +211,8 @@ const AddRecipient: React.FC<AddRecipientProps> = ({
       onRecipientsChange([...recipients, recipientData]);
     }
 
+    if (onQuantityChange) onQuantityChange(0);
+    if (onEditStateChange) onEditStateChange(null);
     resetForm();
     setShowForm(false);
   };
@@ -236,9 +220,9 @@ const AddRecipient: React.FC<AddRecipientProps> = ({
   const handleDelete = (id: number): void => {
     if (window.confirm("Are you sure you want to delete this recipient?")) {
       onRecipientsChange(recipients.filter((r) => r.id !== id));
-
-      // If we're editing this recipient, close the form
       if (editingId === id) {
+        if (onQuantityChange) onQuantityChange(0);
+        if (onEditStateChange) onEditStateChange(null);
         resetForm();
         setShowForm(false);
       }
@@ -251,9 +235,7 @@ const AddRecipient: React.FC<AddRecipientProps> = ({
 
     setFormData({
       selectedQuantity: quantities.includes(treeCount) ? treeCount : null,
-      manualQuantity: quantities.includes(treeCount)
-        ? ""
-        : treeCount.toString(),
+      manualQuantity: quantities.includes(treeCount) ? "" : treeCount.toString(),
       firstName: recipient.firstName,
       lastName: recipient.lastName,
       email: recipient.email,
@@ -261,6 +243,8 @@ const AddRecipient: React.FC<AddRecipientProps> = ({
       phoneNumber: phoneNumber,
     });
     setEditingId(recipient.id);
+    if (onEditStateChange) onEditStateChange(recipient.id);
+    if (onQuantityChange) onQuantityChange(treeCount);
     setShowForm(true);
   };
 
@@ -276,15 +260,15 @@ const AddRecipient: React.FC<AddRecipientProps> = ({
         typeof val === "string" ? val.trim() !== "" : val !== null
       )
     ) {
-      if (
-        window.confirm(
-          "Are you sure you want to cancel? Your changes will be lost."
-        )
-      ) {
+      if (window.confirm("Are you sure you want to cancel? Your changes will be lost.")) {
+        if (onQuantityChange) onQuantityChange(0);
+        if (onEditStateChange) onEditStateChange(null);
         resetForm();
         setShowForm(false);
       }
     } else {
+      if (onQuantityChange) onQuantityChange(0);
+      if (onEditStateChange) onEditStateChange(null);
       resetForm();
       setShowForm(false);
     }
@@ -293,9 +277,6 @@ const AddRecipient: React.FC<AddRecipientProps> = ({
   const handleNextStep = (): void => {
     if (onNextStep) {
       onNextStep();
-    } else {
-      console.log("Proceeding to next step with recipients:", recipients);
-      alert(`Proceeding with ${recipients.length} recipient(s) to next step!`);
     }
   };
 
@@ -339,7 +320,7 @@ const AddRecipient: React.FC<AddRecipientProps> = ({
         />
       )}
 
-      {/* Next Button - Only show when there are recipients and form is hidden */}
+      {/* Next Button */}
       {recipients.length > 0 && !showForm && (
         <button
           onClick={handleNextStep}
