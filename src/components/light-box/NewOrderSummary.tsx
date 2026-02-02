@@ -20,6 +20,10 @@ interface NewOrderSummaryProps {
   userEmail?: string;
   occasion?: string;
   occasionImage?: string;
+  rate?: number;
+  currencyCode?: string;
+  personalDetails?: any;
+  taxDetails?: any;
 }
 
 const NewOrderSummary: React.FC<NewOrderSummaryProps> = ({
@@ -30,6 +34,10 @@ const NewOrderSummary: React.FC<NewOrderSummaryProps> = ({
   userEmail,
   occasion,
   occasionImage,
+  rate,
+  currencyCode,
+  personalDetails,
+  taxDetails,
 }) => {
   const [selectedTrees, setSelectedTrees] = useState(
     orderSummary.numberOfTrees
@@ -93,6 +101,10 @@ const NewOrderSummary: React.FC<NewOrderSummaryProps> = ({
         onNavigate={onClose}
         userName={userName}
         userEmail={userEmail}
+        rate={rate}
+        currencyCode={currencyCode}
+        personalDetails={personalDetails}
+        taxDetails={taxDetails}
       />
     </div>
   );
