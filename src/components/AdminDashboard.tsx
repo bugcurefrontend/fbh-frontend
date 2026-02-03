@@ -50,7 +50,7 @@ const AdminDashboard = () => {
           height={133}
         />{" "}
         <p className="text-[#090C0F] text-lg font-medium leading-9">
-          Please move to a Desktop.
+          Please move to a Desktop Screen.
         </p>
       </div>
     );

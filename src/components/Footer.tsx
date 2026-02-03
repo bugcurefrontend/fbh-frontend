@@ -9,10 +9,7 @@ import { UsefulLinkItem } from "@/types/useful-link";
 import GooglePay from "./icons/GooglePay";
 import AppStore from "./icons/AppStore";
 import FooterLogo from "./icons/FooterLogo";
-import {
-  FALLBACK_USEFUL_LINKS,
-  FALLBACK_FOOTER_MENU,
-} from "@/constants";
+import { FALLBACK_USEFUL_LINKS, FALLBACK_FOOTER_MENU } from "@/constants";
 
 interface FooterProps {
   menuItems?: FooterMenuItem[];
@@ -62,110 +59,114 @@ const Footer: React.FC<FooterProps> = ({
   const playStoreUrl = socialLinks?.playstore || "#";
 
   const pathname = usePathname();
-  const footerClass = `bg-[#0F172A] text-[#e6e6e6] md:mt-16 mt-8 ${(pathname.startsWith("/projects/") || pathname.startsWith("/species/")) &&
+  const isAdminRoute = pathname?.startsWith("/admin");
+  const footerClass = `bg-[#0F172A] text-[#e6e6e6] md:mt-16 mt-8 ${
+    (pathname.startsWith("/projects/") || pathname.startsWith("/species/")) &&
     "max-md:mb-[158px]"
-    }`;
+  }`;
 
   if (pathname === "/admin/login") return null;
 
   return (
     <footer className={footerClass}>
-      <div className="md:px-12 max-w-7xl mx-auto px-4 py-8 md:py-16 flex flex-col md:flex-row sm:justify-between max-md:gap-8">
-        <div className="flex flex-col gap-6 md:min-w-[389px] w-full sm:w-auto">
-          <FooterLogo className="max-sm:w-[170.65px] max-sm:h-[50px]" />
-          <div className="flex gap-4">
-            <a href={playStoreUrl} target="_blank" rel="noopener noreferrer">
-              <GooglePay className="cursor-pointer max-sm:w-[134px] max-sm:max-h-[41px] rounded-[4px]" />
-            </a>
-            <a href={appStoreUrl} target="_blank" rel="noopener noreferrer">
-              <AppStore className="cursor-pointer max-sm:w-[134px] max-sm:max-h-[41px] rounded-[4px]" />
-            </a>
-          </div>
-        </div>
-
-        {/* Links */}
-        <div className="w-full flex max-md:flex-col gap-8">
-          <ul className="flex flex-col gap-4 lg:mr-10 xl:mr-17">
-            {moreLinks.map((link, index) => (
-              <li
-                key={index}
-                className="font-[public_sans] text-base font-medium sm:text-lg text-[#e6e6e6] hover:text-white hover:underline cursor-pointer"
-              >
-                {link.url.startsWith("http") ? (
-                  <a href={link.url} target="_blank" rel="noopener noreferrer">
-                    {link.label}
-                  </a>
-                ) : (
-                  <Link href={link.url}>
-                    {link.label}
-                  </Link>
-                )}
-              </li>
-            ))}
-          </ul>
-          <div className="flex flex-1 gap-8 w-full">
-            <div className="flex flex-col gap-4 w-full">
-              <h3 className="font-[public_sans] text-base font-medium sm:text-lg text-[#e6e6e6]">
-                Useful Links
-              </h3>
-              <ul className="flex flex-col gap-2">
-                {usefulLinksArray.map((link, index) => (
-                  <li
-                    key={index}
-                    className="text-sm leading-5 font-[public_sans] font-normal text-[#e6e6e6] hover:text-white hover:underline cursor-pointer"
-                  >
-                    {link.url.startsWith("http") ? (
-                      <a
-                        href={link.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {link.label}
-                      </a>
-                    ) : (
-                      <Link href={link.url}>
-                        {link.label}
-                      </Link>
-                    )}
-                  </li>
-                ))}
-              </ul>
+      {!isAdminRoute && (
+        <div className="md:px-12 max-w-7xl mx-auto px-4 py-8 md:py-16 flex flex-col md:flex-row sm:justify-between max-md:gap-8">
+          <div className="flex flex-col gap-6 md:min-w-[389px] w-full sm:w-auto">
+            <FooterLogo className="max-sm:w-[170.65px] max-sm:h-[50px]" />
+            <div className="flex gap-4">
+              <a href={playStoreUrl} target="_blank" rel="noopener noreferrer">
+                <GooglePay className="cursor-pointer max-sm:w-[134px] max-sm:max-h-[41px] rounded-[4px]" />
+              </a>
+              <a href={appStoreUrl} target="_blank" rel="noopener noreferrer">
+                <AppStore className="cursor-pointer max-sm:w-[134px] max-sm:max-h-[41px] rounded-[4px]" />
+              </a>
             </div>
+          </div>
 
-            <div className="flex flex-col gap-4 w-full">
-              <h3 className="font-[public_sans] text-base font-medium sm:text-lg text-[#e6e6e6]">
-                Social
-              </h3>
-              <ul className="flex flex-col gap-2">
-                {socialLinksArray.map((item, index) => (
-                  <li
-                    key={index}
-                    className="flex items-center gap-4 cursor-pointer hover:text-white"
-                  >
+          {/* Links */}
+          <div className="w-full flex max-md:flex-col gap-8">
+            <ul className="flex flex-col gap-4 lg:mr-10 xl:mr-17">
+              {moreLinks.map((link, index) => (
+                <li
+                  key={index}
+                  className="font-[public_sans] text-base font-medium sm:text-lg text-[#e6e6e6] hover:text-white hover:underline cursor-pointer"
+                >
+                  {link.url.startsWith("http") ? (
                     <a
-                      href={item.url}
+                      href={link.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-4"
                     >
-                      <Image
-                        src={item.icon}
-                        alt={item.name}
-                        width={24}
-                        height={24}
-                        className="object-contain"
-                      />
-                      <span className="font-[public_sans] text-sm font-normal">
-                        {item.name}
-                      </span>
+                      {link.label}
                     </a>
-                  </li>
-                ))}
-              </ul>
+                  ) : (
+                    <Link href={link.url}>{link.label}</Link>
+                  )}
+                </li>
+              ))}
+            </ul>
+            <div className="flex flex-1 gap-8 w-full">
+              <div className="flex flex-col gap-4 w-full">
+                <h3 className="font-[public_sans] text-base font-medium sm:text-lg text-[#e6e6e6]">
+                  Useful Links
+                </h3>
+                <ul className="flex flex-col gap-2">
+                  {usefulLinksArray.map((link, index) => (
+                    <li
+                      key={index}
+                      className="text-sm leading-5 font-[public_sans] font-normal text-[#e6e6e6] hover:text-white hover:underline cursor-pointer"
+                    >
+                      {link.url.startsWith("http") ? (
+                        <a
+                          href={link.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {link.label}
+                        </a>
+                      ) : (
+                        <Link href={link.url}>{link.label}</Link>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="flex flex-col gap-4 w-full">
+                <h3 className="font-[public_sans] text-base font-medium sm:text-lg text-[#e6e6e6]">
+                  Social
+                </h3>
+                <ul className="flex flex-col gap-2">
+                  {socialLinksArray.map((item, index) => (
+                    <li
+                      key={index}
+                      className="flex items-center gap-4 cursor-pointer hover:text-white"
+                    >
+                      <a
+                        href={item.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-4"
+                      >
+                        <Image
+                          src={item.icon}
+                          alt={item.name}
+                          width={24}
+                          height={24}
+                          className="object-contain"
+                        />
+                        <span className="font-[public_sans] text-sm font-normal">
+                          {item.name}
+                        </span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Footer Bottom */}
       <div className="bg-black">

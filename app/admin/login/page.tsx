@@ -35,7 +35,7 @@ export default function AdminLoginPage() {
     <div
       className={`min-h-screen bg-white flex items-center justify-center p-4 md:p-8 ${publicSans.className}`}
     >
-      <div className="w-full max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+      <div className="relative min-h-screen w-full max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
         {/* Left Side - Image */}
         <div className="relative h-[730px] w-[638px] rounded-[16px] overflow-hidden hidden md:block">
           <Image
@@ -125,7 +125,7 @@ export default function AdminLoginPage() {
           </form>
 
           {/* Footer Copyright */}
-          <div className="fixed bottom-0 py-6 text-[#454950] text-sm font-medium leading-5.5">
+          <div className="absolute bottom-0 py-6 text-[#454950] text-sm font-medium leading-5.5">
             © 2026 Heartfulness | All Rights Reserved
           </div>
         </div>

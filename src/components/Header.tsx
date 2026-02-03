@@ -93,7 +93,7 @@ export default function Header() {
   // Only show loading skeleton during the initial SSR phase
   if (isLoading && !isHydrated) {
     return (
-      <header className="sticky top-0 left-0 w-full z-50 bg-[#FFFFFF] backdrop-blur-md shadow-sm h-16">
+      <header className={`sticky top-0 left-0 w-full z-50 bg-[#FFFFFF] backdrop-blur-md shadow-sm h-16 ${isAdminRoute ? "max-md:hidden" : ""}`}>
         <div className="max-w-7xl mx-auto h-full flex items-center justify-between px-4 sm:px-8">
           <div className="xl:max-w-[150px] xl:w-full">
             <Link href="/" className="w-fit">
@@ -114,7 +114,7 @@ export default function Header() {
   }
 
   return (
-    <header className="sticky top-0 left-0 w-full z-50 bg-[#FFFFFF] backdrop-blur-md shadow-sm h-15">
+    <header className={`sticky top-0 left-0 w-full z-50 bg-[#FFFFFF] backdrop-blur-md shadow-sm h-15 ${isAdminRoute ? "max-md:hidden" : ""}`}>
       <div className="max-w-7xl mx-auto h-full flex items-center justify-between px-4 sm:px-8">
         {/* Logo */}
         <div className="xl:max-w-[150px] xl:w-full">
