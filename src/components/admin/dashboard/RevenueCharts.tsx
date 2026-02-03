@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, Suspense } from "react";
 import Image from "next/image";
 import { ChartContainer, ChartTooltip } from "@/components/ui/chart";
 import { BarChart, Bar, XAxis, YAxis, Cell } from "recharts";
@@ -260,10 +260,13 @@ export const RevenueCharts = ({
             <p className="text-lg font-bold text-[#454950]">Amount Received</p>
           </div>
           <div className="flex items-center gap-2">
-            <CurrencySelect
-              className="h-9 w-[88.88px] gap-1 rounded-[5px]"
-              className2="px-1.5 gap-1"
-            />
+            <Suspense fallback={null}>
+              <CurrencySelect
+                className="h-9 w-[88.88px] gap-1 rounded-[5px]"
+                className2="px-1.5 gap-1"
+              />
+            </Suspense>
+
             <Select value={rightChartView} onValueChange={setRightChartView}>
               <SelectTrigger className="pl-2 py-2 pr-1 gap-1 rounded-[5px] text-sm border border-[#E6E6E6] shadow-[0px_1px_2px_rgba(0,0,0,0.05)] text-[#333333]">
                 <SelectValue placeholder="Select period" />

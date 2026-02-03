@@ -143,10 +143,13 @@ export default function Header() {
                   co2Sequestration={globalData?.co2_sequestation}
                 />
               </Suspense>
-              <CurrencySelect
-                className="h-9 w-[88.88px] gap-1 rounded-[5px]"
-                className2="px-1.5 gap-1"
-              />
+              <Suspense fallback={null}>
+                <CurrencySelect
+                  className="h-9 w-[88.88px] gap-1 rounded-[5px]"
+                  className2="px-1.5 gap-1"
+                />
+              </Suspense>
+
             </>
           )}
           {/* Authentication Section */}

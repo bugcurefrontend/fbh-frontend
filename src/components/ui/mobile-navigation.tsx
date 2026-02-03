@@ -87,10 +87,13 @@ export function MobileNavigation({
 
   return (
     <div className="md:hidden flex items-center gap-3">
-      <CurrencySelect
-        className="h-9 w-[88.88px] gap-1 rounded-[5px]"
-        className2="px-1.5 gap-1"
-      />
+      <Suspense fallback={null}>
+        <CurrencySelect
+          className="h-9 w-[88.88px] gap-1 rounded-[5px]"
+          className2="px-1.5 gap-1"
+        />
+      </Suspense>
+
       <button
         onClick={handleMobileMenuToggle}
         className="h-6 w-6 flex items-center justify-center"
