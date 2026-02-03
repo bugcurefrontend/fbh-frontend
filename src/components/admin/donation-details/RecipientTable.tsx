@@ -1,7 +1,6 @@
-"use client";
-
 import { useState } from "react";
 import Image from "next/image";
+import { Download } from "lucide-react";
 import {
   Pagination,
   PaginationContent,
@@ -11,91 +10,56 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import SearchBar from "@/components/SearchBar";
-import { TableActions, SortOption, FilterOption } from "./TableActions";
-import { DonationDetailsView } from "./donation-details";
+import { TableActions, SortOption, FilterOption } from "../TableActions";
 
-// Updated Interface based on Image
-interface DonationDetail {
+interface RecipientData {
   id: number;
-  hfiRcptNo: string;
-  name: string;
-  amount: number;
-  currency: string;
+  rcptName: string;
+  email: string;
+  phoneNo: string;
+  treesAllocated: number;
+  treesPlanted: number;
+  certificateId: string;
+  account: string;
   geoTagged: string;
 }
 
-const donationDetailsData: DonationDetail[] = [
-  {
-    id: 1,
-    hfiRcptNo: "FBHP2T345",
-    name: "Prerana Koli",
-    amount: 3454,
-    currency: "INR",
-    geoTagged: "true",
-  },
-  {
-    id: 2,
-    hfiRcptNo: "FBHP2T345",
-    name: "Suyash Kamble",
-    amount: 54684898,
-    currency: "INR",
-    geoTagged: "false",
-  },
-  {
-    id: 3,
-    hfiRcptNo: "FBHP2T345",
-    name: "Prerana Koli",
-    amount: 3454,
-    currency: "INR",
-    geoTagged: "true",
-  },
-  {
-    id: 4,
-    hfiRcptNo: "FBHP2T345",
-    name: "Suyash Kamble",
-    amount: 54684898,
-    currency: "INR",
-    geoTagged: "false",
-  },
-  {
-    id: 5,
-    hfiRcptNo: "FBHP2T345",
-    name: "Prerana Koli",
-    amount: 3454,
-    currency: "INR",
-    geoTagged: "true",
-  },
-];
+interface RecipientTableProps {
+  recipients: RecipientData[];
+  onViewDetails: (recipient: RecipientData) => void;
+}
 
 const sortOptions: SortOption[] = [
-  { label: "Amount: High to Low", value: "amount", direction: "desc" },
-  { label: "Amount: Low to High", value: "amount", direction: "asc" },
-  { label: "Name: A-Z", value: "name", direction: "asc" },
+  { label: "Name: A-Z", value: "rcptName", direction: "asc" },
+  { label: "Trees Allocated: High to Low", value: "treesAllocated", direction: "desc" },
+  { label: "Trees Allocated: Low to High", value: "treesAllocated", direction: "asc" },
+  { label: "Trees Planted: High to Low", value: "treesPlanted", direction: "desc" },
 ];
 
 const filterOptions: FilterOption[] = [
-  { label: "Geo-Tagged: Yes", value: "true" },
-  { label: "Geo-Tagged: No", value: "false" },
+  { label: "Account: Active", value: "true" },
+  { label: "Account: Inactive", value: "false" },
 ];
 
-export const DonationTab = () => {
+export const RecipientTable = ({
+  recipients,
+  onViewDetails,
+}: RecipientTableProps) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSort, setSelectedSort] = useState<SortOption | null>(sortOptions[0]);
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
-  const [selectedDetail, setSelectedDetail] = useState<DonationDetail | null>(
-    null,
-  );
-  const ITEMS_PER_PAGE = 5;
+  const ITEMS_PER_PAGE = 4;
 
-  const filteredData = donationDetailsData
+  const filteredData = recipients
     .filter((item) => {
       const query = searchQuery.toLowerCase();
       const matchesSearch =
-        item.hfiRcptNo.toLowerCase().includes(query) ||
-        item.name.toLowerCase().includes(query) ||
-        item.amount.toString().includes(query);
+        item.rcptName.toLowerCase().includes(query) ||
+        item.email.toLowerCase().includes(query) ||
+        item.certificateId.toLowerCase().includes(query);
 
+      // Filter by geoTagged status (using the 'account' column logic)
       const matchesStatus =
         selectedFilters.length === 0 || selectedFilters.includes(item.geoTagged);
 
@@ -107,10 +71,12 @@ export const DonationTab = () => {
       const { value, direction } = selectedSort;
       let comparison = 0;
 
-      if (value === "amount") {
-        comparison = a.amount - b.amount;
-      } else if (value === "name") {
-        comparison = a.name.localeCompare(b.name);
+      if (value === "rcptName") {
+        comparison = a.rcptName.localeCompare(b.rcptName);
+      } else if (value === "treesAllocated") {
+        comparison = a.treesAllocated - b.treesAllocated;
+      } else if (value === "treesPlanted") {
+        comparison = a.treesPlanted - b.treesPlanted;
       }
 
       return direction === "asc" ? comparison : -comparison;
@@ -121,26 +87,15 @@ export const DonationTab = () => {
   const endIndex = startIndex + ITEMS_PER_PAGE;
   const currentData = filteredData.slice(startIndex, endIndex);
 
-  // If viewing donation details, show the DonationDetailsView component
-  if (selectedDetail) {
-    return (
-      <DonationDetailsView
-        donation={selectedDetail}
-        onBack={() => setSelectedDetail(null)}
-      />
-    );
-  }
-
-  // Default list view
   return (
-    <div className="space-y-8">
-      {/* Search and Actions Bar */}
+    <div className="space-y-6">
+      {/* Search and Actions */}
       <div className="flex items-center justify-between gap-4">
         <div className="relative flex-1 max-w-[400px]">
           <SearchBar
             value={searchQuery}
             onChange={setSearchQuery}
-            placeholder="Search by hfi rcpt no, name ..."
+            placeholder="Search by recipient name, etc ..."
           />
         </div>
         <TableActions
@@ -150,7 +105,7 @@ export const DonationTab = () => {
           filterOptions={filterOptions}
           selectedFilters={selectedFilters}
           onFilterChange={setSelectedFilters}
-          filterLabel="Filter by Tagging"
+          filterLabel="Filter by Account Status"
         />
       </div>
 
@@ -160,83 +115,93 @@ export const DonationTab = () => {
           <table className="w-full">
             <thead className="border-b border-[#E6E6E6]">
               <tr>
-                <th className="text-center px-3.5 py-3 text-xs font-semibold text-[#454950] whitespace-nowrap">
-                  HFI Rcpt No
+                <th className="text-center px-6 py-4 text-xs font-semibold text-[#454950] whitespace-nowrap">
+                  Rcpt Name
                 </th>
-                <th className="text-center px-3.5 py-3 text-xs font-semibold text-[#454950] whitespace-nowrap">
-                  Name
+                <th className="text-center px-6 py-4 text-xs font-semibold text-[#454950] whitespace-nowrap">
+                  Email
                 </th>
-                <th className="text-center px-3.5 py-3 text-xs font-semibold text-[#454950] whitespace-nowrap">
-                  Amount
+                <th className="text-center px-6 py-4 text-xs font-semibold text-[#454950] whitespace-nowrap">
+                  Phone No.
                 </th>
-                <th className="text-center px-3.5 py-3 text-xs font-semibold text-[#454950] whitespace-nowrap">
-                  Currency
+                <th className="text-center px-6 py-4 text-xs font-semibold text-[#454950] whitespace-nowrap">
+                  Trees Allocated
                 </th>
-                <th className="text-center px-3.5 py-3 text-xs font-semibold text-[#454950] whitespace-nowrap">
-                  Geo - Tagged
+                <th className="text-center px-6 py-4 text-xs font-semibold text-[#454950] whitespace-nowrap">
+                  Trees Planted
                 </th>
-                <th className="text-center px-3.5 py-3 text-xs font-semibold text-[#454950] whitespace-nowrap">
+                <th className="text-center px-6 py-4 text-xs font-semibold text-[#454950] whitespace-nowrap">
+                  Certificate ID
+                </th>
+                <th className="text-center px-6 py-4 text-xs font-semibold text-[#454950] whitespace-nowrap">
+                  Account
+                </th>
+                <th className="text-center px-6 py-4 text-xs font-semibold text-[#454950] whitespace-nowrap">
+                  Download
+                </th>
+                <th className="text-center px-6 py-4 text-xs font-semibold text-[#454950] whitespace-nowrap">
                   Details
                 </th>
               </tr>
             </thead>
             <tbody>
-              {currentData.map((donation, index) => (
+              {currentData.map((recipient, index) => (
                 <tr
-                  key={donation.id}
+                  key={recipient.id}
                   className={`${index % 2 === 0 ? "bg-gray-50" : "bg-white"} ${
                     index !== currentData.length - 1
                       ? "border-b border-[#E6E6E6]"
                       : ""
                   }`}
                 >
-                  <td className="px-6 py-5 text-sm font-semibold text-[#090C0F] text-center">
-                    {donation.hfiRcptNo}
+                  <td className="px-6 py-4.5 text-sm font-semibold text-[#090C0F] text-center">
+                    {recipient.rcptName}
                   </td>
-                  <td className="px-6 py-5 text-sm font-semibold text-[#090C0F] text-center">
-                    {donation.name}
+                  <td className="px-6 py-4.5 text-sm font-semibold text-[#090C0F] text-center">
+                    {recipient.email}
                   </td>
-                  <td className="px-6 py-5 text-sm font-semibold text-[#454950] text-center">
-                    {donation.amount}
+                  <td className="px-6 py-4.5 text-sm font-semibold text-[#090C0F] text-center">
+                    {recipient.phoneNo}
                   </td>
-                  <td className="px-6 py-5">
-                    <div className="flex items-center justify-center gap-1">
-                      <Image
-                        src="/images/flag.png"
-                        alt={donation.currency}
-                        width={28}
-                        height={28}
-                      />
-                      <p className="text-sm font-medium text-[#454950]">
-                        {donation.currency}
-                      </p>
-                    </div>
+                  <td className="px-6 py-4.5 text-sm font-semibold text-[#090C0F] text-center">
+                    {recipient.treesAllocated}
                   </td>
-                  <td className="px-6 py-5 mt-1.5 flex justify-center">
-                    {donation.geoTagged === "true" ? (
+                  <td className="px-6 py-4.5 text-sm font-semibold text-[#090C0F] text-center">
+                    {recipient.treesPlanted}
+                  </td>
+                  <td className="px-6 py-4.5 text-sm font-semibold text-[#090C0F] text-center">
+                    {recipient.certificateId}
+                  </td>
+                  <td className="px-6 py-4.5 text-sm font-semibold text-[#454950] text-center">
+                    {recipient.geoTagged === "true" ? (
                       <Image
                         src="/images/check.png"
-                        alt="Icon"
+                        alt="Check"
                         width={17}
                         height={17}
+                        className="mx-auto"
                       />
                     ) : (
                       <Image
                         src="/images/warning.png"
-                        alt="Icon"
+                        alt="Warning"
                         width={17}
                         height={17}
+                        className="mx-auto"
                       />
                     )}
                   </td>
-                  <td className="px-6 py-5 text-center">
+                  <td className="px-6 py-4.5 text-center">
+                    <button className="p-2 hover:bg-gray-100 rounded-full transition-colors">
+                      <Download className="w-5 h-5" />
+                    </button>
+                  </td>
+                  <td className="px-6 py-4.5 text-center">
                     <button
-                      onClick={() => {
-                        setSelectedDetail(donation);
-                      }}
+                      onClick={() => onViewDetails(recipient)}
                       className="text-sm font-bold text-[#003399] hover:underline"
                     >
-                      View
+                      Click Here
                     </button>
                   </td>
                 </tr>

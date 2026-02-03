@@ -1,8 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Search, Filter, SortAsc, FileDown } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import {
   Pagination,
   PaginationContent,
@@ -11,6 +9,9 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import SearchBar from "@/components/SearchBar";
+import { TableActions, SortOption, FilterOption } from "./TableActions";
+import { ProjectDetailsView } from "./project-details";
 
 interface Project {
   id: number;
@@ -20,136 +21,170 @@ interface Project {
   geoTaggedPlanted: number;
   nonGeoTagged: number;
   nonGeoTaggedPlanted: number;
-  details: string;
 }
 
 const projectsData: Project[] = [
   {
     id: 1,
     project: "Kanha Shanti Vanam",
-    address: "Shivagath, Madhya Pradesh",
+    address: "Shivagarh, Madhya Pradesh",
     geoTagged: 455,
     geoTaggedPlanted: 860,
     nonGeoTagged: 700,
     nonGeoTaggedPlanted: 450,
-    details: "View",
   },
   {
     id: 2,
-    project: "Shivagath Project",
-    address: "Shivagath, Madhya Pradesh",
+    project: "Shivgarh Project",
+    address: "Shivagarh, Madhya Pradesh",
     geoTagged: 650,
     geoTaggedPlanted: 600,
     nonGeoTagged: 420,
     nonGeoTaggedPlanted: 300,
-    details: "View",
   },
   {
     id: 3,
     project: "Kanha Shanti Vanam",
-    address: "Shivagath, Madhya Pradesh",
+    address: "Shivagarh, Madhya Pradesh",
     geoTagged: 700,
     geoTaggedPlanted: 500,
     nonGeoTagged: 250,
     nonGeoTaggedPlanted: 200,
-    details: "View",
   },
   {
     id: 4,
     project: "Satna Project",
-    address: "Shivagath, Madhya Pradesh",
+    address: "Satna, Madhya Pradesh",
     geoTagged: 350,
     geoTaggedPlanted: 500,
     nonGeoTagged: 150,
     nonGeoTaggedPlanted: 650,
-    details: "View",
   },
   {
     id: 5,
     project: "Kanha Shanti Vanam",
-    address: "Shivagath, Madhya Pradesh",
+    address: "Shivagarh, Madhya Pradesh",
     geoTagged: 400,
     geoTaggedPlanted: 200,
     nonGeoTagged: 80,
     nonGeoTaggedPlanted: 200,
-    details: "View",
   },
+];
+
+const sortOptions: SortOption[] = [
+  { label: "Geo-Tagged: Low to High", value: "geoTagged", direction: "asc" },
+  { label: "Geo-Tagged: High to Low", value: "geoTagged", direction: "desc" },
+  { label: "Planted: Low to High", value: "geoTaggedPlanted", direction: "asc" },
+  { label: "Planted: High to Low", value: "geoTaggedPlanted", direction: "desc" },
+  { label: "Project Name: A-Z", value: "project", direction: "asc" },
 ];
 
 export const ProjectsTab = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedSort, setSelectedSort] = useState<SortOption | null>(sortOptions[0]);
+  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const ITEMS_PER_PAGE = 5;
 
-  const totalPages = Math.ceil(projectsData.length / ITEMS_PER_PAGE);
+  // Extract unique addresses for filter
+  const uniqueAddresses = Array.from(new Set(projectsData.map(p => p.address)));
+  const filterOptions: FilterOption[] = uniqueAddresses.map(addr => ({
+    label: addr,
+    value: addr
+  }));
+
+  const filteredData = projectsData
+    .filter((item) => {
+      const query = searchQuery.toLowerCase();
+      const matchesSearch =
+        item.project.toLowerCase().includes(query) ||
+        item.address.toLowerCase().includes(query);
+
+      const matchesFilter = 
+        selectedFilters.length === 0 || selectedFilters.includes(item.address);
+
+      return matchesSearch && matchesFilter;
+    })
+    .sort((a, b) => {
+      if (!selectedSort) return 0;
+      
+      const { value, direction } = selectedSort;
+      let comparison = 0;
+
+      if (value === "geoTagged") {
+        comparison = a.geoTagged - b.geoTagged;
+      } else if (value === "geoTaggedPlanted") {
+        comparison = a.geoTaggedPlanted - b.geoTaggedPlanted;
+      } else if (value === "project") {
+        comparison = a.project.localeCompare(b.project);
+      }
+
+      return direction === "asc" ? comparison : -comparison;
+    });
+
+  const totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
-  const currentData = projectsData.slice(startIndex, endIndex);
+  const currentData = filteredData.slice(startIndex, endIndex);
+
+  // If viewing project details, show the ProjectDetailsView component
+  if (selectedProject) {
+    return (
+      <ProjectDetailsView
+        project={selectedProject}
+        onBack={() => setSelectedProject(null)}
+      />
+    );
+  }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Search and Actions Bar */}
       <div className="flex items-center justify-between gap-4">
-        <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-          <input
-            type="text"
-            placeholder="Search by project name ..."
+        <div className="relative flex-1 max-w-[400px]">
+          <SearchBar
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onChange={setSearchQuery}
+            placeholder="Search by project name..."
           />
         </div>
-        <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            className="flex items-center gap-2 border-gray-300"
-          >
-            <Filter className="w-4 h-4" />
-            Filter
-          </Button>
-          <Button
-            variant="outline"
-            className="flex items-center gap-2 border-gray-300"
-          >
-            <SortAsc className="w-4 h-4" />
-            Sort
-          </Button>
-          <Button
-            variant="outline"
-            className="flex items-center gap-2 border-gray-300"
-          >
-            <FileDown className="w-4 h-4" />
-            Export
-          </Button>
-        </div>
+        <TableActions
+          sortOptions={sortOptions}
+          selectedSort={selectedSort}
+          onSortChange={setSelectedSort}
+          filterOptions={filterOptions}
+          selectedFilters={selectedFilters}
+          onFilterChange={setSelectedFilters}
+          filterLabel="Filter by Address"
+        />
       </div>
 
       {/* Table */}
-      <div className="bg-white border border-[#E6E6E6] rounded-2xl overflow-hidden">
+      <div className="bg-white border border-[#E6E6E6] rounded-[12px] overflow-hidden shadow-sm">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-[#F9FAFB] border-b border-[#E6E6E6]">
+            <thead className="border-b border-[#E6E6E6]">
               <tr>
-                <th className="text-left px-6 py-4 text-xs font-semibold text-[#6B7280]">
+                <th className="text-center px-3.5 py-3 text-xs font-semibold text-[#454950] whitespace-nowrap">
                   Project
                 </th>
-                <th className="text-left px-6 py-4 text-xs font-semibold text-[#6B7280]">
+                <th className="text-center px-3.5 py-3 text-xs font-semibold text-[#454950] whitespace-nowrap">
                   Address
                 </th>
-                <th className="text-left px-6 py-4 text-xs font-semibold text-[#6B7280]">
+                <th className="text-center px-3.5 py-3 text-xs font-semibold text-[#454950] whitespace-nowrap">
                   Geo-Tagged
                 </th>
-                <th className="text-left px-6 py-4 text-xs font-semibold text-[#6B7280]">
+                <th className="text-center px-3.5 py-3 text-xs font-semibold text-[#454950] whitespace-nowrap">
                   Geo-Tagged Planted
                 </th>
-                <th className="text-left px-6 py-4 text-xs font-semibold text-[#6B7280]">
-                  Non-Geo-tagged
+                <th className="text-center px-3.5 py-3 text-xs font-semibold text-[#454950] whitespace-nowrap">
+                  Non-Geo tagged
                 </th>
-                <th className="text-left px-6 py-4 text-xs font-semibold text-[#6B7280]">
+                <th className="text-center px-3.5 py-3 text-xs font-semibold text-[#454950] whitespace-nowrap">
                   Non Geo-Tagged Planted
                 </th>
-                <th className="text-left px-6 py-4 text-xs font-semibold text-[#6B7280]">
+                <th className="text-center px-3.5 py-3 text-xs font-semibold text-[#454950] whitespace-nowrap">
                   Details
                 </th>
               </tr>
@@ -158,33 +193,36 @@ export const ProjectsTab = () => {
               {currentData.map((project, index) => (
                 <tr
                   key={project.id}
-                  className={
+                  className={`${index % 2 === 0 ? "bg-gray-50" : "bg-white"} ${
                     index !== currentData.length - 1
                       ? "border-b border-[#E6E6E6]"
                       : ""
-                  }
+                  }`}
                 >
-                  <td className="px-6 py-4 text-sm text-[#111827]">
+                  <td className="px-6 py-5.5 text-sm font-semibold text-[#454950] text-center">
                     {project.project}
                   </td>
-                  <td className="px-6 py-4 text-sm text-[#111827]">
+                  <td className="px-6 py-5.5 text-sm font-semibold text-[#454950] text-center">
                     {project.address}
                   </td>
-                  <td className="px-6 py-4 text-sm text-[#111827]">
+                  <td className="px-6 py-5.5 text-sm font-semibold text-[#454950] text-center">
                     {project.geoTagged}
                   </td>
-                  <td className="px-6 py-4 text-sm text-[#111827]">
+                  <td className="px-6 py-5.5 text-sm font-semibold text-[#454950] text-center">
                     {project.geoTaggedPlanted}
                   </td>
-                  <td className="px-6 py-4 text-sm text-[#111827]">
+                  <td className="px-6 py-5.5 text-sm font-semibold text-[#454950] text-center">
                     {project.nonGeoTagged}
                   </td>
-                  <td className="px-6 py-4 text-sm text-[#111827]">
+                  <td className="px-6 py-5.5 text-sm font-semibold text-[#454950] text-center">
                     {project.nonGeoTaggedPlanted}
                   </td>
-                  <td className="px-6 py-4">
-                    <button className="text-sm font-semibold text-[#003399] hover:underline">
-                      {project.details}
+                  <td className="px-6 py-5.5 text-center">
+                    <button
+                      onClick={() => setSelectedProject(project)}
+                      className="text-sm font-bold text-[#003399] hover:underline"
+                    >
+                      View
                     </button>
                   </td>
                 </tr>
