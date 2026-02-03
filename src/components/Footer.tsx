@@ -66,6 +66,8 @@ const Footer: React.FC<FooterProps> = ({
     "max-md:mb-[158px]"
     }`;
 
+  if (pathname === "/admin/login") return null;
+
   return (
     <footer className={footerClass}>
       <div className="md:px-12 max-w-7xl mx-auto px-4 py-8 md:py-16 flex flex-col md:flex-row sm:justify-between max-md:gap-8">

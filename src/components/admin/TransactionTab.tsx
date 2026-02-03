@@ -279,13 +279,13 @@ export const TransactionTab = () => {
                       className={`px-3 py-2 rounded-full leading-6 text-sm font-semibold ${
                         transaction.status === "SUCCESSFUL"
                           ? "bg-[#E7F8F0] text-[#0D824B]"
-                          : "bg-[##FEEDEC] text-[#F04438]"
+                          : "bg-[#FEEDEC] text-[#F04438]"
                       }`}
                     >
                       {transaction.status}
                     </span>
                   </td>
-                  <td className="px-6 py-5 text-sm font-semibold text-[#454950] text-center">
+                  <td className="px-6 py-5 text-xs font-semibold text-[#454950] text-center">
                     {transaction.timestamp}
                   </td>
                 </tr>

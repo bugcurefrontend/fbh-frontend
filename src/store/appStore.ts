@@ -3,7 +3,7 @@
  * Pattern matches UserStore
  */
 
-export type CurrencyCode = "INR"; // | "USD";
+export type CurrencyCode = "INR" | "USD";
 
 interface AppState {
     currency: CurrencyCode;
@@ -18,7 +18,7 @@ class AppStore {
     constructor() {
         if (typeof window !== "undefined") {
             const storedCurrency = localStorage.getItem("fbh_currency");
-            if (storedCurrency && (storedCurrency === "INR" /* || storedCurrency === "USD" */)) {
+            if (storedCurrency && (storedCurrency === "INR" || storedCurrency === "USD")) {
                 this.state.currency = storedCurrency as CurrencyCode;
             }
         }

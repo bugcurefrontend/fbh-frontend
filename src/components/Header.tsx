@@ -9,6 +9,7 @@ import { LogOut, TriangleAlert, User, X } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 import CurrencySelect from "./CurrencySelect";
 import { Suspense } from "react";
+import { usePathname } from "next/navigation";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -30,6 +31,8 @@ export default function Header() {
   const [showSignOutAlert, setShowSignOutAlert] = React.useState(false);
   const [globalData, setGlobalData] = React.useState<GlobalContent | null>(null);
   const [isHydrated, setIsHydrated] = React.useState(false);
+  const pathname = usePathname();
+  const isAdminRoute = pathname?.startsWith("/admin");
 
   // Ensure component is hydrated before rendering auth-dependent content
   React.useEffect(() => {
@@ -84,6 +87,8 @@ export default function Header() {
     },
   ];
 
+  if (pathname === "/admin/login") return null;
+
   // During loading but after hydration, still render the header with content
   // Only show loading skeleton during the initial SSR phase
   if (isLoading && !isHydrated) {
@@ -126,173 +131,206 @@ export default function Header() {
         </div>
 
         {/* Desktop navigation */}
-        <CustomNavigationMenu navigationItems={navigationItems} />
+        {!isAdminRoute && (
+          <CustomNavigationMenu navigationItems={navigationItems} />
+        )}
         <div className="max-md:hidden flex items-center gap-3">
-          <Suspense fallback={null}>
-            <LightBox
-              preSelectedAttribute={globalData?.default_attribute || null}
-              co2Sequestration={globalData?.co2_sequestation}
-            />
-          </Suspense>
-          <CurrencySelect
-            className="h-9 w-[88.88px] gap-1 rounded-[5px]"
-            className2="px-1.5 gap-1"
-          />
+          {!isAdminRoute && (
+            <>
+              <Suspense fallback={null}>
+                <LightBox
+                  preSelectedAttribute={globalData?.default_attribute || null}
+                  co2Sequestration={globalData?.co2_sequestation}
+                />
+              </Suspense>
+              <CurrencySelect
+                className="h-9 w-[88.88px] gap-1 rounded-[5px]"
+                className2="px-1.5 gap-1"
+              />
+            </>
+          )}
           {/* Authentication Section */}
           <div className="max-md:hidden relative" ref={dropdownRef}>
             {isAuthenticated ? (
-              <>
-                {/* User Avatar Button */}
-                <button
-                  onClick={() => setDropdownOpen(!dropdownOpen)}
-                  className="relative flex items-center justify-center bg-gray-200 hover:bg-gray-300 transition-colors overflow-hidden h-[37px] w-[37px] rounded-full"
-                >
-                  {userProfile?.picture ? (
-                    <Image
-                      src={userProfile.picture}
-                      alt={userProfile.name || "User profile picture"}
-                      fill
-                      className="object-cover"
-                    />
-                  ) : (
-                    <User className="w-5 h-5 text-gray-600" />
-                  )}
-                </button>
-
-                {/* Dropdown Menu */}
-                {dropdownOpen && (
-                  <div
-                    className="absolute right-0 top-full bg-white z-50"
-                    style={{
-                      width: "219px",
-                      marginTop: "5px",
-                      border: "1px solid #E4E4E4",
-                      boxShadow: "0px 21px 40px 0px #31313133",
-                    }}
-                  >
-                    {/* User Info Section - Horizontal Layout */}
-                    <Link
-                      href="/account"
-                      className="hover:bg-gray-50 transition-colors flex items-center justify-center gap-2 px-4 my-4"
-                      style={{
-                        fontFamily: "Public Sans",
-                        fontWeight: 400,
-                        fontSize: "16px",
-                        lineHeight: "24px",
-                        letterSpacing: "0px",
-                        color: "#454950",
-                      }}
-                      onClick={() => setDropdownOpen(false)}
-                    >
-                      <div className="relative flex-shrink-0 w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
-                        {userProfile?.picture ? (
-                          <Image
-                            src={userProfile.picture}
-                            alt={userProfile.name || "User profile picture"}
-                            fill
-                            className="object-cover"
-                          />
-                        ) : (
-                          <User className="w-5 h-5 text-gray-600" />
-                        )}
+              isAdminRoute ? (
+                <div className="flex items-center gap-2">
+                  <div className="relative w-[32px] h-[32px] rounded-full overflow-hidden bg-gray-200 border border-gray-100">
+                    {userProfile?.picture ? (
+                      <Image
+                        src={userProfile.picture}
+                        alt={userProfile.name || "User profile picture"}
+                        fill
+                        className="object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <User className="w-5 h-5 text-gray-600" />
                       </div>
-                      <div className="flex flex-col min-w-0 flex-1">
-                        <p
-                          className="truncate"
+                    )}
+                  </div>
+                  <button
+                    onClick={() => setShowSignOutAlert(true)}
+                    className="text-[#F04438] font-semibold hover:opacity-80 transition-opacity"
+                    style={{ fontFamily: "Public Sans" }}
+                  >
+                    SIGN OUT
+                  </button>
+                </div>
+              ) : (
+                <>
+                  {/* User Avatar Button */}
+                  <button
+                    onClick={() => setDropdownOpen(!dropdownOpen)}
+                    className="relative flex items-center justify-center bg-gray-200 hover:bg-gray-300 transition-colors overflow-hidden h-[37px] w-[37px] rounded-full"
+                  >
+                    {userProfile?.picture ? (
+                      <Image
+                        src={userProfile.picture}
+                        alt={userProfile.name || "User profile picture"}
+                        fill
+                        className="object-cover"
+                      />
+                    ) : (
+                      <User className="w-5 h-5 text-gray-600" />
+                    )}
+                  </button>
+
+                  {/* Dropdown Menu */}
+                  {dropdownOpen && (
+                    <div
+                      className="absolute right-0 top-full bg-white z-50"
+                      style={{
+                        width: "219px",
+                        marginTop: "5px",
+                        border: "1px solid #E4E4E4",
+                        boxShadow: "0px 21px 40px 0px #31313133",
+                      }}
+                    >
+                      {/* User Info Section - Horizontal Layout */}
+                      <Link
+                        href="/account"
+                        className="hover:bg-gray-50 transition-colors flex items-center justify-center gap-2 px-4 my-4"
+                        style={{
+                          fontFamily: "Public Sans",
+                          fontWeight: 400,
+                          fontSize: "16px",
+                          lineHeight: "24px",
+                          letterSpacing: "0px",
+                          color: "#454950",
+                        }}
+                        onClick={() => setDropdownOpen(false)}
+                      >
+                        <div className="relative flex-shrink-0 w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+                          {userProfile?.picture ? (
+                            <Image
+                              src={userProfile.picture}
+                              alt={userProfile.name || "User profile picture"}
+                              fill
+                              className="object-cover"
+                            />
+                          ) : (
+                            <User className="w-5 h-5 text-gray-600" />
+                          )}
+                        </div>
+                        <div className="flex flex-col min-w-0 flex-1">
+                          <p
+                            className="truncate"
+                            style={{
+                              fontFamily: "Public Sans",
+                              fontWeight: 700,
+                              fontSize: "14px",
+                              lineHeight: "22px",
+                              letterSpacing: "0px",
+                              color: "#090C0F",
+                            }}
+                          >
+                            {userProfile?.firstName} {userProfile?.lastName}
+                          </p>
+                          <p
+                            className="truncate"
+                            style={{
+                              fontFamily: "Public Sans",
+                              fontWeight: 600,
+                              fontSize: "12px",
+                              lineHeight: "18px",
+                              letterSpacing: "0px",
+                              color: "#94979A",
+                            }}
+                            title={userProfile?.email}
+                          >
+                            {userProfile?.email}
+                          </p>
+                        </div>
+                      </Link>
+
+                      {/* Menu Items */}
+                      <div className="flex flex-col">
+                        <Link
+                          href="/account"
+                          className="block px-4 py-2 hover:bg-[#E6EBF5] transition-colors border-y border-[#E4E4E4]"
                           style={{
                             fontFamily: "Public Sans",
-                            fontWeight: 700,
+                            fontWeight: 500,
                             fontSize: "14px",
-                            lineHeight: "22px",
+                            lineHeight: "24px",
                             letterSpacing: "0px",
                             color: "#090C0F",
                           }}
+                          onClick={() => setDropdownOpen(false)}
                         >
-                          {userProfile?.firstName} {userProfile?.lastName}
-                        </p>
-                        <p
-                          className="truncate"
+                          Dashboard
+                        </Link>
+                        <a
+                          href="https://my.heartfulness.org"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block px-4 py-2 hover:bg-[#E6EBF5] transition-colors border-b border-[#E4E4E4]"
                           style={{
                             fontFamily: "Public Sans",
-                            fontWeight: 600,
-                            fontSize: "12px",
-                            lineHeight: "18px",
-                            letterSpacing: "0px",
-                            color: "#94979A",
-                          }}
-                          title={userProfile?.email}
-                        >
-                          {userProfile?.email}
-                        </p>
-                      </div>
-                    </Link>
-
-                    {/* Menu Items */}
-                    <div className="flex flex-col">
-                      <Link
-                        href="/account"
-                        className="block px-4 py-2 hover:bg-[#E6EBF5] transition-colors border-y border-[#E4E4E4]"
-                        style={{
-                          fontFamily: "Public Sans",
-                          fontWeight: 500,
-                          fontSize: "14px",
-                          lineHeight: "24px",
-                          letterSpacing: "0px",
-                          color: "#090C0F",
-                        }}
-                        onClick={() => setDropdownOpen(false)}
-                      >
-                        Dashboard
-                      </Link>
-                      <a
-                        href="https://my.heartfulness.org"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="block px-4 py-2 hover:bg-[#E6EBF5] transition-colors border-b border-[#E4E4E4]"
-                        style={{
-                          fontFamily: "Public Sans",
-                          fontWeight: 500,
-                          fontSize: "14px",
-                          lineHeight: "24px",
-                          letterSpacing: "0px",
-                          color: "#090C0F",
-                        }}
-                        onClick={() => setDropdownOpen(false)}
-                      >
-                        My Account
-                      </a>
-                      <div>
-                        <button
-                          onClick={() => setShowSignOutAlert(true)}
-                          className="flex items-center gap-2 w-full py-2 px-4 transition-colors"
-                          style={{
-                            fontFamily: "Public Sans",
-                            fontWeight: 600,
+                            fontWeight: 500,
                             fontSize: "14px",
-                            lineHeight: "22px",
+                            lineHeight: "24px",
                             letterSpacing: "0px",
-                            color: "#F04438",
+                            color: "#090C0F",
                           }}
-                          onMouseEnter={(e) =>
-                            (e.currentTarget.style.backgroundColor = "#E6EBF5")
-                          }
-                          onMouseLeave={(e) =>
-                          (e.currentTarget.style.backgroundColor =
-                            "transparent")
-                          }
+                          onClick={() => setDropdownOpen(false)}
                         >
-                          <span>SIGN OUT</span>
-                          <LogOut
-                            strokeWidth="2.5px"
-                            className="w-4 h-4"
-                            style={{ color: "#F04438" }}
-                          />
-                        </button>
+                          My Account
+                        </a>
+                        <div>
+                          <button
+                            onClick={() => setShowSignOutAlert(true)}
+                            className="flex items-center gap-2 w-full py-2 px-4 transition-colors"
+                            style={{
+                              fontFamily: "Public Sans",
+                              fontWeight: 600,
+                              fontSize: "14px",
+                              lineHeight: "22px",
+                              letterSpacing: "0px",
+                              color: "#F04438",
+                            }}
+                            onMouseEnter={(e) =>
+                              (e.currentTarget.style.backgroundColor =
+                                "#E6EBF5")
+                            }
+                            onMouseLeave={(e) =>
+                              (e.currentTarget.style.backgroundColor =
+                                "transparent")
+                            }
+                          >
+                            <span>SIGN OUT</span>
+                            <LogOut
+                              strokeWidth="2.5px"
+                              className="w-4 h-4"
+                              style={{ color: "#F04438" }}
+                            />
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                )}
-              </>
+                  )}
+                </>
+              )
             ) : (
               <button
                 onClick={login}

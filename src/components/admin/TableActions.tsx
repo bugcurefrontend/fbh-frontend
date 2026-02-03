@@ -49,6 +49,7 @@ export const TableActions = ({
   statusFilter = [],
 }: TableActionsProps) => {
   const [sortPopoverOpen, setSortPopoverOpen] = useState(false);
+  const [filterPopoverOpen, setFilterPopoverOpen] = useState(false);
 
   // Use legacy mode if legacy props are provided
   const isLegacyMode =
@@ -73,20 +74,45 @@ export const TableActions = ({
 
   return (
     <div className="flex items-center gap-3">
-      {/* Filter Button */}
+      {/* Filter Button / Pill */}
       {filterOptions.length > 0 && (
-        <Popover>
+        <Popover open={filterPopoverOpen} onOpenChange={setFilterPopoverOpen}>
           <PopoverTrigger asChild>
-            <button className="flex items-center gap-1.5 text-[#090C0F] font-medium text-base hover:opacity-80 transition-opacity">
-              <Filter className="w-5 h-5" />
-              Filter
-            </button>
+            {selectedFilters.length === 0 ? (
+              <button className="flex items-center gap-1.5 text-[#090C0F] font-medium text-base hover:opacity-80 transition-opacity">
+                <Filter className="w-5 h-5" />
+                Filter
+              </button>
+            ) : (
+              <div className="flex items-center gap-1.5 px-2.5 py-1 bg-blue-50 border border-[#6987C3] rounded-md text-sm cursor-pointer hover:bg-blue-100 transition-colors">
+                <span className="text-[#003399] font-medium">
+                  Filter: ( {selectedFilters.length} )
+                </span>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onFilterChange && onFilterChange([]);
+                  }}
+                  className="text-[#003399] hover:opacity-80 p-0.5"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            )}
           </PopoverTrigger>
           <PopoverContent className="w-56 p-4" align="end">
             <div className="space-y-4">
-              <h4 className="font-medium leading-none text-sm text-[#090C0F]">
-                {filterLabel}
-              </h4>
+              <div className="flex items-center justify-between">
+                <h4 className="font-medium leading-none text-sm text-[#090C0F]">
+                  {filterLabel}
+                </h4>
+                <button
+                  onClick={() => setFilterPopoverOpen(false)}
+                  className="text-gray-500 hover:text-gray-900 transition-colors"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
               <div className="space-y-3">
                 {filterOptions.map((option) => (
                   <div
@@ -104,7 +130,7 @@ export const TableActions = ({
                     />
                     <label
                       htmlFor={option.value}
-                      className="truncate text-sm font-medium leading-tight peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-[#454950]"
+                      className="truncate text-sm font-medium leading-tight peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-[#454950] cursor-pointer"
                     >
                       {option.label}
                     </label>
@@ -118,7 +144,7 @@ export const TableActions = ({
 
       {filterOptions.length > 0 && <div className="h-6 w-[1px] bg-[#B7B9BB]" />}
 
-      {/* Sort Button */}
+      {/* Sort Button / Pill */}
       {isLegacyMode ? (
         <button
           className="flex items-center gap-1.5 text-[#090C0F] font-medium text-base hover:opacity-80 transition-opacity"
@@ -134,10 +160,27 @@ export const TableActions = ({
       ) : (
         <Popover open={sortPopoverOpen} onOpenChange={setSortPopoverOpen}>
           <PopoverTrigger asChild>
-            <button className="flex items-center gap-1.5 text-[#090C0F] font-medium text-base hover:opacity-80 transition-opacity">
-              <SortAsc className="w-5 h-5" />
-              Sort
-            </button>
+            {!selectedSort ? (
+              <button className="flex items-center gap-1.5 text-[#090C0F] font-medium text-base hover:opacity-80 transition-opacity">
+                <SortAsc className="w-5 h-5 rotate-180" />
+                Sort
+              </button>
+            ) : (
+              <div className="flex items-center gap-1.5 px-2.5 py-1 bg-blue-50 border border-[#6987C3] rounded-md text-sm cursor-pointer hover:bg-blue-100 transition-colors">
+                <span className="text-[#003399] font-medium">
+                  Sort: {selectedSort.label}
+                </span>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onSortChange && onSortChange(null as any);
+                  }}
+                  className="text-[#003399] hover:opacity-80 p-0.5"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            )}
           </PopoverTrigger>
           <PopoverContent className="w-64 p-3" align="end">
             <div className="space-y-2">
@@ -161,21 +204,6 @@ export const TableActions = ({
             </div>
           </PopoverContent>
         </Popover>
-      )}
-
-      {/* Show active sort indicator */}
-      {selectedSort && !isLegacyMode && (
-        <div className="flex items-center gap-1.5 px-2.5 py-1 bg-blue-50 rounded-md text-sm">
-          <span className="text-[#003399] font-medium">
-            Sort: {selectedSort.label}
-          </span>
-          <button
-            onClick={() => onSortChange && onSortChange(null as any)}
-            className="text-[#003399] hover:opacity-80"
-          >
-            <X className="w-3.5 h-3.5" />
-          </button>
-        </div>
       )}
 
       <div className="h-6 w-[1px] bg-[#B7B9BB]" />

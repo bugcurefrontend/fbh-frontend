@@ -86,11 +86,22 @@ export default function CurrencySelect({
 }: CurrencySelectProps) {
   const { currency, setCurrency } = useCurrency();
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
 
-  // Ensure selected is valid, fallback to first option
-  const selected = currencies.find((c) => c.code === currency) || currencies[0];
+  // Determine available currencies based on route
+  const availableCurrencies = pathname?.startsWith("/admin")
+    ? [
+        { code: "INR", flag: "/images/flag.png" } as const,
+        { code: "USD", flag: "/images/us.png" } as const,
+      ]
+    : [{ code: "INR", flag: "/images/flag.png" } as const];
 
-  const handleSelect = (currencyOption: (typeof currencies)[0]) => {
+  // Ensure selected is valid
+  const selected =
+    availableCurrencies.find((c) => c.code === currency) ||
+    availableCurrencies[0];
+
+  const handleSelect = (currencyOption: { code: CurrencyCode }) => {
     setCurrency(currencyOption.code);
     setOpen(false);
   };
@@ -99,14 +110,18 @@ export default function CurrencySelect({
     <div className="relative inline-block">
       {/* Selected currency button */}
       <button
-        onClick={() => currencies.length > 1 && setOpen(!open)}
-        className={`flex items-center justify-center border-[2px] border-[#E6E6E6] bg-white ${currencies.length > 1 ? "hover:bg-[#E6EBF5] cursor-pointer" : "cursor-default"} ${className}`}
+        onClick={() => availableCurrencies.length > 1 && setOpen(!open)}
+        className={`flex items-center justify-center border-[2px] border-[#E6E6E6] bg-white ${
+          availableCurrencies.length > 1
+            ? "hover:bg-[#E6EBF5] cursor-pointer"
+            : "cursor-default"
+        } ${className}`}
       >
         <Image src={selected.flag} alt={selected.code} width={25} height={25} />
         <span className="text-sm leading-5 text-[#333333] ml-1">
           {selected.code}
         </span>
-        {currencies.length > 1 && (
+        {availableCurrencies.length > 1 && (
           <span className="text-gray-500">
             <ChevronDown size={16} />
           </span>
@@ -116,7 +131,7 @@ export default function CurrencySelect({
       {/* Dropdown Menu */}
       {open && (
         <div className="absolute mt-2 w-full bg-white border-[2px] border-[#E6E6E6] rounded-sm z-20 overflow-hidden">
-          {currencies.map((c) => (
+          {availableCurrencies.map((c) => (
             <button
               key={c.code}
               onClick={() => handleSelect(c)}
