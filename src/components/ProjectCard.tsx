@@ -45,8 +45,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         <Image src={imageUrl} alt={imageAlt} fill className="object-cover" />
 
         <div className="absolute top-4 md:left-4 left-2.5 flex md:gap-3 gap-[6.81px]">
-          <div className={`shadow-[0_20px_40px_-4px_rgba(133,133,133,0.12)] text-white text-sm font-semibold max-md:h-[26px] h-[30px] md:px-4 md:py-2 px-3 py-1 flex items-center justify-center rounded-full md:text-base md:font-semibold md:leading-[13.62px] md:align-middle md:text-[#FFFFFF] capitalize ${isSoldOut ? "bg-[#12B569]" : "bg-[#006161]"
-            }`}>
+          <div
+            className={`shadow-[0_20px_40px_-4px_rgba(133,133,133,0.12)] text-white text-sm font-semibold max-md:h-[26px] h-[30px] md:px-4 md:py-2 px-3 py-1 flex items-center justify-center rounded-full md:text-base md:font-semibold md:leading-[13.62px] md:align-middle md:text-[#FFFFFF] capitalize bg-[#006161]
+            }`}
+          >
             {formatPlantedCount(plantedCount)}
           </div>
 
