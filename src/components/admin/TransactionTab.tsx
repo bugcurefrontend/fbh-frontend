@@ -1,10 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Search, Filter, SortAsc, FileDown } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import Image from "next/image";
 import {
   Pagination,
   PaginationContent,
@@ -13,12 +9,16 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import SearchBar from "@/components/SearchBar";
+import { TableActions, FilterOption, SortOption } from "./TableActions";
+import Image from "next/image";
 
 interface Transaction {
   id: number;
-  selfNo: string;
-  hrIdTo: string;
-  hrIdFrom: string;
+  refNo: string;
+  utrNo: string;
+  hfiRcptNo: string;
+  paymentMode: string;
   name: string;
   amount: number;
   currency: string;
@@ -30,147 +30,206 @@ interface Transaction {
 const transactionData: Transaction[] = [
   {
     id: 1,
-    selfNo: "FBHPT345",
-    hrIdTo: "FBHPT345",
-    hrIdFrom: "FBHPT345",
-    name: "Rosemary",
+    refNo: "FBHP2T345",
+    utrNo: "FBHP2T345",
+    hfiRcptNo: "FBHP2T345",
+    paymentMode: "Razorpay",
+    name: "Prerana Koli",
     amount: 3454,
     currency: "INR",
     status: "SUCCESSFUL",
     statusColor: "#0D824B",
-    timestamp: "99-02-25, 05:02",
+    timestamp: "09-10-25 00:22",
   },
   {
     id: 2,
-    selfNo: "FBHPT345",
-    hrIdTo: "FBHPT345",
-    hrIdFrom: "FBHPT345",
-    name: "Silvy",
+    refNo: "FBHP2T345",
+    utrNo: "FBHP2T345",
+    hfiRcptNo: "FBHP2T345",
+    paymentMode: "Gpay",
+    name: "Suyash Kamble",
     amount: 54684898,
     currency: "INR",
     status: "FAILED",
     statusColor: "#DC2626",
-    timestamp: "99-02-25, 05:02",
+    timestamp: "09-10-25 00:22",
   },
   {
     id: 3,
-    selfNo: "FBHPT345",
-    hrIdTo: "FBHPT345",
-    hrIdFrom: "FBHPT345",
-    name: "Rosemary",
+    refNo: "FBHP2T345",
+    utrNo: "FBHP2T345",
+    hfiRcptNo: "FBHP2T345",
+    paymentMode: "Razorpay",
+    name: "Prerana Koli",
     amount: 3454,
     currency: "INR",
     status: "SUCCESSFUL",
     statusColor: "#0D824B",
-    timestamp: "99-02-25, 05:02",
+    timestamp: "09-10-25 00:22",
   },
   {
     id: 4,
-    selfNo: "FBHPT345",
-    hrIdTo: "FBHPT345",
-    hrIdFrom: "FBHPT345",
-    name: "Silvy",
+    refNo: "FBHP2T345",
+    utrNo: "FBHP2T345",
+    hfiRcptNo: "FBHP2T345",
+    paymentMode: "Gpay",
+    name: "Suyash Kamble",
     amount: 54684898,
     currency: "INR",
     status: "FAILED",
     statusColor: "#DC2626",
-    timestamp: "99-02-25, 05:02",
+    timestamp: "09-10-25 00:22",
   },
   {
     id: 5,
-    selfNo: "FBHPT345",
-    hrIdTo: "FBHPT345",
-    hrIdFrom: "FBHPT345",
-    name: "Rosemary",
+    refNo: "FBHP2T345",
+    utrNo: "FBHP2T345",
+    hfiRcptNo: "FBHP2T345",
+    paymentMode: "Razorpay",
+    name: "Prerana Koli",
     amount: 3454,
     currency: "INR",
     status: "SUCCESSFUL",
     statusColor: "#0D824B",
-    timestamp: "99-02-25, 05:02",
+    timestamp: "09-10-25 00:22",
   },
+];
+
+const filterOptions: FilterOption[] = [
+  { label: "Successful", value: "SUCCESSFUL" },
+  { label: "Failed", value: "FAILED" },
+  { label: "Razorpay", value: "Razorpay" },
+  { label: "Gpay", value: "Gpay" },
+];
+
+const sortOptions: SortOption[] = [
+  { label: "Latest to Oldest", value: "timestamp", direction: "desc" },
+  { label: "Oldest to Latest", value: "timestamp", direction: "asc" },
+  { label: "Amount: Low to High", value: "amount", direction: "asc" },
+  { label: "Amount: High to Low", value: "amount", direction: "desc" },
 ];
 
 export const TransactionTab = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+  const [selectedSort, setSelectedSort] = useState<SortOption | null>(
+    sortOptions[0],
+  );
   const ITEMS_PER_PAGE = 5;
 
-  const totalPages = Math.ceil(transactionData.length / ITEMS_PER_PAGE);
+  const filteredData = transactionData
+    .filter((item) => {
+      // Search logic
+      const query = searchQuery.toLowerCase();
+      const matchesSearch =
+        item.refNo.toLowerCase().includes(query) ||
+        item.name.toLowerCase().includes(query) ||
+        item.utrNo.toLowerCase().includes(query);
+
+      // Filter logic
+      // Assuming filters are currently mixed status and payment mode.
+      // A more robust solution would separate filter groups, but for now we check if ANY selected filter matches the item properties.
+      // However, usually filters are AND across groups and OR within groups.
+      // Since we just have a flat list of checkboxes, let's assume if "SUCCESSFUL" is checked, we only show successful.
+      // If "Razorpay" is also checked, we might show (Successful OR Razorpay) or (Successful AND Razorpay).
+      // Let's implement OR logic for simplicity within same type, but that requires knowing types.
+      // For this specific UI pattern (single list), usually it implies OR or simple inclusion.
+
+      // Let's split filters by type for better logic:
+      const statusFilters = selectedFilters.filter((f) =>
+        ["SUCCESSFUL", "FAILED"].includes(f),
+      );
+      const paymentFilters = selectedFilters.filter((f) =>
+        ["Razorpay", "Gpay"].includes(f),
+      );
+
+      const matchesStatus =
+        statusFilters.length === 0 || statusFilters.includes(item.status);
+      const matchesPayment =
+        paymentFilters.length === 0 ||
+        paymentFilters.includes(item.paymentMode);
+
+      return matchesSearch && matchesStatus && matchesPayment;
+    })
+    .sort((a, b) => {
+      if (!selectedSort) return 0;
+
+      const { value, direction } = selectedSort;
+      let comparison = 0;
+
+      if (value === "amount") {
+        comparison = a.amount - b.amount;
+      } else if (value === "timestamp") {
+        // Simple string compare for now since format is "09-10-25 00:22", which needs parsing if we want real date sort
+        // But for this format YY-MM-DD would sort correctly as strings.
+        // The provided format "09-10-25" is ambiguous (DD-MM-YY or YY-MM-DD or MM-DD-YY).
+        // Given "25", it's distinct. Let's assume it's comparable or just use string compare.
+        comparison = a.timestamp.localeCompare(b.timestamp);
+      }
+
+      return direction === "asc" ? comparison : -comparison;
+    });
+
+  const totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
-  const currentData = transactionData.slice(startIndex, endIndex);
+  const currentData = filteredData.slice(startIndex, endIndex);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Search and Actions Bar */}
       <div className="flex items-center justify-between gap-4">
-        <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-          <input
-            type="text"
-            placeholder="Search by Hr id, Us id ..."
+        <div className="relative flex-1 max-w-[400px]">
+          <SearchBar
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onChange={setSearchQuery}
+            placeholder="Search by Payment ID, etc ..."
           />
         </div>
-        <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            className="flex items-center gap-2 border-gray-300"
-          >
-            <Filter className="w-4 h-4" />
-            Filter
-          </Button>
-          <Button
-            variant="outline"
-            className="flex items-center gap-2 border-gray-300"
-          >
-            <SortAsc className="w-4 h-4" />
-            Sort
-          </Button>
-          <Button
-            variant="outline"
-            className="flex items-center gap-2 border-gray-300"
-          >
-            <FileDown className="w-4 h-4" />
-            Export
-          </Button>
-        </div>
+        <TableActions
+          filterOptions={filterOptions}
+          selectedFilters={selectedFilters}
+          onFilterChange={setSelectedFilters}
+          sortOptions={sortOptions}
+          selectedSort={selectedSort}
+          onSortChange={setSelectedSort}
+          filterLabel="Filter by Status/Mode"
+        />
       </div>
 
       {/* Table */}
-      <div className="bg-white border border-[#E6E6E6] rounded-2xl overflow-hidden">
+      <div className="bg-white border border-[#E6E6E6] rounded-[12px] overflow-hidden shadow-sm">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-[#F9FAFB] border-b border-[#E6E6E6]">
+            <thead className="border-b border-[#E6E6E6]">
               <tr>
-                <th className="text-left px-6 py-4 text-xs font-semibold text-[#6B7280]">
-                  Self No
+                <th className="text-center px-3.5 py-3 text-xs font-semibold text-[#454950] whitespace-nowrap">
+                  Ref No.
                 </th>
-                <th className="text-left px-6 py-4 text-xs font-semibold text-[#6B7280]">
-                  HR-Id-To
+                <th className="text-center px-3.5 py-3 text-xs font-semibold text-[#454950] whitespace-nowrap">
+                  UTR No
                 </th>
-                <th className="text-left px-6 py-4 text-xs font-semibold text-[#6B7280]">
-                  HR-Id-From
+                <th className="text-center px-3.5 py-3 text-xs font-semibold text-[#454950] whitespace-nowrap">
+                  HFI Rcpt No
                 </th>
-                <th className="text-left px-6 py-4 text-xs font-semibold text-[#6B7280]">
+                <th className="text-center px-3.5 py-3 text-xs font-semibold text-[#454950] whitespace-nowrap">
+                  Payment Mode
+                </th>
+                <th className="text-center px-3.5 py-3 text-xs font-semibold text-[#454950] whitespace-nowrap">
                   Name
                 </th>
-                <th className="text-left px-6 py-4 text-xs font-semibold text-[#6B7280]">
+                <th className="text-center px-3.5 py-3 text-xs font-semibold text-[#454950] whitespace-nowrap">
                   Amount
                 </th>
-                <th className="text-left px-6 py-4 text-xs font-semibold text-[#6B7280]">
+                <th className="text-center px-3.5 py-3 text-xs font-semibold text-[#454950] whitespace-nowrap">
                   Currency
                 </th>
-                <th className="text-left px-6 py-4 text-xs font-semibold text-[#6B7280]">
+                <th className="text-center px-3.5 py-3 text-xs font-semibold text-[#454950] whitespace-nowrap">
                   Status
                 </th>
-                <th className="text-left px-6 py-4 text-xs font-semibold text-[#6B7280]">
+                <th className="text-center px-3.5 py-3 text-xs font-semibold text-[#454950] whitespace-nowrap">
                   Timestamp
-                </th>
-                <th className="text-left px-6 py-4 text-xs font-semibold text-[#6B7280]">
-                  Details
                 </th>
               </tr>
             </thead>
@@ -178,53 +237,56 @@ export const TransactionTab = () => {
               {currentData.map((transaction, index) => (
                 <tr
                   key={transaction.id}
-                  className={
+                  className={`${index % 2 === 0 ? "bg-gray-50" : "bg-white"} ${
                     index !== currentData.length - 1
                       ? "border-b border-[#E6E6E6]"
                       : ""
-                  }
+                  }`}
                 >
-                  <td className="px-6 py-4 text-sm text-[#111827]">
-                    {transaction.selfNo}
+                  <td className="px-6 py-5 text-sm font-semibold text-[#090C0F] text-center">
+                    {transaction.refNo}
                   </td>
-                  <td className="px-6 py-4 text-sm text-[#111827]">
-                    {transaction.hrIdTo}
+                  <td className="px-6 py-5 text-sm font-semibold text-[#090C0F] text-center">
+                    {transaction.utrNo}
                   </td>
-                  <td className="px-6 py-4 text-sm text-[#111827]">
-                    {transaction.hrIdFrom}
+                  <td className="px-6 py-5 text-sm font-semibold text-[#090C0F] text-center">
+                    {transaction.hfiRcptNo}
                   </td>
-                  <td className="px-6 py-4 text-sm text-[#111827]">
+                  <td className="px-6 py-5 text-sm font-semibold text-[#090C0F] text-center">
+                    {transaction.paymentMode}
+                  </td>
+                  <td className="px-6 py-5 text-sm font-semibold text-[#090C0F] text-center">
                     {transaction.name}
                   </td>
-                  <td className="px-6 py-4 text-sm font-semibold text-[#111827]">
+                  <td className="px-6 py-5 text-sm font-semibold text-[#090C0F] text-center">
                     {transaction.amount}
                   </td>
-                  <td className="px-6 py-4">
-                    <Image
-                      src="/images/rupee-icon.png"
-                      alt={transaction.currency}
-                      width={20}
-                      height={20}
-                    />
+                  <td className="px-6 py-5 text-sm font-semibold text-[#454950] text-center">
+                    <div className="flex items-center justify-center gap-1">
+                      <Image
+                        src="/images/flag.png"
+                        alt={transaction.currency}
+                        width={28}
+                        height={28}
+                      />
+                      <p className="text-sm font-medium text-[#454950]">
+                        {transaction.currency}
+                      </p>
+                    </div>{" "}
                   </td>
-                  <td className="px-6 py-4">
-                    <Badge
-                      className="font-semibold text-xs leading-4 border-0"
-                      style={{
-                        backgroundColor: `${transaction.statusColor}1A`,
-                        color: transaction.statusColor,
-                      }}
+                  <td className="px-6 py-5 text-center">
+                    <span
+                      className={`px-3 py-2 rounded-full leading-6 text-sm font-semibold ${
+                        transaction.status === "SUCCESSFUL"
+                          ? "bg-[#E7F8F0] text-[#0D824B]"
+                          : "bg-[##FEEDEC] text-[#F04438]"
+                      }`}
                     >
                       {transaction.status}
-                    </Badge>
+                    </span>
                   </td>
-                  <td className="px-6 py-4 text-sm text-[#111827]">
+                  <td className="px-6 py-5 text-sm font-semibold text-[#454950] text-center">
                     {transaction.timestamp}
-                  </td>
-                  <td className="px-6 py-4">
-                    <button className="text-sm font-semibold text-[#003399] hover:underline">
-                      View
-                    </button>
                   </td>
                 </tr>
               ))}

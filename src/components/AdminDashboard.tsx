@@ -24,6 +24,7 @@ import { UsersTab } from "./admin/UsersTab";
 import { AnalyticsCards } from "./admin/dashboard/AnalyticsCards";
 import { RevenueCharts } from "./admin/dashboard/RevenueCharts";
 import { RecentDonations } from "./admin/dashboard/RecentDonations";
+import Image from "next/image";
 
 const AdminDashboard = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -41,19 +42,16 @@ const AdminDashboard = () => {
 
   if (isMobile) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4 bg-gray-50">
-        <div className="text-center space-y-4">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-blue-100 rounded-full">
-            <PanelsTopLeft className="w-10 h-10 text-blue-600" />
-          </div>
-          <h1 className="text-2xl font-bold text-gray-900">
-            Desktop Only View
-          </h1>
-          <p className="text-gray-600 max-w-md">
-            This admin dashboard is optimized for desktop viewing. Please access
-            this page from a desktop or laptop computer for the best experience.
-          </p>
-        </div>
+      <div className="min-h-screen flex flex-col items-center justify-center p-4">
+        <Image
+          src="/images/computer.png"
+          alt="Desktop View Required"
+          width={155}
+          height={133}
+        />{" "}
+        <p className="text-[#090C0F] text-lg font-medium leading-9">
+          Please move to a Desktop.
+        </p>
       </div>
     );
   }

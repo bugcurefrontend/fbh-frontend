@@ -1,0 +1,1 @@
+export { SpeciesDetailsView } from "./SpeciesDetailsView";

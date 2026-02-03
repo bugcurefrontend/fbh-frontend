@@ -1,0 +1,1 @@
+export { ProjectDetailsView } from "./ProjectDetailsView";

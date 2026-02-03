@@ -1,6 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { ArrowLeft } from "lucide-react";
+import SearchBar from "@/components/SearchBar";
+import { TableActions, SortOption, FilterOption } from "../TableActions";
 import {
   Pagination,
   PaginationContent,
@@ -9,9 +12,6 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import SearchBar from "@/components/SearchBar";
-import { TableActions, SortOption, FilterOption } from "./TableActions";
-import { SpeciesDetailsView } from "./species-details";
 
 interface Species {
   id: number;
@@ -23,11 +23,27 @@ interface Species {
   nonGeoTaggedPlanted: number;
 }
 
-const speciesData: Species[] = [
+interface ProjectDetail {
+  id: number;
+  project: string;
+  address: string;
+  geoTagged: number;
+  geoTaggedPlanted: number;
+  nonGeoTagged: number;
+  nonGeoTaggedPlanted: number;
+}
+
+interface SpeciesDetailsViewProps {
+  species: Species;
+  onBack: () => void;
+}
+
+// Mock project data for the selected species
+const mockProjectData: ProjectDetail[] = [
   {
     id: 1,
-    commonName: "Neem",
-    scientificName: "Azadirachta indica",
+    project: "Kanha Shanti Vanam",
+    address: "Shivagarh, Madhya Pradesh",
     geoTagged: 455,
     geoTaggedPlanted: 860,
     nonGeoTagged: 700,
@@ -35,8 +51,8 @@ const speciesData: Species[] = [
   },
   {
     id: 2,
-    commonName: "Banyan",
-    scientificName: "Ficus benghalensis",
+    project: "Shivgarh Project",
+    address: "Shivagarh, Madhya Pradesh",
     geoTagged: 650,
     geoTaggedPlanted: 600,
     nonGeoTagged: 420,
@@ -44,8 +60,8 @@ const speciesData: Species[] = [
   },
   {
     id: 3,
-    commonName: "Peepal",
-    scientificName: "Ficus religiosa",
+    project: "Kanha Shanti Vanam",
+    address: "Shivagarh, Madhya Pradesh",
     geoTagged: 700,
     geoTaggedPlanted: 500,
     nonGeoTagged: 250,
@@ -53,8 +69,8 @@ const speciesData: Species[] = [
   },
   {
     id: 4,
-    commonName: "Mango",
-    scientificName: "Mangifera indica",
+    project: "Satna Project",
+    address: "Shivagarh, Madhya Pradesh",
     geoTagged: 350,
     geoTaggedPlanted: 500,
     nonGeoTagged: 150,
@@ -62,8 +78,8 @@ const speciesData: Species[] = [
   },
   {
     id: 5,
-    commonName: "Ashoka",
-    scientificName: "Saraca asoca",
+    project: "Kanha Shanti Vanam",
+    address: "Shivagarh, Madhya Pradesh",
     geoTagged: 400,
     geoTaggedPlanted: 200,
     nonGeoTagged: 80,
@@ -72,47 +88,49 @@ const speciesData: Species[] = [
 ];
 
 const sortOptions: SortOption[] = [
-  { label: "Name: A-Z", value: "commonName", direction: "asc" },
-  { label: "Name: Z-A", value: "commonName", direction: "desc" },
-  { label: "Geo-Tagged: Low to High", value: "geoTagged", direction: "asc" },
+  { label: "Project: A-Z", value: "project", direction: "asc" },
+  { label: "Project: Z-A", value: "project", direction: "desc" },
   { label: "Geo-Tagged: High to Low", value: "geoTagged", direction: "desc" },
+  { label: "Geo-Tagged: Low to High", value: "geoTagged", direction: "asc" },
 ];
 
-export const SpeciesTab = () => {
+export const SpeciesDetailsView = ({
+  species,
+  onBack,
+}: SpeciesDetailsViewProps) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSort, setSelectedSort] = useState<SortOption | null>(sortOptions[0]);
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
-  const [selectedSpecies, setSelectedSpecies] = useState<Species | null>(null);
   const ITEMS_PER_PAGE = 5;
 
-  // Extract unique common names for filter
-  const uniqueCommonNames = Array.from(new Set(speciesData.map(s => s.commonName)));
-  const filterOptions: FilterOption[] = uniqueCommonNames.map(name => ({
-    label: name,
-    value: name
-  }));
+  // Extract unique projects for filter
+  const uniqueProjects = Array.from(new Set(mockProjectData.map(p => p.project)));
+  const filterOptions: FilterOption[] = uniqueProjects.map(p => ({
+    label: p,
+    value: p
+  })); 
 
-  const filteredData = speciesData
+  const filteredData = mockProjectData
     .filter((item) => {
       const query = searchQuery.toLowerCase();
       const matchesSearch =
-        item.commonName.toLowerCase().includes(query) ||
-        item.scientificName.toLowerCase().includes(query);
+        item.project.toLowerCase().includes(query) ||
+        item.address.toLowerCase().includes(query);
 
       const matchesFilter =
-        selectedFilters.length === 0 || selectedFilters.includes(item.commonName);
+        selectedFilters.length === 0 || selectedFilters.includes(item.project);
 
       return matchesSearch && matchesFilter;
     })
     .sort((a, b) => {
       if (!selectedSort) return 0;
-
+      
       const { value, direction } = selectedSort;
       let comparison = 0;
 
-      if (value === "commonName") {
-        comparison = a.commonName.localeCompare(b.commonName);
+      if (value === "project") {
+        comparison = a.project.localeCompare(b.project);
       } else if (value === "geoTagged") {
         comparison = a.geoTagged - b.geoTagged;
       }
@@ -125,25 +143,25 @@ export const SpeciesTab = () => {
   const endIndex = startIndex + ITEMS_PER_PAGE;
   const currentData = filteredData.slice(startIndex, endIndex);
 
-  // If viewing species details, show the SpeciesDetailsView component
-  if (selectedSpecies) {
-    return (
-      <SpeciesDetailsView
-        species={selectedSpecies}
-        onBack={() => setSelectedSpecies(null)}
-      />
-    );
-  }
-
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
+      {/* Back Button and Header */}
+      <div className="flex items-center gap-2">
+        <button onClick={onBack} className="flex items-center px-4">
+          <ArrowLeft className="w-5 h-5" />
+        </button>
+        <h1 className="text-2xl font-semibold">
+          {species.commonName} ( Project Details )
+        </h1>
+      </div>
+
       {/* Search and Actions Bar */}
       <div className="flex items-center justify-between gap-4">
         <div className="relative flex-1 max-w-[400px]">
           <SearchBar
             value={searchQuery}
             onChange={setSearchQuery}
-            placeholder="Search by species name, etc ..."
+            placeholder="Search by project name, etc ..."
           />
         </div>
         <TableActions
@@ -153,7 +171,7 @@ export const SpeciesTab = () => {
           filterOptions={filterOptions}
           selectedFilters={selectedFilters}
           onFilterChange={setSelectedFilters}
-          filterLabel="Filter by Species"
+          filterLabel="Filter by Project"
         />
       </div>
 
@@ -163,64 +181,53 @@ export const SpeciesTab = () => {
           <table className="w-full">
             <thead className="border-b border-[#E6E6E6]">
               <tr>
-                <th className="text-center px-3.5 py-3 text-xs font-semibold text-[#454950] whitespace-nowrap">
-                  Common Name
+                <th className="text-center px-6 py-4 text-xs font-semibold text-[#454950] whitespace-nowrap">
+                  Project
                 </th>
-                <th className="text-center px-3.5 py-3 text-xs font-semibold text-[#454950] whitespace-nowrap">
-                  Scientific Name
+                <th className="text-center px-6 py-4 text-xs font-semibold text-[#454950] whitespace-nowrap">
+                  Address
                 </th>
-                <th className="text-center px-3.5 py-3 text-xs font-semibold text-[#454950] whitespace-nowrap">
+                <th className="text-center px-6 py-4 text-xs font-semibold text-[#454950] whitespace-nowrap">
                   Geo-Tagged
                 </th>
-                <th className="text-center px-3.5 py-3 text-xs font-semibold text-[#454950] whitespace-nowrap">
+                <th className="text-center px-6 py-4 text-xs font-semibold text-[#454950] whitespace-nowrap">
                   Geo-Tagged Planted
                 </th>
-                <th className="text-center px-3.5 py-3 text-xs font-semibold text-[#454950] whitespace-nowrap">
+                <th className="text-center px-6 py-4 text-xs font-semibold text-[#454950] whitespace-nowrap">
                   Non-Geo tagged
                 </th>
-                <th className="text-center px-3.5 py-3 text-xs font-semibold text-[#454950] whitespace-nowrap">
+                <th className="text-center px-6 py-4 text-xs font-semibold text-[#454950] whitespace-nowrap">
                   Non Geo-Tagged Planted
-                </th>
-                <th className="text-center px-3.5 py-3 text-xs font-semibold text-[#454950] whitespace-nowrap">
-                  Details
                 </th>
               </tr>
             </thead>
             <tbody>
-              {currentData.map((species, index) => (
+              {currentData.map((project, index) => (
                 <tr
-                  key={species.id}
+                  key={project.id}
                   className={`${index % 2 === 0 ? "bg-gray-50" : "bg-white"} ${
                     index !== currentData.length - 1
                       ? "border-b border-[#E6E6E6]"
                       : ""
                   }`}
                 >
-                  <td className="px-6 py-5.5 text-sm font-semibold text-[#454950] text-center">
-                    {species.commonName}
+                  <td className="px-6 py-5.5 text-sm font-semibold text-[#090C0F] text-center">
+                    {project.project}
+                  </td>
+                  <td className="px-6 py-5.5 text-sm font-semibold text-[#090C0F] text-center">
+                    {project.address}
                   </td>
                   <td className="px-6 py-5.5 text-sm font-semibold text-[#454950] text-center">
-                    {species.scientificName}
+                    {project.geoTagged}
                   </td>
                   <td className="px-6 py-5.5 text-sm font-semibold text-[#454950] text-center">
-                    {species.geoTagged}
+                    {project.geoTaggedPlanted}
                   </td>
                   <td className="px-6 py-5.5 text-sm font-semibold text-[#454950] text-center">
-                    {species.geoTaggedPlanted}
+                    {project.nonGeoTagged}
                   </td>
                   <td className="px-6 py-5.5 text-sm font-semibold text-[#454950] text-center">
-                    {species.nonGeoTagged}
-                  </td>
-                  <td className="px-6 py-5.5 text-sm font-semibold text-[#454950] text-center">
-                    {species.nonGeoTaggedPlanted}
-                  </td>
-                  <td className="px-6 py-5.5 text-center">
-                    <button
-                      onClick={() => setSelectedSpecies(species)}
-                      className="text-sm font-bold text-[#003399] hover:underline"
-                    >
-                      View
-                    </button>
+                    {project.nonGeoTaggedPlanted}
                   </td>
                 </tr>
               ))}

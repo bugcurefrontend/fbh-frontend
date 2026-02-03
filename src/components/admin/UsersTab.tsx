@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Search, Filter, SortAsc, FileDown } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Upload } from "lucide-react";
 import {
   Pagination,
   PaginationContent,
@@ -11,68 +10,45 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import SearchBar from "@/components/SearchBar";
 
 interface User {
   id: number;
-  hrId: string;
   name: string;
   email: string;
   phone: string;
-  treesPlanted: number;
-  lastDonation: string;
-  details: string;
 }
 
 const usersData: User[] = [
   {
     id: 1,
-    hrId: "FBHPT345",
-    name: "Kavita Bharti Vasani",
-    email: "kavita@example.com",
-    phone: "+91 9876543210",
-    treesPlanted: 145,
-    lastDonation: "Jan 15, 2024",
-    details: "View",
+    name: "Prerana Koli",
+    email: "3454",
+    phone: "3454",
   },
   {
     id: 2,
-    hrId: "FBHPT346",
-    name: "Rajesh Kumar",
-    email: "rajesh@example.com",
-    phone: "+91 9876543211",
-    treesPlanted: 89,
-    lastDonation: "Jan 10, 2024",
-    details: "View",
+    name: "Suyash Kamble",
+    email: "54684898",
+    phone: "54684898",
   },
   {
     id: 3,
-    hrId: "FBHPT347",
-    name: "Priya Sharma",
-    email: "priya@example.com",
-    phone: "+91 9876543212",
-    treesPlanted: 234,
-    lastDonation: "Jan 20, 2024",
-    details: "View",
+    name: "Prerana Koli",
+    email: "3454",
+    phone: "3454",
   },
   {
     id: 4,
-    hrId: "FBHPT348",
-    name: "Amit Patel",
-    email: "amit@example.com",
-    phone: "+91 9876543213",
-    treesPlanted: 67,
-    lastDonation: "Jan 5, 2024",
-    details: "View",
+    name: "Suyash Kamble",
+    email: "54684898",
+    phone: "54684898",
   },
   {
     id: 5,
-    hrId: "FBHPT349",
-    name: "Sneha Reddy",
-    email: "sneha@example.com",
-    phone: "+91 9876543214",
-    treesPlanted: 178,
-    lastDonation: "Jan 18, 2024",
-    details: "View",
+    name: "Prerana Koli",
+    email: "3454",
+    phone: "3454",
   },
 ];
 
@@ -81,76 +57,52 @@ export const UsersTab = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const ITEMS_PER_PAGE = 5;
 
-  const totalPages = Math.ceil(usersData.length / ITEMS_PER_PAGE);
+  const filteredData = usersData.filter((item) => {
+    const query = searchQuery.toLowerCase();
+    const matchesSearch =
+      item.name.toLowerCase().includes(query) ||
+      item.email.toLowerCase().includes(query) ||
+      item.phone.toLowerCase().includes(query);
+
+    return matchesSearch;
+  });
+
+  const totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
-  const currentData = usersData.slice(startIndex, endIndex);
+  const currentData = filteredData.slice(startIndex, endIndex);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Search and Actions Bar */}
       <div className="flex items-center justify-between gap-4">
-        <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-          <input
-            type="text"
-            placeholder="Search by user name, email, HR ID ..."
+        <div className="relative flex-1 max-w-[400px]">
+          <SearchBar
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onChange={setSearchQuery}
+            placeholder="Search by species name, etc ..."
           />
         </div>
-        <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            className="flex items-center gap-2 border-gray-300"
-          >
-            <Filter className="w-4 h-4" />
-            Filter
-          </Button>
-          <Button
-            variant="outline"
-            className="flex items-center gap-2 border-gray-300"
-          >
-            <SortAsc className="w-4 h-4" />
-            Sort
-          </Button>
-          <Button
-            variant="outline"
-            className="flex items-center gap-2 border-gray-300"
-          >
-            <FileDown className="w-4 h-4" />
-            Export
-          </Button>
-        </div>
+        <button className="flex items-center gap-1.5 text-[#090C0F] font-medium text-base hover:opacity-80 transition-opacity">
+          <Upload className="w-5 h-5" />
+          Export
+        </button>
       </div>
 
       {/* Table */}
-      <div className="bg-white border border-[#E6E6E6] rounded-2xl overflow-hidden">
+      <div className="bg-white border border-[#E6E6E6] rounded-[12px] overflow-hidden shadow-sm">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-[#F9FAFB] border-b border-[#E6E6E6]">
+            <thead className="border-b border-[#E6E6E6]">
               <tr>
-                <th className="text-left px-6 py-4 text-xs font-semibold text-[#6B7280]">
-                  HR ID
-                </th>
-                <th className="text-left px-6 py-4 text-xs font-semibold text-[#6B7280]">
+                <th className="w-1/3 text-center px-3.5 py-3 text-xs font-semibold text-[#454950] whitespace-nowrap">
                   Name
                 </th>
-                <th className="text-left px-6 py-4 text-xs font-semibold text-[#6B7280]">
+                <th className="w-1/3 text-center px-3.5 py-3 text-xs font-semibold text-[#454950] whitespace-nowrap">
                   Email
                 </th>
-                <th className="text-left px-6 py-4 text-xs font-semibold text-[#6B7280]">
-                  Phone
-                </th>
-                <th className="text-left px-6 py-4 text-xs font-semibold text-[#6B7280]">
-                  Trees Planted
-                </th>
-                <th className="text-left px-6 py-4 text-xs font-semibold text-[#6B7280]">
-                  Last Donation
-                </th>
-                <th className="text-left px-6 py-4 text-xs font-semibold text-[#6B7280]">
-                  Details
+                <th className="w-1/3 text-center px-3.5 py-3 text-xs font-semibold text-[#454950] whitespace-nowrap">
+                  Phone Number
                 </th>
               </tr>
             </thead>
@@ -158,34 +110,20 @@ export const UsersTab = () => {
               {currentData.map((user, index) => (
                 <tr
                   key={user.id}
-                  className={
+                  className={`${index % 2 === 0 ? "bg-gray-50" : "bg-white"} ${
                     index !== currentData.length - 1
                       ? "border-b border-[#E6E6E6]"
                       : ""
-                  }
+                  }`}
                 >
-                  <td className="px-6 py-4 text-sm text-[#111827]">
-                    {user.hrId}
-                  </td>
-                  <td className="px-6 py-4 text-sm text-[#111827]">
+                  <td className="w-1/3 px-6 py-6 text-sm font-semibold text-[#090C0F] text-center">
                     {user.name}
                   </td>
-                  <td className="px-6 py-4 text-sm text-[#111827]">
+                  <td className="w-1/3 px-6 py-6 text-sm font-semibold text-[#454950] text-center">
                     {user.email}
                   </td>
-                  <td className="px-6 py-4 text-sm text-[#111827]">
+                  <td className="w-1/3 px-6 py-6 text-sm font-semibold text-[#454950] text-center">
                     {user.phone}
-                  </td>
-                  <td className="px-6 py-4 text-sm font-semibold text-[#111827]">
-                    {user.treesPlanted}
-                  </td>
-                  <td className="px-6 py-4 text-sm text-[#111827]">
-                    {user.lastDonation}
-                  </td>
-                  <td className="px-6 py-4">
-                    <button className="text-sm font-semibold text-[#003399] hover:underline">
-                      {user.details}
-                    </button>
                   </td>
                 </tr>
               ))}

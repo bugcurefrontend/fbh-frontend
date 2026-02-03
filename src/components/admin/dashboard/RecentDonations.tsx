@@ -25,41 +25,41 @@ export const RecentDonations = ({ data }: RecentDonationsProps) => {
   const currentData = data.slice(startIndex, endIndex);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-8">
       <h1 className="text-[#454950] font-semibold text-2xl leading-9">
         Recent Donations
       </h1>
 
-      <div className="bg-white border border-[#E6E6E6] rounded-2xl overflow-hidden shadow-sm">
+      <div className="bg-white border border-[#E6E6E6] rounded-[12px] overflow-hidden shadow-sm">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="border-b border-[#E6E6E6]">
               <tr>
-                <th className="text-center px-3.5 py-4 text-xs font-medium text-[#454950]">
+                <th className="text-center px-3.5 py-3 text-xs font-medium text-[#454950]">
                   HFI Rept No
                 </th>
-                <th className="text-center px-3.5 py-4 text-xs font-medium text-[#454950]">
+                <th className="text-center px-3.5 py-3 text-xs font-medium text-[#454950]">
                   Name
                 </th>
-                <th className="text-center px-3.5 py-4 text-xs font-medium text-[#454950]">
+                <th className="text-center px-3.5 py-3 text-xs font-medium text-[#454950]">
                   Trees
                 </th>
-                <th className="text-center px-3.5 py-4 text-xs font-medium text-[#454950]">
+                <th className="text-center px-3.5 py-3 text-xs font-medium text-[#454950]">
                   Donated For
                 </th>
-                <th className="text-center px-3.5 py-4 text-xs font-medium text-[#454950]">
+                <th className="text-center px-3.5 py-3 text-xs font-medium text-[#454950]">
                   DEP
                 </th>
-                <th className="text-center px-3.5 py-4 text-xs font-medium text-[#454950]">
+                <th className="text-center px-3.5 py-3 text-xs font-medium text-[#454950]">
                   Geotagged
                 </th>
-                <th className="text-center px-3.5 py-4 text-xs font-medium text-[#454950]">
+                <th className="text-center px-3.5 py-3 text-xs font-medium text-[#454950]">
                   Currency
                 </th>
-                <th className="text-center px-3.5 py-4 text-xs font-medium text-[#454950]">
+                <th className="text-center px-3.5 py-3 text-xs font-medium text-[#454950]">
                   Amount
                 </th>
-                <th className="text-center px-3.5 py-4 text-xs font-medium text-[#454950]">
+                <th className="text-center px-3.5 py-3 text-xs font-medium text-[#454950]">
                   Rcpt URL
                 </th>
                 <th className="px-3.5 py-4"></th>
@@ -69,24 +69,22 @@ export const RecentDonations = ({ data }: RecentDonationsProps) => {
               {currentData.map((donation, index) => (
                 <tr
                   key={donation.id}
-                  className={`${
-                    index % 2 === 0 ? "bg-gray-50" : "bg-white"
-                  } ${
+                  className={`${index % 2 === 0 ? "bg-gray-50" : "bg-white"} ${
                     index !== currentData.length - 1
                       ? "border-b border-[#E6E6E6]"
                       : ""
                   }`}
                 >
-                  <td className="px-3.5 py-4 text-sm font-semibold text-[#090C0F]">
+                  <td className="px-3.5 py-4.5 text-sm font-semibold text-[#090C0F]">
                     {donation.hrIdTo}
                   </td>
-                  <td className="px-3.5 py-4 text-sm font-semibold text-center text-[#454950]">
+                  <td className="px-3.5 py-4.5 text-sm font-semibold text-center text-[#454950]">
                     {donation.name}
                   </td>
-                  <td className="px-3.5 py-4 text-sm font-semibold text-center text-[#454950]">
+                  <td className="px-3.5 py-4.5 text-sm font-semibold text-center text-[#454950]">
                     {donation.trees}
                   </td>
-                  <td className="px-3.5 py-4 text-center">
+                  <td className="px-3.5 py-4.5 text-center">
                     <Badge
                       className="h-8 font-semibold text-sm leading-4 border-0 rounded-full px-3 py-1"
                       style={{
@@ -97,7 +95,7 @@ export const RecentDonations = ({ data }: RecentDonationsProps) => {
                       {donation.donationFor}
                     </Badge>
                   </td>
-                  <td className="px-3.5 py-4 text-sm font-semibold text-center text-[#454950]">
+                  <td className="px-3.5 py-4.5 text-sm font-semibold text-center text-[#454950]">
                     {donation.cat}
                   </td>
                   <td className="px-3.5 py-4">
@@ -132,13 +130,13 @@ export const RecentDonations = ({ data }: RecentDonationsProps) => {
                       </p>
                     </div>
                   </td>
-                  <td className="px-3.5 py-4 text-sm font-semibold text-center text-[#454950]">
+                  <td className="px-3.5 py-4.5 text-sm font-semibold text-center text-[#454950]">
                     {donation.amount}
                   </td>
-                  <td className="px-3.5 py-4 text-center text-sm font-bold text-[#003399] hover:underline">
+                  <td className="px-3.5 py-4.5 text-center text-sm font-bold text-[#003399] hover:underline">
                     <a href={donation.fundUrl}>Click Here</a>
                   </td>
-                  <td className="px-3.5 py-4 text-center">
+                  <td className="px-3.5 py-4.5 text-center">
                     <button className="hover:text-[#454950]">
                       <MoreVertical size={20} />
                     </button>
