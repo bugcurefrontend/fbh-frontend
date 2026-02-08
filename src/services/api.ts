@@ -1,3 +1,6 @@
+// Django API URL with fallback
+const DJANGO_API_URL = process.env.NEXT_PUBLIC_DJANGO_API_URL || 'https://api-django.fbh.dev.heartfulness.org';
+
 /**
  * Get API URL based on path
  * Routes to Django for business logic, Strapi for content
@@ -12,8 +15,8 @@ export function getStrapiURL(path: string): string {
     path.startsWith('/api/certificates') ||
     path.startsWith('/api/users');
 
-  if (isDjangoPath && process.env.NEXT_PUBLIC_DJANGO_API_URL) {
-    return `${process.env.NEXT_PUBLIC_DJANGO_API_URL}${path}`;
+  if (isDjangoPath) {
+    return `${DJANGO_API_URL}${path}`;
   }
 
   if (!process.env.NEXT_PUBLIC_FBH_API_URL) {
@@ -62,10 +65,21 @@ export async function fetchAPI(
 ): Promise<any> {
   const token = process.env.NEXT_PUBLIC_FBH_API_TOKEN;
 
+  // Check if this is an admin API call and get access token from localStorage
+  const isAdminPath = path.startsWith('/admin');
+  let authToken = token;
+
+  if (isAdminPath && typeof window !== 'undefined') {
+    const accessToken = localStorage.getItem('accessToken');
+    if (accessToken) {
+      authToken = accessToken;
+    }
+  }
+
   const mergedOptions: RequestInit = {
     headers: {
       "Content-Type": "application/json",
-      ...(token && { Authorization: `Bearer ${token}` }),
+      ...(authToken && { Authorization: `Bearer ${authToken}` }),
     },
     ...options,
   };

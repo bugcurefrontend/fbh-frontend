@@ -29,6 +29,9 @@ interface TableActionsProps {
   selectedSort?: SortOption | null;
   onSortChange?: (sort: SortOption) => void;
 
+  // Export props
+  onExport?: () => void;
+
   // Legacy props for backward compatibility
   sortOrder?: "asc" | "desc";
   onSortChange_legacy?: () => void;
@@ -43,6 +46,7 @@ export const TableActions = ({
   sortOptions = [],
   selectedSort = null,
   onSortChange,
+  onExport,
   // Legacy props
   sortOrder,
   onSortChange_legacy,
@@ -151,9 +155,8 @@ export const TableActions = ({
           onClick={onSortChange_legacy}
         >
           <SortAsc
-            className={`w-5 h-5 transition-transform ${
-              sortOrder === "desc" ? "rotate-180" : ""
-            }`}
+            className={`w-5 h-5 transition-transform ${sortOrder === "desc" ? "rotate-180" : ""
+              }`}
           />
           Sort
         </button>
@@ -191,12 +194,11 @@ export const TableActions = ({
                 <button
                   key={`${option.value}-${option.direction}`}
                   onClick={() => handleSortSelect(option)}
-                  className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors ${
-                    selectedSort?.value === option.value &&
+                  className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors ${selectedSort?.value === option.value &&
                     selectedSort?.direction === option.direction
-                      ? "bg-blue-50 text-[#003399] font-semibold"
-                      : "text-[#454950] hover:bg-gray-50"
-                  }`}
+                    ? "bg-blue-50 text-[#003399] font-semibold"
+                    : "text-[#454950] hover:bg-gray-50"
+                    }`}
                 >
                   {option.label}
                 </button>
@@ -209,7 +211,10 @@ export const TableActions = ({
       <div className="h-6 w-[1px] bg-[#B7B9BB]" />
 
       {/* Export Button */}
-      <button className="flex items-center gap-1.5 text-[#090C0F] font-medium text-base hover:opacity-80 transition-opacity">
+      <button
+        onClick={onExport}
+        className="flex items-center gap-1.5 text-[#090C0F] font-medium text-base hover:opacity-80 transition-opacity"
+      >
         <Upload className="w-5 h-5" />
         Export
       </button>

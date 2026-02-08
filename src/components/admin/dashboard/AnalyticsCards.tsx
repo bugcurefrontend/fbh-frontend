@@ -8,7 +8,7 @@ import {
 
 interface AnalyticsCard {
   id: number;
-  icon: any;
+  icon: React.ComponentType<any>;
   title: string;
   value: number;
   bgColor?: string;

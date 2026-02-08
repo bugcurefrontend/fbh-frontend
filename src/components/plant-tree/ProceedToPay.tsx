@@ -180,8 +180,9 @@ const ProceedToPay: React.FC<ProceedToPayProps> = ({
       if (reservationToken && trackingId) {
         console.log("🔗 Linking trackingId to reservation...");
         try {
+          const DJANGO_API_URL = process.env.NEXT_PUBLIC_DJANGO_API_URL || 'https://api-django.fbh.dev.heartfulness.org';
           const linkResponse = await fetch(
-            `${process.env.NEXT_PUBLIC_DJANGO_API_URL}/api/allocations/reservations/link-payment/`,
+            `${DJANGO_API_URL}/api/allocations/reservations/link-payment/`,
             {
               method: "POST",
               headers: { "Content-Type": "application/json" },

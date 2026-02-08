@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Pagination,
   PaginationContent,
@@ -12,6 +12,7 @@ import {
 import SearchBar from "@/components/SearchBar";
 import { TableActions, FilterOption, SortOption } from "./TableActions";
 import Image from "next/image";
+import { fetchTransactionList, TransactionFilters } from "@/services/admin";
 
 interface Transaction {
   id: number;
@@ -116,9 +117,75 @@ export const TransactionTab = () => {
   const [selectedSort, setSelectedSort] = useState<SortOption | null>(
     sortOptions[0],
   );
-  const ITEMS_PER_PAGE = 5;
+  const ITEMS_PER_PAGE = 10;
 
-  const filteredData = transactionData
+  // API state
+  const [apiTransactions, setApiTransactions] = useState<Transaction[]>([]);
+  const [totalCount, setTotalCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Fetch transactions from API
+  useEffect(() => {
+    const loadTransactions = async () => {
+      setIsLoading(true);
+
+      // Build filters for API
+      const filters: TransactionFilters = {
+        page: currentPage,
+        page_size: ITEMS_PER_PAGE,
+      };
+
+      // Add search filter (search by transaction ID)
+      if (searchQuery.trim()) {
+        filters.transaction_id = searchQuery.trim();
+      }
+
+      // Add payment status filter
+      const statusFilters = selectedFilters.filter((f) =>
+        ["SUCCESSFUL", "FAILED"].includes(f),
+      );
+      if (statusFilters.length > 0) {
+        // Map UI filter values to API values
+        const apiStatus = statusFilters[0] === "SUCCESSFUL" ? "SUCCESS" : "FAILED";
+        filters.payment_status = apiStatus as "SUCCESS" | "FAILED";
+      }
+
+      const data = await fetchTransactionList(filters);
+
+      if (data && data.results) {
+        // Transform API data to match UI format
+        const transformedData: Transaction[] = data.results.map((txn) => ({
+          id: txn.id,
+          refNo: txn.external_donation_id,
+          utrNo: txn.transaction_id,
+          hfiRcptNo: txn.hfn_receipt_number || txn.external_donation_id, // Use HFN receipt number if available
+          paymentMode: "Online", // Not available in API
+          name: txn.donor?.user_name || "Unknown",
+          amount: txn.amount,
+          currency: txn.currency,
+          status: txn.payment_status === "SUCCESS" ? "SUCCESSFUL" : "FAILED",
+          statusColor: txn.payment_status === "SUCCESS" ? "#0D824B" : "#DC2626",
+          timestamp: new Date(txn.donation_date).toLocaleString("en-IN", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
+        }));
+
+        setApiTransactions(transformedData);
+        setTotalCount(data.count);
+      }
+
+      setIsLoading(false);
+    };
+
+    loadTransactions();
+  }, [currentPage, searchQuery, selectedFilters]);
+
+  // Use API data instead of mock data
+  const filteredData = apiTransactions
     .filter((item) => {
       // Search logic
       const query = searchQuery.toLowerCase();
@@ -171,10 +238,8 @@ export const TransactionTab = () => {
       return direction === "asc" ? comparison : -comparison;
     });
 
-  const totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const endIndex = startIndex + ITEMS_PER_PAGE;
-  const currentData = filteredData.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE);
+  const currentData = filteredData; // API already returns paginated data
 
   return (
     <div className="space-y-8">
@@ -237,11 +302,10 @@ export const TransactionTab = () => {
               {currentData.map((transaction, index) => (
                 <tr
                   key={transaction.id}
-                  className={`${index % 2 === 0 ? "bg-gray-50" : "bg-white"} ${
-                    index !== currentData.length - 1
-                      ? "border-b border-[#E6E6E6]"
-                      : ""
-                  }`}
+                  className={`${index % 2 === 0 ? "bg-gray-50" : "bg-white"} ${index !== currentData.length - 1
+                    ? "border-b border-[#E6E6E6]"
+                    : ""
+                    }`}
                 >
                   <td className="px-6 py-5 text-sm font-semibold text-[#090C0F] text-center">
                     {transaction.refNo}
@@ -276,11 +340,10 @@ export const TransactionTab = () => {
                   </td>
                   <td className="px-6 py-5 text-center">
                     <span
-                      className={`px-3 py-2 rounded-full leading-6 text-sm font-semibold ${
-                        transaction.status === "SUCCESSFUL"
-                          ? "bg-[#E7F8F0] text-[#0D824B]"
-                          : "bg-[#FEEDEC] text-[#F04438]"
-                      }`}
+                      className={`px-3 py-2 rounded-full leading-6 text-sm font-semibold ${transaction.status === "SUCCESSFUL"
+                        ? "bg-[#E7F8F0] text-[#0D824B]"
+                        : "bg-[#FEEDEC] text-[#F04438]"
+                        }`}
                     >
                       {transaction.status}
                     </span>

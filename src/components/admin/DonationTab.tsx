@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import {
   Pagination,
@@ -13,6 +13,7 @@ import {
 import SearchBar from "@/components/SearchBar";
 import { TableActions, SortOption, FilterOption } from "./TableActions";
 import { DonationDetailsView } from "./donation-details";
+import { fetchDonationList, exportDonations, DonationFilters } from "@/services/admin";
 
 // Updated Interface based on Image
 interface DonationDetail {
@@ -23,49 +24,6 @@ interface DonationDetail {
   currency: string;
   geoTagged: string;
 }
-
-const donationDetailsData: DonationDetail[] = [
-  {
-    id: 1,
-    hfiRcptNo: "FBHP2T345",
-    name: "Prerana Koli",
-    amount: 3454,
-    currency: "INR",
-    geoTagged: "true",
-  },
-  {
-    id: 2,
-    hfiRcptNo: "FBHP2T345",
-    name: "Suyash Kamble",
-    amount: 54684898,
-    currency: "INR",
-    geoTagged: "false",
-  },
-  {
-    id: 3,
-    hfiRcptNo: "FBHP2T345",
-    name: "Prerana Koli",
-    amount: 3454,
-    currency: "INR",
-    geoTagged: "true",
-  },
-  {
-    id: 4,
-    hfiRcptNo: "FBHP2T345",
-    name: "Suyash Kamble",
-    amount: 54684898,
-    currency: "INR",
-    geoTagged: "false",
-  },
-  {
-    id: 5,
-    hfiRcptNo: "FBHP2T345",
-    name: "Prerana Koli",
-    amount: 3454,
-    currency: "INR",
-    geoTagged: "true",
-  },
-];
 
 const sortOptions: SortOption[] = [
   { label: "Amount: High to Low", value: "amount", direction: "desc" },
@@ -86,40 +44,114 @@ export const DonationTab = () => {
   const [selectedDetail, setSelectedDetail] = useState<DonationDetail | null>(
     null,
   );
+
+  // API state
+  const [apiDonations, setApiDonations] = useState<DonationDetail[]>([]);
+  const [totalCount, setTotalCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+
   const ITEMS_PER_PAGE = 5;
 
-  const filteredData = donationDetailsData
-    .filter((item) => {
-      const query = searchQuery.toLowerCase();
-      const matchesSearch =
-        item.hfiRcptNo.toLowerCase().includes(query) ||
-        item.name.toLowerCase().includes(query) ||
-        item.amount.toString().includes(query);
+  // Fetch donations from API
+  useEffect(() => {
+    const loadDonations = async () => {
+      setIsLoading(true);
 
-      const matchesStatus =
-        selectedFilters.length === 0 || selectedFilters.includes(item.geoTagged);
+      // Build filters for API
+      const filters: DonationFilters = {
+        page: currentPage,
+        page_size: ITEMS_PER_PAGE,
+      };
 
-      return matchesSearch && matchesStatus;
-    })
-    .sort((a, b) => {
-      if (!selectedSort) return 0;
-      
-      const { value, direction } = selectedSort;
-      let comparison = 0;
-
-      if (value === "amount") {
-        comparison = a.amount - b.amount;
-      } else if (value === "name") {
-        comparison = a.name.localeCompare(b.name);
+      // Add search filter (donor email search)
+      if (searchQuery.trim()) {
+        filters.donor_email = searchQuery.trim();
       }
 
-      return direction === "asc" ? comparison : -comparison;
-    });
+      // Add geotagging filter (is_premium)
+      if (selectedFilters.length > 0) {
+        // Only one filter can be active: "true" or "false"
+        filters.is_premium = selectedFilters[0] === "true";
+      }
 
-  const totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const endIndex = startIndex + ITEMS_PER_PAGE;
-  const currentData = filteredData.slice(startIndex, endIndex);
+      const data = await fetchDonationList(filters);
+
+      if (data && data.results) {
+        // Transform API data to match UI format
+        const transformedData: DonationDetail[] = data.results.map((donation) => ({
+          id: donation.id,
+          hfiRcptNo: donation.hfn_receipt_number || donation.external_donation_id,
+          name: donation.donor?.user_name || "Unknown",
+          amount: donation.amount,
+          currency: donation.currency,
+          geoTagged: donation.is_geotagged ? "true" : "false",
+        }));
+
+        setApiDonations(transformedData);
+        setTotalCount(data.count);
+      }
+
+      setIsLoading(false);
+    };
+
+    loadDonations();
+  }, [currentPage, searchQuery, selectedFilters]);
+
+  // Handle export to CSV
+  const handleExport = async () => {
+    try {
+      // Build filters for export (same as list filters, but without pagination)
+      const filters: DonationFilters = {};
+
+      // Add search filter (donor email search)
+      if (searchQuery.trim()) {
+        filters.donor_email = searchQuery.trim();
+      }
+
+      // Add geotagging filter (is_premium)
+      if (selectedFilters.length > 0) {
+        filters.is_premium = selectedFilters[0] === "true";
+      }
+
+      // Call export API
+      const blob = await exportDonations(filters);
+
+      if (blob) {
+        // Create download link and trigger download
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `donations_export_${new Date().toISOString().split('T')[0]}.csv`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+      } else {
+        console.error("Failed to export donations");
+      }
+    } catch (error) {
+      console.error("Error exporting donations:", error);
+    }
+  };
+
+  // Client-side sorting
+  const sortedData = [...apiDonations].sort((a, b) => {
+    if (!selectedSort) return 0;
+
+    const { value, direction } = selectedSort;
+    let comparison = 0;
+
+    if (value === "amount") {
+      comparison = a.amount - b.amount;
+    } else if (value === "name") {
+      comparison = a.name.localeCompare(b.name);
+    }
+
+    return direction === "asc" ? comparison : -comparison;
+  });
+
+  const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE);
+  const currentData = sortedData;
 
   // If viewing donation details, show the DonationDetailsView component
   if (selectedDetail) {
@@ -151,6 +183,7 @@ export const DonationTab = () => {
           selectedFilters={selectedFilters}
           onFilterChange={setSelectedFilters}
           filterLabel="Filter by Tagging"
+          onExport={handleExport}
         />
       </div>
 
@@ -184,11 +217,10 @@ export const DonationTab = () => {
               {currentData.map((donation, index) => (
                 <tr
                   key={donation.id}
-                  className={`${index % 2 === 0 ? "bg-gray-50" : "bg-white"} ${
-                    index !== currentData.length - 1
-                      ? "border-b border-[#E6E6E6]"
-                      : ""
-                  }`}
+                  className={`${index % 2 === 0 ? "bg-gray-50" : "bg-white"} ${index !== currentData.length - 1
+                    ? "border-b border-[#E6E6E6]"
+                    : ""
+                    }`}
                 >
                   <td className="px-6 py-5 text-sm font-semibold text-[#090C0F] text-center">
                     {donation.hfiRcptNo}

@@ -15,6 +15,7 @@ import {
   monthlyChartData,
   recentDonations,
 } from "./admin/mock-data";
+import { fetchDashboardMetrics, fetchRecentDonations, DashboardMetrics } from "@/services/admin";
 import { TransactionTab } from "./admin/TransactionTab";
 import { DonationTab } from "./admin/DonationTab";
 import { ProjectsTab } from "./admin/ProjectsTab";
@@ -26,8 +27,19 @@ import { RevenueCharts } from "./admin/dashboard/RevenueCharts";
 import { RecentDonations } from "./admin/dashboard/RecentDonations";
 import Image from "next/image";
 
+interface AnalyticsCard {
+  id: number;
+  icon: React.ComponentType<any>;
+  title: string;
+  value: number;
+  bgColor?: string;
+}
+
 const AdminDashboard = () => {
   const [isMobile, setIsMobile] = useState(false);
+  const [metrics, setMetrics] = useState<DashboardMetrics | null>(null);
+  const [cardsData, setCardsData] = useState<AnalyticsCard[]>(analyticsCards);
+  const [recentDonationsData, setRecentDonationsData] = useState(recentDonations);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -38,6 +50,85 @@ const AdminDashboard = () => {
     window.addEventListener("resize", checkMobile);
 
     return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  // Fetch dashboard metrics from API
+  useEffect(() => {
+    const loadMetrics = async () => {
+      const data = await fetchDashboardMetrics();
+      if (data) {
+        setMetrics(data);
+        // Update cards with API data - using correct titles and icons
+        const newCards: AnalyticsCard[] = [
+          {
+            id: 1,
+            icon: DonateIcon as React.ComponentType<any>,
+            title: "Total Donations",
+            value: data.total_donations,
+            bgColor: "#F3F4F6",
+          },
+          {
+            id: 2,
+            icon: TreesIcon as React.ComponentType<any>,
+            title: "Total Trees",
+            value: data.total_trees_allocated,
+            bgColor: "#F3F4F6",
+          },
+          {
+            id: 3,
+            icon: UsersIcon as React.ComponentType<any>,
+            title: "Total Donors",
+            value: data.total_donors,
+            bgColor: "#F3F4F6",
+          },
+        ];
+        setCardsData(newCards);
+      }
+    };
+
+    const loadRecentDonations = async () => {
+      const data = await fetchRecentDonations(10);
+      if (data && data.results) {
+        // Transform API data to match UI format
+        const transformedData = data.results.map((donation) => {
+          // Map donation type to color
+          const donationTypeColors: Record<string, string> = {
+            SELF: "#0D824B",
+            GIFT: "#F59E0B",
+            RECEIVED: "#641971",
+          };
+
+          // Determine display value for DEP column
+          // Priority: project_name > species_name > dep_type
+          let depDisplay = "Donation";
+          if (donation.project_name) {
+            depDisplay = donation.project_name;
+          } else if (donation.species_name) {
+            depDisplay = donation.species_name;
+          } else if (donation.dep_type) {
+            depDisplay = donation.dep_type;
+          }
+
+          return {
+            id: donation.id,
+            hrIdTo: donation.external_donation_id || donation.transaction_id,
+            name: donation.donor?.user_name || "Unknown",
+            trees: donation.tree_count.toString(),
+            donationFor: donation.donation_type || "SELF",
+            donationForColor: donationTypeColors[donation.donation_type || "SELF"] || "#0D824B",
+            cat: depDisplay, // Use project/species name or dep_type
+            geoTagged: donation.is_geotagged || false, // From is_premium field
+            currency: donation.currency,
+            amount: donation.amount,
+            fundUrl: donation.receipt_url || "#", // Use receipt_url from API
+          };
+        });
+        setRecentDonationsData(transformedData);
+      }
+    };
+
+    loadMetrics();
+    loadRecentDonations();
   }, []);
 
   if (isMobile) {
@@ -117,14 +208,14 @@ const AdminDashboard = () => {
             Analytics
           </h1>
 
-          <AnalyticsCards cards={analyticsCards} />
+          <AnalyticsCards cards={cardsData} />
 
           <RevenueCharts
             weeklyData={weeklyChartData}
             monthlyData={monthlyChartData}
           />
 
-          <RecentDonations data={recentDonations} />
+          <RecentDonations data={recentDonationsData} />
         </TabsContent>
 
         <TabsContent value="transactions">

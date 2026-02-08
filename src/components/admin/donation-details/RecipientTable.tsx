@@ -20,6 +20,7 @@ interface RecipientData {
   treesAllocated: number;
   treesPlanted: number;
   certificateId: string;
+  certificate_url?: string; // Certificate download URL from API
   account: string;
   geoTagged: string;
 }
@@ -67,7 +68,7 @@ export const RecipientTable = ({
     })
     .sort((a, b) => {
       if (!selectedSort) return 0;
-      
+
       const { value, direction } = selectedSort;
       let comparison = 0;
 
@@ -148,11 +149,10 @@ export const RecipientTable = ({
               {currentData.map((recipient, index) => (
                 <tr
                   key={recipient.id}
-                  className={`${index % 2 === 0 ? "bg-gray-50" : "bg-white"} ${
-                    index !== currentData.length - 1
-                      ? "border-b border-[#E6E6E6]"
-                      : ""
-                  }`}
+                  className={`${index % 2 === 0 ? "bg-gray-50" : "bg-white"} ${index !== currentData.length - 1
+                    ? "border-b border-[#E6E6E6]"
+                    : ""
+                    }`}
                 >
                   <td className="px-6 py-4.5 text-sm font-semibold text-[#090C0F] text-center">
                     {recipient.rcptName}
@@ -192,7 +192,16 @@ export const RecipientTable = ({
                     )}
                   </td>
                   <td className="px-6 py-4.5 text-center">
-                    <button className="p-2 hover:bg-gray-100 rounded-full transition-colors">
+                    <button
+                      onClick={() => {
+                        if (recipient.certificate_url) {
+                          window.open(recipient.certificate_url, '_blank');
+                        } else {
+                          console.warn('No certificate URL available');
+                        }
+                      }}
+                      className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                    >
                       <Download className="w-5 h-5" />
                     </button>
                   </td>
