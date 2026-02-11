@@ -1,9 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { Playfair_Display, Public_Sans } from "next/font/google";
 import { AlertCircle } from "lucide-react";
+import { fetchGlobal } from "@/services/global";
+import { adminLogin, storeAdminAuth } from "@/services/admin-auth";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -16,18 +19,53 @@ const publicSans = Public_Sans({
 });
 
 export default function AdminLoginPage() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(false);
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [loginImage, setLoginImage] = useState("/images/loginImage.png");
 
-  const handleLogin = (e: React.FormEvent) => {
+  useEffect(() => {
+    fetchGlobal().then((data) => {
+      if (data?.admin_login_image?.url) {
+        setLoginImage(data.admin_login_image.url);
+      }
+    });
+  }, []);
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email !== "admin@fbh.com" || password !== "password") {
-      setError(true);
-    } else {
-      setError(false);
-      // Handle successful login
-      console.log("Login successful");
+    setError("");
+    setIsLoading(true);
+
+    try {
+      // Call Strapi login API
+      const response = await adminLogin(email, password);
+
+      console.log("👤 User role:", response.user.role);
+
+      // Check if user is confirmed and not blocked
+      if (!response.user.confirmed) {
+        setError("Account not confirmed. Please check your email.");
+        setIsLoading(false);
+        return;
+      }
+
+      if (response.user.blocked) {
+        setError("Account is blocked. Please contact administrator.");
+        setIsLoading(false);
+        return;
+      }
+
+      // Store authentication data
+      storeAdminAuth(response.jwt, response.user);
+
+      // Redirect to admin dashboard
+      router.push("/admin");
+    } catch (err: any) {
+      setError(err.message || "Login failed. Please check your credentials.");
+      setIsLoading(false);
     }
   };
 
@@ -39,7 +77,7 @@ export default function AdminLoginPage() {
         {/* Left Side - Image */}
         <div className="relative h-[730px] w-[638px] rounded-[16px] overflow-hidden hidden md:block">
           <Image
-            src="/images/loginImage.png"
+            src={loginImage}
             alt="Login Image"
             fill
             className="object-cover"
@@ -75,9 +113,11 @@ export default function AdminLoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter email address"
-                  className={`w-full px-4 py-3 rounded-[8px] border ${
-                    error ? "border-[#F04438]" : "border-[#D0D5DD]"
-                  } focus:outline-none focus:ring-none placeholder:text-[#98A2B3] text-sm transition-all placeholder:bg-white`}
+                  autoComplete="email"
+                  required
+                  disabled={isLoading}
+                  className={`w-full px-4 py-3 rounded-[8px] border ${error ? "border-[#F04438]" : "border-[#D0D5DD]"
+                    } focus:outline-none focus:ring-none placeholder:text-[#98A2B3] text-sm transition-all placeholder:bg-white disabled:opacity-50 disabled:cursor-not-allowed`}
                 />
                 {error && (
                   <div className="absolute right-3 top-1/2 -translate-y-1/2">
@@ -97,9 +137,11 @@ export default function AdminLoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter password"
-                  className={`w-full px-4 py-3 rounded-[8px] border ${
-                    error ? "border-[#F04438]" : "border-[#D0D5DD]"
-                  } focus:outline-none focus:ring-none placeholder:text-[#98A2B3] text-sm transition-all`}
+                  autoComplete="current-password"
+                  required
+                  disabled={isLoading}
+                  className={`w-full px-4 py-3 rounded-[8px] border ${error ? "border-[#F04438]" : "border-[#D0D5DD]"
+                    } focus:outline-none focus:ring-none placeholder:text-[#98A2B3] text-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed`}
                 />
                 {error && (
                   <div className="absolute right-3 top-1/2 -translate-y-1/2">
@@ -112,13 +154,14 @@ export default function AdminLoginPage() {
             <div className="pt-3">
               <button
                 type="submit"
-                className="w-full bg-[#003399] text-white font-semibold py-3 rounded-[8px] hover:bg-[#002b80] transition-colors text-sm"
+                disabled={isLoading}
+                className="w-full bg-[#003399] text-white font-semibold py-3 rounded-[8px] hover:bg-[#002b80] transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Login
+                {isLoading ? "Logging in..." : "Login"}
               </button>
               {error && (
                 <p className="text-[#F04438] text-xs leading-4.5 mt-1.5 text-center font-medium">
-                  Incorrect email id or password.
+                  {error}
                 </p>
               )}
             </div>

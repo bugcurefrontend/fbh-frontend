@@ -16,6 +16,7 @@ export interface GlobalContent {
   our_team_headerimage?: MediaItem | null;
   sample_certificate?: MediaItem | null;
   avatar?: MediaItem | null;
+  admin_login_image?: MediaItem | null;
   co2_sequestation?: number | undefined;
   default_attribute?: Attribute | null;
   copyright?: string | null; // markdown/rich text

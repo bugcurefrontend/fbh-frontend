@@ -65,14 +65,14 @@ export async function fetchAPI(
 ): Promise<any> {
   const token = process.env.NEXT_PUBLIC_FBH_API_TOKEN;
 
-  // Check if this is an admin API call and get access token from localStorage
+  // Check if this is an admin API call and get admin token from localStorage
   const isAdminPath = path.startsWith('/admin');
   let authToken = token;
 
   if (isAdminPath && typeof window !== 'undefined') {
-    const accessToken = localStorage.getItem('accessToken');
-    if (accessToken) {
-      authToken = accessToken;
+    const adminToken = localStorage.getItem('adminToken'); // Fixed: was 'accessToken'
+    if (adminToken) {
+      authToken = adminToken;
     }
   }
 

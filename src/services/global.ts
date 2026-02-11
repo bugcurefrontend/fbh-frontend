@@ -19,6 +19,7 @@ export const fetchGlobal = cache(async (): Promise<GlobalContent | null> => {
         sample_certificate: true,
         avatar: true,
         default_attribute: true,
+        admin_login_image: true,
       },
     });
 
@@ -63,6 +64,7 @@ export const fetchGlobal = cache(async (): Promise<GlobalContent | null> => {
       our_team_headerimage: extractMedia(attrs.our_team_headerimage) || null,
       sample_certificate: extractMedia(attrs.sample_certificate) || null,
       avatar: extractMedia(attrs.avatar) || null,
+      admin_login_image: extractMedia(attrs.admin_login_image) || null,
       co2_sequestation: attrs.co2_sequestation ?? undefined,
       default_attribute: extractAttribute(attrs.default_attribute),
       copyright: attrs.copyright ?? null,
