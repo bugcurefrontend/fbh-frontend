@@ -7,6 +7,7 @@ import { MobileNavigation } from "./ui/mobile-navigation";
 import Link from "next/link";
 import { LogOut, TriangleAlert, User, X } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
+import { isAdminAuthenticated, getAdminUser, clearAdminAuth } from "@/services/admin-auth";
 import CurrencySelect from "./CurrencySelect";
 import { Suspense } from "react";
 import { usePathname } from "next/navigation";
@@ -31,13 +32,18 @@ export default function Header() {
   const [showSignOutAlert, setShowSignOutAlert] = React.useState(false);
   const [globalData, setGlobalData] = React.useState<GlobalContent | null>(null);
   const [isHydrated, setIsHydrated] = React.useState(false);
+  const [isAdminLoggedIn, setIsAdminLoggedIn] = React.useState(false);
+  const [adminUserData, setAdminUserData] = React.useState<any>(null);
   const pathname = usePathname();
   const isAdminRoute = pathname?.startsWith("/admin");
 
-  // Ensure component is hydrated before rendering auth-dependent content
+  // Ensure component is hydrated and check admin auth
   React.useEffect(() => {
     setIsHydrated(true);
-  }, []);
+    // Check admin auth status
+    setIsAdminLoggedIn(isAdminAuthenticated());
+    setAdminUserData(getAdminUser());
+  }, [pathname]);
 
   // Fetch global data for default attribute
   React.useEffect(() => {
@@ -154,7 +160,7 @@ export default function Header() {
           )}
           {/* Authentication Section */}
           <div className="max-md:hidden relative" ref={dropdownRef}>
-            {isAuthenticated ? (
+            {(isAdminRoute ? isAdminLoggedIn : isAuthenticated) ? (
               isAdminRoute ? (
                 <div className="flex items-center gap-2">
                   <div className="relative w-[32px] h-[32px] rounded-full overflow-hidden bg-gray-200 border border-gray-100">
@@ -172,7 +178,12 @@ export default function Header() {
                     )}
                   </div>
                   <button
-                    onClick={() => setShowSignOutAlert(true)}
+                    onClick={() => {
+                      clearAdminAuth();
+                      setIsAdminLoggedIn(false);
+                      setAdminUserData(null);
+                      window.location.href = "/admin/login";
+                    }}
                     className="text-[#F04438] font-semibold hover:opacity-80 transition-opacity"
                     style={{ fontFamily: "Public Sans" }}
                   >
@@ -313,12 +324,12 @@ export default function Header() {
                               color: "#F04438",
                             }}
                             onMouseEnter={(e) =>
-                              (e.currentTarget.style.backgroundColor =
-                                "#E6EBF5")
+                            (e.currentTarget.style.backgroundColor =
+                              "#E6EBF5")
                             }
                             onMouseLeave={(e) =>
-                              (e.currentTarget.style.backgroundColor =
-                                "transparent")
+                            (e.currentTarget.style.backgroundColor =
+                              "transparent")
                             }
                           >
                             <span>SIGN OUT</span>
