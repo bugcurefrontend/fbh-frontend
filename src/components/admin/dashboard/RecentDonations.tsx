@@ -66,83 +66,91 @@ export const RecentDonations = ({ data }: RecentDonationsProps) => {
               </tr>
             </thead>
             <tbody>
-              {currentData.map((donation, index) => (
-                <tr
-                  key={donation.id}
-                  className={`${index % 2 === 0 ? "bg-gray-50" : "bg-white"} ${
-                    index !== currentData.length - 1
-                      ? "border-b border-[#E6E6E6]"
-                      : ""
-                  }`}
-                >
-                  <td className="px-3.5 py-4.5 text-sm font-semibold text-[#090C0F]">
-                    {donation.hrIdTo}
-                  </td>
-                  <td className="px-3.5 py-4.5 text-sm font-semibold text-center text-[#454950]">
-                    {donation.name}
-                  </td>
-                  <td className="px-3.5 py-4.5 text-sm font-semibold text-center text-[#454950]">
-                    {donation.trees}
-                  </td>
-                  <td className="px-3.5 py-4.5 text-center">
-                    <Badge
-                      className="h-8 font-semibold text-sm leading-4 border-0 rounded-full px-3 py-1"
-                      style={{
-                        backgroundColor: `${donation.donationForColor}1A`,
-                        color: donation.donationForColor,
-                      }}
-                    >
-                      {donation.donationFor}
-                    </Badge>
-                  </td>
-                  <td className="px-3.5 py-4.5 text-sm font-semibold text-center text-[#454950]">
-                    {donation.cat}
-                  </td>
-                  <td className="px-3.5 py-4">
-                    <div className="flex items-center justify-center">
-                      {donation.geoTagged ? (
-                        <Image
-                          src="/images/check.png"
-                          alt="Icon"
-                          width={17}
-                          height={17}
-                        />
-                      ) : (
-                        <Image
-                          src="/images/warning.png"
-                          alt="Icon"
-                          width={17}
-                          height={17}
-                        />
-                      )}
-                    </div>
-                  </td>
-                  <td className="px-3.5 py-4">
-                    <div className="flex items-center justify-center gap-1">
-                      <Image
-                        src="/images/flag.png"
-                        alt={donation.currency}
-                        width={28}
-                        height={28}
-                      />
-                      <p className="text-sm font-medium text-[#454950]">
-                        {donation.currency}
-                      </p>
-                    </div>
-                  </td>
-                  <td className="px-3.5 py-4.5 text-sm font-semibold text-center text-[#454950]">
-                    {donation.amount}
-                  </td>
-                  <td className="px-3.5 py-4.5 text-center text-sm font-bold text-[#003399] hover:underline">
-                    <a href={donation.fundUrl}>Click Here</a>
-                  </td>
-                  <td className="px-3.5 py-4.5 text-center">
-                    <button className="hover:text-[#454950]">
-                      <MoreVertical size={20} />
-                    </button>
+              {currentData.length === 0 ? (
+                <tr>
+                  <td colSpan={10} className="px-6 py-10 text-center text-gray-500 font-medium italic">
+                    No donations found.
                   </td>
                 </tr>
-              ))}
+              ) : (
+                currentData.map((donation, index) => (
+                  <tr
+                    key={donation.id}
+                    className={`${index % 2 === 0 ? "bg-gray-50" : "bg-white"} ${
+                      index !== currentData.length - 1
+                        ? "border-b border-[#E6E6E6]"
+                        : ""
+                    }`}
+                  >
+                    <td className="px-3.5 py-4.5 text-sm font-semibold text-[#090C0F]">
+                      {donation.hrIdTo}
+                    </td>
+                    <td className="px-3.5 py-4.5 text-sm font-semibold text-center text-[#454950]">
+                      {donation.name}
+                    </td>
+                    <td className="px-3.5 py-4.5 text-sm font-semibold text-center text-[#454950]">
+                      {donation.trees}
+                    </td>
+                    <td className="px-3.5 py-4.5 text-center">
+                      <Badge
+                        className="h-8 font-semibold text-sm leading-4 border-0 rounded-full px-3 py-1"
+                        style={{
+                          backgroundColor: `${donation.donationForColor}1A`,
+                          color: donation.donationForColor,
+                        }}
+                      >
+                        {donation.donationFor}
+                      </Badge>
+                    </td>
+                    <td className="px-3.5 py-4.5 text-sm font-semibold text-center text-[#454950]">
+                      {donation.cat}
+                    </td>
+                    <td className="px-3.5 py-4">
+                      <div className="flex items-center justify-center">
+                        {donation.geoTagged ? (
+                          <Image
+                            src="/images/check.png"
+                            alt="Icon"
+                            width={17}
+                            height={17}
+                          />
+                        ) : (
+                          <Image
+                            src="/images/warning.png"
+                            alt="Icon"
+                            width={17}
+                            height={17}
+                          />
+                        )}
+                      </div>
+                    </td>
+                    <td className="px-3.5 py-4">
+                      <div className="flex items-center justify-center gap-1">
+                        <Image
+                          src="/images/flag.png"
+                          alt={donation.currency}
+                          width={28}
+                          height={28}
+                        />
+                        <p className="text-sm font-medium text-[#454950]">
+                          {donation.currency}
+                        </p>
+                      </div>
+                    </td>
+                    <td className="px-3.5 py-4.5 text-sm font-semibold text-center text-[#454950]">
+                      {donation.amount}
+                    </td>
+                    <td className="px-3.5 py-4.5 text-center text-sm font-bold text-[#003399] hover:underline">
+                      <a href={donation.fundUrl}>Click Here</a>
+                    </td>
+                    <td className="px-3.5 py-4.5 text-center">
+                      <button className="hover:text-[#454950]">
+                        <MoreVertical size={20} />
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

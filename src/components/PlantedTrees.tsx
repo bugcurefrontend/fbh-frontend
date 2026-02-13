@@ -142,62 +142,55 @@ const PlantedTrees = ({ onBack, donation }: PlantedTreesProps) => {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
-            {currentData.map((donor, index) => (
-              <tr key={startIndex + index}>
-                {donation.geoTagged === "true" ? (
-                  <>
-                    <td className="h-18 text-center px-3.5 truncate" style={{ fontFamily: "'Public Sans', sans-serif", fontWeight: 600, fontSize: "14px", lineHeight: "22px", color: "#090C0F" }}>
-                      {donor.treeCode}
-                    </td>
-                    <td className="text-center h-18 px-3.5">
-                      <div className="truncate" style={{ fontFamily: "'Public Sans', sans-serif", fontWeight: 600, fontSize: "14px", lineHeight: "22px", color: "#454950" }}>
-                        {donor.projectName}
-                      </div>
-                    </td>
-                    <td className="text-center h-18 px-3.5">
-                      <div className="truncate" style={{ fontFamily: "'Public Sans', sans-serif", fontWeight: 600, fontSize: "14px", lineHeight: "22px", color: "#454950" }}>
-                        {donor.species}
-                      </div>
-                    </td>
-                  </>
-                ) : (
-                  <>
-                    <td className="text-left h-18 px-6">
-                      <div className="truncate" style={{ fontFamily: "'Public Sans', sans-serif", fontWeight: 600, fontSize: "14px", lineHeight: "22px", color: "#454950" }}>
-                        {donor.projectName}
-                      </div>
-                    </td>
-                    <td className="text-left h-18 px-6">
-                      <div className="truncate" style={{ fontFamily: "'Public Sans', sans-serif", fontWeight: 600, fontSize: "14px", lineHeight: "22px", color: "#454950" }}>
-                        {donor.species}
-                      </div>
-                    </td>
-                    <td className="h-18 text-center px-3.5 truncate" style={{ fontFamily: "'Public Sans', sans-serif", fontWeight: 600, fontSize: "14px", lineHeight: "22px", color: "#090C0F" }}>
-                      {donor.itemCount || donor.treeCode.replace(" Trees", "")}
-                    </td>
-                  </>
-                )}
-                <td className="text-center h-18 px-3.5">
-                  <button
-                    onClick={() => setSelectedTree({
-                      ...donor,
-                      reference: donor.treeCode,
-                      name: donor.projectName
-                    })}
-                    style={{
-                      fontFamily: "'Public Sans', sans-serif",
-                      fontWeight: 700,
-                      fontSize: "14px",
-                      lineHeight: "22px",
-                      color: "#003399",
-                    }}
-                  >
-                    View
-                  </button>
+            {currentData.length === 0 ? (
+              <tr>
+                <td colSpan={donation.geoTagged === "true" ? 5 : 4} className="py-10 text-center text-gray-500 font-medium italic">
+                  No trees found for this donation.
                 </td>
-                {donation.geoTagged === "true" && (
+              </tr>
+            ) : (
+              currentData.map((donor, index) => (
+                <tr key={startIndex + index}>
+                  {donation.geoTagged === "true" ? (
+                    <>
+                      <td className="h-18 text-center px-3.5 truncate" style={{ fontFamily: "'Public Sans', sans-serif", fontWeight: 600, fontSize: "14px", lineHeight: "22px", color: "#090C0F" }}>
+                        {donor.treeCode}
+                      </td>
+                      <td className="text-center h-18 px-3.5">
+                        <div className="truncate" style={{ fontFamily: "'Public Sans', sans-serif", fontWeight: 600, fontSize: "14px", lineHeight: "22px", color: "#454950" }}>
+                          {donor.projectName}
+                        </div>
+                      </td>
+                      <td className="text-center h-18 px-3.5">
+                        <div className="truncate" style={{ fontFamily: "'Public Sans', sans-serif", fontWeight: 600, fontSize: "14px", lineHeight: "22px", color: "#454950" }}>
+                          {donor.species}
+                        </div>
+                      </td>
+                    </>
+                  ) : (
+                    <>
+                      <td className="text-left h-18 px-6">
+                        <div className="truncate" style={{ fontFamily: "'Public Sans', sans-serif", fontWeight: 600, fontSize: "14px", lineHeight: "22px", color: "#454950" }}>
+                          {donor.projectName}
+                        </div>
+                      </td>
+                      <td className="text-left h-18 px-6">
+                        <div className="truncate" style={{ fontFamily: "'Public Sans', sans-serif", fontWeight: 600, fontSize: "14px", lineHeight: "22px", color: "#454950" }}>
+                          {donor.species}
+                        </div>
+                      </td>
+                      <td className="h-18 text-center px-3.5 truncate" style={{ fontFamily: "'Public Sans', sans-serif", fontWeight: 600, fontSize: "14px", lineHeight: "22px", color: "#090C0F" }}>
+                        {donor.itemCount || donor.treeCode.replace(" Trees", "")}
+                      </td>
+                    </>
+                  )}
                   <td className="text-center h-18 px-3.5">
                     <button
+                      onClick={() => setSelectedTree({
+                        ...donor,
+                        reference: donor.treeCode,
+                        name: donor.projectName
+                      })}
                       style={{
                         fontFamily: "'Public Sans', sans-serif",
                         fontWeight: 700,
@@ -206,12 +199,27 @@ const PlantedTrees = ({ onBack, donation }: PlantedTreesProps) => {
                         color: "#003399",
                       }}
                     >
-                      Click Here
+                      View
                     </button>
                   </td>
-                )}
-              </tr>
-            ))}
+                  {donation.geoTagged === "true" && (
+                    <td className="text-center h-18 px-3.5">
+                      <button
+                        style={{
+                          fontFamily: "'Public Sans', sans-serif",
+                          fontWeight: 700,
+                          fontSize: "14px",
+                          lineHeight: "22px",
+                          color: "#003399",
+                        }}
+                      >
+                        Click Here
+                      </button>
+                    </td>
+                  )}
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
 

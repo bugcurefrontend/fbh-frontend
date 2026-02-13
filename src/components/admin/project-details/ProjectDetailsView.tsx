@@ -220,35 +220,43 @@ export const ProjectDetailsView = ({
               </tr>
             </thead>
             <tbody>
-              {currentData.map((species, index) => (
-                <tr
-                  key={species.id}
-                  className={`${index % 2 === 0 ? "bg-gray-50" : "bg-white"} ${
-                    index !== currentData.length - 1
-                      ? "border-b border-[#E6E6E6]"
-                      : ""
-                  }`}
-                >
-                  <td className="px-6 py-5.5 text-sm font-semibold text-[#454950] text-center">
-                    {species.commonName}
-                  </td>
-                  <td className="px-6 py-5.5 text-sm font-semibold text-[#454950] text-center">
-                    {species.scientificName}
-                  </td>
-                  <td className="px-6 py-5.5 text-sm font-semibold text-[#454950] text-center">
-                    {species.geoTagged}
-                  </td>
-                  <td className="px-6 py-5.5 text-sm font-semibold text-[#454950] text-center">
-                    {species.geoTaggedPlanted}
-                  </td>
-                  <td className="px-6 py-5.5 text-sm font-semibold text-[#454950] text-center">
-                    {species.nonGeoTagged}
-                  </td>
-                  <td className="px-6 py-5.5 text-sm font-semibold text-[#454950] text-center">
-                    {species.nonGeoTaggedPlanted}
+              {currentData.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="px-6 py-10 text-center text-gray-500 font-medium italic">
+                    No species details found.
                   </td>
                 </tr>
-              ))}
+              ) : (
+                currentData.map((species, index) => (
+                  <tr
+                    key={species.id}
+                    className={`${index % 2 === 0 ? "bg-gray-50" : "bg-white"} ${
+                      index !== currentData.length - 1
+                        ? "border-b border-[#E6E6E6]"
+                        : ""
+                    }`}
+                  >
+                    <td className="px-6 py-5.5 text-sm font-semibold text-[#454950] text-center">
+                      {species.commonName}
+                    </td>
+                    <td className="px-6 py-5.5 text-sm font-semibold text-[#454950] text-center">
+                      {species.scientificName}
+                    </td>
+                    <td className="px-6 py-5.5 text-sm font-semibold text-[#454950] text-center">
+                      {species.geoTagged}
+                    </td>
+                    <td className="px-6 py-5.5 text-sm font-semibold text-[#454950] text-center">
+                      {species.geoTaggedPlanted}
+                    </td>
+                    <td className="px-6 py-5.5 text-sm font-semibold text-[#454950] text-center">
+                      {species.nonGeoTagged}
+                    </td>
+                    <td className="px-6 py-5.5 text-sm font-semibold text-[#454950] text-center">
+                      {species.nonGeoTaggedPlanted}
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

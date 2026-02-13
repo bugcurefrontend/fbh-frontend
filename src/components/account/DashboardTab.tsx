@@ -6,8 +6,32 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/lib/auth-context";
 import { fetchUserDashboardStats } from "@/services/dashboard";
 
+const defaultStats = [
+  {
+    label: "CO2 Sequested",
+    value: "0",
+    suffix: "kg",
+    icon: "/images/leaf2.png",
+    accent: "#0D824B",
+  },
+  {
+    label: "Total Trees Planted",
+    value: "0",
+    suffix: "trees",
+    icon: "/images/tree2.png",
+    accent: "#12B569",
+  },
+  {
+    label: "Projects Supported",
+    value: "0",
+    suffix: "projects",
+    icon: "/images/like.png",
+    accent: "#F78F08",
+  },
+];
+
 export const DashboardTab = () => {
-  const [statsData, setStatsData] = useState<any[]>([]);
+  const [statsData, setStatsData] = useState<any[]>(defaultStats);
   const [isLoading, setIsLoading] = useState(true);
   const { userProfile, isAuthenticated } = useAuth();
 
@@ -41,14 +65,18 @@ export const DashboardTab = () => {
                 accent: "#F78F08",
               },
             ]);
+          } else {
+            setStatsData(defaultStats);
           }
         } catch (error) {
           console.error("Failed to load dashboard stats:", error);
+          setStatsData(defaultStats);
         } finally {
           setIsLoading(false);
         }
       } else if (!isAuthenticated) {
         setIsLoading(false);
+        setStatsData(defaultStats);
       }
     };
 

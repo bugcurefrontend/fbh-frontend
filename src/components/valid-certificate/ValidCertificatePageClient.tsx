@@ -269,84 +269,31 @@ const ValidCertificatePageClient = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
-                  {currentData.map((tree: any, index) => (
-                    <tr key={startIndex + index}>
-                      <td
-                        className="h-18 text-center px-3.5 truncate"
-                        style={{
-                          fontFamily: "'Public Sans', sans-serif",
-                          fontWeight: 600,
-                          fontSize: "14px",
-                          lineHeight: "22px",
-                          color: "#090C0F",
-                        }}
-                      >
-                        {certificateData?.is_geotagged ? tree.treeCode : tree.projectName}
+                  {currentData.length === 0 ? (
+                    <tr>
+                      <td colSpan={certificateData?.is_geotagged ? 5 : 4} className="py-10 text-center text-gray-500 font-medium italic">
+                        No tree details found for this certificate.
                       </td>
-
-                      <td className="text-center h-18 px-3.5">
-                        <div
-                          className="truncate"
+                    </tr>
+                  ) : (
+                    currentData.map((tree: any, index) => (
+                      <tr key={startIndex + index}>
+                        <td
+                          className="h-18 text-center px-3.5 truncate"
                           style={{
                             fontFamily: "'Public Sans', sans-serif",
                             fontWeight: 600,
                             fontSize: "14px",
                             lineHeight: "22px",
-                            color: "#454950",
+                            color: "#090C0F",
                           }}
                         >
-                          {tree.projectName}
-                        </div>
-                      </td>
+                          {certificateData?.is_geotagged ? tree.treeCode : tree.projectName}
+                        </td>
 
-                      <td className="text-center h-18 px-3.5">
-                        <div
-                          className="truncate"
-                          style={{
-                            fontFamily: "'Public Sans', sans-serif",
-                            fontWeight: 600,
-                            fontSize: "14px",
-                            lineHeight: "22px",
-                            color: "#454950",
-                          }}
-                        >
-                          {tree.species}
-                        </div>
-                      </td>
-                      {certificateData?.is_geotagged && (
-                        <>
-                          <td className="text-center h-18 px-3.5">
-                            <button
-                              onClick={() => setSelectedTree(donations[index])}
-                              style={{
-                                fontFamily: "'Public Sans', sans-serif",
-                                fontWeight: 700,
-                                fontSize: "14px",
-                                lineHeight: "22px",
-                                color: "#003399",
-                              }}
-                            >
-                              View
-                            </button>
-                          </td>
-                          <td className="text-center h-18 px-3.5">
-                            <button
-                              style={{
-                                fontFamily: "'Public Sans', sans-serif",
-                                fontWeight: 700,
-                                fontSize: "14px",
-                                lineHeight: "22px",
-                                color: "#003399",
-                              }}
-                            >
-                              Click Here
-                            </button>
-                          </td>
-                        </>
-                      )}
-                      {!certificateData?.is_geotagged && (
                         <td className="text-center h-18 px-3.5">
                           <div
+                            className="truncate"
                             style={{
                               fontFamily: "'Public Sans', sans-serif",
                               fontWeight: 600,
@@ -355,12 +302,73 @@ const ValidCertificatePageClient = () => {
                               color: "#454950",
                             }}
                           >
-                            {tree.total_trees_planted}
+                            {tree.projectName}
                           </div>
                         </td>
-                      )}
-                    </tr>
-                  ))}
+
+                        <td className="text-center h-18 px-3.5">
+                          <div
+                            className="truncate"
+                            style={{
+                              fontFamily: "'Public Sans', sans-serif",
+                              fontWeight: 600,
+                              fontSize: "14px",
+                              lineHeight: "22px",
+                              color: "#454950",
+                            }}
+                          >
+                            {tree.species}
+                          </div>
+                        </td>
+                        {certificateData?.is_geotagged && (
+                          <>
+                            <td className="text-center h-18 px-3.5">
+                              <button
+                                onClick={() => setSelectedTree(donations[index])}
+                                style={{
+                                  fontFamily: "'Public Sans', sans-serif",
+                                  fontWeight: 700,
+                                  fontSize: "14px",
+                                  lineHeight: "22px",
+                                  color: "#003399",
+                                }}
+                              >
+                                View
+                              </button>
+                            </td>
+                            <td className="text-center h-18 px-3.5">
+                              <button
+                                style={{
+                                  fontFamily: "'Public Sans', sans-serif",
+                                  fontWeight: 700,
+                                  fontSize: "14px",
+                                  lineHeight: "22px",
+                                  color: "#003399",
+                                }}
+                              >
+                                Click Here
+                              </button>
+                            </td>
+                          </>
+                        )}
+                        {!certificateData?.is_geotagged && (
+                          <td className="text-center h-18 px-3.5">
+                            <div
+                              style={{
+                                fontFamily: "'Public Sans', sans-serif",
+                                fontWeight: 600,
+                                fontSize: "14px",
+                                lineHeight: "22px",
+                                color: "#454950",
+                              }}
+                            >
+                              {tree.total_trees_planted}
+                            </div>
+                          </td>
+                        )}
+                      </tr>
+                    ))
+                  )}
                 </tbody>
               </table>
 

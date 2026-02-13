@@ -78,14 +78,18 @@ export default async function RootLayout({
       <body>
         <AuthProvider>
           <AuthWrapper>
-            <Header />
-            {children}
-            <Footer
-              menuItems={footerMenu.items}
-              socialLinks={socialLinks}
-              usefulLinks={usefulLinks.items}
-              copyright={copyrightHtml}
-            />
+            <div className="flex flex-col min-h-screen">
+              <Header />
+              <div className="flex-1">
+                {children}
+              </div>
+              <Footer
+                menuItems={footerMenu.items}
+                socialLinks={socialLinks}
+                usefulLinks={usefulLinks.items}
+                copyright={copyrightHtml}
+              />
+            </div>
           </AuthWrapper>
         </AuthProvider>
       </body>
