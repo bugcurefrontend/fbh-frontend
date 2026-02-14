@@ -150,9 +150,9 @@ function transformToDetailData(project: ProjectSimplified, metrics: any = null) 
 
   // Use metrics data if available, otherwise fall back to Strapi data
   const stats = metrics && metrics.success ? {
-    treesAvailable: metrics.available_trees,
-    treesPlanted: metrics.total_trees - metrics.available_trees,
-    totalTrees: metrics.total_trees,
+    treesAvailable: metrics.available_trees || 0,
+    treesPlanted: (metrics.total_trees || 0) - (metrics.available_trees || 0),
+    totalTrees: metrics.total_trees || 0,
   } : {
     treesAvailable: 0,
     treesPlanted: project.plantedCount,

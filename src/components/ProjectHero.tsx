@@ -44,8 +44,8 @@ const useCountUp = (end: number, duration: number = 2000, shouldStart: boolean =
 
 // Animated number component  
 const AnimatedNumber: React.FC<{ value: number; isVisible: boolean }> = ({ value, isVisible }) => {
-  const animatedValue = useCountUp(value, 2000, isVisible);
-  return <>{animatedValue.toLocaleString()}</>;
+  const animatedValue = useCountUp(value ?? 0, 2000, isVisible);
+  return <>{(animatedValue ?? 0).toLocaleString()}</>;
 };
 
 interface ProjectHeroProps {
@@ -296,10 +296,10 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
                             videoUrl.includes("youtu.be") ? (
                             <iframe
                               src={`${videoUrl.includes("embed")
-                                  ? videoUrl
-                                  : videoUrl
-                                    .replace("watch?v=", "embed/")
-                                    .replace("youtu.be/", "youtube.com/embed/")
+                                ? videoUrl
+                                : videoUrl
+                                  .replace("watch?v=", "embed/")
+                                  .replace("youtu.be/", "youtube.com/embed/")
                                 }?autoplay=1`}
                               className="w-full h-full min-h-[360px]"
                               frameBorder="0"
@@ -391,8 +391,8 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
               <button
                 onClick={scrollLeft}
                 className={`absolute left-2 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-white/90 shadow-lg flex items-center justify-center transition-all duration-300 ${canScrollLeft
-                    ? "opacity-100 hover:bg-white cursor-pointer"
-                    : "opacity-0 pointer-events-none"
+                  ? "opacity-100 hover:bg-white cursor-pointer"
+                  : "opacity-0 pointer-events-none"
                   }`}
                 disabled={!canScrollLeft}
               >
@@ -444,8 +444,8 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
               <button
                 onClick={scrollRight}
                 className={`absolute right-2 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-white/90 shadow-lg flex items-center justify-center transition-all duration-300 ${canScrollRight
-                    ? "opacity-100 hover:bg-white cursor-pointer"
-                    : "opacity-0 pointer-events-none"
+                  ? "opacity-100 hover:bg-white cursor-pointer"
+                  : "opacity-0 pointer-events-none"
                   }`}
                 disabled={!canScrollRight}
               >
