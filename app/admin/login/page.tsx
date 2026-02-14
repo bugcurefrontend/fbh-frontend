@@ -64,7 +64,7 @@ export default function AdminLoginPage() {
       // Redirect to admin dashboard
       router.push("/admin");
     } catch (err: any) {
-      setError(err.message || "Login failed. Please check your credentials.");
+      setError("Incorrect email id or password.");
       setIsLoading(false);
     }
   };
@@ -73,7 +73,7 @@ export default function AdminLoginPage() {
     <div
       className={`min-h-screen bg-white flex items-center justify-center p-4 md:p-8 ${publicSans.className}`}
     >
-      <div className="relative min-h-screen w-full max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+      <div className="relative w-full max-w-7xl mx-auto md:grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
         {/* Left Side - Image */}
         <div className="relative h-[730px] w-[638px] rounded-[16px] overflow-hidden hidden md:block">
           <Image
@@ -116,8 +116,9 @@ export default function AdminLoginPage() {
                   autoComplete="email"
                   required
                   disabled={isLoading}
-                  className={`w-full px-4 py-3 rounded-[8px] border ${error ? "border-[#F04438]" : "border-[#D0D5DD]"
-                    } focus:outline-none focus:ring-none placeholder:text-[#98A2B3] text-sm transition-all placeholder:bg-white disabled:opacity-50 disabled:cursor-not-allowed`}
+                  className={`w-full px-4 py-3 rounded-[8px] border ${
+                    error ? "border-[#F04438]" : "border-[#D0D5DD]"
+                  } focus:outline-none focus:ring-none placeholder:text-[#98A2B3] text-sm transition-all placeholder:bg-white disabled:opacity-50 disabled:cursor-not-allowed`}
                 />
                 {error && (
                   <div className="absolute right-3 top-1/2 -translate-y-1/2">
@@ -140,8 +141,9 @@ export default function AdminLoginPage() {
                   autoComplete="current-password"
                   required
                   disabled={isLoading}
-                  className={`w-full px-4 py-3 rounded-[8px] border ${error ? "border-[#F04438]" : "border-[#D0D5DD]"
-                    } focus:outline-none focus:ring-none placeholder:text-[#98A2B3] text-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed`}
+                  className={`w-full px-4 py-3 rounded-[8px] border ${
+                    error ? "border-[#F04438]" : "border-[#D0D5DD]"
+                  } focus:outline-none focus:ring-none placeholder:text-[#98A2B3] text-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed`}
                 />
                 {error && (
                   <div className="absolute right-3 top-1/2 -translate-y-1/2">
@@ -168,7 +170,7 @@ export default function AdminLoginPage() {
           </form>
 
           {/* Footer Copyright */}
-          <div className="absolute bottom-0 py-6 text-[#454950] text-sm font-medium leading-5.5">
+          <div className="md:absolute bottom-0 py-6 text-[#454950] text-sm font-medium leading-5.5">
             © 2026 Heartfulness | All Rights Reserved
           </div>
         </div>

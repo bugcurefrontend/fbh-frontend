@@ -197,108 +197,116 @@ const DonorsTable = ({ projectId }: { projectId?: string | number }) => {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              {donors.map((donor, index) => (
-                <tr
-                  key={donor.id}
-                  className={`hover:bg-[#F9FAFB] ${(index + 1) % 2 === 1 ? "bg-[#F9FAFB]" : "bg-white"
-                    }`}
-                >
-                  <td
-                    className="text-center py-3.5 px-3.5"
-                    style={{
-                      fontFamily: "'Public Sans', sans-serif",
-                      fontWeight: 600,
-                      fontSize: "14px",
-                      lineHeight: "22px",
-                      color: "#090C0F",
-                    }}
-                  >
-                    {(currentPage - 1) * donorsPerPage + index + 1}
-                  </td>
-                  <td className="py-3.5 pl-3.5 overflow-hidden">
-                    <div className="flex items-center space-x-3">
-                      <UserAvatar
-                        name={donor.name}
-                        avatar={donor.avatar ?? ""}
-                        isAnonymous={donor.name === "Anonymous"}
-                      />
-
-                      <div>
-                        <div
-                          style={{
-                            fontFamily: "'Public Sans', sans-serif",
-                            fontWeight: 600,
-                            fontSize: "14px",
-                            lineHeight: "22px",
-                            color: "#090C0F",
-                          }}
-                        >
-                          {donor.name}
-                        </div>
-                        <div
-                          className="truncate"
-                          style={{
-                            fontFamily: "'Public Sans', sans-serif",
-                            fontWeight: 400,
-                            fontSize: "14px",
-                            lineHeight: "22px",
-                            color: "#454950",
-                            maxWidth: "160px",
-                          }}
-                        >
-                          {donor.location}
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="py-3.5 px-3.5">
-                    <div
-                      style={{
-                        fontFamily: "'Public Sans', sans-serif",
-                        fontWeight: 600,
-                        fontSize: "14px",
-                        lineHeight: "22px",
-                        color: "#454950",
-                      }}
-                    >
-                      {donor.date}
-                    </div>
-                  </td>
-                  <td className="py-3.5 px-3.5">
-                    <span
-                      className={`inline-flex uppercase px-2 py-1 rounded-full ${donor.donationType === "Self"
-                        ? "bg-green-100"
-                        : "bg-orange-100"
-                        }`}
-                      style={{
-                        fontFamily: "'Public Sans', sans-serif",
-                        fontWeight: 600,
-                        fontSize: "12px",
-                        lineHeight: "18px",
-                        letterSpacing: "0px",
-                        color:
-                          donor.donationType === "Self" ? "#12B569" : "#F78F08",
-                        textAlign: "center",
-                      }}
-                    >
-                      {donor.donationType}
-                    </span>
-                  </td>
-                  <td className="text-center py-3.5 px-3.5">
-                    <div
-                      style={{
-                        fontFamily: "'Public Sans', sans-serif",
-                        fontWeight: 600,
-                        fontSize: "14px",
-                        lineHeight: "22px",
-                        color: "#454950",
-                      }}
-                    >
-                      {donor.treesPlanted}
-                    </div>
+              {donors.length === 0 ? (
+                <tr>
+                  <td colSpan={5} className="py-10 text-center text-gray-500 font-medium italic">
+                    No donors found for this project.
                   </td>
                 </tr>
-              ))}
+              ) : (
+                donors.map((donor, index) => (
+                  <tr
+                    key={donor.id}
+                    className={`hover:bg-[#F9FAFB] ${(index + 1) % 2 === 1 ? "bg-[#F9FAFB]" : "bg-white"
+                      }`}
+                  >
+                    <td
+                      className="text-center py-3.5 px-3.5"
+                      style={{
+                        fontFamily: "'Public Sans', sans-serif",
+                        fontWeight: 600,
+                        fontSize: "14px",
+                        lineHeight: "22px",
+                        color: "#090C0F",
+                      }}
+                    >
+                      {(currentPage - 1) * donorsPerPage + index + 1}
+                    </td>
+                    <td className="py-3.5 pl-3.5 overflow-hidden">
+                      <div className="flex items-center space-x-3">
+                        <UserAvatar
+                          name={donor.name}
+                          avatar={donor.avatar ?? ""}
+                          isAnonymous={donor.name === "Anonymous"}
+                        />
+
+                        <div>
+                          <div
+                            style={{
+                              fontFamily: "'Public Sans', sans-serif",
+                              fontWeight: 600,
+                              fontSize: "14px",
+                              lineHeight: "22px",
+                              color: "#090C0F",
+                            }}
+                          >
+                            {donor.name}
+                          </div>
+                          <div
+                            className="truncate"
+                            style={{
+                              fontFamily: "'Public Sans', sans-serif",
+                              fontWeight: 400,
+                              fontSize: "14px",
+                              lineHeight: "22px",
+                              color: "#454950",
+                              maxWidth: "160px",
+                            }}
+                          >
+                            {donor.location}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="py-3.5 px-3.5">
+                      <div
+                        style={{
+                          fontFamily: "'Public Sans', sans-serif",
+                          fontWeight: 600,
+                          fontSize: "14px",
+                          lineHeight: "22px",
+                          color: "#454950",
+                        }}
+                      >
+                        {donor.date}
+                      </div>
+                    </td>
+                    <td className="py-3.5 px-3.5">
+                      <span
+                        className={`inline-flex uppercase px-2 py-1 rounded-full ${donor.donationType === "Self"
+                          ? "bg-green-100"
+                          : "bg-orange-100"
+                          }`}
+                        style={{
+                          fontFamily: "'Public Sans', sans-serif",
+                          fontWeight: 600,
+                          fontSize: "12px",
+                          lineHeight: "18px",
+                          letterSpacing: "0px",
+                          color:
+                            donor.donationType === "Self" ? "#12B569" : "#F78F08",
+                          textAlign: "center",
+                        }}
+                      >
+                        {donor.donationType}
+                      </span>
+                    </td>
+                    <td className="text-center py-3.5 px-3.5">
+                      <div
+                        style={{
+                          fontFamily: "'Public Sans', sans-serif",
+                          fontWeight: 600,
+                          fontSize: "14px",
+                          lineHeight: "22px",
+                          color: "#454950",
+                        }}
+                      >
+                        {donor.treesPlanted}
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

@@ -48,8 +48,8 @@ const PaginationLink = ({
   <div
     className={
       isActive
-        ? "bg-[#E6EBF580] text-[#003399] border-none hover:bg-[#E6EBF580] hover:text-[#003399] rounded-[8px]"
-        : "text-[#454950]"
+        ? "bg-[#E6EBF580] text-[#003399] border-none hover:bg-[#E6EBF580] hover:text-[#003399] rounded-[8px] cursor-pointer"
+        : "text-[#454950] cursor-pointer"
     }
   >
     <a

@@ -146,75 +146,83 @@ export const RecipientTable = ({
               </tr>
             </thead>
             <tbody>
-              {currentData.map((recipient, index) => (
-                <tr
-                  key={recipient.id}
-                  className={`${index % 2 === 0 ? "bg-gray-50" : "bg-white"} ${index !== currentData.length - 1
-                    ? "border-b border-[#E6E6E6]"
-                    : ""
-                    }`}
-                >
-                  <td className="px-6 py-4.5 text-sm font-semibold text-[#090C0F] text-center">
-                    {recipient.rcptName}
-                  </td>
-                  <td className="px-6 py-4.5 text-sm font-semibold text-[#090C0F] text-center">
-                    {recipient.email}
-                  </td>
-                  <td className="px-6 py-4.5 text-sm font-semibold text-[#090C0F] text-center">
-                    {recipient.phoneNo}
-                  </td>
-                  <td className="px-6 py-4.5 text-sm font-semibold text-[#090C0F] text-center">
-                    {recipient.treesAllocated}
-                  </td>
-                  <td className="px-6 py-4.5 text-sm font-semibold text-[#090C0F] text-center">
-                    {recipient.treesPlanted}
-                  </td>
-                  <td className="px-6 py-4.5 text-sm font-semibold text-[#090C0F] text-center">
-                    {recipient.certificateId}
-                  </td>
-                  <td className="px-6 py-4.5 text-sm font-semibold text-[#454950] text-center">
-                    {recipient.geoTagged === "true" ? (
-                      <Image
-                        src="/images/check.png"
-                        alt="Check"
-                        width={17}
-                        height={17}
-                        className="mx-auto"
-                      />
-                    ) : (
-                      <Image
-                        src="/images/warning.png"
-                        alt="Warning"
-                        width={17}
-                        height={17}
-                        className="mx-auto"
-                      />
-                    )}
-                  </td>
-                  <td className="px-6 py-4.5 text-center">
-                    <button
-                      onClick={() => {
-                        if (recipient.certificate_url) {
-                          window.open(recipient.certificate_url, '_blank');
-                        } else {
-                          console.warn('No certificate URL available');
-                        }
-                      }}
-                      className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-                    >
-                      <Download className="w-5 h-5" />
-                    </button>
-                  </td>
-                  <td className="px-6 py-4.5 text-center">
-                    <button
-                      onClick={() => onViewDetails(recipient)}
-                      className="text-sm font-bold text-[#003399] hover:underline"
-                    >
-                      Click Here
-                    </button>
+              {currentData.length === 0 ? (
+                <tr>
+                  <td colSpan={9} className="px-6 py-10 text-center text-gray-500 font-medium italic">
+                    No recipients found.
                   </td>
                 </tr>
-              ))}
+              ) : (
+                currentData.map((recipient, index) => (
+                  <tr
+                    key={recipient.id}
+                    className={`${index % 2 === 0 ? "bg-gray-50" : "bg-white"} ${index !== currentData.length - 1
+                      ? "border-b border-[#E6E6E6]"
+                      : ""
+                      }`}
+                  >
+                    <td className="px-6 py-4.5 text-sm font-semibold text-[#090C0F] text-center">
+                      {recipient.rcptName}
+                    </td>
+                    <td className="px-6 py-4.5 text-sm font-semibold text-[#090C0F] text-center">
+                      {recipient.email}
+                    </td>
+                    <td className="px-6 py-4.5 text-sm font-semibold text-[#090C0F] text-center">
+                      {recipient.phoneNo}
+                    </td>
+                    <td className="px-6 py-4.5 text-sm font-semibold text-[#090C0F] text-center">
+                      {recipient.treesAllocated}
+                    </td>
+                    <td className="px-6 py-4.5 text-sm font-semibold text-[#090C0F] text-center">
+                      {recipient.treesPlanted}
+                    </td>
+                    <td className="px-6 py-4.5 text-sm font-semibold text-[#090C0F] text-center">
+                      {recipient.certificateId}
+                    </td>
+                    <td className="px-6 py-4.5 text-sm font-semibold text-[#454950] text-center">
+                      {recipient.geoTagged === "true" ? (
+                        <Image
+                          src="/images/check.png"
+                          alt="Check"
+                          width={17}
+                          height={17}
+                          className="mx-auto"
+                        />
+                      ) : (
+                        <Image
+                          src="/images/warning.png"
+                          alt="Warning"
+                          width={17}
+                          height={17}
+                          className="mx-auto"
+                        />
+                      )}
+                    </td>
+                    <td className="px-6 py-4.5 text-center">
+                      <button
+                        onClick={() => {
+                          if (recipient.certificate_url) {
+                            window.open(recipient.certificate_url, '_blank');
+                          } else {
+                            console.warn('No certificate URL available');
+                          }
+                        }}
+                        className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                      >
+                        <Download className="w-5 h-5" />
+                      </button>
+                    </td>
+                    <td className="px-6 py-4.5 text-center">
+                      <button
+                        onClick={() => onViewDetails(recipient)}
+                        className="text-sm font-bold text-[#003399] hover:underline"
+                      >
+                        Click Here
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

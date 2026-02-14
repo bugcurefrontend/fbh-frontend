@@ -179,42 +179,50 @@ export const TreesTab = () => {
               </tr>
             </thead>
             <tbody>
-              {currentData.map((tree, index) => (
-                <tr
-                  key={tree.id}
-                  className={`${index % 2 === 0 ? "bg-gray-50" : "bg-white"} ${
-                    index !== currentData.length - 1
-                      ? "border-b border-[#E6E6E6]"
-                      : ""
-                  }`}
-                >
-                  <td className="px-6 py-5.5 text-sm font-semibold text-[#454950] text-center">
-                    {tree.treeCode}
-                  </td>
-                  <td className="px-6 py-5.5 text-sm font-semibold text-[#454950] text-center">
-                    {tree.project}
-                  </td>
-                  <td className="px-6 py-5.5 text-sm font-semibold text-[#454950] text-center">
-                    {tree.species}
-                  </td>
-                  <td className="px-6 py-5.5 text-sm font-semibold text-[#454950] text-center">
-                    {tree.longitude}
-                  </td>
-                  <td className="px-6 py-5.5 text-sm font-semibold text-[#454950] text-center">
-                    {tree.latitude}
-                  </td>
-                  <td className="px-6 py-5.5 text-center">
-                    <button className="text-sm font-bold text-[#003399] hover:underline">
-                      View
-                    </button>
-                  </td>
-                  <td className="px-6 py-5.5 text-center">
-                    <button className="text-sm font-bold text-[#003399] hover:underline">
-                      Click Here
-                    </button>
+              {currentData.length === 0 ? (
+                <tr>
+                  <td colSpan={7} className="px-6 py-10 text-center text-gray-500 font-medium italic">
+                    No trees found.
                   </td>
                 </tr>
-              ))}
+              ) : (
+                currentData.map((tree, index) => (
+                  <tr
+                    key={tree.id}
+                    className={`${index % 2 === 0 ? "bg-gray-50" : "bg-white"} ${
+                      index !== currentData.length - 1
+                        ? "border-b border-[#E6E6E6]"
+                        : ""
+                    }`}
+                  >
+                    <td className="px-6 py-5.5 text-sm font-semibold text-[#454950] text-center">
+                      {tree.treeCode}
+                    </td>
+                    <td className="px-6 py-5.5 text-sm font-semibold text-[#454950] text-center">
+                      {tree.project}
+                    </td>
+                    <td className="px-6 py-5.5 text-sm font-semibold text-[#454950] text-center">
+                      {tree.species}
+                    </td>
+                    <td className="px-6 py-5.5 text-sm font-semibold text-[#454950] text-center">
+                      {tree.longitude}
+                    </td>
+                    <td className="px-6 py-5.5 text-sm font-semibold text-[#454950] text-center">
+                      {tree.latitude}
+                    </td>
+                    <td className="px-6 py-5.5 text-center">
+                      <button className="text-sm font-bold text-[#003399] hover:underline">
+                        View
+                      </button>
+                    </td>
+                    <td className="px-6 py-5.5 text-center">
+                      <button className="text-sm font-bold text-[#003399] hover:underline">
+                        Click Here
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

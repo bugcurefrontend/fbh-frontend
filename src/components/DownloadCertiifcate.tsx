@@ -22,7 +22,7 @@ const DownloadCertificate: React.FC<DownloadCertificateProps> = ({
 }) => {
   const handleDownload = () => {
     if (certificateUrl) {
-      window.open(certificateUrl, '_blank');
+      window.open(certificateUrl, "_blank");
     } else {
       alert("Certificate not available yet.");
     }
@@ -41,7 +41,7 @@ const DownloadCertificate: React.FC<DownloadCertificateProps> = ({
         showCloseButton={false}
         className="md:w-[533px] md:h-[442px] py-4 px-2 gap-0"
       >
-        <DialogTitle className="flex items-center justify-between uppercase font-bold sm:text-2xl px-2 md:px-4">
+        <DialogTitle className="h-fit flex items-center justify-between uppercase font-bold sm:text-2xl px-2 md:px-4">
           Download Certificate
           <DialogClose asChild>
             <button className="border-none rounded-full transition">
@@ -50,11 +50,9 @@ const DownloadCertificate: React.FC<DownloadCertificateProps> = ({
           </DialogClose>
         </DialogTitle>
 
-        <div className="max-md:h-[236px] overflow-y-scroll px-2 md:pl-4 mt-4">
+        <div className="max-md:h-[236px] h-94 overflow-y-scroll px-2 md:pl-4 mt-4">
           <div className="space-y-4 w-full">
-            <div
-              className="md:h-[70px] h-[68px] px-4 py-3 border rounded-[8px] hover:bg-gray-50"
-            >
+            <div className="md:h-[70px] h-[68px] px-4 py-3 border rounded-[8px] hover:bg-gray-50">
               <div className="flex items-center">
                 <div className="flex-1">
                   <div
@@ -90,11 +88,15 @@ const DownloadCertificate: React.FC<DownloadCertificateProps> = ({
                     </span>
                   </div>
                 </div>
-                <DownloadIcon
-                  className="text-[#003399] cursor-pointer"
-                  size={20}
+                <button
                   onClick={handleDownload}
-                />
+                  className="p-2 hover:bg-blue-50 rounded-full transition-colors group"
+                >
+                  <DownloadIcon
+                    className="text-[#003399] group-hover:scale-110 transition-transform"
+                    size={24}
+                  />
+                </button>
               </div>
             </div>
 

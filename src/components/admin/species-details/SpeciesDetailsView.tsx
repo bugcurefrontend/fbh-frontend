@@ -202,35 +202,43 @@ export const SpeciesDetailsView = ({
               </tr>
             </thead>
             <tbody>
-              {currentData.map((project, index) => (
-                <tr
-                  key={project.id}
-                  className={`${index % 2 === 0 ? "bg-gray-50" : "bg-white"} ${
-                    index !== currentData.length - 1
-                      ? "border-b border-[#E6E6E6]"
-                      : ""
-                  }`}
-                >
-                  <td className="px-6 py-5.5 text-sm font-semibold text-[#090C0F] text-center">
-                    {project.project}
-                  </td>
-                  <td className="px-6 py-5.5 text-sm font-semibold text-[#090C0F] text-center">
-                    {project.address}
-                  </td>
-                  <td className="px-6 py-5.5 text-sm font-semibold text-[#454950] text-center">
-                    {project.geoTagged}
-                  </td>
-                  <td className="px-6 py-5.5 text-sm font-semibold text-[#454950] text-center">
-                    {project.geoTaggedPlanted}
-                  </td>
-                  <td className="px-6 py-5.5 text-sm font-semibold text-[#454950] text-center">
-                    {project.nonGeoTagged}
-                  </td>
-                  <td className="px-6 py-5.5 text-sm font-semibold text-[#454950] text-center">
-                    {project.nonGeoTaggedPlanted}
+              {currentData.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="px-6 py-10 text-center text-gray-500 font-medium italic">
+                    No project details found.
                   </td>
                 </tr>
-              ))}
+              ) : (
+                currentData.map((project, index) => (
+                  <tr
+                    key={project.id}
+                    className={`${index % 2 === 0 ? "bg-gray-50" : "bg-white"} ${
+                      index !== currentData.length - 1
+                        ? "border-b border-[#E6E6E6]"
+                        : ""
+                    }`}
+                  >
+                    <td className="px-6 py-5.5 text-sm font-semibold text-[#090C0F] text-center">
+                      {project.project}
+                    </td>
+                    <td className="px-6 py-5.5 text-sm font-semibold text-[#090C0F] text-center">
+                      {project.address}
+                    </td>
+                    <td className="px-6 py-5.5 text-sm font-semibold text-[#454950] text-center">
+                      {project.geoTagged}
+                    </td>
+                    <td className="px-6 py-5.5 text-sm font-semibold text-[#454950] text-center">
+                      {project.geoTaggedPlanted}
+                    </td>
+                    <td className="px-6 py-5.5 text-sm font-semibold text-[#454950] text-center">
+                      {project.nonGeoTagged}
+                    </td>
+                    <td className="px-6 py-5.5 text-sm font-semibold text-[#454950] text-center">
+                      {project.nonGeoTaggedPlanted}
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

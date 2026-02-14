@@ -299,60 +299,74 @@ export const TransactionTab = () => {
               </tr>
             </thead>
             <tbody>
-              {currentData.map((transaction, index) => (
-                <tr
-                  key={transaction.id}
-                  className={`${index % 2 === 0 ? "bg-gray-50" : "bg-white"} ${index !== currentData.length - 1
-                    ? "border-b border-[#E6E6E6]"
-                    : ""
-                    }`}
-                >
-                  <td className="px-6 py-5 text-sm font-semibold text-[#090C0F] text-center">
-                    {transaction.refNo}
-                  </td>
-                  <td className="px-6 py-5 text-sm font-semibold text-[#090C0F] text-center">
-                    {transaction.utrNo}
-                  </td>
-                  <td className="px-6 py-5 text-sm font-semibold text-[#090C0F] text-center">
-                    {transaction.hfiRcptNo}
-                  </td>
-                  <td className="px-6 py-5 text-sm font-semibold text-[#090C0F] text-center">
-                    {transaction.paymentMode}
-                  </td>
-                  <td className="px-6 py-5 text-sm font-semibold text-[#090C0F] text-center">
-                    {transaction.name}
-                  </td>
-                  <td className="px-6 py-5 text-sm font-semibold text-[#090C0F] text-center">
-                    {transaction.amount}
-                  </td>
-                  <td className="px-6 py-5 text-sm font-semibold text-[#454950] text-center">
-                    <div className="flex items-center justify-center gap-1">
-                      <Image
-                        src="/images/flag.png"
-                        alt={transaction.currency}
-                        width={28}
-                        height={28}
-                      />
-                      <p className="text-sm font-medium text-[#454950]">
-                        {transaction.currency}
-                      </p>
-                    </div>{" "}
-                  </td>
-                  <td className="px-6 py-5 text-center">
-                    <span
-                      className={`px-3 py-2 rounded-full leading-6 text-sm font-semibold ${transaction.status === "SUCCESSFUL"
-                        ? "bg-[#E7F8F0] text-[#0D824B]"
-                        : "bg-[#FEEDEC] text-[#F04438]"
-                        }`}
-                    >
-                      {transaction.status}
-                    </span>
-                  </td>
-                  <td className="px-6 py-5 text-xs font-semibold text-[#454950] text-center">
-                    {transaction.timestamp}
+              {isLoading ? (
+                <tr>
+                  <td colSpan={9} className="px-6 py-10 text-center text-gray-500 font-medium italic">
+                    Loading transactions...
                   </td>
                 </tr>
-              ))}
+              ) : currentData.length === 0 ? (
+                <tr>
+                  <td colSpan={9} className="px-6 py-10 text-center text-gray-500 font-medium italic">
+                    No transactions found.
+                  </td>
+                </tr>
+              ) : (
+                currentData.map((transaction, index) => (
+                  <tr
+                    key={transaction.id}
+                    className={`${index % 2 === 0 ? "bg-gray-50" : "bg-white"} ${index !== currentData.length - 1
+                      ? "border-b border-[#E6E6E6]"
+                      : ""
+                      }`}
+                  >
+                    <td className="px-6 py-5 text-sm font-semibold text-[#090C0F] text-center">
+                      {transaction.refNo}
+                    </td>
+                    <td className="px-6 py-5 text-sm font-semibold text-[#090C0F] text-center">
+                      {transaction.utrNo}
+                    </td>
+                    <td className="px-6 py-5 text-sm font-semibold text-[#090C0F] text-center">
+                      {transaction.hfiRcptNo}
+                    </td>
+                    <td className="px-6 py-5 text-sm font-semibold text-[#090C0F] text-center">
+                      {transaction.paymentMode}
+                    </td>
+                    <td className="px-6 py-5 text-sm font-semibold text-[#090C0F] text-center">
+                      {transaction.name}
+                    </td>
+                    <td className="px-6 py-5 text-sm font-semibold text-[#090C0F] text-center">
+                      {transaction.amount}
+                    </td>
+                    <td className="px-6 py-5 text-sm font-semibold text-[#454950] text-center">
+                      <div className="flex items-center justify-center gap-1">
+                        <Image
+                          src="/images/flag.png"
+                          alt={transaction.currency}
+                          width={28}
+                          height={28}
+                        />
+                        <p className="text-sm font-medium text-[#454950]">
+                          {transaction.currency}
+                        </p>
+                      </div>{" "}
+                    </td>
+                    <td className="px-6 py-5 text-center">
+                      <span
+                        className={`px-3 py-2 rounded-full leading-6 text-sm font-semibold ${transaction.status === "SUCCESSFUL"
+                          ? "bg-[#E7F8F0] text-[#0D824B]"
+                          : "bg-[#FEEDEC] text-[#F04438]"
+                          }`}
+                      >
+                        {transaction.status}
+                      </span>
+                    </td>
+                    <td className="px-6 py-5 text-xs font-semibold text-[#454950] text-center">
+                      {transaction.timestamp}
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

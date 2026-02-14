@@ -60,7 +60,7 @@ const Footer: React.FC<FooterProps> = ({
 
   const pathname = usePathname();
   const isAdminRoute = pathname?.startsWith("/admin");
-  const footerClass = `bg-[#0F172A] text-[#e6e6e6] md:mt-16 mt-8 ${
+  const footerClass = `bg-[#0F172A] text-[#e6e6e6] mt-auto md:mt-16 mt-8 ${
     (pathname.startsWith("/projects/") || pathname.startsWith("/species/")) &&
     "max-md:mb-[158px]"
   }`;
