@@ -192,15 +192,28 @@ export const useTreeCheckout = (co2PerTree?: number, initialPlantRates: PlantRat
 
   const currentRate = useMemo(
     () => {
-      const rate = plantRates.find((r) => r.currency_code === currency);
+      // Debug: Log all available rates
+      console.log("🌳 Available plant rates from Strapi:", plantRates);
+      
+      // Try exact match first (case-sensitive)
+      let rate = plantRates.find((r) => r.currency_code === currency);
+      
+      // If not found, try case-insensitive match
+      if (!rate) {
+        rate = plantRates.find((r) => r.currency_code?.toUpperCase() === currency?.toUpperCase());
+        if (rate) {
+          console.warn(`⚠️ Found rate with different case: "${rate.currency_code}" instead of "${currency}"`);
+        }
+      }
+      
       console.log("💰 Current currency:", currency, "Found rate:", rate);
       return rate;
     },
     [plantRates, currency]
   );
 
-  const geotaggedRate = currentRate ? currentRate.geotagged_rate : (currency === "INR" ? 175 : 10);
-  const nonGeotaggedRate = currentRate ? currentRate.non_geotagged_rate : (currency === "INR" ? 150 : 5);
+  const geotaggedRate = currentRate ? currentRate.geotagged_rate : (currency === "INR" ? 60 : 1);
+  const nonGeotaggedRate = currentRate ? currentRate.non_geotagged_rate : (currency === "INR" ? 60 : 1);
 
   // Transform Strapi species to checkout format, or use SPECIES_DATA as fallback
   const speciesList = useMemo(() => {

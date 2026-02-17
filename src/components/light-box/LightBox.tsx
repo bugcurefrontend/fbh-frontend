@@ -115,16 +115,8 @@ const LightBox: React.FC<LightBoxProps> = ({
     [plantRates, currency]
   );
 
-  const geotaggedRate = currentRate ? currentRate.geotagged_rate : (currency === "INR" ? 175 : 10);
-  const nonGeotaggedRate = currentRate ? currentRate.non_geotagged_rate : (currency === "INR" ? 150 : 5);
-
-  console.log("💰 [LightBox] Rate context:", {
-    currency,
-    currentRate,
-    geotaggedRate,
-    nonGeotaggedRate,
-    isGeoTagged
-  });
+  const geotaggedRate = useMemo(() => currentRate ? currentRate.geotagged_rate : (currency === "INR" ? 175 : 10), [currentRate, currency]);
+  const nonGeotaggedRate = useMemo(() => currentRate ? currentRate.non_geotagged_rate : (currency === "INR" ? 150 : 5), [currentRate, currency]);
 
   const quantities = [10, 25, 50, 100];
 
@@ -163,14 +155,14 @@ const LightBox: React.FC<LightBoxProps> = ({
     }
   }, [preSelectedAttribute]);
 
-  const handleQuantitySelect = (qty: number) => {
+  const handleQuantitySelect = useCallback((qty: number) => {
     const normalizedQty = Math.max(1, qty);
     setSelectedQuantity(normalizedQty);
     setManualQuantity("");
     updateOrderSummary(normalizedQty);
-  };
+  }, [geotaggedRate, nonGeotaggedRate, isGeoTagged, co2Sequestration, currency, currencySymbol]);
 
-  const handleManualQuantityChange = (
+  const handleManualQuantityChange = useCallback((
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     const digitsOnly = e.target.value.replace(/\D/g, "");
@@ -185,9 +177,9 @@ const LightBox: React.FC<LightBoxProps> = ({
     setManualQuantity(parsed.toString());
     setSelectedQuantity(null);
     updateOrderSummary(parsed);
-  };
+  }, [geotaggedRate, nonGeotaggedRate, isGeoTagged, co2Sequestration, currency, currencySymbol]);
 
-  const updateOrderSummary = (qty: number) => {
+  const updateOrderSummary = useCallback((qty: number) => {
     const rate = isGeoTagged ? geotaggedRate : nonGeotaggedRate;
     const amount = qty * rate;
     const co2Offset = Math.round(qty * co2Sequestration);
@@ -197,7 +189,7 @@ const LightBox: React.FC<LightBoxProps> = ({
       totalCo2Offset: co2Label,
       totalAmount: amount > 0 ? `${currencySymbol} ${amount.toLocaleString(currency === 'INR' ? 'en-IN' : 'en-US', { minimumFractionDigits: 2 })}` : "--",
     });
-  };
+  }, [isGeoTagged, geotaggedRate, nonGeotaggedRate, co2Sequestration, currency, currencySymbol]);
 
   useEffect(() => {
     updateOrderSummary(
@@ -240,67 +232,6 @@ const LightBox: React.FC<LightBoxProps> = ({
       setHasChosenGuest(false);
     }
   }, [isOpen, currency, preSelectedAttribute]);
-
-  const handleSaveAndNext = () => {
-    if (
-      step === 1 &&
-      (selectedQuantity || manualQuantity) &&
-      occasion.trim() !== ""
-    ) {
-      setStep(2);
-    } else if (step === 2 && isStep2Valid) {
-      setStep(3);
-    }
-  };
-
-  const handleBack = () => {
-    setStep((prev) => Math.max(prev - 1, 1));
-  };
-
-  const handlePersonalDetailsChange = useCallback((
-    field: keyof PersonalDetails,
-    value: string | boolean | City | Country | null
-  ) => {
-    setPersonalDetails((prev) => ({ ...prev, [field]: value }));
-  }, []);
-
-  const handleTaxDetailsChange = useCallback((field: keyof TaxDetails, value: any) => {
-    if (field === "citizenship") {
-      // When citizenship changes, reset ID type and ID number
-      const isIndian =
-        typeof value === "object" &&
-        value?.id === INDIA_COUNTRY_CODE;
-
-      setTaxDetails((prev) => ({
-        ...prev,
-        citizenship: value,
-        idType: isIndian ? "pan" : "passport",
-        idNumber: "",
-      }));
-      return;
-    }
-    if (field === "idType") {
-      setTaxDetails((prev) => ({ ...prev, idType: value, idNumber: "" }));
-      return;
-    }
-    setTaxDetails((prev) => ({ ...prev, [field]: value }));
-  }, []);
-
-  const handleGeoTaggedChange = (value: boolean) => {
-    setIsGeoTagged(value);
-  };
-
-  const handleProceed = () => {
-    console.log("Final Data:", {
-      occasion,
-      quantity: selectedQuantity || manualQuantity,
-      isGeoTagged,
-      personalDetails,
-      taxDetails,
-      orderSummary,
-    });
-    // Further processing logic here
-  };
 
   const emailValid = useMemo(
     () => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(personalDetails.email),
@@ -387,6 +318,69 @@ const LightBox: React.FC<LightBoxProps> = ({
       idNumberValid
     );
   }, [taxDetails, idNumberValid]);
+
+  const handleSaveAndNext = useCallback(() => {
+    if (
+      step === 1 &&
+      (selectedQuantity || manualQuantity) &&
+      occasion.trim() !== ""
+    ) {
+      setStep(2);
+    } else if (step === 2 && isStep2Valid) {
+      setStep(3);
+    }
+  }, [step, selectedQuantity, manualQuantity, occasion, isStep2Valid]);
+
+  const handleBack = useCallback(() => {
+    setStep((prev) => Math.max(prev - 1, 1));
+  }, []);
+
+  const handlePersonalDetailsChange = useCallback((
+    field: keyof PersonalDetails,
+    value: string | boolean | City | Country | null
+  ) => {
+    setPersonalDetails((prev) => ({ ...prev, [field]: value }));
+  }, []);
+
+  const handleTaxDetailsChange = useCallback((field: keyof TaxDetails, value: any) => {
+    if (field === "citizenship") {
+      // When citizenship changes, reset ID type and ID number
+      const isIndian =
+        typeof value === "object" &&
+        value?.id === INDIA_COUNTRY_CODE;
+
+      setTaxDetails((prev) => ({
+        ...prev,
+        citizenship: value,
+        idType: isIndian ? "pan" : "passport",
+        idNumber: "",
+      }));
+      return;
+    }
+    if (field === "idType") {
+      setTaxDetails((prev) => ({ ...prev, idType: value, idNumber: "" }));
+      return;
+    }
+    setTaxDetails((prev) => ({ ...prev, [field]: value }));
+  }, []);
+
+  const handleGeoTaggedChange = useCallback((value: boolean) => {
+    setIsGeoTagged(value);
+  }, []);
+
+  const handleProceed = useCallback(() => {
+    console.log("Final Data:", {
+      occasion,
+      quantity: selectedQuantity || manualQuantity,
+      isGeoTagged,
+      personalDetails,
+      taxDetails,
+      orderSummary,
+    });
+    // Further processing logic here
+  }, [occasion, selectedQuantity, manualQuantity, isGeoTagged, personalDetails, taxDetails, orderSummary]);
+
+
 
   // Login dialog logic...
   useEffect(() => {
