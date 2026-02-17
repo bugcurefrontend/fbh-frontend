@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import AllProjectsPage from "../../src/components/AllProjectsPage";
+import AllProjectsPage from "@/components/AllProjectsPage";
 import { fetchAllProjects } from "@/services/projects";
 import { fetchGlobal } from "@/services/global";
 

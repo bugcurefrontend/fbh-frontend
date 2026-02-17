@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
-import ProjectDetailPage from "../../../src/components/ProjectDetailPage";
+import ProjectDetailPage from "@/components/ProjectDetailPage";
 import { PageLoader } from "@/components/ui/page-loader";
 import {
   fetchAllProjects,

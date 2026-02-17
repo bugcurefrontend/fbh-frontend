@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
-import SpeciesDetailPage from "../../../src/components/SpeciesDetailPage";
+import SpeciesDetailPage from "@/components/SpeciesDetailPage";
 import { fetchAllSpecies, fetchSpeciesBySlug, generateSlug } from "@/services/species";
 import { fetchAllPlantRates } from "@/services/plant-rates";
 import { SpeciesSimplified } from "@/types/species";
