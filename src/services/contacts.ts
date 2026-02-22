@@ -5,6 +5,7 @@
 
 import { fetchAPI } from "./api";
 import { ContactFormData, ContactApiResponse } from "@/types/contact";
+import { logger } from "@/lib/logger";
 
 /**
  * Submit contact form data to Strapi
@@ -26,7 +27,7 @@ export async function submitContactForm(
 
         return response;
     } catch (error) {
-        console.error("Error submitting contact form:", error);
+        logger.error("Error submitting contact form", error);
         throw error;
     }
 }

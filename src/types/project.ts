@@ -1,5 +1,39 @@
 // TypeScript interfaces for Project API
 
+// Strapi rich text block types
+export interface StrapiRichTextChild {
+  type: string;
+  text?: string;
+  bold?: boolean;
+  italic?: boolean;
+  underline?: boolean;
+  url?: string;
+  children?: StrapiRichTextChild[];
+}
+
+export interface StrapiRichTextBlock {
+  type: string;
+  level?: number;
+  format?: string;
+  children: StrapiRichTextChild[];
+}
+
+// Minimal shape for species related from Strapi
+export interface SpeciesRef {
+  id: number;
+  documentId: string;
+  common_name?: string;
+  scientific_name?: string;
+  [key: string]: unknown;
+}
+
+// Minimal shape for tree entities
+export interface TreeRef {
+  id: number;
+  documentId: string;
+  [key: string]: unknown;
+}
+
 export interface ProjectImage {
   id: number;
   documentId: string;
@@ -47,12 +81,12 @@ export interface Project {
   images: ProjectImage[];
   video_thumbnail: ProjectImage | null;
   video_url: string | null;
-  description: any; // Rich text blocks
+  description: StrapiRichTextBlock[]; // Rich text blocks
   address: string;
   map_code: string;
-  species: any[]; // Related species
+  species: SpeciesRef[]; // Related species
   project_updates: ProjectUpdate[];
-  trees: any[];
+  trees: TreeRef[];
   tree_counts: TreeCount[];
   deleted: boolean;
   createdAt: string;
@@ -69,12 +103,12 @@ export interface ProjectSimplified {
   images: ProjectImage[];
   videoThumbnail: string | null; // Video thumbnail URL
   videoUrl: string | null;
-  description: any;
+  description: StrapiRichTextBlock[];
   address: string;
   mapCode: string;
   plantedCount: number; // Sum of tree_counts.total
   availableCount: number; // Fetched from Django metrics
-  species: any[];
+  species: SpeciesRef[];
   projectUpdates: ProjectUpdate[];
   deleted: boolean;
   createdAt: string;

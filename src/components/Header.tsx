@@ -7,7 +7,8 @@ import { MobileNavigation } from "./ui/mobile-navigation";
 import Link from "next/link";
 import { LogOut, TriangleAlert, User, X } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
-import { isAdminAuthenticated, getAdminUser, clearAdminAuth } from "@/services/admin-auth";
+import { isAdminAuthenticated, getAdminUser, logoutAdmin } from "@/services/admin-auth";
+import type { AdminLoginResponse } from "@/services/admin-auth";
 import CurrencySelect from "./CurrencySelect";
 import { Suspense } from "react";
 import { usePathname } from "next/navigation";
@@ -33,7 +34,7 @@ export default function Header() {
   const [globalData, setGlobalData] = React.useState<GlobalContent | null>(null);
   const [isHydrated, setIsHydrated] = React.useState(false);
   const [isAdminLoggedIn, setIsAdminLoggedIn] = React.useState(false);
-  const [adminUserData, setAdminUserData] = React.useState<any>(null);
+  const [adminUserData, setAdminUserData] = React.useState<AdminLoginResponse["user"] | null>(null);
   const pathname = usePathname();
   const isAdminRoute = pathname?.startsWith("/admin");
 
@@ -178,8 +179,8 @@ export default function Header() {
                     )}
                   </div>
                   <button
-                    onClick={() => {
-                      clearAdminAuth();
+                    onClick={async () => {
+                      await logoutAdmin();
                       setIsAdminLoggedIn(false);
                       setAdminUserData(null);
                       window.location.href = "/admin/login";

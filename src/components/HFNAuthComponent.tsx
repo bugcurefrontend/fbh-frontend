@@ -28,8 +28,9 @@ export default function HFNAuthComponent({
           // DO NOT set loginCallback here - it's handled by OneAuth.tsx on the callback page
           // Setting it here causes duplicate processing and "code invalid" errors
 
-          const handleUserLoggedOut = async (event: any) => {
-            if (event?.detail?.loggedOut && onUserLoggedOut) {
+          const handleUserLoggedOut = async (event: Event) => {
+            const customEvent = event as CustomEvent<{ loggedOut?: boolean }>;
+            if (customEvent.detail?.loggedOut && onUserLoggedOut) {
               await onUserLoggedOut();
             }
           };
@@ -60,7 +61,7 @@ export default function HFNAuthComponent({
 
   return (
     <hfn-auth
-      ref={hfnAuthRef as any}
+      ref={hfnAuthRef}
       config={JSON.stringify(hfnAuthConfig)}
       showCancel="true"
       authType="on-demand"

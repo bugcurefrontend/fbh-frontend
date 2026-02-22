@@ -17,8 +17,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import Overview from "./icons/overview";
-import Update from "./icons/update";
+import Overview from "./icons/Overview";
+import Update from "./icons/Update";
 import Species from "./icons/Species";
 import DonorsTable from "./DonorsTable";
 import RelatedProjects from "./RelatedProjects";

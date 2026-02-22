@@ -27,7 +27,7 @@ interface TableActionsProps {
   // Sort props
   sortOptions?: SortOption[];
   selectedSort?: SortOption | null;
-  onSortChange?: (sort: SortOption) => void;
+  onSortChange?: (sort: SortOption | null) => void;
 
   // Export props
   onExport?: () => void;
@@ -176,7 +176,7 @@ export const TableActions = ({
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    onSortChange && onSortChange(null as any);
+                    onSortChange && onSortChange(null);
                   }}
                   className="text-[#003399] hover:opacity-80 p-0.5"
                 >

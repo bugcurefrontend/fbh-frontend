@@ -5,13 +5,30 @@
 import { cache } from "react";
 import { fetchAPI, getStrapiURL } from "./api";
 import { OurTeamContent } from "@/types/our-team-content";
+import { serviceErrorFallback } from "./service-utils";
+
+interface TeamGalleryImage {
+    id: number;
+    url?: string;
+    attributes?: { url?: string };
+}
+
+interface TeamContentResponse {
+    id: number;
+    gallery?: TeamGalleryImage[];
+    attributes?: {
+        gallery?: {
+            data?: TeamGalleryImage[];
+        };
+    };
+}
 
 /**
  * Fetch Our Team Content
  */
 export const fetchOurTeamContent = cache(async (): Promise<OurTeamContent | null> => {
     try {
-        const data = await fetchAPI("/our-team-content", {
+        const data = await fetchAPI<{ data?: TeamContentResponse }>("/our-team-content", {
             populate: {
                 gallery: true,
             },
@@ -28,12 +45,12 @@ export const fetchOurTeamContent = cache(async (): Promise<OurTeamContent | null
             return getStrapiURL(rawUrl);
         };
 
-        const galleryFromTop = item.gallery?.map((img: any) => ({
+        const galleryFromTop = item.gallery?.map((img: TeamGalleryImage) => ({
             id: img.id,
             url: normalizeUrl(img.url || img.attributes?.url || ""),
         }));
 
-        const galleryFromAttributes = item.attributes?.gallery?.data?.map((img: any) => ({
+        const galleryFromAttributes = item.attributes?.gallery?.data?.map((img: TeamGalleryImage) => ({
             id: img.id,
             url: normalizeUrl(img.attributes?.url || ""),
         }));
@@ -43,7 +60,7 @@ export const fetchOurTeamContent = cache(async (): Promise<OurTeamContent | null
             gallery: galleryFromTop && galleryFromTop.length ? galleryFromTop : (galleryFromAttributes || []),
         };
     } catch (error) {
-        console.error("Error fetching Our Team Content:", error);
-        return null;
+        return serviceErrorFallback("Error fetching Our Team Content:", error, null);
     }
 });
+

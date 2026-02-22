@@ -33,7 +33,7 @@ export interface SpeciesImage {
   url: string;
   previewUrl: string | null;
   provider: string;
-  provider_metadata: any;
+  provider_metadata: unknown;
   createdAt: string;
   updatedAt: string;
   publishedAt: string;
@@ -73,9 +73,9 @@ export interface Species {
   images: SpeciesImage[];
   video_thumbnail?: SpeciesImage | null;
   video_url?: string | null;
-  trees: any[]; // Can be typed more specifically if needed
-  projects: any[]; // Can be typed more specifically if needed
-  tree_counts: any[]; // Can be typed more specifically if needed
+  trees: unknown[]; // Can be typed more specifically if needed
+  projects: unknown[]; // Can be typed more specifically if needed
+  tree_counts: unknown[]; // Can be typed more specifically if needed
 }
 
 // Helper interface for transformed/simplified species data

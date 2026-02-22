@@ -6,6 +6,7 @@ import { fetchAllSpecies, fetchSpeciesBySlug, generateSlug } from "@/services/sp
 import { fetchAllPlantRates } from "@/services/plant-rates";
 import { SpeciesSimplified } from "@/types/species";
 import { PageLoader } from "@/components/ui/page-loader";
+import { logger } from "@/lib/logger";
 
 type Params = { slug: string };
 
@@ -20,7 +21,7 @@ export async function generateStaticParams(): Promise<Params[]> {
       slug: generateSlug(s.name),
     }));
   } catch (error) {
-    console.error("Error generating static params:", error);
+    logger.error("Error generating static params", error);
     return [];
   }
 }

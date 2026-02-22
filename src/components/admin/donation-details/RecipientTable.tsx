@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/pagination";
 import SearchBar from "@/components/SearchBar";
 import { TableActions, SortOption, FilterOption } from "../TableActions";
+import { logger } from "@/lib/logger";
 
 interface RecipientData {
   id: number;
@@ -204,7 +205,7 @@ export const RecipientTable = ({
                           if (recipient.certificate_url) {
                             window.open(recipient.certificate_url, '_blank');
                           } else {
-                            console.warn('No certificate URL available');
+                            logger.warn("No certificate URL available");
                           }
                         }}
                         className="p-2 hover:bg-gray-100 rounded-full transition-colors"

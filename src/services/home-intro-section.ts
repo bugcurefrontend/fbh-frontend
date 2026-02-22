@@ -5,6 +5,21 @@
 import { cache } from "react";
 import { fetchAPI, getStrapiURL } from "./api";
 import { HomeIntroSection } from "@/types/home-intro-section";
+import { serviceErrorFallback } from "./service-utils";
+
+type ImageLike = {
+  id?: number;
+  url?: string;
+  width?: number;
+  height?: number;
+  data?: ImageLike;
+  attributes?: ImageLike;
+  formats?: {
+    large?: { url?: string; width?: number; height?: number };
+    medium?: { url?: string; width?: number; height?: number };
+    small?: { url?: string; width?: number; height?: number };
+  };
+};
 
 export const fetchHomeIntroSection = cache(async (): Promise<HomeIntroSection | null> => {
   try {
@@ -25,7 +40,7 @@ export const fetchHomeIntroSection = cache(async (): Promise<HomeIntroSection | 
       return getStrapiURL(rawUrl);
     };
 
-    const extractImage = (img: any) => {
+    const extractImage = (img: ImageLike | null | undefined) => {
       if (!img) return null;
       const source = img.data || img;
       const url = source?.attributes?.url || source?.url || source?.formats?.large?.url || source?.formats?.medium?.url || source?.formats?.small?.url || "";
@@ -47,7 +62,7 @@ export const fetchHomeIntroSection = cache(async (): Promise<HomeIntroSection | 
       image: extractImage(attrs.image) || null,
     };
   } catch (error) {
-    console.error("Error fetching Home Intro Section:", error);
-    return null;
+    return serviceErrorFallback("Error fetching Home Intro Section:", error, null);
   }
 });
+

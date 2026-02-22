@@ -13,6 +13,11 @@ import { fetchFooterMenu } from "@/services/footer-menu";
 import { fetchSocialLinks } from "@/services/social-link";
 import { fetchUsefulLinks } from "@/services/useful-link";
 import { fetchGlobal } from "@/services/global";
+import type { FooterMenuSimplified } from "@/types/footer-menu";
+import type { SocialLinkSimplified } from "@/types/social-link";
+import type { UsefulLinkSimplified } from "@/types/useful-link";
+import type { GlobalContent } from "@/types/global";
+import { logger } from "@/lib/logger";
 
 export const metadata = {
   title: "Forests by Heartfulness",
@@ -43,24 +48,20 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  let footerMenu: any = null;
-  let socialLinks: any = null;
-  let usefulLinks: any = null;
-  let global: any = null;
+  let footerMenu: FooterMenuSimplified = { items: [] };
+  let socialLinks: SocialLinkSimplified | undefined = undefined;
+  let usefulLinks: UsefulLinkSimplified = { items: [] };
+  let globalData: GlobalContent | null = null;
 
   try {
-    [footerMenu, socialLinks, usefulLinks, global] = await Promise.all([
+    [footerMenu, socialLinks, usefulLinks, globalData] = await Promise.all([
       fetchFooterMenu(),
       fetchSocialLinks(),
       fetchUsefulLinks(),
       fetchGlobal(),
     ]);
   } catch (err) {
-    console.error("Error fetching layout data:", err);
-    footerMenu = { items: [] };
-    socialLinks = null;
-    usefulLinks = { items: [] };
-    global = null;
+    logger.error("Error fetching layout data", err);
   }
 
   // Convert simple Markdown links [text](url) to HTML anchor tags for rendering
@@ -71,7 +72,7 @@ export default async function RootLayout({
     return md.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
   };
 
-  const copyrightHtml = global?.copyright ? convertMarkdownLinksToHtml(global.copyright) : null;
+  const copyrightHtml = globalData?.copyright ? convertMarkdownLinksToHtml(globalData.copyright) : null;
 
   return (
     <html lang="en" className={publicSans.className}>

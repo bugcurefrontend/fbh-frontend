@@ -5,6 +5,7 @@ import { OrderSummary as OrderSummaryType } from "./types";
 import ProceedToPay from "./ProceedToPay";
 
 import { Recipient } from "@/components/gift-tree/types";
+import { PersonalDetails, TaxDetails } from "@/components/plant-tree/types";
 
 interface OrderSummaryProps {
   orderSummary: OrderSummaryType;
@@ -16,11 +17,12 @@ interface OrderSummaryProps {
   onTreeCountChange?: (count: number) => void;
   onRecipientsUpdate?: (recipients: Recipient[]) => void;
   onProceedToPayment?: () => Promise<boolean>;
-  reservationToken?: string; // NEW: Reservation token
-  currencyCode?: string; // NEW
-  availableTrees?: number; // NEW
-  personalDetails?: any;
-  taxDetails?: any;
+  reservationToken?: string;
+  currencyCode?: string;
+  availableTrees?: number;
+  location?: string;
+  personalDetails?: PersonalDetails;
+  taxDetails?: TaxDetails;
 }
 
 const OrderSummary: React.FC<OrderSummaryProps> = ({
@@ -33,12 +35,15 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
   onTreeCountChange,
   onRecipientsUpdate,
   onProceedToPayment,
-  reservationToken, // NEW
+  reservationToken,
   currencyCode,
   availableTrees,
+  location,
   personalDetails,
   taxDetails,
 }) => {
+  const displayLocation =
+    location ?? process.env.NEXT_PUBLIC_DONATION_LOCATION ?? "Shivgarh, MP";
   return (
     <div className="lg:w-[45%] sticky top-20 self-start space-y-6">
       <div className="space-y-1">
@@ -62,7 +67,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
 
               <div className="space-y-3 md:space-y-4 font-semibold text-sm leading-5.5">
                 <h2 className="mb-4.5 md:mb-6 md:text-base md:font-bold">
-                  Shivgarh, MP
+                  {displayLocation}
                 </h2>
                 <h2>
                   {orderSummary.numberOfTrees > 0

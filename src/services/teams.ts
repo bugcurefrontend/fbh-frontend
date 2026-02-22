@@ -6,6 +6,7 @@
 import { cache } from "react";
 import { fetchAPI } from "./api";
 import { TeamMember, TeamMemberSimplified } from "@/types/team";
+import { serviceErrorFallback } from "./service-utils";
 
 /**
  * Transform raw Strapi team member data to simplified format
@@ -67,8 +68,8 @@ export const fetchAllTeams = cache(
                 transformTeamMember(member)
             );
         } catch (error) {
-            console.error("Error fetching all teams:", error);
-            return [];
+            return serviceErrorFallback("Error fetching all teams:", error, []);
         }
     }
 );
+

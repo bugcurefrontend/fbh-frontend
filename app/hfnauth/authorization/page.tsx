@@ -1,5 +1,3 @@
-"use client";
-
 import OneAuth from "@/components/OneAuth";
 
 export default function HFNAuthCallback() {

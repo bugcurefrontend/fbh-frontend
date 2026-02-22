@@ -5,9 +5,10 @@ import { ArrowLeft } from "lucide-react";
 import { DonationDetailsHeader } from "./DonationDetailsHeader";
 import { RecipientTable } from "./RecipientTable";
 import PlantedTrees from "@/components/PlantedTrees";
-import { fetchDonationDetail } from "@/services/admin";
+import { fetchDonationDetail, DonationDetail as AdminDonationDetail } from "@/services/admin";
+import { logger } from "@/lib/logger";
 
-interface DonationDetail {
+interface DonationSummary {
   id: number;
   hfiRcptNo: string;
   name: string;
@@ -32,8 +33,20 @@ interface RecipientData {
   geoTagged: string;
 }
 
+interface DonationDetailViewData extends AdminDonationDetail {
+  donor: AdminDonationDetail["donor"] & { user_phone?: string };
+  recipient_details?: AdminDonationDetail["recipient_details"] & { recipient_phone?: string };
+  allocation?: {
+    id: number;
+    total_trees?: number;
+    trees_allocated?: number;
+    certificate_url?: string;
+    project_id?: number;
+  };
+}
+
 interface DonationDetailsViewProps {
-  donation: DonationDetail;
+  donation: DonationSummary;
   onBack: () => void;
 }
 
@@ -62,7 +75,7 @@ export const DonationDetailsView = ({
   onBack,
 }: DonationDetailsViewProps) => {
   const [selectedRecipient, setSelectedRecipient] = useState<RecipientData | null>(null);
-  const [donationDetail, setDonationDetail] = useState<any>(null);
+  const [donationDetail, setDonationDetail] = useState<DonationDetailViewData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   // Fetch full donation details from API
@@ -72,10 +85,11 @@ export const DonationDetailsView = ({
         setIsLoading(true);
         try {
           const data = await fetchDonationDetail(donation.id);
-          console.log("Fetched donation detail:", data);
-          setDonationDetail(data);
+          if (data) {
+            setDonationDetail(data as DonationDetailViewData);
+          }
         } catch (error) {
-          console.error("Failed to load donation details", error);
+          logger.error("Failed to load donation details", error);
         } finally {
           setIsLoading(false);
         }

@@ -11,8 +11,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import Overview from "./icons/overview";
-import Update from "./icons/update";
+import Overview from "./icons/Overview";
+import Update from "./icons/Update";
 import Species from "./icons/Species";
 import RelatedProjects from "./RelatedProjects";
 import DonorsTable from "./DonorsTable";
@@ -27,6 +27,7 @@ import {
 import Gallery from "./Gallery";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { fetchOurTeamContent } from "@/services/our-team-content";
+import { logger } from "@/lib/logger";
 
 interface Project {
   id: string | number;
@@ -85,11 +86,11 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({
       .then((data) => {
         if (!mounted) return;
         const imgs =
-          data?.gallery?.map((g: any) => g.url).filter(Boolean) ?? null;
+          data?.gallery?.map((g) => g.url).filter((url): url is string => Boolean(url)) ?? null;
         setGalleryImages(imgs);
       })
       .catch((err) => {
-        console.error("Failed to load Our Team content:", err);
+        logger.warn("Failed to load Our Team content", err);
       });
 
     return () => {

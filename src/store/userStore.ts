@@ -6,14 +6,14 @@ interface UserData {
   firebaseUid?: string;
   keycloak_user_id?: string;
   cityId?: string;
-  city?: any;
+  city?: unknown;
   state?: string;
   apiToken?: string;
   tokenData?: {
     accessToken?: string;
   };
   picture?: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 class UserStore {

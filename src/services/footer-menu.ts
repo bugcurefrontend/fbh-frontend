@@ -7,6 +7,7 @@
 import { cache } from "react";
 import { fetchAPI } from "./api";
 import { FooterMenu, FooterMenuItem, FooterMenuSimplified } from "@/types/footer-menu";
+import { serviceErrorFallback } from "./service-utils";
 
 /**
  * Transform raw Strapi FooterMenu data to simplified format
@@ -37,7 +38,6 @@ export const fetchFooterMenu = cache(async (): Promise<FooterMenuSimplified> => 
 
     return { items: [] };
   } catch (error) {
-    console.error("Error fetching footer menu:", error);
-    return { items: [] };
+    return serviceErrorFallback("Error fetching footer menu:", error, { items: [] });
   }
 });

@@ -10,21 +10,23 @@ import { useAuth } from "@/lib/auth-context";
 
 import { useState } from "react";
 import { fetchDonationHistory, DonationHistoryItem } from "@/services/donations";
-import { donations as mockDonations } from "./mock-data";
 import DonateIcon from "@/components/icons/DonateIcon";
 import { DashboardTab } from "./DashboardTab";
 import { DonationsTab } from "./DonationsTab";
 import { AccountPageSkeleton } from "./AccountPageSkeleton";
+import { DonationCard } from "./types";
+import { logger } from "@/lib/logger";
 
 const AccountPageClient = () => {
   const { isAuthenticated, isLoading, userProfile } = useAuth();
   const router = useRouter();
 
   // Lifted state for donation history
-  const [allDonationsData, setAllDonationsData] = useState<any[]>([]);
+  const [allDonationsData, setAllDonationsData] = useState<DonationCard[]>([]);
   const [totalDonationsCount, setTotalDonationsCount] = useState(0);
   const [donationsLoading, setDonationsLoading] = useState(false);
   const [donationsLoaded, setDonationsLoaded] = useState(false);
+  const [donationsError, setDonationsError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
@@ -39,6 +41,7 @@ const AccountPageClient = () => {
 
     const loadAllDonations = async () => {
       setDonationsLoading(true);
+      setDonationsError(null);
       try {
         const normalizedEmail = userEmail.toLowerCase();
         // Fetch a large enough page size to cover most users (100)
@@ -66,20 +69,22 @@ const AccountPageClient = () => {
             recipientName: item.donation_type === "Received" ?
               (userProfile?.firstName + " " + userProfile?.lastName) :
               (item.recipient_details?.recipient_name || userProfile?.firstName + " " + userProfile?.lastName),
-            certificateUrl: item.certificate_url,
-            receiptUrl: item.receipt_url,
+            certificateUrl: item.certificate_url ?? null,
+            receiptUrl: item.receipt_url ?? null,
             giftedBy: item.gifted_by,
           }));
           setAllDonationsData(mapped);
           setTotalDonationsCount(response.count);
         } else {
-          setAllDonationsData(mockDonations);
-          setTotalDonationsCount(mockDonations.length);
+          // No results - set empty array instead of mock data
+          setAllDonationsData([]);
+          setTotalDonationsCount(0);
         }
       } catch (error) {
-        console.error("Error loading donations:", error);
-        setAllDonationsData(mockDonations);
-        setTotalDonationsCount(mockDonations.length);
+        logger.error("Error loading donations", error);
+        setDonationsError("Failed to load donation history. Please try again later.");
+        setAllDonationsData([]);
+        setTotalDonationsCount(0);
       } finally {
         setDonationsLoaded(true);
         setDonationsLoading(false);
@@ -154,6 +159,7 @@ const AccountPageClient = () => {
             allDonationsData={allDonationsData}
             totalItems={totalDonationsCount}
             loading={donationsLoading}
+            error={donationsError}
           />
         </TabsContent>
       </Tabs>

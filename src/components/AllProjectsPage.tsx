@@ -62,9 +62,7 @@ const AllProjectsPage: React.FC<AllProjectsPageProps> = ({
     );
   }, [searchQuery, allProjects]);
 
-  const handlePlantTree = (projectId: string | number) => {
-    console.log(`Plant tree for project: ${projectId}`);
-  };
+  const handlePlantTree = (_projectId: string | number) => {};
 
   const handlePageChange = (page: number) => {
     setPagination((prev) => ({

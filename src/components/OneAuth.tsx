@@ -3,6 +3,9 @@
 import React, { useCallback, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { actions } from "@/store/userStore";
+import { queryHFNElement } from "@/lib/hfnauth";
+import type { AuthCallbackResponse } from "@/types/hfnauth-types";
+import { logger } from "@/lib/logger";
 
 function OneAuth() {
   const router = useRouter();
@@ -10,7 +13,7 @@ function OneAuth() {
   const callbackProcessed = useRef(false);
 
   const handleAuth = (status: boolean) => {
-    const authElement = document.querySelector("hfn-auth") as any;
+    const authElement = queryHFNElement();
     if (authElement && typeof authElement.handleProfileAuthentication === "function") {
       authElement.handleProfileAuthentication(status);
     }
@@ -61,24 +64,24 @@ function OneAuth() {
           ],
         });
 
-        console.log("OneAuth: getMeProfile response", resData);
+        const getString = (value: unknown, fallback = ""): string =>
+          typeof value === "string" ? value : fallback;
 
         if (resData?.data && resData.data.user_firebase_uid) {
           const userData = resData.data;
-          console.log("OneAuth: photo_url from data", userData.photo_url);
 
           const userInfo = {
             ...userData,
-            firstName: userData.first_name || "User",
-            lastName: userData.last_name || "",
-            email: userData.email || "",
-            userId: userData.id || "",
-            firebaseUid: userData.user_firebase_uid || "",
-            keycloak_user_id: userData.user_firebase_uid || "",
-            cityId: userData.city_id || "",
+            firstName: getString(userData.first_name, "User"),
+            lastName: getString(userData.last_name),
+            email: getString(userData.email),
+            userId: getString(userData.id),
+            firebaseUid: getString(userData.user_firebase_uid),
+            keycloak_user_id: getString(userData.user_firebase_uid),
+            cityId: getString(userData.city_id),
             city: userData.city_id || {},
-            state: userData.state || "",
-            picture: userData.photo_url || "",
+            state: getString(userData.state),
+            picture: getString(userData.photo_url),
             tokenData: { accessToken: access_token },
             apiToken: access_token,
           };
@@ -95,6 +98,7 @@ function OneAuth() {
           await getUserProfile({ access_token });
         }
       } catch (error) {
+        logger.error("Failed to fetch OneAuth user profile", error);
         handleAuth(false);
       }
     },
@@ -103,9 +107,9 @@ function OneAuth() {
 
   useEffect(() => {
     const setupLoginCallback = () => {
-      const authElement = document.querySelector("hfn-auth") as any;
+      const authElement = queryHFNElement();
       if (authElement) {
-        authElement.loginCallback = async (response: { data: any }) => {
+        authElement.loginCallback = async (response: AuthCallbackResponse) => {
           try {
             const user = response?.data;
 
@@ -119,6 +123,7 @@ function OneAuth() {
             await getUserProfile({ access_token: user.access_token });
             return true;
           } catch (error) {
+            logger.error("OneAuth login callback failed", error);
             callbackProcessed.current = false;
             handleAuth(false);
             return false;

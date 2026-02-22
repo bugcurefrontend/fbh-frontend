@@ -7,6 +7,7 @@
 import { cache } from "react";
 import { fetchAPI } from "./api";
 import { CaseStudy, CaseStudySimplified } from "@/types/case-study";
+import { serviceErrorFallback } from "./service-utils";
 
 /**
  * Generate URL-friendly slug from case study title
@@ -78,8 +79,7 @@ export const fetchAllCaseStudies = cache(async (): Promise<CaseStudySimplified[]
       .filter((cs: CaseStudy) => !cs.deleted)
       .map((cs: CaseStudy) => transformCaseStudy(cs));
   } catch (error) {
-    console.error("Error fetching all case studies:", error);
-    return [];
+    return serviceErrorFallback("Error fetching all case studies:", error, []);
   }
 });
 
@@ -94,8 +94,7 @@ export async function fetchCaseStudySlugs(): Promise<{ slug: string }[]> {
       slug: generateCaseStudySlug(cs.title),
     }));
   } catch (error) {
-    console.error("Error fetching case study slugs:", error);
-    return [];
+    return serviceErrorFallback("Error fetching case study slugs:", error, []);
   }
 }
 
@@ -114,7 +113,7 @@ export const fetchCaseStudyBySlug = cache(async (
     );
     return caseStudy || null;
   } catch (error) {
-    console.error(`Error fetching case study by slug ${slug}:`, error);
-    return null;
+    return serviceErrorFallback(`Error fetching case study by slug ${slug}:`, error, null);
   }
 });
+

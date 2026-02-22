@@ -6,6 +6,24 @@ import { cache } from "react";
 import { fetchAPI, getStrapiURL } from "./api";
 import { GlobalContent } from "@/types/global";
 import { Attribute } from "@/types/attribute";
+import { serviceErrorFallback } from "./service-utils";
+
+type MediaLike = {
+  id?: number;
+  url?: string;
+  width?: number;
+  height?: number;
+  image?: { data?: { attributes?: { url?: string } } } | string;
+  data?: MediaLike;
+  attributes?: MediaLike;
+  formats?: {
+    large?: { url?: string; width?: number; height?: number };
+    medium?: { url?: string; width?: number; height?: number };
+    small?: { url?: string; width?: number; height?: number };
+  };
+  name?: string;
+  type?: string;
+};
 
 export const fetchGlobal = cache(async (): Promise<GlobalContent | null> => {
   try {
@@ -34,7 +52,7 @@ export const fetchGlobal = cache(async (): Promise<GlobalContent | null> => {
       return getStrapiURL(rawUrl);
     };
 
-    const extractMedia = (media: any) => {
+    const extractMedia = (media: MediaLike | null | undefined) => {
       if (!media) return null;
       const source = media.data || media;
       const url =
@@ -44,15 +62,21 @@ export const fetchGlobal = cache(async (): Promise<GlobalContent | null> => {
       return { id: source?.id || 0, url: normalizeUrl(url || ""), width, height };
     };
 
-    const extractAttribute = (attr: any): Attribute | null => {
+    const extractAttribute = (attr: MediaLike | null | undefined): Attribute | null => {
       if (!attr) return null;
       const source = attr.data || attr;
       const attributes = source?.attributes || source;
+      const imageValue = attributes?.image;
       return {
         id: source?.id || 0,
         name: attributes?.name || "",
         type: attributes?.type || "",
-        image: attributes?.image?.data ? normalizeUrl(attributes.image.data?.attributes?.url || "") : attributes?.image || "",
+        image:
+          typeof imageValue === "string"
+            ? normalizeUrl(imageValue)
+            : imageValue?.data
+              ? normalizeUrl(imageValue.data?.attributes?.url || "")
+              : "",
       } as Attribute;
     };
 
@@ -70,7 +94,6 @@ export const fetchGlobal = cache(async (): Promise<GlobalContent | null> => {
       copyright: attrs.copyright ?? null,
     };
   } catch (error) {
-    console.error("Error fetching Global content:", error);
-    return null;
+    return serviceErrorFallback("Error fetching Global content:", error, null);
   }
 });

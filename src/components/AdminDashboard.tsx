@@ -26,20 +26,13 @@ import { AnalyticsCards } from "./admin/dashboard/AnalyticsCards";
 import { RevenueCharts } from "./admin/dashboard/RevenueCharts";
 import { RecentDonations } from "./admin/dashboard/RecentDonations";
 import Image from "next/image";
-
-interface AnalyticsCard {
-  id: number;
-  icon: React.ComponentType<any>;
-  title: string;
-  value: number;
-  bgColor?: string;
-}
+import { AnalyticsCard, RecentDonationRow } from "./admin/dashboard/types";
 
 const AdminDashboard = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [metrics, setMetrics] = useState<DashboardMetrics | null>(null);
   const [cardsData, setCardsData] = useState<AnalyticsCard[]>(analyticsCards);
-  const [recentDonationsData, setRecentDonationsData] = useState(recentDonations);
+  const [recentDonationsData, setRecentDonationsData] = useState<RecentDonationRow[]>(recentDonations);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -62,21 +55,21 @@ const AdminDashboard = () => {
         const newCards: AnalyticsCard[] = [
           {
             id: 1,
-            icon: DonateIcon as React.ComponentType<any>,
+            icon: DonateIcon,
             title: "Total Donations",
             value: data.total_donations,
             bgColor: "#F3F4F6",
           },
           {
             id: 2,
-            icon: TreesIcon as React.ComponentType<any>,
+            icon: TreesIcon,
             title: "Total Trees",
             value: data.total_trees_allocated,
             bgColor: "#F3F4F6",
           },
           {
             id: 3,
-            icon: UsersIcon as React.ComponentType<any>,
+            icon: UsersIcon,
             title: "Total Donors",
             value: data.total_donors,
             bgColor: "#F3F4F6",

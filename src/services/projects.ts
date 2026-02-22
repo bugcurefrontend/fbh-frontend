@@ -1,31 +1,31 @@
 /**
  * Projects API Service
- * Direct Strapi API calls at build time (like donations-nextjs pattern)
- * Uses React cache() to deduplicate requests during a single render pass
+ * Direct Strapi API calls with cached helpers.
  */
 
 import { cache } from "react";
 import { fetchAPI } from "./api";
 import { Project, ProjectSimplified, TreeCount } from "@/types/project";
-import { fetchProjectMetrics } from "./allocations";
 
-/**
- * Calculate total planted count from tree_counts
- */
+interface ProjectListResponse {
+  data: Project[];
+  meta?: {
+    pagination?: {
+      page: number;
+      pageSize: number;
+      pageCount: number;
+      total: number;
+    };
+  };
+}
+
 function calculatePlantedCount(treeCounts: TreeCount[]): number {
   if (!treeCounts || !Array.isArray(treeCounts)) return 0;
   return treeCounts.reduce((sum, tc) => sum + (tc.total || 0), 0);
 }
 
-/**
- * Transform raw Strapi project data to simplified format
- */
-function transformProject(project: Project, availableCount: number = 0, totalCount: number = 0): ProjectSimplified {
-  // If metrics provided a totalCount, use it to calculate plantedCount
-  // Otherwise fall back to Strapi's tree_counts
-  const plantedCount = totalCount > 0
-    ? totalCount - availableCount
-    : calculatePlantedCount(project.tree_counts);
+function transformProject(project: Project): ProjectSimplified {
+  const plantedCount = calculatePlantedCount(project.tree_counts);
 
   return {
     id: project.id,
@@ -39,8 +39,8 @@ function transformProject(project: Project, availableCount: number = 0, totalCou
     description: project.description,
     address: project.address || "",
     mapCode: project.map_code || "",
-    plantedCount: plantedCount,
-    availableCount: availableCount,
+    plantedCount,
+    availableCount: 0,
     species: project.species || [],
     projectUpdates: project.project_updates || [],
     deleted: project.deleted || false,
@@ -49,9 +49,28 @@ function transformProject(project: Project, availableCount: number = 0, totalCou
   };
 }
 
-/**
- * Generate URL-friendly slug from project name
- */
+async function fetchProjectsPage(page: number, pageSize: number): Promise<ProjectListResponse> {
+  const data = await fetchAPI<ProjectListResponse>("/projects", {
+    populate: {
+      thumbnail: { populate: "*" },
+      images: { populate: "*" },
+      video_thumbnail: { populate: "*" },
+      tree_counts: { populate: "*" },
+      species: { populate: "*" },
+      project_updates: { populate: "*" },
+    },
+    filters: {
+      deleted: { $eq: false },
+    },
+    pagination: {
+      page,
+      pageSize,
+    },
+  });
+
+  return data;
+}
+
 export function generateProjectSlug(name: string): string {
   return name
     .toLowerCase()
@@ -63,151 +82,79 @@ export function generateProjectSlug(name: string): string {
     .replace(/^-+|-+$/g, "");
 }
 
-/**
- * Fetch all projects from Strapi API
- * Wrapped with cache() to deduplicate calls during a single render pass
- */
 export const fetchAllProjects = cache(async (): Promise<ProjectSimplified[]> => {
-  try {
-    let allProjects: Project[] = [];
-    let currentPage = 1;
-    let totalPages = 1;
+  let allProjects: Project[] = [];
+  let currentPage = 1;
+  let totalPages = 1;
 
-    // Fetch all pages to handle large datasets
-    do {
-      const data = await fetchAPI("/projects", {
-        populate: {
-          thumbnail: { populate: "*" },
-          images: { populate: "*" },
-          video_thumbnail: { populate: "*" },
-          tree_counts: { populate: "*" },
-          species: { populate: "*" },
-          project_updates: { populate: "*" },
-        },
-        filters: {
-          deleted: { $eq: false },
-        },
-        pagination: {
-          page: currentPage,
-          pageSize: 100,
-        },
-      });
+  do {
+    const pageData = await fetchProjectsPage(currentPage, 100);
+    if (pageData.meta?.pagination) {
+      totalPages = pageData.meta.pagination.pageCount;
+    }
 
-      if (data.meta?.pagination) {
-        totalPages = data.meta.pagination.pageCount;
-      }
+    if (Array.isArray(pageData.data)) {
+      allProjects = allProjects.concat(pageData.data);
+    }
 
-      if (data.data && Array.isArray(data.data)) {
-        allProjects = allProjects.concat(data.data);
-      }
+    currentPage++;
+  } while (currentPage <= totalPages);
 
-      currentPage++;
-    } while (currentPage <= totalPages);
-
-    // Fetch metrics for each project to determine availability
-    const projectsWithMetrics = await Promise.all(
-      allProjects.map(async (project) => {
-        const metrics = await fetchProjectMetrics(project.id);
-        const availableCount = metrics?.success ? metrics.available_trees : 0;
-        const totalCount = metrics?.success ? metrics.total_trees : 0;
-        return transformProject(project, availableCount, totalCount);
-      })
-    );
-
-    return projectsWithMetrics;
-  } catch (error) {
-    console.error("Error fetching all projects:", error);
-    return [];
-  }
+  return allProjects.map(transformProject);
 });
 
-/**
- * Fetch limited projects for landing page
- * @param limit - Number of projects to fetch (default 6)
- */
 export async function fetchLandingProjects(limit: number = 6): Promise<ProjectSimplified[]> {
-  try {
-    const data = await fetchAPI("/projects", {
-      populate: {
-        thumbnail: { populate: "*" },
-        images: { populate: "*" },
-        video_thumbnail: { populate: "*" },
-        tree_counts: { populate: "*" },
-      },
-      filters: {
-        deleted: { $eq: false },
-      },
-      pagination: {
-        pageSize: limit,
-      },
-    });
+  const data = await fetchAPI<ProjectListResponse>("/projects", {
+    populate: {
+      thumbnail: { populate: "*" },
+      images: { populate: "*" },
+      video_thumbnail: { populate: "*" },
+      tree_counts: { populate: "*" },
+    },
+    filters: {
+      deleted: { $eq: false },
+    },
+    pagination: {
+      pageSize: limit,
+    },
+  });
 
-    if (data.data && Array.isArray(data.data)) {
-      const projects = data.data as Project[];
-      const projectsWithMetrics = await Promise.all(
-        projects.map(async (project) => {
-          const metrics = await fetchProjectMetrics(project.id);
-          const availableCount = metrics?.success ? metrics.available_trees : 0;
-          const totalCount = metrics?.success ? metrics.total_trees : 0;
-          return transformProject(project, availableCount, totalCount);
-        })
-      );
-      return projectsWithMetrics;
-    }
-
-    return [];
-  } catch (error) {
-    console.error("Error fetching landing projects:", error);
-    return [];
-  }
+  if (!Array.isArray(data.data)) return [];
+  return data.data.map(transformProject);
 }
 
-/**
- * Fetch single project by slug
- * Wrapped with cache() to deduplicate calls during a single render pass
- */
-export const fetchProjectBySlug = cache(async (
-  slug: string
-): Promise<ProjectSimplified | null> => {
-  try {
-    const allProjects = await fetchAllProjects();
-    const project = allProjects.find((p) => generateProjectSlug(p.name) === slug);
-    return project || null;
-  } catch (error) {
-    console.error(`Error fetching project by slug ${slug}:`, error);
-    return null;
-  }
+export const fetchProjectBySlug = cache(async (slug: string): Promise<ProjectSimplified | null> => {
+  let currentPage = 1;
+  let totalPages = 1;
+
+  do {
+    const pageData = await fetchProjectsPage(currentPage, 50);
+    if (pageData.meta?.pagination) {
+      totalPages = pageData.meta.pagination.pageCount;
+    }
+
+    const match = (pageData.data || []).find((p) => generateProjectSlug(p.name) === slug);
+    if (match) return transformProject(match);
+
+    currentPage++;
+  } while (currentPage <= totalPages);
+
+  return null;
 });
 
-/**
- * Fetch single project by documentId
- */
-export async function fetchProjectById(
-  documentId: string
-): Promise<ProjectSimplified | null> {
-  try {
-    const data = await fetchAPI(`/projects/${documentId}`, {
-      populate: {
-        thumbnail: { populate: "*" },
-        images: { populate: "*" },
-        video_thumbnail: { populate: "*" },
-        tree_counts: { populate: "*" },
-        species: { populate: "*" },
-        project_updates: { populate: "*" },
-      },
-    });
+export async function fetchProjectById(documentId: string): Promise<ProjectSimplified | null> {
+  const data = await fetchAPI<{ data?: Project }>(`/projects/${documentId}`, {
+    populate: {
+      thumbnail: { populate: "*" },
+      images: { populate: "*" },
+      video_thumbnail: { populate: "*" },
+      tree_counts: { populate: "*" },
+      species: { populate: "*" },
+      project_updates: { populate: "*" },
+    },
+  });
 
-    if (data.data) {
-      const project: Project = data.data;
-      if (project.deleted) {
-        return null;
-      }
-      return transformProject(project);
-    }
-
-    return null;
-  } catch (error) {
-    console.error(`Error fetching project by id ${documentId}:`, error);
-    return null;
-  }
+  if (!data.data || data.data.deleted) return null;
+  return transformProject(data.data);
 }
+

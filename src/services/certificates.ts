@@ -1,4 +1,5 @@
 import { fetchAPI } from "./api";
+import { serviceErrorFallback } from "./service-utils";
 
 /**
  * Interface for Certificate Validation Response (Geotagged)
@@ -47,11 +48,10 @@ export async function validateCertificate(
         });
         return data;
     } catch (error) {
-        console.error("Error validating certificate:", error);
-        return {
+        return serviceErrorFallback("Error validating certificate:", error, {
             success: false,
             validation_status: "Invalid",
             message: "Failed to validate certificate. Please try again.",
-        };
+        });
     }
 }

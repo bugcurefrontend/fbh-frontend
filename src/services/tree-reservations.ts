@@ -1,4 +1,4 @@
-import { fetchAPI } from "./api";
+import { ApiRequestError, fetchAPI } from "./api";
 
 /**
  * Interface for Tree Reservation Request
@@ -77,7 +77,7 @@ export async function createTreeReservation(
     request: TreeReservationRequest
 ): Promise<TreeReservationResponse> {
     try {
-        const data = await fetchAPI(
+        const data = await fetchAPI<TreeReservationResponse>(
             `/allocations/reservations/create/`,
             {},
             {
@@ -87,22 +87,15 @@ export async function createTreeReservation(
         );
         return data;
     } catch (error) {
-        console.error("Error creating tree reservation:", error);
-
-        // Try to extract error message from the error object
-        if (error instanceof Error && error.message) {
-            // Check if the error message contains a JSON response
-            const match = error.message.match(/\{.*"message"\s*:\s*"([^"]+)"/);
-            if (match && match[1]) {
-                return {
-                    success: false,
-                    error: "reservation_failed",
-                    message: match[1] // Use backend's error message
-                };
-            }
+        if (error instanceof ApiRequestError) {
+            const payload = error.payload as { error?: string; message?: string } | undefined;
+            return {
+                success: false,
+                error: payload?.error || "reservation_failed",
+                message: payload?.message || error.message || "Unable to reserve trees. Please try again.",
+            };
         }
 
-        // Fallback to generic error
         return {
             success: false,
             error: "network_error",

@@ -99,3 +99,34 @@ const validations: Record<string, Validation> = {
 };
 
 export default validations;
+
+// Helper function for email validation
+export const isValidEmail = (email: string): boolean => {
+    if (typeof email !== 'string') return false;
+    return validations.email.value instanceof RegExp
+        ? validations.email.value.test(email)
+        : false;
+};
+
+// ID type to validation key mapping
+const ID_TYPE_MAPPING: Record<string, keyof typeof validations> = {
+    pan: 'panNo',
+    aadhar: 'aadhar',
+    passport: 'passport',
+    license: 'license',
+    voter: 'voterId',
+    ration: 'ration',
+};
+
+// Helper function for ID number validation
+export const isValidIdNumber = (idType: string, idNumber: string, allowEmpty: boolean = true): boolean => {
+    if (!idNumber) return allowEmpty;
+
+    const validationKey = ID_TYPE_MAPPING[idType];
+    if (!validationKey) return allowEmpty;
+
+    const validation = validations[validationKey];
+    return validation && validation.value instanceof RegExp
+        ? validation.value.test(idNumber)
+        : allowEmpty;
+};

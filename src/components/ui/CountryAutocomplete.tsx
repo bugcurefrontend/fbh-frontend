@@ -17,6 +17,13 @@ import { ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Country, truncateText } from "@/lib/location-utils";
 import countriesData from "@/assets/data/countries.json";
+import { logger } from "@/lib/logger";
+
+interface CountryDataItem {
+  numeric: number;
+  englishShortName: string;
+  countryCode: string;
+}
 
 interface CountryAutocompleteProps {
   name?: string;
@@ -65,7 +72,7 @@ export default function CountryAutocomplete({
 
   // Convert local countries data to the expected format
   const localCountries: Country[] = React.useMemo(() => {
-    return countriesData.map((country: any) => ({
+    return (countriesData as CountryDataItem[]).map((country) => ({
       id: country.numeric, // Use numeric as id
       name: country.englishShortName,
       code: country.countryCode,
@@ -151,9 +158,9 @@ export default function CountryAutocomplete({
         }
         // If API returns empty or invalid data, keep using local data (already set above)
       })
-      .catch((err) => {
+      .catch(() => {
         // Silently fail and keep using local data (already set above)
-        console.log("Using local countries data (API unavailable)");
+        logger.debug("Using local countries data because API is unavailable");
       });
   }, [API_URL, localCountries]);
 

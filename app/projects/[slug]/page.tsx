@@ -3,141 +3,107 @@ import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import ProjectDetailPage from "@/components/ProjectDetailPage";
 import { PageLoader } from "@/components/ui/page-loader";
-import {
-  fetchAllProjects,
-  fetchProjectBySlug,
-  generateProjectSlug,
-} from "@/services/projects";
-import { fetchProjectMetrics } from "@/services/allocations";
+import { fetchAllProjects, fetchProjectBySlug, generateProjectSlug } from "@/services/projects";
+import { fetchProjectMetrics, ProjectMetrics } from "@/services/allocations";
 import { generateSlug as generateSpeciesSlug } from "@/services/species";
 import { fetchAllPlantRates } from "@/services/plant-rates";
-import { ProjectSimplified, ProjectUpdate } from "@/types/project";
+import { ProjectSimplified, ProjectUpdate, SpeciesRef, StrapiRichTextBlock, StrapiRichTextChild } from "@/types/project";
 
 type Params = { slug: string };
 
-/**
- * Generate static paths at build time
- * Fetches all projects from Strapi API and generates slugs
- */
 export async function generateStaticParams(): Promise<Params[]> {
-  try {
-    const projects = await fetchAllProjects();
-    return projects.map((p: ProjectSimplified) => ({
-      slug: generateProjectSlug(p.name),
-    }));
-  } catch (error) {
-    console.error("Error generating static params:", error);
-    return [];
-  }
+  const projects = await fetchAllProjects();
+  return projects.map((p: ProjectSimplified) => ({
+    slug: generateProjectSlug(p.name),
+  }));
 }
 
-/**
- * Generate metadata for SEO
- */
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<Params>;
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
   const { slug } = await params;
   const project = await fetchProjectBySlug(slug);
 
   if (!project) {
-    return {
-      title: "Project Not Found",
-    };
+    return { title: "Project Not Found" };
   }
+
+  const descriptionText =
+    project.description
+      .flatMap((block) => block.children ?? [])
+      .map((child) => child.text ?? "")
+      .join(" ")
+      .trim()
+      .slice(0, 160) || `Learn about ${project.name} project`;
 
   return {
     title: `${project.name} - FBH Projects`,
-    description:
-      typeof project.description === "string"
-        ? project.description.slice(0, 160)
-        : `Learn about ${project.name} project`,
+    description: descriptionText,
     openGraph: {
       title: project.name,
-      description:
-        typeof project.description === "string"
-          ? project.description.slice(0, 160)
-          : undefined,
+      description: descriptionText || undefined,
       images: project.thumbnail ? [{ url: project.thumbnail }] : [],
     },
   };
 }
 
-/**
- * Parse Strapi rich text blocks recursively
- * Handles paragraphs, headings, lists, and list items
- */
-function parseRichTextBlock(block: any): string {
-  if (!block) return "";
+type RichNode = StrapiRichTextBlock | StrapiRichTextChild;
 
-  // Extract text from children
-  const getChildrenText = (children: any[]): string => {
-    if (!children || !Array.isArray(children)) return "";
-    return children.map((child: any) => {
+function getChildrenText(children: StrapiRichTextChild[] | undefined): string {
+  if (!children || !Array.isArray(children)) return "";
+  return children
+    .map((child) => {
       if (child.text !== undefined) return child.text;
       if (child.children) return getChildrenText(child.children);
       return "";
-    }).join("");
-  };
+    })
+    .join("");
+}
 
-  // Handle different block types
+function parseRichTextBlock(block: RichNode | null | undefined): string {
+  if (!block) return "";
+
   switch (block.type) {
     case "paragraph":
       return getChildrenText(block.children);
-
     case "heading":
       return `\n${getChildrenText(block.children)}\n`;
-
     case "list":
-      // Handle list items
       if (block.children && Array.isArray(block.children)) {
         return block.children
-          .map((item: any) => {
-            const text = getChildrenText(item.children);
-            return `• ${text}`;
-          })
+          .map((item) => `- ${getChildrenText(item.children)}`)
           .join("\n");
       }
       return "";
-
     case "list-item":
-      return `• ${getChildrenText(block.children)}`;
-
+      return `- ${getChildrenText(block.children)}`;
     default:
-      // Fallback for unknown types
-      if (block.children) {
-        return getChildrenText(block.children);
-      }
-      return "";
+      return getChildrenText(block.children);
   }
 }
 
-/**
- * Transform API project to ProjectDetailPage format
- */
-function transformToDetailData(project: ProjectSimplified, metrics: any = null) {
-  // Extract description text from rich text blocks if needed
+function getSpeciesImage(species: SpeciesRef): string {
+  const candidate = (species as SpeciesRef & { images?: { url?: string }[] }).images;
+  if (!Array.isArray(candidate)) return "";
+  return candidate[0]?.url || "";
+}
+
+function transformToDetailData(project: ProjectSimplified, metrics: ProjectMetrics | null = null) {
   let descriptionText = "";
   if (typeof project.description === "string") {
     descriptionText = project.description;
   } else if (Array.isArray(project.description)) {
-    // Handle Strapi rich text blocks with full support for all block types
     descriptionText = project.description
-      .map((block: any) => parseRichTextBlock(block))
-      .filter((text: string) => text.trim() !== "")
+      .map((block) => parseRichTextBlock(block))
+      .filter((text) => text.trim() !== "")
       .join("\n\n");
   }
 
-  // Transform species images
-  const treeSpecies = project.species?.map((s: any, index: number) => ({
-    id: s.documentId || `species-${index}`,
-    imageUrl: s.images?.[0]?.url || "",
-    imageAlt: s.common_name || `Species ${index + 1}`,
-  })) || [];
+  const treeSpecies =
+    project.species?.map((s: SpeciesRef, index: number) => ({
+      id: s.documentId || `species-${index}`,
+      imageUrl: getSpeciesImage(s),
+      imageAlt: s.common_name || `Species ${index + 1}`,
+    })) || [];
 
-  // If no species, use project images
   if (treeSpecies.length === 0 && project.images?.length > 0) {
     project.images.slice(0, 3).forEach((img, index) => {
       treeSpecies.push({
@@ -148,16 +114,18 @@ function transformToDetailData(project: ProjectSimplified, metrics: any = null) 
     });
   }
 
-  // Use metrics data if available, otherwise fall back to Strapi data
-  const stats = metrics && metrics.success ? {
-    treesAvailable: metrics.available_trees || 0,
-    treesPlanted: (metrics.total_trees || 0) - (metrics.available_trees || 0),
-    totalTrees: metrics.total_trees || 0,
-  } : {
-    treesAvailable: 0,
-    treesPlanted: project.plantedCount,
-    totalTrees: project.plantedCount,
-  };
+  const stats =
+    metrics && metrics.success
+      ? {
+        treesAvailable: metrics.available_trees || 0,
+        treesPlanted: (metrics.total_trees || 0) - (metrics.available_trees || 0),
+        totalTrees: metrics.total_trees || 0,
+      }
+      : {
+        treesAvailable: 0,
+        treesPlanted: project.plantedCount,
+        totalTrees: project.plantedCount,
+      };
 
   return {
     id: project.id,
@@ -167,20 +135,14 @@ function transformToDetailData(project: ProjectSimplified, metrics: any = null) 
     treeSpecies,
     stats,
     projectDescription: descriptionText,
-    projectDetails: [], // Could be populated from project_updates
+    projectDetails: [],
     mapCode: project.mapCode,
     videoThumbnail: project.videoThumbnail,
     videoUrl: project.videoUrl,
   };
 }
 
-/**
- * Transform projects to related projects format
- */
-function transformToRelatedProjects(
-  projects: ProjectSimplified[],
-  currentId: string
-) {
+function transformToRelatedProjects(projects: ProjectSimplified[], currentId: string) {
   return projects
     .filter((p) => p.documentId !== currentId)
     .slice(0, 3)
@@ -196,14 +158,9 @@ function transformToRelatedProjects(
     }));
 }
 
-/**
- * Transform project updates to UI format
- * Groups updates by month/year
- */
 function transformProjectUpdates(updates: ProjectUpdate[]) {
   if (!updates || !Array.isArray(updates)) return [];
 
-  // Filter out deleted updates and sort by date (newest first)
   const validUpdates = updates
     .filter((u) => !u.deleted)
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
@@ -223,48 +180,33 @@ function transformProjectUpdates(updates: ProjectUpdate[]) {
   });
 }
 
-/**
- * Transform project species to UI format
- */
-function transformProjectSpecies(species: any[]) {
+function transformProjectSpecies(species: SpeciesRef[]) {
   if (!species || !Array.isArray(species)) return [];
 
   return species
-    .filter((s) => !s.deleted)
+    .filter((s) => !(s as SpeciesRef & { deleted?: boolean }).deleted)
     .map((s) => ({
-      id: s.documentId || s.id,
+      id: s.documentId || String(s.id),
       name: s.common_name || "",
-      image: s.images?.[0]?.url || "",
+      image: getSpeciesImage(s),
       slug: generateSpeciesSlug(s.common_name || ""),
     }));
 }
 
-export default async function ProjectSlugPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+export default async function ProjectSlugPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
 
-  // Fetch project, all projects, and plant rates from APIs
   const [project, allProjects, plantRates] = await Promise.all([
     fetchProjectBySlug(slug),
     fetchAllProjects(),
     fetchAllPlantRates(),
   ]);
 
-  if (!project) {
-    notFound();
-  }
+  if (!project) notFound();
 
-  // Fetch metrics for this specific project
   const metrics = await fetchProjectMetrics(project.id);
-
   const projectData = transformToDetailData(project, metrics);
-  const relatedProjects = transformToRelatedProjects(
-    allProjects,
-    project.documentId
-  );
+  const relatedProjects = transformToRelatedProjects(allProjects, project.documentId);
   const projectUpdates = transformProjectUpdates(project.projectUpdates);
   const projectSpecies = transformProjectSpecies(project.species);
 
