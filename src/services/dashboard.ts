@@ -1,5 +1,6 @@
 import { fetchAPI } from "./api";
 import { fetchGlobal } from "./global";
+import { serviceErrorFallback } from "./service-utils";
 
 /**
  * Interface for User Dashboard Stats
@@ -7,7 +8,7 @@ import { fetchGlobal } from "./global";
 export interface UserDashboardStats {
     total_trees_planted: number;
     projects_supported: number;
-    co2_sequestered: number; // Calculated using Strapi global value
+    co2_Sequested: number; // Calculated using Strapi global value
 }
 
 /**
@@ -34,13 +35,13 @@ export async function fetchUserDashboardStats(
             return {
                 total_trees_planted: data.donor.total_trees || 0,
                 projects_supported: data.donor.projects_contributed_to || 0,
-                co2_sequestered: co2,
+                co2_Sequested: co2,
             };
         }
 
         return null;
     } catch (error) {
-        console.error("Error fetching user dashboard stats:", error);
-        return null;
+        return serviceErrorFallback("Error fetching user dashboard stats:", error, null);
     }
 }
+

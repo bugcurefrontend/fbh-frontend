@@ -7,6 +7,7 @@
 import { cache } from "react";
 import { fetchAPI } from "./api";
 import { Metric, MetricSimplified } from "@/types/metric";
+import { serviceErrorFallback } from "./service-utils";
 
 /**
  * Transform raw Strapi metric data to simplified format
@@ -19,7 +20,7 @@ function transformMetric(metric: Metric): MetricSimplified {
     label: metric.description,
     value: metric.value,
     deleted: metric.deleted || false,
-    order: metric.order ?? (metric as any)?.attributes?.order ?? 0,
+    order: metric.order ?? 0,
   };
 }
 
@@ -62,7 +63,7 @@ export const fetchAllMetrics = cache(async (): Promise<MetricSimplified[]> => {
       .filter((m: Metric) => !m.deleted)
       .map((m: Metric) => transformMetric(m));
   } catch (error) {
-    console.error("Error fetching all metrics:", error);
-    return [];
+    return serviceErrorFallback("Error fetching all metrics:", error, []);
   }
 });
+

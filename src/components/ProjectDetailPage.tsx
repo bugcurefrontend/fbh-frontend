@@ -77,9 +77,9 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
   const { currency, currencySymbol } = useCurrency();
 
   // Get rates based on selected currency
-  const currentRate = Array.isArray(plantRates)
-    ? plantRates.find((r) => r.currency_code === currency)
-    : (plantRates as any)[currency];
+  const currentRate =
+    plantRates.find((rate) => rate.currency_code === currency) ||
+    plantRates.find((rate) => rate.currency_code?.toUpperCase() === currency.toUpperCase());
 
   const geotaggedRate = currentRate?.geotagged_rate;
   const nonGeotaggedRate = currentRate?.non_geotagged_rate;
@@ -87,25 +87,13 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
   const handleReadMoreClick = () => {
     overviewRef.current?.scrollIntoView({ behavior: "smooth" });
   };
-  const handlePlantTree = () => {
-    console.log(`Plant tree for project: ${projectData.id}`);
-    // Handle plant tree action
-  };
+  const handlePlantTree = () => {};
 
-  const handleGiftTree = () => {
-    console.log(`Gift tree for project: ${projectData.id}`);
-    // Handle gift tree action
-  };
+  const handleGiftTree = () => {};
 
-  const handleRelatedPlantTree = (projectId: string | number) => {
-    console.log(`Plant tree for related project: ${projectId}`);
-    // Handle plant tree action for related projects
-  };
+  const handleRelatedPlantTree = (_projectId: string | number) => {};
 
-  const handleViewAll = () => {
-    console.log("View all projects");
-    // Navigate to all projects page
-  };
+  const handleViewAll = () => {};
 
   return (
     <main className="max-w-7xl mx-auto md:px-8 px-4 md:pt-8 pt-4 space-y-8">

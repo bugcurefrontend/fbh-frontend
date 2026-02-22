@@ -7,6 +7,7 @@
 import { cache } from "react";
 import { fetchAPI } from "./api";
 import { Testimonial, TestimonialSimplified } from "@/types/testimonial";
+import { serviceErrorFallback } from "./service-utils";
 
 /**
  * Transform raw Strapi testimonial data to simplified format
@@ -63,7 +64,7 @@ export const fetchAllTestimonials = cache(async (): Promise<TestimonialSimplifie
       .filter((t: Testimonial) => !t.deleted)
       .map((t: Testimonial) => transformTestimonial(t));
   } catch (error) {
-    console.error("Error fetching all testimonials:", error);
-    return [];
+    return serviceErrorFallback("Error fetching all testimonials:", error, []);
   }
 });
+

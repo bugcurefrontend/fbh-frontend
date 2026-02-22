@@ -1,4 +1,5 @@
 import { fetchAPI } from "./api";
+import { serviceErrorFallback } from "./service-utils";
 
 /**
  * Interface for individual donation in history
@@ -71,7 +72,7 @@ export async function fetchDonationHistory(
         );
         return data;
     } catch (error) {
-        console.error("Error fetching donation history:", error);
-        return null;
+        return serviceErrorFallback("Error fetching donation history:", error, null);
     }
 }
+

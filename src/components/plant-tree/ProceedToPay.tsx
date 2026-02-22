@@ -13,6 +13,8 @@ import {
 } from "../ui/alert-dialog";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Recipient } from "@/components/gift-tree/types";
+import { PersonalDetails, TaxDetails } from "@/components/plant-tree/types";
+import { logger } from "@/lib/logger";
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
@@ -31,8 +33,8 @@ interface ProceedToPayProps {
   reservationToken?: string; // NEW: Reservation token from useTreeCheckout
   rate?: number; // NEW: Rate per tree
   currencyCode?: string; // NEW: Currency code
-  personalDetails?: any;
-  taxDetails?: any;
+  personalDetails?: PersonalDetails;
+  taxDetails?: TaxDetails;
 }
 
 const ProceedToPay: React.FC<ProceedToPayProps> = ({
@@ -81,15 +83,12 @@ const ProceedToPay: React.FC<ProceedToPayProps> = ({
     } else {
       // NEW: Call reservation before payment
       if (onProceedToPayment) {
-        console.log("🔒 ProceedToPay: Calling reservation handler...");
         const success = await onProceedToPayment();
         if (!success) {
-          console.error("❌ Reservation failed, not proceeding");
           setStatus("error");
           setIsStatusOpen(true);
           return;
         }
-        console.log("✅ Reservation successful");
       }
       startProcessing();
     }
@@ -107,7 +106,6 @@ const ProceedToPay: React.FC<ProceedToPayProps> = ({
       // Step 1: Load Razorpay SDK
       const scriptLoaded = await loadRazorpayScript();
       if (!scriptLoaded) {
-        console.error("❌ Failed to load Razorpay");
         setStatus("error");
         return;
       }
@@ -115,18 +113,27 @@ const ProceedToPay: React.FC<ProceedToPayProps> = ({
       // Step 2: Call HFN Donation Service
       const baseUrl =
         typeof window !== "undefined" ? window.location.origin : "";
+      // Validate required fields before proceeding
+      const email = personalDetails?.email || userEmail;
+      const phone = personalDetails?.phoneNumber;
+
+      if (!email || !phone) {
+        setStatus("error");
+        return;
+      }
+
       const donationRequest = {
         userProfile: {
           firstName: personalDetails?.firstName || userName || "Guest",
           lastName: personalDetails?.lastName || "",
-          emailAddress: personalDetails?.email || userEmail || "guest@example.com",
-          phoneNumber: personalDetails?.phoneNumber || "+919884166175",
+          emailAddress: email,
+          phoneNumber: phone,
           addressLine1: `${personalDetails?.doorNo || ""} ${personalDetails?.region || ""}`.trim() || "Address Line 1",
-          city: personalDetails?.city?.name || "Chennai",
-          state: personalDetails?.state || "TN",
-          postalCode: personalDetails?.pincode || "600001",
-          country: personalDetails?.country?.name || "India",
-          citizenshipCountry: taxDetails?.citizenship?.name || "India",
+          city: (typeof personalDetails?.city === "object" ? personalDetails?.city?.name : personalDetails?.city) || "Unknown",
+          state: personalDetails?.state || "Unknown",
+          postalCode: personalDetails?.pincode || "000000",
+          country: (typeof personalDetails?.country === "object" ? personalDetails?.country?.name : personalDetails?.country) || "India",
+          citizenshipCountry: (typeof taxDetails?.citizenship === "object" ? taxDetails?.citizenship?.name : taxDetails?.citizenship) || "India",
         },
         lineItems: [
           {
@@ -136,10 +143,10 @@ const ProceedToPay: React.FC<ProceedToPayProps> = ({
             extras: {
               donorCount: (recipients?.length || 1).toString(),
               donorName: userName || "Guest",
-              donorEmailAddress: personalDetails?.email || userEmail || "guest@example.com",
-              donorPhoneNumber: personalDetails?.phoneNumber || "+919884166175",
+              donorEmailAddress: email,
+              donorPhoneNumber: phone,
               donationType: recipients && recipients.length > 0 ? "gift" : "donate",
-              projectId: "1",
+              projectId: process.env.NEXT_PUBLIC_PROJECT_ID || "1",
               donationReceivedFrom: "FBH",
               reservationToken: reservationToken, // Add reservation token
             },
@@ -147,14 +154,12 @@ const ProceedToPay: React.FC<ProceedToPayProps> = ({
         ],
         clientSuccessRedirectUrl: `${baseUrl}/donation/success/`,
         clientFailureRedirectUrl: `${baseUrl}/donation/failure/`,
-        clientId: "me",
+        clientId: process.env.NEXT_PUBLIC_CLIENT_ID || "fbh",
       };
 
-      console.log("📤 Initiating donation...", donationRequest);
       const response = await initiateDonation(donationRequest);
 
       if (!response || !response.paymentGatewayRequestParamMap) {
-        console.error("❌ Donation initiation failed");
         setStatus("error");
         return;
       }
@@ -168,38 +173,31 @@ const ProceedToPay: React.FC<ProceedToPayProps> = ({
       } = response.paymentGatewayRequestParamMap;
       const { donationReferenceNumber, trackingId } = response.donation.payment;
 
-      console.log("💳 Payment details:", {
-        client_id,
-        orderId,
-        amount_due,
-        trackingId,
-        donationReferenceNumber,
-      });
-
       // Step 4: Link trackingId to reservation (CRITICAL for Pub/Sub!)
       if (reservationToken && trackingId) {
-        console.log("🔗 Linking trackingId to reservation...");
-        try {
-          const DJANGO_API_URL = process.env.NEXT_PUBLIC_DJANGO_API_URL || 'https://api-django.fbh.dev.heartfulness.org';
-          const linkResponse = await fetch(
-            `${DJANGO_API_URL}/api/allocations/reservations/link-payment/`,
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                reservation_token: reservationToken,
-                transaction_id: trackingId,
-              }),
-            }
-          );
+        const djangoApiUrl = process.env.NEXT_PUBLIC_DJANGO_API_URL;
+        if (!djangoApiUrl) {
+          logger.error("NEXT_PUBLIC_DJANGO_API_URL is not configured");
+        } else {
+          try {
+            const linkResponse = await fetch(
+              `${djangoApiUrl}/api/allocations/reservations/link-payment/`,
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  reservation_token: reservationToken,
+                  transaction_id: trackingId,
+                }),
+              }
+            );
 
-          if (linkResponse.ok) {
-            console.log("✅ Linked trackingId to reservation");
-          } else {
-            console.error("❌ Failed to link trackingId:", await linkResponse.text());
+            if (!linkResponse.ok) {
+              logger.error("Failed to link trackingId", await linkResponse.text());
+            }
+          } catch (linkError) {
+            logger.error("Error linking trackingId", linkError);
           }
-        } catch (linkError) {
-          console.error("❌ Error linking trackingId:", linkError);
         }
       }
 
@@ -213,14 +211,14 @@ const ProceedToPay: React.FC<ProceedToPayProps> = ({
         amount_due, // From API response
         currency,
         donationReferenceNumber,
-        personalDetails?.email || userEmail || "guest@example.com",
-        personalDetails?.phoneNumber || "+919884166175",
+        email,
+        phone,
         `${personalDetails?.firstName || ""} ${personalDetails?.lastName || ""}`.trim() || userName || "Guest",
         `${baseUrl}/donation/success/`,
         `${baseUrl}/donation/failure/`
       );
     } catch (error) {
-      console.error("❌ Payment error:", error);
+      logger.error("Payment error", error);
       setStatus("error");
       setTimeout(() => {
         setCountdown(5);

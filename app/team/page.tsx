@@ -12,7 +12,9 @@ const TeamPage = async () => {
 
   const headerImageUrl = global?.our_team_headerimage?.url ?? undefined;
   const galleryImages =
-    ourTeamContent?.gallery?.map((g: any) => g.url).filter(Boolean) ?? null;
+    ourTeamContent?.gallery
+      ?.map((g: { url?: string }) => g.url)
+      .filter((url): url is string => Boolean(url)) ?? null;
 
   return (
     <TeamPageClient

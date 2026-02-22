@@ -5,6 +5,21 @@
 import { cache } from "react";
 import { fetchAPI, getStrapiURL } from "./api";
 import { AboutContent } from "@/types/about-content";
+import { serviceErrorFallback } from "./service-utils";
+
+type MediaLike = {
+  id?: number;
+  url?: string;
+  width?: number;
+  height?: number;
+  data?: MediaLike;
+  attributes?: MediaLike;
+  formats?: {
+    large?: { url?: string; width?: number; height?: number };
+    medium?: { url?: string; width?: number; height?: number };
+    small?: { url?: string; width?: number; height?: number };
+  };
+};
 
 export const fetchAboutContent = cache(async (): Promise<AboutContent | null> => {
   try {
@@ -33,7 +48,7 @@ export const fetchAboutContent = cache(async (): Promise<AboutContent | null> =>
       return getStrapiURL(rawUrl);
     };
 
-    const extractMedia = (media: any) => {
+    const extractMedia = (media: MediaLike | null | undefined) => {
       if (!media) return null;
       const source = media.data || media;
       const url = source?.attributes?.url || source?.url || source?.formats?.large?.url || source?.formats?.medium?.url || source?.formats?.small?.url || "";
@@ -62,7 +77,7 @@ export const fetchAboutContent = cache(async (): Promise<AboutContent | null> =>
       our_journey_seven: extractMedia(attrs.our_journey_seven) || null,
     };
   } catch (error) {
-    console.error("Error fetching About Content:", error);
-    return null;
+    return serviceErrorFallback("Error fetching About Content:", error, null);
   }
 });
+

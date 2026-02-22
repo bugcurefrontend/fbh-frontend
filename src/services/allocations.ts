@@ -1,4 +1,5 @@
 import { fetchAPI } from "./api";
+import { serviceErrorFallback } from "./service-utils";
 
 export interface ProjectDonor {
     donor_name: string;
@@ -36,8 +37,7 @@ export async function fetchProjectDonors(
         );
         return data;
     } catch (error) {
-        console.error("Error fetching project donors:", error);
-        return null;
+        return serviceErrorFallback("Error fetching project donors:", error, null);
     }
 }
 
@@ -77,8 +77,7 @@ export async function fetchNonGeotaggedTrees(
         );
         return data;
     } catch (error) {
-        console.error("Error fetching non-geotagged trees:", error);
-        return null;
+        return serviceErrorFallback("Error fetching non-geotagged trees:", error, null);
     }
 }
 
@@ -107,8 +106,7 @@ export async function fetchProjectMetrics(
         );
         return data;
     } catch (error) {
-        console.error("Error fetching project metrics:", error);
-        return null;
+        return serviceErrorFallback("Error fetching project metrics:", error, null);
     }
 }
 /**
@@ -150,7 +148,7 @@ export async function fetchGeotaggedTrees(
         );
         return data;
     } catch (error) {
-        console.error("Error fetching geotagged trees:", error);
-        return null;
+        return serviceErrorFallback("Error fetching geotagged trees:", error, null);
     }
 }
+

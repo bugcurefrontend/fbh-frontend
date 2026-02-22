@@ -11,10 +11,11 @@ import {
 } from "@/components/ui/select";
 import AmountIcon from "@/components/icons/AmountIcon";
 import CurrencySelect from "@/components/CurrencySelect";
+import { ChartDatum } from "./types";
 
 interface RevenueChartsProps {
-  weeklyData: any[];
-  monthlyData: any[];
+  weeklyData: ChartDatum[];
+  monthlyData: ChartDatum[];
 }
 
 // Mock data generator for different time periods

@@ -3,6 +3,7 @@ import ProjectsPagination from "./ProjectsPagination";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { fetchProjectDonors, ProjectDonor } from "@/services/allocations";
+import { logger } from "@/lib/logger";
 
 interface Donor {
   id: string;
@@ -90,7 +91,7 @@ const DonorsTable = ({ projectId }: { projectId?: string | number }) => {
           setTotalCount(response.count); // Update total count from API
         }
       } catch (err) {
-        console.error("Error fetching donors:", err);
+        logger.error("Error fetching donors", err);
         setError("Failed to load donors data");
         setDonors([]);
       } finally {

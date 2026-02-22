@@ -1,7 +1,43 @@
 /**
  * Payment Service
- * Handles HFN Donation Service API calls and Razorpay integration
+ * Handles HFN Donation Service API calls and Razorpay integration.
  */
+
+import { serviceErrorFallback } from "./service-utils";
+import { logger } from "@/lib/logger";
+
+interface RazorpayInstance {
+    open: () => void;
+}
+
+interface RazorpayConstructor {
+    new (options: RazorpayOptions): RazorpayInstance;
+}
+
+interface RazorpayWindow extends Window {
+    Razorpay?: RazorpayConstructor;
+}
+
+interface RazorpayOptions {
+    key: string;
+    amount: number;
+    currency: string;
+    name: string;
+    description: string;
+    order_id: string;
+    prefill: {
+        name: string;
+        email: string;
+        contact: string;
+    };
+    theme: {
+        color: string;
+    };
+    handler: (_response: unknown) => void;
+    modal: {
+        ondismiss: () => void;
+    };
+}
 
 export interface DonationRequest {
     userProfile: {
@@ -58,19 +94,17 @@ export interface DonationResponse {
         id: string; // Razorpay order_id
         amount_due: number; // Amount in paise
         currency: string;
-        client_id: string; // Razorpay key (comes from API response!)
+        client_id: string; // Razorpay key (comes from API response)
     };
 }
 
 /**
- * Call HFN Donation Service to initiate payment
+ * Call HFN Donation Service to initiate payment.
  */
 export async function initiateDonation(
     request: DonationRequest
 ): Promise<DonationResponse | null> {
     try {
-        console.log("🚀 Calling HFN Donation Service...", request);
-
         const response = await fetch(
             `${process.env.NEXT_PUBLIC_HFN_DONATION_SERVICE_URL}/donations/donate`,
             {
@@ -83,26 +117,24 @@ export async function initiateDonation(
         );
 
         if (!response.ok) {
-            console.error("❌ HFN Donation Service error:", response.statusText);
+            logger.error("Donation service request failed", response.status);
             return null;
         }
 
-        const data = await response.json();
-        console.log("✅ HFN Donation Service response:", data);
-        return data;
+        return (await response.json()) as DonationResponse;
     } catch (error) {
-        console.error("❌ Error calling HFN Donation Service:", error);
-        return null;
+        return serviceErrorFallback("Error calling donation service:", error, null);
     }
 }
 
 /**
- * Load Razorpay script dynamically
+ * Load Razorpay script dynamically.
  */
 export function loadRazorpayScript(): Promise<boolean> {
     return new Promise((resolve) => {
         // Check if already loaded
-        if ((window as any).Razorpay) {
+        const typedWindow = window as RazorpayWindow;
+        if (typedWindow.Razorpay) {
             resolve(true);
             return;
         }
@@ -110,11 +142,10 @@ export function loadRazorpayScript(): Promise<boolean> {
         const script = document.createElement("script");
         script.src = "https://checkout.razorpay.com/v1/checkout.js";
         script.onload = () => {
-            console.log("✅ Razorpay script loaded");
             resolve(true);
         };
         script.onerror = () => {
-            console.error("❌ Failed to load Razorpay script");
+            logger.error("Failed to load Razorpay script");
             resolve(false);
         };
         document.body.appendChild(script);
@@ -122,7 +153,7 @@ export function loadRazorpayScript(): Promise<boolean> {
 }
 
 /**
- * Open Razorpay checkout with payment details from API response
+ * Open Razorpay checkout with payment details from API response.
  */
 export function openRazorpayCheckout(
     razorpayKeyId: string, // client_id from paymentGatewayRequestParamMap
@@ -136,21 +167,13 @@ export function openRazorpayCheckout(
     successUrl: string,
     failureUrl: string
 ) {
-    console.log("💳 Opening Razorpay checkout...", {
-        key: razorpayKeyId,
-        order_id: razorpayOrderId,
-        amount,
-        currency,
-        reference: donationReferenceNumber,
-    });
-
     const options = {
-        key: razorpayKeyId, // Use client_id from API response
-        amount: amount, // amount_due from API response (in paise)
+        key: razorpayKeyId,
+        amount: amount,
         currency: currency,
         name: "Forests by Heartfulness",
         description: "Tree Plantation Donation",
-        order_id: razorpayOrderId, // order id from API response
+        order_id: razorpayOrderId,
         prefill: {
             name: userName,
             email: userEmail,
@@ -159,20 +182,21 @@ export function openRazorpayCheckout(
         theme: {
             color: "#003399",
         },
-        handler: function (response: any) {
-            console.log("✅ Payment successful!", response);
-            // Redirect to success page with reference number
+        handler: function (_response: unknown) {
             window.location.href = `${successUrl}?ref=${donationReferenceNumber}`;
         },
         modal: {
             ondismiss: function () {
-                console.log("❌ Payment cancelled by user");
-                // Redirect to failure page
                 window.location.href = `${failureUrl}?ref=${donationReferenceNumber}`;
             },
         },
     };
 
-    const razorpay = new (window as any).Razorpay(options);
+    const typedWindow = window as RazorpayWindow;
+    if (!typedWindow.Razorpay) {
+        return;
+    }
+    const razorpay = new typedWindow.Razorpay(options);
     razorpay.open();
 }
+

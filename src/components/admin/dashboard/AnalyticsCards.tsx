@@ -5,15 +5,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-
-interface AnalyticsCard {
-  id: number;
-  icon: React.ComponentType<any>;
-  title: string;
-  value: number;
-  bgColor?: string;
-  tooltip?: string;
-}
+import { AnalyticsCard } from "./types";
 
 interface AnalyticsCardsProps {
   cards: AnalyticsCard[];

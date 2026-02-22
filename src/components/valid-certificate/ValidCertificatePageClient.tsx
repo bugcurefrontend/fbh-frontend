@@ -16,6 +16,7 @@ import { donations } from "@/components/account/mock-data";
 import { TreeUpdate } from "@/components/account/TreeUpdate";
 import Map from "@/components/Map";
 import { validateCertificate, CertificateValidationResponse, GeotaggedTreeDetail, NonGeotaggedTreeDetail } from "@/services/certificates";
+import { logger } from "@/lib/logger";
 
 interface GeotaggedTree {
   tree_id: number;
@@ -37,6 +38,39 @@ interface NonGeotaggedTree {
 }
 
 type TreeData = GeotaggedTree | NonGeotaggedTree;
+
+function isGeotaggedTreeDetail(tree: GeotaggedTreeDetail | NonGeotaggedTreeDetail): tree is GeotaggedTreeDetail {
+  return "tree_id" in tree;
+}
+
+function transformTreeDetails(
+  details: Array<GeotaggedTreeDetail | NonGeotaggedTreeDetail>
+): TreeData[] {
+  return details.map((tree) => {
+    if (isGeotaggedTreeDetail(tree)) {
+      return {
+        ...tree,
+        treeCode: `TREE-${tree.tree_id || "N/A"}`,
+        projectName: `Project ${tree.project_id ?? "N/A"}`,
+        species: `Species ${tree.species_id ?? "N/A"}`,
+      } satisfies GeotaggedTree;
+    }
+
+    return {
+      ...tree,
+      projectName: `Project ${tree.project_id ?? "N/A"}`,
+      species: `Species ${tree.species_id ?? "N/A"}`,
+    } satisfies NonGeotaggedTree;
+  });
+}
+
+function getTreeCode(tree: TreeData): string {
+  return "treeCode" in tree ? tree.treeCode || "N/A" : "N/A";
+}
+
+function getTotalTreesPlanted(tree: TreeData): number {
+  return "total_trees_planted" in tree ? tree.total_trees_planted : 0;
+}
 
 const ValidCertificatePageClient = () => {
   const ITEMS_PER_PAGE = 5;
@@ -77,19 +111,11 @@ const ValidCertificatePageClient = () => {
 
           // Transform tree details based on geotagged status
           if (response.tree_details && response.tree_details.length > 0) {
-            const transformedTrees = response.tree_details.map((tree: any) => {
-              return {
-                ...tree,
-                treeCode: `TREE-${tree.tree_id || "N/A"}`,
-                projectName: tree.projectName || `Project ${tree.project_id}`,
-                species: tree.species || `Species ${tree.species_id}`,
-              };
-            });
-            setTableData(transformedTrees);
+            setTableData(transformTreeDetails(response.tree_details));
           }
         }
       } catch (error) {
-        console.error("Certificate validation error:", error);
+        logger.error("Certificate validation error", error);
         setValid(false);
         setErrorMessage("An error occurred while validating the certificate");
         setCertificateData(null);
@@ -276,7 +302,7 @@ const ValidCertificatePageClient = () => {
                       </td>
                     </tr>
                   ) : (
-                    currentData.map((tree: any, index) => (
+                    currentData.map((tree, index) => (
                       <tr key={startIndex + index}>
                         <td
                           className="h-18 text-center px-3.5 truncate"
@@ -288,7 +314,7 @@ const ValidCertificatePageClient = () => {
                             color: "#090C0F",
                           }}
                         >
-                          {certificateData?.is_geotagged ? tree.treeCode : tree.projectName}
+                          {certificateData?.is_geotagged ? getTreeCode(tree) : tree.projectName}
                         </td>
 
                         <td className="text-center h-18 px-3.5">
@@ -362,7 +388,7 @@ const ValidCertificatePageClient = () => {
                                 color: "#454950",
                               }}
                             >
-                              {tree.total_trees_planted}
+                              {getTotalTreesPlanted(tree)}
                             </div>
                           </td>
                         )}
@@ -423,7 +449,7 @@ const ValidCertificatePageClient = () => {
             </div>
 
             <div className="md:hidden flex flex-col gap-6 w-full">
-              {currentData.map((tree: any, index) => (
+              {currentData.map((tree, index) => (
                 <div
                   key={startIndex + index}
                   className="border border-[#E8E8E9] rounded-2xl overflow-hidden bg-white"
@@ -456,7 +482,7 @@ const ValidCertificatePageClient = () => {
                           {certificateData?.is_geotagged ? "Tree Code:" : "Trees:"}
                         </h1>
                         <p className="text-[#19212C] font-bold">
-                          {certificateData?.is_geotagged ? tree.treeCode : tree.total_trees_planted}
+                          {certificateData?.is_geotagged ? getTreeCode(tree) : getTotalTreesPlanted(tree)}
                         </p>
                       </div>
                     </div>

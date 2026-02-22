@@ -1,6 +1,21 @@
 import { cache } from "react";
 import { fetchAPI, getStrapiURL } from "./api";
 import { Attribute } from "@/types/attribute";
+import { serviceErrorFallback } from "./service-utils";
+
+interface AttributeRecord {
+    id: number;
+    name?: string;
+    type?: string;
+    image?: { data?: { attributes?: { url?: string } }; url?: string };
+    icon?: { data?: { attributes?: { url?: string } }; url?: string };
+    attributes?: {
+        name?: string;
+        type?: string;
+        image?: { data?: { attributes?: { url?: string } }; url?: string };
+        icon?: { data?: { attributes?: { url?: string } }; url?: string };
+    };
+}
 
 /**
  * Fetch all attributes from Strapi
@@ -17,7 +32,7 @@ export const fetchAllAttributes = cache(async (): Promise<Attribute[]> => {
     };
 
     try {
-        const response = await fetchAPI(path, urlParamsObject);
+        const response = await fetchAPI<{ data?: AttributeRecord[] } | AttributeRecord[]>(path, urlParamsObject);
 
         if (!response) return [];
 
@@ -25,7 +40,7 @@ export const fetchAllAttributes = cache(async (): Promise<Attribute[]> => {
         // If response is the array of items:
         const items = Array.isArray(response) ? response : (response.data || []);
 
-        return items.map((item: any) => {
+        return items.map((item: AttributeRecord) => {
             // Handle Strapi v4 structure (attributes) vs flattened
             const attrs = item.attributes || item;
 
@@ -40,14 +55,14 @@ export const fetchAllAttributes = cache(async (): Promise<Attribute[]> => {
 
             return {
                 id: item.id,
-                name: attrs.name,
-                type: attrs.type,
+                name: attrs.name || "",
+                type: attrs.type || "",
                 image: getFullUrl(imageUrlRaw),
                 icon: getFullUrl(iconUrlRaw),
             };
         });
     } catch (error) {
-        console.error("Error fetching attributes:", error);
-        return [];
+        return serviceErrorFallback("Error fetching attributes:", error, []);
     }
 });
+

@@ -1,9 +1,10 @@
 /**
  * Admin Authentication Service
- * Handles admin login via Strapi users-permissions plugin
+ * Works with static export by authenticating directly against Strapi.
  */
 
 import { getStrapiURL } from "./api";
+import { logger } from "@/lib/logger";
 
 export interface AdminLoginRequest {
     identifier: string; // email or username
@@ -37,19 +38,13 @@ export interface AdminAuthError {
 }
 
 /**
- * Login admin user via Strapi
- * @param identifier - Email or username
- * @param password - User password
- * @returns Login response with JWT token and user data
+ * Login admin user via Strapi users-permissions endpoint.
  */
 export async function adminLogin(
     identifier: string,
     password: string
 ): Promise<AdminLoginResponse> {
     const url = getStrapiURL("/api/auth/local");
-
-    console.log("🔐 Attempting login to:", url);
-    console.log("📧 Identifier:", identifier);
 
     const response = await fetch(url, {
         method: "POST",
@@ -64,80 +59,106 @@ export async function adminLogin(
 
     if (!response.ok) {
         const errorText = await response.text();
-        console.error("❌ Login failed with status:", response.status);
-        console.error("❌ Error response:", errorText);
+        logger.error("Admin login failed", response.status);
 
         try {
             const errorData: AdminAuthError = JSON.parse(errorText);
             throw new Error(
                 errorData.error?.message || "Login failed. Please check your credentials."
             );
-        } catch (e) {
-            // If JSON parsing fails, return the text as error
+        } catch {
             throw new Error(`Login failed: ${errorText || response.statusText}`);
         }
     }
 
-    const data: AdminLoginResponse = await response.json();
-    console.log("✅ Login successful for user:", data.user.email);
-    return data;
+    return (await response.json()) as AdminLoginResponse;
 }
 
 /**
- * Store admin authentication data in localStorage
- * @param jwt - JWT token from Strapi
- * @param user - User data from Strapi
+ * Login admin user and persist local auth state.
  */
-export function storeAdminAuth(jwt: string, user: AdminLoginResponse["user"]) {
-    if (typeof window !== "undefined") {
-        localStorage.setItem("adminToken", jwt);
-        localStorage.setItem("adminUser", JSON.stringify(user));
-    }
+export async function loginAdmin(
+    identifier: string,
+    password: string
+): Promise<AdminLoginResponse["user"]> {
+    const data = await adminLogin(identifier, password);
+    storeAdminAuth(data.jwt, data.user);
+    return data.user;
 }
 
 /**
- * Get stored admin token
- * @returns JWT token or null
+ * Logout admin user.
  */
-export function getAdminToken(): string | null {
-    if (typeof window !== "undefined") {
-        return localStorage.getItem("adminToken");
-    }
-    return null;
+export async function logoutAdmin(): Promise<void> {
+    clearAdminAuth();
 }
 
 /**
- * Get stored admin user data
- * @returns User data or null
+ * Get stored admin user data from localStorage.
  */
 export function getAdminUser(): AdminLoginResponse["user"] | null {
-    if (typeof window !== "undefined") {
-        const userData = localStorage.getItem("adminUser");
-        if (userData) {
-            try {
-                return JSON.parse(userData);
-            } catch {
-                return null;
-            }
-        }
-    }
-    return null;
-}
+    if (typeof window === "undefined") return null;
 
-/**
- * Clear admin authentication data
- */
-export function clearAdminAuth() {
-    if (typeof window !== "undefined") {
-        localStorage.removeItem("adminToken");
-        localStorage.removeItem("adminUser");
+    const userData = localStorage.getItem("adminUser");
+    if (!userData) return null;
+
+    try {
+        return JSON.parse(userData) as AdminLoginResponse["user"];
+    } catch {
+        return null;
     }
 }
 
 /**
- * Check if user is authenticated as admin
- * @returns true if admin token exists
+ * Check if user is authenticated as admin.
  */
 export function isAdminAuthenticated(): boolean {
-    return getAdminToken() !== null;
+    return getAdminUser() !== null && getAdminToken() !== null;
+}
+
+/**
+ * Verify admin authentication with backend using stored token.
+ */
+export async function verifyAdminAuth(): Promise<boolean> {
+    try {
+        const token = getAdminToken();
+        if (!token) return false;
+
+        const response = await fetch(getStrapiURL("/api/admin/dashboard/metrics/"), {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+
+        return response.ok;
+    } catch {
+        return false;
+    }
+}
+
+/**
+ * Store admin authentication data in localStorage.
+ */
+export function storeAdminAuth(jwt: string, user: AdminLoginResponse["user"]) {
+    if (typeof window === "undefined") return;
+    localStorage.setItem("adminToken", jwt);
+    localStorage.setItem("adminUser", JSON.stringify(user));
+}
+
+/**
+ * Get stored admin token.
+ */
+export function getAdminToken(): string | null {
+    if (typeof window === "undefined") return null;
+    return localStorage.getItem("adminToken");
+}
+
+/**
+ * Clear admin authentication data.
+ */
+export function clearAdminAuth() {
+    if (typeof window === "undefined") return;
+    localStorage.removeItem("adminToken");
+    localStorage.removeItem("adminUser");
 }

@@ -14,6 +14,7 @@ import SearchBar from "@/components/SearchBar";
 import { TableActions, SortOption, FilterOption } from "./TableActions";
 import { DonationDetailsView } from "./donation-details";
 import { fetchDonationList, exportDonations, DonationFilters } from "@/services/admin";
+import { logger } from "@/lib/logger";
 
 // Updated Interface based on Image
 interface DonationDetail {
@@ -127,10 +128,10 @@ export const DonationTab = () => {
         document.body.removeChild(link);
         window.URL.revokeObjectURL(url);
       } else {
-        console.error("Failed to export donations");
+        logger.error("Failed to export donations");
       }
     } catch (error) {
-      console.error("Error exporting donations:", error);
+      logger.error("Error exporting donations", error);
     }
   };
 

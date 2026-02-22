@@ -256,7 +256,6 @@ export const tableData = [
 
 // Mock API function to fetch tree updates for a given donation ID
 export const fetchTreeUpdates = async (donationId: number) => {
-  console.log(`Fetching updates for donation ID: ${donationId}`);
   // In a real app, you would make an API call here.
   // For now, we'll simulate it by returning our mock data.
   await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate network delay

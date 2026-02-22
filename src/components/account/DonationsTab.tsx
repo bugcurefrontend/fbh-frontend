@@ -3,7 +3,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { donations } from "./mock-data";
-import DownloadCertificate from "@/components/DownloadCertiifcate";
+import DownloadCertificate from "@/components/DownloadCertificate";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { fetchDonationHistory, DonationHistoryItem } from "@/services/donations";
@@ -21,19 +21,21 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import PlantedTrees from "../PlantedTrees";
-import { Donation } from "./types";
+import { Donation, DonationCard } from "./types";
 import { useAuth } from "@/lib/auth-context";
 
 interface DonationsTabProps {
-  allDonationsData: any[];
+  allDonationsData: DonationCard[];
   totalItems: number;
   loading: boolean;
+  error?: string | null;
 }
 
 export const DonationsTab = ({
   allDonationsData = [],
   totalItems = 0,
-  loading = false
+  loading = false,
+  error = null
 }: DonationsTabProps) => {
   const ITEMS_PER_PAGE = 6;
   const [currentPage, setCurrentPage] = useState(1);
@@ -61,6 +63,11 @@ export const DonationsTab = ({
         {loading ? (
           <div className="col-span-full py-12 text-center text-gray-500 font-medium italic">
             Loading your donations...
+          </div>
+        ) : error ? (
+          <div className="col-span-full py-12 text-center">
+            <p className="text-red-600 font-medium mb-2">Error Loading Donations</p>
+            <p className="text-gray-500 text-sm">{error}</p>
           </div>
         ) : currentData.length === 0 ? (
           <div className="col-span-full py-12 text-center text-gray-500 font-medium italic">

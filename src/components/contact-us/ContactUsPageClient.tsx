@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import Image from "next/image";
 import CircleRightTickIcon from "../icons/CircleRightTickIcon";
 import { submitContactForm } from "@/services/contacts";
+import { logger } from "@/lib/logger";
 
 const ContactUsPageClient = () => {
   const [personalDetails, setPersonalDetails] = useState({
@@ -60,7 +61,7 @@ const ContactUsPageClient = () => {
         message: "",
       });
     } catch (error) {
-      console.error("Form submission failed", error);
+      logger.error("Form submission failed", error);
       // You could add error state here to show user-friendly error message
     } finally {
       setIsSubmitting(false);

@@ -7,6 +7,7 @@
 import { cache } from "react";
 import { fetchAPI } from "./api";
 import { HeroContent, HeroContentSimplified } from "@/types/hero-content";
+import { serviceErrorFallback } from "./service-utils";
 
 /**
  * Transform raw Strapi hero content data to simplified format
@@ -62,7 +63,7 @@ export const fetchAllHeroContents = cache(async (): Promise<HeroContentSimplifie
       .filter((hc: HeroContent) => !hc.deleted)
       .map((hc: HeroContent) => transformHeroContent(hc));
   } catch (error) {
-    console.error("Error fetching all hero contents:", error);
-    return [];
+    return serviceErrorFallback("Error fetching all hero contents:", error, []);
   }
 });
+

@@ -7,6 +7,7 @@
 import { cache } from "react";
 import { fetchAPI } from "./api";
 import { SupportingPartner, PartnerSimplified } from "@/types/partner";
+import { serviceErrorFallback } from "./service-utils";
 
 /**
  * Transform raw Strapi partner data to simplified format
@@ -58,8 +59,8 @@ export const fetchAllPartners = cache(
         transformPartner(partner)
       );
     } catch (error) {
-      console.error("Error fetching all partners:", error);
-      return [];
+      return serviceErrorFallback("Error fetching all partners:", error, []);
     }
   }
 );
+

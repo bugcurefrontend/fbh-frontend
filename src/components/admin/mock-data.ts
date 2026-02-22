@@ -3,8 +3,9 @@
 import ProjectsIcon from "../icons/ProjectsIcon";
 import Species from "../icons/Species";
 import TreesIcon from "../icons/TreesIcon";
+import { AnalyticsCard, ChartDatum, RecentDonationRow } from "./dashboard/types";
 
-export const analyticsCards = [
+export const analyticsCards: AnalyticsCard[] = [
   {
     id: 1,
     icon: ProjectsIcon,
@@ -28,7 +29,7 @@ export const analyticsCards = [
   },
 ];
 
-export const weeklyChartData = [
+export const weeklyChartData: ChartDatum[] = [
   { day: "SUN", amount: 150000, fill: "#E5EBF5" },
   { day: "MON", amount: 180000, fill: "#E5EBF5" },
   { day: "TUE", amount: 100000, fill: "#E5EBF5" },
@@ -38,7 +39,7 @@ export const weeklyChartData = [
   { day: "SAT", amount: 345000, fill: "#95AAD5" },
 ];
 
-export const monthlyChartData = [
+export const monthlyChartData: ChartDatum[] = [
   { month: "JAN", amount: 210000, fill: "#E5EBF5" },
   { month: "FEB", amount: 180000, fill: "#E5EBF5" },
   { month: "MAR", amount: 240000, fill: "#E5EBF5" },
@@ -53,7 +54,7 @@ export const monthlyChartData = [
   { month: "DEC", amount: 350000, fill: "#95AAD5" },
 ];
 
-export const recentDonations = [
+export const recentDonations: RecentDonationRow[] = [
   {
     id: 1,
     hrIdTo: "FBHPT345",

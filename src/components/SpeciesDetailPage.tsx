@@ -56,22 +56,16 @@ const SpeciesDetailPage: React.FC<SpeciesDetailPageProps> = ({
   const { currency, currencySymbol } = useCurrency();
 
   // Get rates based on selected currency
-  // plantRates is an array of objects like { currency_code: "INR", ... }
-  // We need to find the one matching the current currency
-  const currentRate = Array.isArray(plantRates)
-    ? plantRates.find((r) => r.currency_code === currency)
-    : (plantRates as any)[currency]; // Fallback if it somehow IS an object (though types say array)
+  const currentRate =
+    plantRates.find((rate) => rate.currency_code === currency) ||
+    plantRates.find((rate) => rate.currency_code?.toUpperCase() === currency.toUpperCase());
 
   const geotaggedRate = currentRate?.geotagged_rate;
   const nonGeotaggedRate = currentRate?.non_geotagged_rate;
 
-  const handlePlantTree = () => {
-    console.log(`Plant ${speciesData.name} tree`);
-  };
+  const handlePlantTree = () => {};
 
-  const handleGiftTree = () => {
-    console.log(`Gift ${speciesData.name} tree`);
-  };
+  const handleGiftTree = () => {};
 
   return (
     <main className="max-w-7xl mx-auto md:px-8 px-4 md:pt-8 pt-4 space-y-8 md:space-y-16">

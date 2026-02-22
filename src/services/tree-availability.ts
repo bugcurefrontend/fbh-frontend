@@ -1,4 +1,5 @@
 import { fetchAPI } from "./api";
+import { serviceErrorFallback } from "./service-utils";
 
 /**
  * Interface for Tree Availability Request
@@ -56,7 +57,7 @@ export async function fetchTreeAvailability(
         );
         return data;
     } catch (error) {
-        console.error("Error fetching tree availability:", error);
-        return null;
+        return serviceErrorFallback("Error fetching tree availability:", error, null);
     }
 }
+

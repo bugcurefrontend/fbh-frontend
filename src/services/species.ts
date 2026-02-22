@@ -7,6 +7,7 @@
 import { cache } from "react";
 import { fetchAPI, isNotEmpty } from "./api";
 import { Species, SpeciesSimplified, FAQ } from "@/types/species";
+import { serviceErrorFallback } from "./service-utils";
 
 /**
  * Transform raw Strapi species data to simplified format
@@ -98,8 +99,7 @@ export const fetchAllSpecies = cache(async (): Promise<SpeciesSimplified[]> => {
       .filter((species: Species) => !species.deleted)
       .map((species: Species) => transformSpecies(species));
   } catch (error) {
-    console.error("Error fetching all species:", error);
-    return [];
+    return serviceErrorFallback("Error fetching all species:", error, []);
   }
 });
 
@@ -114,8 +114,7 @@ export async function fetchSpeciesSlugs(): Promise<{ slug: string }[]> {
       slug: generateSlug(s.name),
     }));
   } catch (error) {
-    console.error("Error fetching species slugs:", error);
-    return [];
+    return serviceErrorFallback("Error fetching species slugs:", error, []);
   }
 }
 
@@ -132,8 +131,7 @@ export const fetchSpeciesBySlug = cache(async (
     const species = allSpecies.find((s) => generateSlug(s.name) === slug);
     return species || null;
   } catch (error) {
-    console.error(`Error fetching species by slug ${slug}:`, error);
-    return null;
+    return serviceErrorFallback(`Error fetching species by slug ${slug}:`, error, null);
   }
 });
 
@@ -159,8 +157,7 @@ export async function fetchSpeciesById(
 
     return null;
   } catch (error) {
-    console.error(`Error fetching species by id ${documentId}:`, error);
-    return null;
+    return serviceErrorFallback(`Error fetching species by id ${documentId}:`, error, null);
   }
 }
 
@@ -184,7 +181,7 @@ export async function fetchPopularSpecies(): Promise<SpeciesSimplified[]> {
 
     return [];
   } catch (error) {
-    console.error("Error fetching popular species:", error);
-    return [];
+    return serviceErrorFallback("Error fetching popular species:", error, []);
   }
 }
+

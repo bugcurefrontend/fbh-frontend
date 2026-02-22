@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ArrowLeft } from "lucide-react";
 import SearchBar from "@/components/SearchBar";
 import { TableActions, SortOption, FilterOption } from "../TableActions";
@@ -12,6 +12,9 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { fetchProjectById } from "@/services/projects";
+import { SpeciesRef } from "@/types/project";
+import { logger } from "@/lib/logger";
 
 interface Project {
   id: number;
@@ -33,77 +36,22 @@ interface SpeciesDetail {
   nonGeoTaggedPlanted: number;
 }
 
+interface TreeCountData {
+  id: number;
+  documentId: string;
+  total: number;
+  specie?: {
+    id: number;
+    documentId: string;
+    common_name: string;
+    scientific_name?: string;
+  };
+}
+
 interface ProjectDetailsViewProps {
   project: Project;
   onBack: () => void;
 }
-
-// Mock species data for the selected project
-const mockSpeciesData: SpeciesDetail[] = [
-  {
-    id: 1,
-    commonName: "Neem",
-    scientificName: "Azadirachta indica",
-    geoTagged: 455,
-    geoTaggedPlanted: 860,
-    nonGeoTagged: 700,
-    nonGeoTaggedPlanted: 450,
-  },
-  {
-    id: 2,
-    commonName: "Banyan",
-    scientificName: "Ficus benghalensis",
-    geoTagged: 650,
-    geoTaggedPlanted: 600,
-    nonGeoTagged: 420,
-    nonGeoTaggedPlanted: 300,
-  },
-  {
-    id: 3,
-    commonName: "Peepal",
-    scientificName: "Ficus religiosa",
-    geoTagged: 700,
-    geoTaggedPlanted: 500,
-    nonGeoTagged: 250,
-    nonGeoTaggedPlanted: 200,
-  },
-  {
-    id: 4,
-    commonName: "Mango",
-    scientificName: "Mangifera indica",
-    geoTagged: 350,
-    geoTaggedPlanted: 500,
-    nonGeoTagged: 150,
-    nonGeoTaggedPlanted: 650,
-  },
-  {
-    id: 5,
-    commonName: "Ashoka",
-    scientificName: "Saraca asoca",
-    geoTagged: 400,
-    geoTaggedPlanted: 200,
-    nonGeoTagged: 80,
-    nonGeoTaggedPlanted: 200,
-  },
-  {
-    id: 6,
-    commonName: "Mango",
-    scientificName: "Mangifera indica",
-    geoTagged: 350,
-    geoTaggedPlanted: 600,
-    nonGeoTagged: 150,
-    nonGeoTaggedPlanted: 100,
-  },
-  {
-    id: 7,
-    commonName: "Ashoka",
-    scientificName: "Saraca asoca",
-    geoTagged: 400,
-    geoTaggedPlanted: 200,
-    nonGeoTagged: 80,
-    nonGeoTaggedPlanted: 200,
-  },
-];
 
 const sortOptions: SortOption[] = [
   { label: "Common Name: A-Z", value: "commonName", direction: "asc" },
@@ -120,16 +68,59 @@ export const ProjectDetailsView = ({
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSort, setSelectedSort] = useState<SortOption | null>(sortOptions[0]);
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+  const [speciesData, setSpeciesData] = useState<SpeciesDetail[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const ITEMS_PER_PAGE = 6;
 
+  // Fetch project species data
+  useEffect(() => {
+    const loadSpeciesData = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        // Fetch full project details with species and tree_counts
+        const projectData = await fetchProjectById(project.id.toString());
+
+        if (projectData && projectData.species && Array.isArray(projectData.species)) {
+          // Transform species data
+          // Note: Real geotagged/non-geotagged breakdown would require a dedicated API endpoint
+          // For now, we'll use available data and show what we can
+          const transformedSpecies: SpeciesDetail[] = projectData.species.map((species: SpeciesRef, index: number) => ({
+            id: species.id || index,
+            commonName: species.common_name || "Unknown",
+            scientificName: species.scientific_name || "N/A",
+            // These would need to come from a dedicated API endpoint for real data
+            geoTagged: 0,
+            geoTaggedPlanted: 0,
+            nonGeoTagged: 0,
+            nonGeoTaggedPlanted: 0,
+          }));
+
+          setSpeciesData(transformedSpecies);
+        } else {
+          setSpeciesData([]);
+        }
+      } catch (err) {
+        logger.error("Error loading species data", err);
+        setError("Failed to load species details. Please try again later.");
+        setSpeciesData([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadSpeciesData();
+  }, [project.id]);
+
   // Extract unique common names for filter
-  const uniqueCommonNames = Array.from(new Set(mockSpeciesData.map(s => s.commonName)));
+  const uniqueCommonNames = Array.from(new Set(speciesData.map(s => s.commonName)));
   const filterOptions: FilterOption[] = uniqueCommonNames.map(name => ({
     label: name,
     value: name
   }));
 
-  const filteredData = mockSpeciesData
+  const filteredData = speciesData
     .filter((item) => {
       const query = searchQuery.toLowerCase();
       const matchesSearch =
@@ -220,7 +211,20 @@ export const ProjectDetailsView = ({
               </tr>
             </thead>
             <tbody>
-              {currentData.length === 0 ? (
+              {loading ? (
+                <tr>
+                  <td colSpan={6} className="px-6 py-10 text-center text-gray-500 font-medium italic">
+                    Loading species details...
+                  </td>
+                </tr>
+              ) : error ? (
+                <tr>
+                  <td colSpan={6} className="px-6 py-10 text-center">
+                    <p className="text-red-600 font-medium mb-2">Error Loading Species Data</p>
+                    <p className="text-gray-500 text-sm">{error}</p>
+                  </td>
+                </tr>
+              ) : currentData.length === 0 ? (
                 <tr>
                   <td colSpan={6} className="px-6 py-10 text-center text-gray-500 font-medium italic">
                     No species details found.

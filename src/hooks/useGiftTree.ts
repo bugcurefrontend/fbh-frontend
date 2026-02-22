@@ -3,7 +3,7 @@ import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useCurrency } from "@/components/CurrencySelect";
 import { City, Country } from "@/lib/location-utils";
 import { useAuth } from "@/lib/auth-context";
-import validations from "@/utils/validations";
+import validations, { isValidEmail, isValidIdNumber } from "@/utils/validations";
 import { INDIA_COUNTRY_CODE } from "@/utils/tax-constants";
 import {
     OrderSummary as OrderSummaryType,
@@ -20,6 +20,7 @@ import { createTreeReservation } from "@/services/tree-reservations";
 import { fetchAllSpecies } from "@/services/species";
 import { SpeciesSimplified } from "@/types/species";
 import { Recipient } from "@/components/gift-tree/types";
+import { logger } from "@/lib/logger";
 
 export const useGiftTree = (co2PerTree?: number, initialPlantRates: PlantRate[] = []) => {
     const searchParams = useSearchParams();
@@ -60,7 +61,7 @@ export const useGiftTree = (co2PerTree?: number, initialPlantRates: PlantRate[] 
                 const parsed = JSON.parse(stored);
                 if (Array.isArray(parsed)) return parsed;
             } catch (e) {
-                console.error("Failed to parse stored recipients:", e);
+                logger.error("Failed to parse stored recipients", e);
             }
         }
         return [];
@@ -142,14 +143,6 @@ export const useGiftTree = (co2PerTree?: number, initialPlantRates: PlantRate[] 
 
     const geotaggedRate = currentRate ? currentRate.geotagged_rate : (currency === "INR" ? 175 : 10);
     const nonGeotaggedRate = currentRate ? currentRate.non_geotagged_rate : (currency === "INR" ? 150 : 5);
-
-    console.log("💰 [GiftTree] Rate context:", {
-        currency,
-        currentRate,
-        geotaggedRate,
-        nonGeotaggedRate,
-        isGeoTagged
-    });
 
     const speciesList = useMemo(() => {
         if (strapiSpecies.length > 0) {
@@ -250,11 +243,14 @@ export const useGiftTree = (co2PerTree?: number, initialPlantRates: PlantRate[] 
         return false;
     };
 
-    const handlePersonalDetailsChange = (field: keyof PersonalDetails, value: any) => {
+    const handlePersonalDetailsChange = (
+        field: keyof PersonalDetails,
+        value: string | boolean | City | Country | null
+    ) => {
         setPersonalDetails(prev => ({ ...prev, [field]: value }));
     };
 
-    const handleTaxDetailsChange = (field: keyof TaxDetails, value: any) => {
+    const handleTaxDetailsChange = (field: keyof TaxDetails, value: string | Country | null) => {
         if (field === "citizenship") {
             const isIndian = typeof value === "object" && value?.id === INDIA_COUNTRY_CODE;
             setTaxDetails(prev => ({
@@ -292,14 +288,12 @@ export const useGiftTree = (co2PerTree?: number, initialPlantRates: PlantRate[] 
     }, [totalTrees, selectedSpeciesId, isGeoTagged]);
 
     const emailValid = useMemo(() =>
-        personalDetails.email === "" || /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(personalDetails.email),
+        personalDetails.email === "" || isValidEmail(personalDetails.email),
         [personalDetails.email]
     );
 
     const idNumberValid = useMemo(() => {
-        if (!taxDetails.idNumber) return true;
-        const v = validations[taxDetails.idType as keyof typeof validations];
-        return v && v.value instanceof RegExp ? v.value.test(taxDetails.idNumber) : true;
+        return isValidIdNumber(taxDetails.idType, taxDetails.idNumber, true);
     }, [taxDetails.idNumber, taxDetails.idType]);
 
     const isFormValid = useMemo(() =>

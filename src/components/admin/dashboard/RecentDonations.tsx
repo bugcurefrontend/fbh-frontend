@@ -10,9 +10,10 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { RecentDonationRow } from "./types";
 
 interface RecentDonationsProps {
-  data: any[];
+  data: RecentDonationRow[];
 }
 
 export const RecentDonations = ({ data }: RecentDonationsProps) => {

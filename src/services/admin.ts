@@ -1,4 +1,5 @@
 import { fetchAPI } from "./api";
+import { serviceErrorFallback } from "./service-utils";
 
 // ============================================
 // TypeScript Interfaces
@@ -91,7 +92,7 @@ export interface DonationDetail extends DonationListItem {
     species_id?: number;
     donor_phone?: string;
     created_at?: string;
-    allocation_details?: any;
+    allocation_details?: unknown;
 }
 
 /**
@@ -167,8 +168,7 @@ export async function fetchDashboardMetrics(): Promise<DashboardMetrics | null> 
         const data = await fetchAPI("/admin/dashboard/metrics/");
         return data;
     } catch (error) {
-        console.error("Error fetching dashboard metrics:", error);
-        return null;
+        return serviceErrorFallback("Error fetching dashboard metrics:", error, null);
     }
 }
 
@@ -183,8 +183,7 @@ export async function fetchRecentDonations(
         const data = await fetchAPI("/admin/donations/recent/", { limit });
         return data;
     } catch (error) {
-        console.error("Error fetching recent donations:", error);
-        return null;
+        return serviceErrorFallback("Error fetching recent donations:", error, null);
     }
 }
 
@@ -211,8 +210,7 @@ export async function fetchTransactionList(
         const data = await fetchAPI("/admin/transactions/list/", filters);
         return data;
     } catch (error) {
-        console.error("Error fetching transaction list:", error);
-        return null;
+        return serviceErrorFallback("Error fetching transaction list:", error, null);
     }
 }
 
@@ -243,8 +241,7 @@ export async function fetchDonationList(
         const data = await fetchAPI("/admin/donations/list/", filters);
         return data;
     } catch (error) {
-        console.error("Error fetching donation list:", error);
-        return null;
+        return serviceErrorFallback("Error fetching donation list:", error, null);
     }
 }
 
@@ -259,8 +256,7 @@ export async function fetchDonationDetail(
         const data = await fetchAPI(`/admin/donations/detail/${donationId}/`);
         return data;
     } catch (error) {
-        console.error("Error fetching donation detail:", error);
-        return null;
+        return serviceErrorFallback("Error fetching donation detail:", error, null);
     }
 }
 
@@ -285,7 +281,7 @@ export async function exportDonations(
         const url = `${DJANGO_API_URL}/api/admin/donations/export/${queryString ? `?${queryString}` : ""}`;
 
         // Get admin token from localStorage
-        const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
+        const accessToken = typeof window !== 'undefined' ? localStorage.getItem('adminToken') : null;
 
         const response = await fetch(url, {
             method: "GET",
@@ -301,8 +297,7 @@ export async function exportDonations(
 
         return await response.blob();
     } catch (error) {
-        console.error("Error exporting donations:", error);
-        return null;
+        return serviceErrorFallback("Error exporting donations:", error, null);
     }
 }
 
@@ -315,8 +310,7 @@ export async function fetchAllocationStatistics(): Promise<AllocationStatistics 
         const data = await fetchAPI("/admin/allocations/stats/");
         return data;
     } catch (error) {
-        console.error("Error fetching allocation statistics:", error);
-        return null;
+        return serviceErrorFallback("Error fetching allocation statistics:", error, null);
     }
 }
 
@@ -338,7 +332,7 @@ export async function fetchAllocationList(
         const data = await fetchAPI("/admin/allocations/list/", filters);
         return data;
     } catch (error) {
-        console.error("Error fetching allocation list:", error);
-        return null;
+        return serviceErrorFallback("Error fetching allocation list:", error, null);
     }
 }
+

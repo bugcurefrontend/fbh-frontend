@@ -28,10 +28,7 @@ const ProjectsSection: React.FC<ProjectsSectionProps> = ({
     imageAlt: `${p.name} - ${p.archetype}`,
   }));
 
-  const handlePlantTree = (projectId: string | number) => {
-    console.log(`Plant tree for project: ${projectId}`);
-    // Handle plant tree action
-  };
+  const handlePlantTree = (_projectId: string | number) => {};
 
   if (projects.length === 0) {
     return (

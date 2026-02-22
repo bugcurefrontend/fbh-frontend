@@ -5,6 +5,8 @@ import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/lib/auth-context";
 import { fetchUserDashboardStats } from "@/services/dashboard";
+import { DashboardStatCard } from "./types";
+import { logger } from "@/lib/logger";
 
 const defaultStats = [
   {
@@ -31,7 +33,7 @@ const defaultStats = [
 ];
 
 export const DashboardTab = () => {
-  const [statsData, setStatsData] = useState<any[]>(defaultStats);
+  const [statsData, setStatsData] = useState<DashboardStatCard[]>(defaultStats);
   const [isLoading, setIsLoading] = useState(true);
   const { userProfile, isAuthenticated } = useAuth();
 
@@ -45,7 +47,7 @@ export const DashboardTab = () => {
             setStatsData([
               {
                 label: "CO2 Sequested",
-                value: fetchedStats.co2_sequestered.toLocaleString(),
+                value: fetchedStats.co2_Sequested.toLocaleString(),
                 suffix: "kg",
                 icon: "/images/leaf2.png",
                 accent: "#0D824B",
@@ -69,7 +71,7 @@ export const DashboardTab = () => {
             setStatsData(defaultStats);
           }
         } catch (error) {
-          console.error("Failed to load dashboard stats:", error);
+          logger.error("Failed to load dashboard stats", error);
           setStatsData(defaultStats);
         } finally {
           setIsLoading(false);
