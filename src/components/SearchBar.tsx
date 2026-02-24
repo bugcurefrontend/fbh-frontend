@@ -20,6 +20,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
       <div className="relative">
         <Input
           type="text"
+          maxLength={100}
           placeholder={placeholder}
           value={value}
           onChange={(e) => onChange(e.target.value)}

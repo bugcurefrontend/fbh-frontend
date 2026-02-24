@@ -6,16 +6,17 @@ import ProjectTabs from "./ProjectTabs";
 import ProjectAccordion from "./ProjectAccordion";
 import GeoTagToggleAndActions from "./GeoTagToggleAndActions";
 import { useCurrency } from "./CurrencySelect";
-import { PlantRates } from "@/types/plant-rate";
+import { PlantRate } from "@/types/plant-rate";
 
 interface Project {
-  id: string;
+  id: string | number;
   title: string;
   location: string;
   plantedCount: number;
   category: string;
   imageUrl: string;
   imageAlt: string;
+  availableCount: number;
 }
 
 interface ProjectUpdateUI {
@@ -35,7 +36,7 @@ interface ProjectSpeciesUI {
 }
 
 interface ProjectDetailData {
-  id: string;
+  id: string | number;
   title: string;
   location: string;
   description: string;
@@ -61,7 +62,7 @@ interface ProjectDetailPageProps {
   relatedProjects: Project[];
   projectUpdates?: ProjectUpdateUI[];
   projectSpecies?: ProjectSpeciesUI[];
-  plantRates: PlantRates;
+  plantRates: PlantRate[];
 }
 
 const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
@@ -76,32 +77,23 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
   const { currency, currencySymbol } = useCurrency();
 
   // Get rates based on selected currency
-  const currentRate = plantRates[currency];
+  const currentRate =
+    plantRates.find((rate) => rate.currency_code === currency) ||
+    plantRates.find((rate) => rate.currency_code?.toUpperCase() === currency.toUpperCase());
+
   const geotaggedRate = currentRate?.geotagged_rate;
   const nonGeotaggedRate = currentRate?.non_geotagged_rate;
 
   const handleReadMoreClick = () => {
     overviewRef.current?.scrollIntoView({ behavior: "smooth" });
   };
-  const handlePlantTree = () => {
-    console.log(`Plant tree for project: ${projectData.id}`);
-    // Handle plant tree action
-  };
+  const handlePlantTree = () => {};
 
-  const handleGiftTree = () => {
-    console.log(`Gift tree for project: ${projectData.id}`);
-    // Handle gift tree action
-  };
+  const handleGiftTree = () => {};
 
-  const handleRelatedPlantTree = (projectId: string) => {
-    console.log(`Plant tree for related project: ${projectId}`);
-    // Handle plant tree action for related projects
-  };
+  const handleRelatedPlantTree = (_projectId: string | number) => {};
 
-  const handleViewAll = () => {
-    console.log("View all projects");
-    // Navigate to all projects page
-  };
+  const handleViewAll = () => {};
 
   return (
     <main className="max-w-7xl mx-auto md:px-8 px-4 md:pt-8 pt-4 space-y-8">
@@ -135,6 +127,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
           onViewAll={handleViewAll}
           projectUpdates={projectUpdates}
           projectSpecies={projectSpecies}
+          projectId={projectData.id}
         />
       </div>
 
@@ -146,6 +139,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
         onViewAll={handleViewAll}
         projectUpdates={projectUpdates}
         projectSpecies={projectSpecies}
+        projectId={projectData.id}
       />
 
       {/* Mobile Sticky Actions */}

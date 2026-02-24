@@ -85,7 +85,8 @@ function NavigationMenuItem({ item }: { item: NavigationItem }) {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <button
+      <Link
+        href={item.href || "#"}
         className={cn(
           "group inline-flex items-center justify-center bg-background p-2 uppercase text-xs font-bold leading-[18px] text-center align-middle text-[#19212C] rounded-none hover:bg-[#E6EBF5] transition-colors",
           "hover:bg-[#E6EBF5] focus:bg-[#E6EBF5] focus-visible:outline-1 focus-visible:ring-[3px] focus-visible:ring-ring/50 outline-none"
@@ -100,32 +101,31 @@ function NavigationMenuItem({ item }: { item: NavigationItem }) {
           strokeWidth={2}
           aria-hidden="true"
         />
-      </button>
+      </Link>
 
-      {isOpen && item.sub && (
-        <div
-          className={cn(
-            "absolute left-0 top-full z-50 overflow-hidden border bg-white shadow-md animate-in fade-in-0 zoom-in-95"
-          )}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-        >
-          <div className="px-0 py-2">
-            <ul className="grid">
-              {item.sub.map((subItem) => (
-                <li key={subItem.label}>
-                  <Link
-                    href={subItem.href}
-                    className="block text-[16px] font-medium hover:bg-[#E6EBF5] px-4 py-2 transition-colors truncate"
-                  >
-                    {subItem.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      )}
+      {/* Dropdown with slide animation */}
+      <div
+        className={cn(
+          "absolute left-0 top-full z-50 overflow-hidden border bg-white shadow-md transition-all duration-300 ease-in-out",
+          isOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0 border-transparent"
+        )}
+        style={{ transitionProperty: "max-height, opacity, border-color" }}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        <ul className="grid">
+          {item.sub?.map((subItem) => (
+            <li key={subItem.label}>
+              <Link
+                href={subItem.href}
+                className="block text-[16px] font-medium hover:bg-[#E6EBF5] px-4 py-2 transition-colors truncate"
+              >
+                {subItem.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
     </li>
   );
 }

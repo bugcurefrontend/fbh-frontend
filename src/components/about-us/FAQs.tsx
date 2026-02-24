@@ -77,7 +77,7 @@ const FAQs = () => {
   };
   return (
     <main className="max-w-7xl mx-auto md:mt-16 mt-8 px-4 md:px-8 overflow-hidden">
-      <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold text-center text-[#232D26] mb-6">
+      <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold sm:text-center text-[#232D26] mb-6">
         FAQs
       </h2>
       <Tabs value={activeTab} onValueChange={setActiveTab}>
@@ -86,10 +86,10 @@ const FAQs = () => {
             Category
           </h3>
           <Select value={activeTab} onValueChange={setActiveTab}>
-            <SelectTrigger className="w-full h-12 hover:rounded-md border-[#95AAD5] rounded-md text-[#003399] font-bold">
+            <SelectTrigger className="w-full min-h-12 hover:rounded-[8px] border-[#95AAD5] rounded-[8px] text-[#003399] font-bold">
               <SelectValue placeholder="Select category" />
             </SelectTrigger>
-            <SelectContent className="rounded-md hover:rounded-md">
+            <SelectContent className="rounded-[8px] hover:rounded-[8px]">
               {faqData.map((tab) => (
                 <SelectItem key={tab.value} value={tab.value}>
                   {tab.title}
@@ -98,13 +98,13 @@ const FAQs = () => {
             </SelectContent>
           </Select>
         </div>
-        <div className="hidden md:block w-fit mx-auto border-b px-4 border-gray-200">
-          <TabsList className="flex bg-transparent p-0 h-auto w-full justify-start gap-8">
+        <div className="hidden md:block w-fit mx-auto">
+          <TabsList className="flex bg-transparent p-0 h-auto w-full justify-start">
             {faqData.map((tab) => (
               <TabsTrigger
                 key={tab.value}
                 value={tab.value}
-                className="flex items-center gap-2 pl-2 pr-1 py-4 border-b-2 border-transparent bg-transparent text-[#63676C] hover:text-[#003399] rounded-none relative data-[state=active]:border-[#003399] data-[state=active]:text-[#003399] data-[state=active]:bg-transparent font-bold text-base"
+                className="flex items-center px-5 py-4 border-b-[2px] bg-transparent border-[#B7B9BB] text-[#63676C] hover:text-[#003399] rounded-none relative data-[state=active]:border-[#003399] data-[state=active]:text-[#003399] data-[state=active]:bg-transparent font-bold text-base"
               >
                 {tab.title}
               </TabsTrigger>
@@ -113,16 +113,20 @@ const FAQs = () => {
         </div>
 
         {faqData.map((tab) => (
-          <TabsContent key={tab.value} value={tab.value} className="md:pt-6">
+          <TabsContent
+            key={tab.value}
+            value={tab.value}
+            className="md:pt-6 md:pb-1"
+          >
             <div className="space-y-6">
               {tab.faqs.map((faq) => (
                 <div
                   key={faq.id}
-                  className="border border-[#E4E4E4] rounded-lg overflow-hidden"
+                  className="hover:shadow-[0_1px_8px_rgba(0,0,0,0.1)] border border-[#E4E4E4] rounded-[8px] overflow-hidden"
                 >
                   <button
                     onClick={() => toggleItem(faq.id)}
-                    className="w-full flex items-center justify-between text-left hover:bg-gray-50 transition-colors md:p-6 p-3"
+                    className="w-full flex items-center justify-between text-left transition-colors md:p-6 p-3"
                   >
                     <span className="text-[#454950] md:text-lg text-sm md:font-bold font-semibold leading-relaxed">
                       {faq.question}
@@ -131,21 +135,28 @@ const FAQs = () => {
                       {openItem === faq.id ? (
                         <Minus
                           strokeWidth={2}
-                          className="w-4 md:w-6 h-4 md:h-6 text-[#63676C]"
+                          className="w-6 h-6 text-[#63676C]"
                         />
                       ) : (
                         <Plus
                           strokeWidth={2}
-                          className="w-4 md:w-6 h-4 md:h-6 text-[#63676C]"
+                          className="w-6 h-6 text-[#63676C]"
                         />
                       )}
                     </div>
                   </button>
-                  {openItem === faq.id && (
+                  {/* Animated answer container with slide effect */}
+                  <div
+                    className="overflow-hidden transition-all duration-300 ease-in-out"
+                    style={{
+                      maxHeight: openItem === faq.id ? "500px" : "0px",
+                      opacity: openItem === faq.id ? 1 : 0,
+                    }}
+                  >
                     <p className="text-[#454950] max-md:text-sm md:px-6 px-3 md:pb-6 pb-3">
                       {faq.answer}
                     </p>
-                  )}
+                  </div>
                 </div>
               ))}
             </div>

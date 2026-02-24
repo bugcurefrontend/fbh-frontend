@@ -3,6 +3,10 @@ import React from "react";
 import Image from "next/image";
 import { InfiniteMovingCards } from "./ui/infinite-moving-cards";
 import { PartnerSimplified } from "@/types/partner";
+import {
+  FALLBACK_PARTNERS,
+  FALLBACK_MOBILE_PARTNERS,
+} from "@/constants";
 
 interface PartnersSectionProps {
   partners?: PartnerSimplified[];
@@ -11,50 +15,53 @@ interface PartnersSectionProps {
 const PartnersSection: React.FC<PartnersSectionProps> = ({
   partners: apiPartners,
 }) => {
-  const fallbackPartners = [
-    { name: "Google", logo: "/images/partners/google1.png" },
-    { name: "Accenture", logo: "/images/partners/accenture.png" },
-    { name: "Amazon", logo: "/images/partners/amazon.png" },
-    { name: "Bank of America", logo: "/images/partners/america.png" },
-    { name: "WWF", logo: "/images/partners/wwf.png" },
-    { name: "Zscaler", logo: "/images/partners/zscaler.png" },
-    { name: "FedEX", logo: "/images/partners/fedex.png" },
-    { name: "Microsoft", logo: "/images/partners/microsoft.png" },
-    { name: "Samsung", logo: "/images/partners/samsung.png" },
-    { name: "MPG", logo: "/images/partners/mp.png" },
-  ];
-
-  const fallbackMobilePartners = [
-    { name: "Samsung", logo: "/images/partners/samsung.png" },
-    { name: "Google", logo: "/images/partners/google1.png" },
-    { name: "Amazon", logo: "/images/partners/amazon.png" },
-    { name: "Microsoft", logo: "/images/partners/microsoft.png" },
-    { name: "FedEX", logo: "/images/partners/fedex.png" },
-    { name: "HubSpot", logo: "/images/partners/hubSpot.png" },
-  ];
-
   // Use API data if available, otherwise use fallback
   const partners =
     apiPartners && apiPartners.length > 0
-      ? apiPartners.map((p) => ({ name: p.name, logo: p.logo }))
-      : fallbackPartners;
+      ? apiPartners.map((p) => ({
+        name: p.name,
+        logo: p.logo,
+        url: p.companyUrl
+      }))
+      : FALLBACK_PARTNERS;
 
   const mobilePartners =
     apiPartners && apiPartners.length > 0
-      ? apiPartners.slice(0, 6).map((p) => ({ name: p.name, logo: p.logo }))
-      : fallbackMobilePartners;
+      ? apiPartners.map((p) => ({
+        name: p.name,
+        logo: p.logo,
+        url: p.companyUrl
+      }))
+      : FALLBACK_MOBILE_PARTNERS;
 
   const items = partners.map((partner) => ({
     id: partner.name,
     quote: (
       <div className="flex items-center justify-center">
-        <Image
-          src={partner.logo}
-          alt={partner.name}
-          width={300}
-          height={150}
-          className="object-contain max-w-[120px] max-h-[50px] sm:max-h-[80px] sm:max-w-[180px] w-fit h-fit"
-        />
+        {partner.url ? (
+          <a
+            href={partner.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block hover:opacity-80 transition-opacity"
+          >
+            <Image
+              src={partner.logo}
+              alt={partner.name}
+              width={300}
+              height={150}
+              className="object-contain max-w-[120px] max-h-[50px] sm:max-h-[80px] sm:max-w-[180px] w-fit h-fit"
+            />
+          </a>
+        ) : (
+          <Image
+            src={partner.logo}
+            alt={partner.name}
+            width={300}
+            height={150}
+            className="object-contain max-w-[120px] max-h-[50px] sm:max-h-[80px] sm:max-w-[180px] w-fit h-fit"
+          />
+        )}
       </div>
     ),
     name: partner.name,
@@ -63,27 +70,60 @@ const PartnersSection: React.FC<PartnersSectionProps> = ({
 
   return (
     <section className="max-w-7xl mx-auto px-4 md:px-8">
-      <div className="bg-white rounded-[16px] border border-gray-200 max-sm:p-[30px] sm:py-4 text-center space-y-6 sm:space-y-14 h-[232px]">
+      <div className="bg-white rounded-[16px] border border-gray-200 max-sm:p-[30px] sm:py-4 text-center max-sm:flex flex-col gap-8 sm:space-y-14 sm:h-[232px]">
         <h2 className="text-[22px] sm:text-[32px] font-[Playfair_Display] font-semibold text-black md:text-[32px] md:font-semibold md:leading-[48px] md:text-center md:align-middle md:text-[#090C0F]">
           Our Supporting Partners
         </h2>
 
-        {/* Mobile 2 Layout */}
-        <div className="grid grid-cols-3 sm:hidden space-y-2.5 gap-x-2">
-          {mobilePartners.map((partner) => (
-            <div
-              key={partner.name}
-              className="flex items-center justify-center my-4"
-            >
-              <Image
-                src={partner.logo}
-                alt={partner.name}
-                width={70}
-                height={24}
-                className="object-contain max-w-[80px] max-h-[30px]"
-              />
-            </div>
-          ))}
+        {/* Mobile Layout - 3 columns grid */}
+        <div className="grid grid-cols-3 sm:hidden gap-x-2 gap-y-8">
+          {mobilePartners.map((partner, index) => {
+            const remainingItems = mobilePartners.length % 3;
+            const isInLastRow = index >= mobilePartners.length - remainingItems;
+
+            // If 1 item in last row, center it (col-span-3)
+            // If 2 items in last row, center them (col-start-1 for 7th item, col-start-2 for 8th item)
+            const shouldCenterSingle = remainingItems === 1 && isInLastRow;
+            const shouldCenterPair = remainingItems === 2 && isInLastRow;
+            const isFirstOfPair = shouldCenterPair && index === mobilePartners.length - 2;
+
+            return (
+              <div
+                key={partner.name}
+                className={`flex items-center justify-center ${shouldCenterSingle
+                  ? "col-span-3"
+                  : shouldCenterPair && isFirstOfPair
+                    ? "col-start-2"
+                    : ""
+                  }`}
+              >
+                {partner.url ? (
+                  <a
+                    href={partner.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:opacity-80 transition-opacity"
+                  >
+                    <Image
+                      src={partner.logo}
+                      alt={partner.name}
+                      width={70}
+                      height={24}
+                      className="object-contain max-w-[80px] max-h-[30px]"
+                    />
+                  </a>
+                ) : (
+                  <Image
+                    src={partner.logo}
+                    alt={partner.name}
+                    width={70}
+                    height={24}
+                    className="object-contain max-w-[80px] max-h-[30px]"
+                  />
+                )}
+              </div>
+            );
+          })}
         </div>
 
         {/* Desktop Infinite Scroll */}
@@ -91,7 +131,7 @@ const PartnersSection: React.FC<PartnersSectionProps> = ({
           <InfiniteMovingCards
             items={items}
             direction="left"
-            speed="fast"
+            speed="normal"
             pauseOnHover={true}
             className="bg-transparent"
           />

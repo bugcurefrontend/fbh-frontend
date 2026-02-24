@@ -17,8 +17,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import Overview from "./icons/overview";
-import Update from "./icons/update";
+import Overview from "./icons/Overview";
+import Update from "./icons/Update";
 import Species from "./icons/Species";
 import DonorsTable from "./DonorsTable";
 import RelatedProjects from "./RelatedProjects";
@@ -31,13 +31,14 @@ import {
 } from "./ui/dialog";
 
 interface Project {
-  id: string;
+  id: string | number;
   title: string;
   location: string;
   plantedCount: number;
   category: string;
   imageUrl: string;
   imageAlt: string;
+  availableCount: number;
 }
 
 interface ProjectUpdateUI {
@@ -60,10 +61,11 @@ interface ProjectAccordionProps {
   projectDescription: string;
   projectDetails: string[];
   relatedProjects: Project[];
-  onPlantTree: (projectId: string) => void;
+  onPlantTree: (projectId: string | number) => void;
   onViewAll: () => void;
   projectUpdates?: ProjectUpdateUI[];
   projectSpecies?: ProjectSpeciesUI[];
+  projectId?: string | number;
 }
 
 const ProjectAccordion: React.FC<ProjectAccordionProps> = ({
@@ -74,6 +76,7 @@ const ProjectAccordion: React.FC<ProjectAccordionProps> = ({
   onViewAll,
   projectUpdates = [],
   projectSpecies = [],
+  projectId,
 }) => {
   // Get unique years from updates for the dropdown
   const years = Array.from(new Set(projectUpdates.map((u) => u.year))).sort(
@@ -171,7 +174,7 @@ const ProjectAccordion: React.FC<ProjectAccordionProps> = ({
                         {update.images.slice(0, 2).map((img, i) => (
                           <div
                             key={i}
-                            className="relative w-full h-31 md:h-48 lg:h-60 rounded-lg overflow-hidden"
+                            className="relative w-full h-31 md:h-48 lg:h-60 rounded-[8px] overflow-hidden"
                           >
                             <Image
                               src={img}
@@ -215,7 +218,7 @@ const ProjectAccordion: React.FC<ProjectAccordionProps> = ({
                                 {update.images.map((img, i) => (
                                   <div
                                     key={i}
-                                    className="relative w-full h-44 sm:h-52 md:h-60 rounded-xl overflow-hidden"
+                                    className="relative w-full h-44 sm:h-52 md:h-60 rounded-[16px] overflow-hidden"
                                   >
                                     <Image
                                       src={img}
@@ -257,7 +260,7 @@ const ProjectAccordion: React.FC<ProjectAccordionProps> = ({
                 <Link
                   key={item.id}
                   href={`/species/${item.slug}`}
-                  className="flex-1 min-w-0 border border-gray-200 rounded-xl flex-shrink-0"
+                  className="flex-1 min-w-0 border border-gray-200 rounded-[16px] flex-shrink-0"
                 >
                   <div className="overflow-hidden w-full md:p-4 p-2">
                     <Image
@@ -265,7 +268,7 @@ const ProjectAccordion: React.FC<ProjectAccordionProps> = ({
                       alt={item.name}
                       width={350}
                       height={160}
-                      className="w-full rounded-lg max-h-[160px] object-cover"
+                      className="w-full rounded-[8px] max-h-[160px] object-cover"
                     />
                   </div>
                   <div className="px-4 pt-2 pb-4 space-y-2">
@@ -296,7 +299,7 @@ const ProjectAccordion: React.FC<ProjectAccordionProps> = ({
             </div>
           </AccordionTrigger>
           <AccordionContent className="py-3 md:py-4">
-            <DonorsTable />
+            <DonorsTable projectId={projectId} />
           </AccordionContent>
         </AccordionItem>
 

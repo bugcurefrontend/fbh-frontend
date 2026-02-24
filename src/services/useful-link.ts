@@ -7,6 +7,7 @@
 import { cache } from "react";
 import { fetchAPI } from "./api";
 import { UsefulLink, UsefulLinkItem, UsefulLinkSimplified } from "@/types/useful-link";
+import { serviceErrorFallback } from "./service-utils";
 
 /**
  * Transform raw Strapi UsefulLink data to simplified format
@@ -38,7 +39,6 @@ export const fetchUsefulLinks = cache(async (): Promise<UsefulLinkSimplified> =>
 
     return { items: [] };
   } catch (error) {
-    console.error("Error fetching useful links:", error);
-    return { items: [] };
+    return serviceErrorFallback("Error fetching useful links:", error, { items: [] });
   }
 });

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "./ui/tabs";
 import { CircleArrowRight, Users, X, XIcon } from "lucide-react";
 import Image from "next/image";
@@ -11,8 +11,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import Overview from "./icons/overview";
-import Update from "./icons/update";
+import Overview from "./icons/Overview";
+import Update from "./icons/Update";
 import Species from "./icons/Species";
 import RelatedProjects from "./RelatedProjects";
 import DonorsTable from "./DonorsTable";
@@ -26,15 +26,18 @@ import {
 } from "./ui/dialog";
 import Gallery from "./Gallery";
 import { DialogClose } from "@radix-ui/react-dialog";
+import { fetchOurTeamContent } from "@/services/our-team-content";
+import { logger } from "@/lib/logger";
 
 interface Project {
-  id: string;
+  id: string | number;
   title: string;
   location: string;
   plantedCount: number;
   category: string;
   imageUrl: string;
   imageAlt: string;
+  availableCount: number;
 }
 
 interface ProjectUpdateUI {
@@ -57,10 +60,11 @@ interface ProjectTabsProps {
   projectDescription: string;
   projectDetails: string[];
   relatedProjects: Project[];
-  onPlantTree: (projectId: string) => void;
+  onPlantTree: (projectId: string | number) => void;
   onViewAll: () => void;
   projectUpdates?: ProjectUpdateUI[];
   projectSpecies?: ProjectSpeciesUI[];
+  projectId?: string | number;
 }
 
 const ProjectTabs: React.FC<ProjectTabsProps> = ({
@@ -71,7 +75,28 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({
   onViewAll,
   projectUpdates = [],
   projectSpecies = [],
+  projectId,
 }) => {
+  const [galleryImages, setGalleryImages] = useState<string[] | null>(null);
+
+  useEffect(() => {
+    let mounted = true;
+
+    fetchOurTeamContent()
+      .then((data) => {
+        if (!mounted) return;
+        const imgs =
+          data?.gallery?.map((g) => g.url).filter((url): url is string => Boolean(url)) ?? null;
+        setGalleryImages(imgs);
+      })
+      .catch((err) => {
+        logger.warn("Failed to load Our Team content", err);
+      });
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
   // Get unique years from updates for the dropdown
   const years = Array.from(new Set(projectUpdates.map((u) => u.year))).sort(
     (a, b) => b - a
@@ -87,38 +112,36 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({
   return (
     <div className="w-full max-md:hidden">
       <Tabs defaultValue="overview" className="w-full">
-        <div className="border-b border-gray-200">
-          <TabsList className="flex bg-transparent p-0 h-auto w-full justify-start gap-8">
-            <TabsTrigger
-              value="overview"
-              className="flex items-center gap-2 pl-2 pr-1 py-4 border-b-2 border-transparent bg-transparent text-[#63676C] hover:text-[#003399] rounded-none relative data-[state=active]:border-[#003399] data-[state=active]:text-[#003399] data-[state=active]:bg-transparent"
-            >
-              <Overview className="w-6 h-6 mr-0.5" />
-              <span className="font-bold text-base">Overview</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="updates"
-              className="flex items-center gap-2 pl-2 pr-1 py-4 border-b-2 border-transparent bg-transparent text-[#63676C] hover:text-[#003399] rounded-none data-[state=active]:border-[#003399] data-[state=active]:text-[#003399] data-[state=active]:bg-transparent"
-            >
-              <Update className="w-6 h-6 mr-0.5" />
-              <span className="font-bold text-base">Updates</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="species"
-              className="flex items-center gap-2 pl-2 pr-1 py-4 border-b-2 border-transparent bg-transparent text-[#63676C] hover:text-[#003399] rounded-none data-[state=active]:border-[#003399] data-[state=active]:text-[#003399] data-[state=active]:bg-transparent"
-            >
-              <Species className="w-6 h-6" />
-              <span className="font-bold text-base">Species</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="donors"
-              className="flex items-center gap-2 pl-2 pr-1 py-4 border-b-2 border-transparent bg-transparent text-[#63676C] hover:text-[#003399] rounded-none data-[state=active]:border-[#003399] data-[state=active]:text-[#003399] data-[state=active]:bg-transparent"
-            >
-              <Users className="w-6 h-6" />
-              <span className="font-bold text-base">Donors</span>
-            </TabsTrigger>
-          </TabsList>
-        </div>
+        <TabsList className="flex bg-transparent p-0 h-auto w-full justify-start gap-8 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:border-b-2 after:border-gray-200">
+          <TabsTrigger
+            value="overview"
+            className="relative flex items-center gap-2 pl-2 pr-1 py-4 bg-transparent text-[#63676C] hover:text-[#003399] rounded-none data-[state=active]:text-[#003399] data-[state=active]:after:content-[''] data-[state=active]:after:absolute data-[state=active]:after:bottom-0 data-[state=active]:after:left-0 data-[state=active]:after:right-0 data-[state=active]:after:border-b-2 data-[state=active]:after:border-[#003399] data-[state=active]:after:z-10"
+          >
+            <Overview className="w-6 h-6 mr-0.5" />
+            <span className="font-bold text-base">Overview</span>
+          </TabsTrigger>
+          <TabsTrigger
+            value="updates"
+            className="relative flex items-center gap-2 pl-2 pr-1 py-4 bg-transparent text-[#63676C] hover:text-[#003399] rounded-none data-[state=active]:text-[#003399] data-[state=active]:after:content-[''] data-[state=active]:after:absolute data-[state=active]:after:bottom-0 data-[state=active]:after:left-0 data-[state=active]:after:right-0 data-[state=active]:after:border-b-2 data-[state=active]:after:border-[#003399] data-[state=active]:after:z-10"
+          >
+            <Update className="w-6 h-6 mr-0.5" />
+            <span className="font-bold text-base">Updates</span>
+          </TabsTrigger>
+          <TabsTrigger
+            value="species"
+            className="relative flex items-center gap-2 pl-2 pr-1 py-4 bg-transparent text-[#63676C] hover:text-[#003399] rounded-none data-[state=active]:text-[#003399] data-[state=active]:after:content-[''] data-[state=active]:after:absolute data-[state=active]:after:bottom-0 data-[state=active]:after:left-0 data-[state=active]:after:right-0 data-[state=active]:after:border-b-2 data-[state=active]:after:border-[#003399] data-[state=active]:after:z-10"
+          >
+            <Species className="w-6 h-6" />
+            <span className="font-bold text-base">Species</span>
+          </TabsTrigger>
+          <TabsTrigger
+            value="donors"
+            className="relative flex items-center gap-2 pl-2 pr-1 py-4 bg-transparent text-[#63676C] hover:text-[#003399] rounded-none data-[state=active]:text-[#003399] data-[state=active]:after:content-[''] data-[state=active]:after:absolute data-[state=active]:after:bottom-0 data-[state=active]:after:left-0 data-[state=active]:after:right-0 data-[state=active]:after:border-b-2 data-[state=active]:after:border-[#003399] data-[state=active]:after:z-10"
+          >
+            <Users className="w-6 h-6" />
+            <span className="font-bold text-base">Donors</span>
+          </TabsTrigger>
+        </TabsList>
 
         <TabsContent value="overview" className="mt-8 space-y-4">
           <div>
@@ -151,7 +174,7 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({
           <div className="w-full px-4 md:px-14 space-y-10 relative">
             {years.length > 0 && (
               <Select value={selectedYear} onValueChange={setSelectedYear}>
-                <SelectTrigger className="absolute -top-1.5 right-14 gap-10 py-[9px] px-[13px] rounded-md border-[#D1D5DB] text-[#333333] text-sm">
+                <SelectTrigger className="absolute -top-1.5 right-14 gap-10 py-[9px] px-[13px] rounded-[8px] border-[#D1D5DB] text-[#333333] text-sm">
                   <SelectValue placeholder="Year" />
                 </SelectTrigger>
                 <SelectContent>
@@ -183,7 +206,7 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({
                       {update.images.slice(0, 2).map((img, i) => (
                         <div
                           key={i}
-                          className="relative w-[241px] h-[185px] rounded-lg overflow-hidden"
+                          className="relative w-[241px] h-[185px] rounded-[8px] overflow-hidden"
                         >
                           <Image
                             src={img}
@@ -211,21 +234,32 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({
                           </DialogTrigger>
                           <DialogContent
                             showCloseButton={false}
-                            className="min-w-4xl px-0"
+                            className="md:w-[901px] max-md:h-[90%] py-4 md:px-6 px-4 max-md:gap-1"
                           >
-                            <DialogTitle className="uppercase font-bold text-2xl px-6">
-                              Gallery
-                            </DialogTitle>
-                            <DialogClose asChild>
-                              <button className="absolute right-5 top-5 p-2 rounded-full hover:bg-gray-100 transition">
-                                <X size={20} className="text-black" />
-                              </button>
-                            </DialogClose>
-                            <div className="px-6 max-h-[600px] overflow-y-auto space-y-4">
+                            <div className="flex justify-between">
+                              <DialogTitle className="uppercase font-bold md:text-2xl text-base md:leading-9 leading-4.5">
+                                Gallery
+                              </DialogTitle>
+                              <DialogClose asChild>
+                                <button className="md:px-1.5 rounded-full hover:bg-gray-100 transition">
+                                  <X
+                                    size={24}
+                                    className="text-black max-md:w-4.5"
+                                  />
+                                </button>
+                              </DialogClose>
+                            </div>
+                            <Gallery
+                              className="max-md:hidden lg:h-[50vh]"
+                              itemClass="basis-1/5"
+                              images={galleryImages ?? undefined}
+                              dotClass="hidden"
+                            />
+                            <div className="md:hidden h-[100%] overflow-y-auto space-y-4">
                               {update.images.map((img, i) => (
                                 <div
                                   key={i}
-                                  className="relative w-full h-60 rounded-xl overflow-hidden"
+                                  className="relative w-full h-[171px] rounded-[8px] overflow-hidden"
                                 >
                                   <Image
                                     src={img}
@@ -253,7 +287,7 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({
         >
           {projectSpecies.length === 0 ? (
             <div className="col-span-3 p-15 flex items-center justify-center flex-col space-y-4 text-[#B7B9BB]">
-              <Species strokeWidth={0.5} className="w-50 h-50" />
+              <Species strokeWidth={0.5} className="w-53 h-53" />
               <p className="font-semibold text-2xl leading-6">
                 No Species Available
               </p>
@@ -268,7 +302,7 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({
                       alt={item.name}
                       width={350}
                       height={194}
-                      className="w-full object-cover rounded-lg max-h-[194px]"
+                      className="w-full object-cover rounded-[8px] max-h-[194px]"
                     />
                   </div>
                   <div className="p-4 pt-2 flex justify-between items-center">
@@ -291,7 +325,7 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({
         </TabsContent>
 
         <TabsContent value="donors" className="mt-8 px-10">
-          <DonorsTable />
+          <DonorsTable projectId={projectId} />
         </TabsContent>
       </Tabs>
     </div>

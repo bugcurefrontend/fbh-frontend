@@ -45,18 +45,29 @@ const PaginationLink = ({
   size = "icon",
   ...props
 }: PaginationLinkProps) => (
-  <a
-    aria-current={isActive ? "page" : undefined}
-    className={cn(
-      buttonVariants({
-        variant: isActive ? "outline" : "ghost",
-        size,
-      }),
-      "px-4",
-      className
-    )}
-    {...props}
-  />
+  <div
+    className={
+      isActive
+        ? "bg-[#E6EBF580] text-[#003399] border-none hover:bg-[#E6EBF580] hover:text-[#003399] rounded-[8px] cursor-pointer"
+        : "text-[#454950] cursor-pointer"
+    }
+  >
+    <a
+      aria-current={isActive ? "page" : undefined}
+      className={cn(
+        buttonVariants({
+          variant: isActive ? "outline" : "ghost",
+          size,
+        }),
+        isActive
+          ? "bg-[#E6EBF580] text-[#003399] border-none hover:bg-[#E6EBF580] hover:text-[#003399] rounded-[8px]"
+          : "text-[#454950]",
+        "px-4",
+        className,
+      )}
+      {...props}
+    />
+  </div>
 );
 PaginationLink.displayName = "PaginationLink";
 

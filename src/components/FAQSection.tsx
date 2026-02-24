@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Plus, Minus } from "lucide-react";
+import { FALLBACK_FAQS } from "@/constants";
 
 interface FAQ {
   id: string;
@@ -14,34 +15,7 @@ interface FAQSectionProps {
 const FAQSection: React.FC<FAQSectionProps> = ({ faqs }) => {
   const [openItem, setOpenItem] = useState<string | null>(null);
 
-  const defaultFAQs: FAQ[] = [
-    {
-      id: "faq-1",
-      question: "Why is planting trees important for the environment?",
-      answer:
-        "Trees absorb carbon dioxide, release oxygen, and help combat climate change. They also improve air quality, reduce soil erosion, and provide habitats for wildlife.",
-    },
-    {
-      id: "faq-2",
-      question: "Which tree species are best for urban areas?",
-      answer:
-        "Native and drought-resistant species like Neem, Banyan, Peepal, and Gulmohar are ideal for urban areas as they require less maintenance and adapt well to the local environment.",
-    },
-    {
-      id: "faq-3",
-      question: "How can I contribute to tree plantation projects?",
-      answer:
-        "You can participate by donating, volunteering in plantation drives, or adopting a tree through our platform. Every small contribution makes a big difference.",
-    },
-    {
-      id: "faq-4",
-      question: "Do trees really help in reducing global warming?",
-      answer:
-        "Yes, trees act as carbon sinks by absorbing greenhouse gases. Large-scale tree plantations play a crucial role in mitigating the impacts of global warming and restoring ecological balance.",
-    },
-  ];
-
-  const faqData = faqs || defaultFAQs;
+  const faqData = faqs || FALLBACK_FAQS;
 
   const toggleItem = (itemId: string) => {
     setOpenItem(openItem === itemId ? null : itemId);
@@ -58,11 +32,11 @@ const FAQSection: React.FC<FAQSectionProps> = ({ faqs }) => {
           {faqData.map((faq) => (
             <div
               key={faq.id}
-              className="border border-[#E4E4E4] md:rounded-lg rounded-[8px] overflow-hidden"
+              className="hover:shadow-[0_1px_8px_rgba(0,0,0,0.1)]  border border-[#E4E4E4] md:rounded-[8px] rounded-[8px] overflow-hidden"
             >
               <button
                 onClick={() => toggleItem(faq.id)}
-                className="w-full flex items-center justify-between text-left hover:bg-gray-50 transition-colors p-6"
+                className="w-full flex items-center justify-between text-left transition-colors p-6"
               >
                 <span className="text-[#454950] md:text-lg text-sm md:font-bold font-semibold md:leading-relaxed leading-4.5">
                   {faq.question}
@@ -76,11 +50,18 @@ const FAQSection: React.FC<FAQSectionProps> = ({ faqs }) => {
                 </div>
               </button>
 
-              {openItem === faq.id && (
+              {/* Animated answer container with slide effect */}
+              <div
+                className="overflow-hidden transition-all duration-300 ease-in-out"
+                style={{
+                  maxHeight: openItem === faq.id ? "500px" : "0px",
+                  opacity: openItem === faq.id ? 1 : 0,
+                }}
+              >
                 <p className="text-[#454950] max-md:text-sm px-6 pb-6">
                   {faq.answer}
                 </p>
-              )}
+              </div>
             </div>
           ))}
         </div>

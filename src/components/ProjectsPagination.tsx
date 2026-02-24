@@ -112,7 +112,7 @@ const ProjectsPagination: React.FC<ProjectsPaginationProps> = ({
         </div>
 
         {/* Mobile pagination: current, next, ..., last 2 */}
-        <div className="flex md:hidden border border-gray-300 rounded-md overflow-hidden">
+        <div className="flex md:hidden border border-gray-300 rounded-[8px] overflow-hidden">
           {/* Previous button */}
           <PaginationItem>
             <PaginationPrevious
@@ -240,7 +240,7 @@ const ProjectsPagination: React.FC<ProjectsPaginationProps> = ({
               className={
                 !hasPrevious
                   ? "pointer-events-none opacity-50"
-                  : "text-gray-600 hover:text-[#003399] border border-gray-200 rounded-lg"
+                  : "text-gray-600 hover:text-[#003399] border border-gray-200 rounded-l-lg rounded-r-none"
               }
             />
           </PaginationItem>
@@ -260,7 +260,7 @@ const ProjectsPagination: React.FC<ProjectsPaginationProps> = ({
               className={
                 !hasNext
                   ? "pointer-events-none opacity-50"
-                  : "text-gray-600 hover:text-[#003399] border border-gray-200 rounded-lg"
+                  : "text-gray-600 hover:text-[#003399] border border-gray-200 rounded-l-none rounded-r-lg"
               }
             />
           </PaginationItem>

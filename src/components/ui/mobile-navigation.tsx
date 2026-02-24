@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import CurrencySelect from "../CurrencySelect";
 import LightBox from "../light-box/LightBox";
+import { Attribute } from "@/types/attribute";
 
 interface SubItem {
   label: string;
@@ -39,6 +40,8 @@ interface NavigationMenuProps {
   userProfile?: UserProfile | null;
   login?: () => void;
   onSignOut?: () => void;
+  defaultAttribute?: Attribute | null;
+  co2Sequestration?: number;
 }
 
 export function MobileNavigation({
@@ -47,6 +50,8 @@ export function MobileNavigation({
   userProfile,
   login,
   onSignOut,
+  defaultAttribute,
+  co2Sequestration,
 }: NavigationMenuProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileExpandedMenu, setMobileExpandedMenu] = useState<string | null>(
@@ -82,7 +87,13 @@ export function MobileNavigation({
 
   return (
     <div className="md:hidden flex items-center gap-3">
-      <CurrencySelect />
+      <Suspense fallback={null}>
+        <CurrencySelect
+          className="h-9 w-[88.88px] gap-1 rounded-[5px]"
+          className2="px-1.5 gap-1"
+        />
+      </Suspense>
+
       <button
         onClick={handleMobileMenuToggle}
         className="h-6 w-6 flex items-center justify-center"
@@ -93,9 +104,8 @@ export function MobileNavigation({
       {/* Drawer */}
       {mobileMenuOpen && (
         <div
-          className={`h-screen overflow-y-scroll fixed top-0 right-0 w-full bg-white z-50 shadow-xl transform transition-transform duration-300 ease-in-out ${
-            mobileMenuOpen ? "translate-x-0" : "translate-x-full"
-          } ${isClosing ? "translate-x-full" : ""}`}
+          className={`h-screen overflow-y-scroll fixed top-0 right-0 w-full bg-white z-50 shadow-xl transform transition-transform duration-300 ease-in-out ${mobileMenuOpen ? "translate-x-0" : "translate-x-full"
+            } ${isClosing ? "translate-x-full" : ""}`}
         >
           <div className="flex flex-col h-full">
             {/* Header with close button */}
@@ -104,72 +114,86 @@ export function MobileNavigation({
               <Image
                 src="/images/logo3.svg"
                 alt="logo"
-                width={57}
+                width={57.3}
                 height={46}
                 priority
               />
               <button
                 onClick={handleClose}
-                className="p-1 rounded-md hover:bg-gray-100 transition-colors"
+                className="p-1 rounded-[8px] hover:bg-gray-100 transition-colors"
               >
                 <XIcon size={24} />
               </button>
             </div>
 
             <div className="flex-1 overflow-y-auto py-4">
-              <div className="px-4 py-3">
-                <LightBox />
+              <div className="p-4">
+                <Suspense fallback={null}>
+                  <Suspense fallback={null}>
+                    <LightBox
+                      preSelectedAttribute={defaultAttribute || null}
+                      co2Sequestration={co2Sequestration}
+                    />
+                  </Suspense>{" "}
+                </Suspense>{" "}
               </div>
               {navigationItems.map((item, index) => {
+                const hasSub = !!item.sub;
                 if (item.href) {
                   return (
-                    <Link
-                      key={index}
-                      href={item.href}
-                      className="flex justify-between items-center w-full px-4 py-3 hover:bg-gray-50 transition-colors font-medium text-lg text-#090C0F uppercase"
-                      onClick={handleClose}
-                    >
-                      {item.label}
-                    </Link>
-                  );
-                }
-                if (item.sub) {
-                  return (
-                    <div key={index} className="space-y-2">
-                      <button
-                        onClick={() => handleMobileMenuExpand(item.label)}
-                        className="flex justify-between items-center w-full px-4 py-3 hover:bg-gray-50 transition-colors"
-                      >
-                        <span className="font-medium text-lg text-#090C0F uppercase">
+                    <div key={index} className="mb-2">
+                      <div className="flex items-center justify-between hover:bg-gray-50">
+                        {/* LEFT: Text → Route */}
+                        <Link
+                          href={item.href}
+                          onClick={handleClose}
+                          className="font-medium text-sm uppercase text-[#090C0F] w-full px-4 py-2.5"
+                        >
                           {item.label}
-                        </span>
-                        {mobileExpandedMenu === item.label ? (
-                          <ChevronDownIcon size={20} />
-                        ) : (
-                          <ChevronRightIcon size={20} />
+                        </Link>
+
+                        {/* RIGHT: Chevron → Expand */}
+                        {hasSub && (
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleMobileMenuExpand(item.label);
+                            }}
+                            className="p-2 mr-4"
+                            aria-label="Expand submenu"
+                          >
+                            {mobileExpandedMenu === item.label ? (
+                              <ChevronDownIcon size={20} color="#63676C" />
+                            ) : (
+                              <ChevronRightIcon size={20} color="#63676C" />
+                            )}
+                          </button>
                         )}
-                      </button>
-                      <div
-                        className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                          mobileExpandedMenu === item.label
+                      </div>
+
+                      {/* SUB MENU */}
+                      {hasSub && (
+                        <div
+                          className={`overflow-hidden transition-all duration-300 ease-in-out ${mobileExpandedMenu === item.label
                             ? "max-h-96"
                             : "max-h-0"
-                        }`}
-                      >
-                        <ul className="pl-12 pb-2 list-disc list-outside">
-                          {item.sub.map((subItem, subIndex) => (
-                            <li key={subIndex} className="text-[#454950]">
-                              <Link
-                                href={subItem.href}
-                                className="block py-2"
-                                onClick={handleClose}
-                              >
-                                {subItem.label}
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
+                            }`}
+                        >
+                          <ul className="pl-12 list-disc">
+                            {item.sub!.map((subItem, subIndex) => (
+                              <li key={subIndex} className="text-[#454950]">
+                                <Link
+                                  href={subItem.href}
+                                  className="block py-2"
+                                  onClick={handleClose}
+                                >
+                                  {subItem.label}
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
                     </div>
                   );
                 }
@@ -181,7 +205,7 @@ export function MobileNavigation({
                 <>
                   <Link
                     href="/account"
-                    className="flex justify-between items-center w-full px-4 py-3 hover:bg-gray-50 transition-colors font-medium text-lg uppercase"
+                    className="flex justify-between items-center w-full px-4 py-2.5 mb-2 hover:bg-gray-50 transition-colors font-medium text-sm uppercase"
                     style={{
                       color: "#090C0F",
                     }}
@@ -191,7 +215,7 @@ export function MobileNavigation({
                   </Link>
                   <Link
                     href="/account"
-                    className="flex justify-between items-center w-full px-4 py-3 hover:bg-gray-50 transition-colors font-medium text-lg uppercase"
+                    className="flex justify-between items-center w-full px-4 py-2.5 mb-2 hover:bg-gray-50 transition-colors font-medium text-sm uppercase"
                     style={{
                       color: "#090C0F",
                     }}
@@ -200,14 +224,16 @@ export function MobileNavigation({
                     Dashboard
                   </Link>
                   <Link
-                    href="/my-trees"
-                    className="flex justify-between items-center w-full px-4 py-3 hover:bg-gray-50 transition-colors font-medium text-lg uppercase"
+                    href="https://my.heartfulness.org"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex justify-between items-center w-full px-4 py-2.5 mb-2 hover:bg-gray-50 transition-colors font-medium text-sm uppercase"
                     style={{
                       color: "#090C0F",
                     }}
                     onClick={handleClose}
                   >
-                    My Trees
+                    My Account
                   </Link>
 
                   {/* Sign Out Button */}
@@ -216,7 +242,7 @@ export function MobileNavigation({
                       handleClose();
                       onSignOut?.();
                     }}
-                    className="flex items-center gap-2 w-full px-4 py-3 transition-colors font-medium text-lg uppercase"
+                    className="flex items-center gap-2 w-full px-4 py-2.5 mb-2 transition-colors font-medium text-sm uppercase"
                     style={{
                       color: "#F04438",
                     }}
@@ -237,7 +263,7 @@ export function MobileNavigation({
                     handleClose();
                     login?.();
                   }}
-                  className="mt-2 py-3 px-4 hover:bg-gray-50 transition-colors flex items-center gap-2 !text-[#003399] font-semibold text-lg uppercase"
+                  className="mt-2 py-2.5 px-4 hover:bg-gray-50 transition-colors flex items-center gap-2 !text-[#003399] font-semibold text-sm uppercase"
                 >
                   Login
                   <LogInIcon size={18} />

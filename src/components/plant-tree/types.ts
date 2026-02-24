@@ -2,7 +2,13 @@ export interface OrderSummary {
   numberOfTrees: number;
   totalCo2Offset: string;
   totalAmount: string;
+  geotaggedRate?: number;
+  nonGeotaggedRate?: number;
+  currencySymbol?: string;
+  rate?: number;
 }
+
+import { City, Country } from "@/lib/location-utils";
 
 export interface PersonalDetails {
   firstName: string;
@@ -14,13 +20,13 @@ export interface PersonalDetails {
   region: string;
   phoneNumber: string;
   currency: string;
-  country: string;
+  country: string | Country | null;
   state: string;
-  city: string;
+  city: string | City | null;
 }
 
 export interface TaxDetails {
-  citizenship: string;
+  citizenship: string | Country | null;
   idType: string;
   idNumber: string;
   abhyashiNumber: string;
@@ -32,4 +38,11 @@ export interface Species {
   botanical: string;
   img: string;
   availableTags?: Array<"geo" | "non-geo">;
+}
+
+export interface ReservationData {
+  token: string;
+  expiresAt: string;
+  reservationId: number;
+  message?: string;
 }

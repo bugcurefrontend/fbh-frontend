@@ -6,7 +6,8 @@ import RelatedSpecies from "./RelatedSpecies";
 import FAQSection from "./FAQSection";
 import GeoTagToggleAndActions from "./GeoTagToggleAndActions";
 import { useCurrency } from "./CurrencySelect";
-import { PlantRates } from "@/types/plant-rate";
+import { PlantRate } from "@/types/plant-rate";
+import { SpeciesSimplified } from "@/types/species";
 
 interface FAQ {
   id: string;
@@ -40,28 +41,31 @@ interface SpeciesDetailData {
 
 interface SpeciesDetailPageProps {
   speciesData: SpeciesDetailData;
-  plantRates: PlantRates;
+  plantRates: PlantRate[];
+  allSpecies: SpeciesSimplified[];
+  currentSpeciesId: string;
 }
 
 const SpeciesDetailPage: React.FC<SpeciesDetailPageProps> = ({
   speciesData,
   plantRates,
+  allSpecies,
+  currentSpeciesId,
 }) => {
   const [isGeoTagged, setIsGeoTagged] = useState(true);
   const { currency, currencySymbol } = useCurrency();
 
   // Get rates based on selected currency
-  const currentRate = plantRates[currency];
+  const currentRate =
+    plantRates.find((rate) => rate.currency_code === currency) ||
+    plantRates.find((rate) => rate.currency_code?.toUpperCase() === currency.toUpperCase());
+
   const geotaggedRate = currentRate?.geotagged_rate;
   const nonGeotaggedRate = currentRate?.non_geotagged_rate;
 
-  const handlePlantTree = () => {
-    console.log(`Plant ${speciesData.name} tree`);
-  };
+  const handlePlantTree = () => {};
 
-  const handleGiftTree = () => {
-    console.log(`Gift ${speciesData.name} tree`);
-  };
+  const handleGiftTree = () => {};
 
   return (
     <main className="max-w-7xl mx-auto md:px-8 px-4 md:pt-8 pt-4 space-y-8 md:space-y-16">
@@ -88,7 +92,10 @@ const SpeciesDetailPage: React.FC<SpeciesDetailPageProps> = ({
       />
 
       <FAQSection faqs={speciesData.faqs} />
-      <RelatedSpecies currentSpeciesId={speciesData.id} />
+      <RelatedSpecies
+        currentSpeciesId={currentSpeciesId}
+        allSpecies={allSpecies}
+      />
 
       {/* Mobile Sticky Actions */}
       <GeoTagToggleAndActions

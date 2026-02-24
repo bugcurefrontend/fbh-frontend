@@ -17,9 +17,9 @@ declare module 'hfnauth/main' {
         firstName?: string;
         lastName?: string;
         email?: string;
-        [key: string]: any;
+        [key: string]: unknown;
       }>;
-      [key: string]: any;
+      [key: string]: unknown;
     };
   }
 
@@ -30,11 +30,11 @@ declare module 'hfnauth/main' {
   }
 
   export interface LogoutResponse {
-    error?: any;
+    error?: unknown;
   }
 
   export function getMeProfile(params: MeProfileParams): Promise<SRCMProfileResponse>;
   export function getSRCMProfile(params: SRCMProfileParams): Promise<SRCMProfileResponse>;
-  export function getRefreshToken(params: AuthParams): Promise<any>;
+  export function getRefreshToken(params: AuthParams): Promise<unknown>;
   export function userLogout(params: AuthParams, subPath: string): Promise<LogoutResponse>;
 }

@@ -1,6 +1,7 @@
 import { Metadata } from "next";
-import AllSpeciesPage from "../../src/components/AllSpeciesPage";
+import AllSpeciesPage from "@/components/AllSpeciesPage";
 import { fetchAllSpecies } from "@/services/species";
+import { fetchGlobal } from "@/services/global";
 
 export const metadata: Metadata = {
   title: "All Species - FBH",
@@ -9,7 +10,9 @@ export const metadata: Metadata = {
 
 export default async function SpeciesPage() {
   // Fetch species data at build time from Strapi API
-  const species = await fetchAllSpecies();
+  const [species, global] = await Promise.all([fetchAllSpecies(), fetchGlobal()]);
 
-  return <AllSpeciesPage initialSpecies={species} />;
+  const headerImageUrl = global?.species_list_headerimage?.url ?? null;
+
+  return <AllSpeciesPage initialSpecies={species} headerImageUrl={headerImageUrl} />;
 }

@@ -3,18 +3,29 @@ import { Check } from "lucide-react";
 
 interface ProgressStepsProps {
   currentStep: number;
+  onStepClick?: (step: number) => void;
 }
 
-const ProgressSteps: React.FC<ProgressStepsProps> = ({ currentStep }) => {
+const ProgressSteps: React.FC<ProgressStepsProps> = ({ currentStep, onStepClick }) => {
+  const handleStepClick = (step: number) => {
+    // Only allow clicking on completed (previous) steps
+    if (step < currentStep && onStepClick) {
+      onStepClick(step);
+    }
+  };
+
   return (
     <div className="relative space-y-2">
       <div className="flex items-center justify-between">
         {/* Step 1 */}
-        <div className="flex flex-col items-center relative z-10">
+        <div 
+          className={`flex flex-col items-center relative z-10 ${currentStep > 1 ? "cursor-pointer" : ""}`}
+          onClick={() => handleStepClick(1)}
+        >
           <div
-            className={`w-8 h-8 rounded-full flex items-center justify-center ${
+            className={`sm:w-8 sm:h-8 w-6 h-6 rounded-full flex items-center justify-center transition-all ${
               currentStep > 1
-                ? "bg-[#003399]"
+                ? "bg-[#003399] hover:bg-[#002277]"
                 : currentStep === 1
                 ? "border-2 border-[#003399]"
                 : "border-2 border-[#B7B9BB]"
@@ -38,11 +49,14 @@ const ProgressSteps: React.FC<ProgressStepsProps> = ({ currentStep }) => {
         ></div>
 
         {/* Step 2 */}
-        <div className="flex flex-col items-center relative z-10">
+        <div 
+          className={`flex flex-col items-center relative z-10 ${currentStep > 2 ? "cursor-pointer" : ""}`}
+          onClick={() => handleStepClick(2)}
+        >
           <div
-            className={`w-8 h-8 rounded-full flex items-center justify-center ${
+            className={`sm:w-8 sm:h-8 w-6 h-6 rounded-full flex items-center justify-center transition-all ${
               currentStep > 2
-                ? "bg-[#003399]"
+                ? "bg-[#003399] hover:bg-[#002277]"
                 : currentStep === 2
                 ? "border-2 border-[#003399]"
                 : "border-2 border-[#B7B9BB]"
@@ -68,7 +82,7 @@ const ProgressSteps: React.FC<ProgressStepsProps> = ({ currentStep }) => {
         {/* Step 3 */}
         <div className="flex flex-col items-center relative z-10">
           <div
-            className={`w-8 h-8 rounded-full flex items-center justify-center ${
+            className={`sm:w-8 sm:h-8 w-6 h-6 rounded-full flex items-center justify-center ${
               currentStep > 3
                 ? "bg-[#003399]"
                 : currentStep === 3
@@ -82,12 +96,33 @@ const ProgressSteps: React.FC<ProgressStepsProps> = ({ currentStep }) => {
       </div>
 
       <div className="flex items-center justify-between">
-        <h1 className="font-semibold text-[#454950]">Plant Details</h1>
-        <h1 className="font-semibold text-[#454950]">Personal & Tax Details</h1>
-        <h1 className="font-semibold text-[#454950]">Payment</h1>
+        <h1
+          className={`font-semibold max-sm:text-sm ${
+            currentStep > 1 ? "cursor-pointer hover:underline" : ""
+          } ${currentStep >= 1 ? "text-[#003399]" : "text-[#454950]"}`}
+          onClick={() => handleStepClick(1)}
+        >
+          Plant Details
+        </h1>
+        <h1
+          className={`font-semibold max-sm:text-sm ${
+            currentStep > 2 ? "cursor-pointer hover:underline" : ""
+          } ${currentStep >= 2 ? "text-[#003399]" : "text-[#454950]"}`}
+          onClick={() => handleStepClick(2)}
+        >
+          Personal Details
+        </h1>
+        <h1
+          className={`font-semibold max-sm:text-sm ${
+            currentStep === 3 ? "text-[#003399]" : "text-[#454950]"
+          }`}
+        >
+          Payment
+        </h1>
       </div>
     </div>
   );
 };
 
 export default ProgressSteps;
+

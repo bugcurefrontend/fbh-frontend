@@ -15,7 +15,7 @@ import {
   fetchCaseStudyBySlug,
   fetchCaseStudySlugs,
 } from "@/services/case-studies";
-import ShareButton from "./ShareButton";
+import ShareButton from "../../../src/components/icons/ShareButton";
 
 interface CaseStudyPageProps {
   params: Promise<{ slug: string }>;
@@ -72,7 +72,7 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
           backgroundPosition: "center",
         }}
       >
-        <div className="max-w-7xl w-full mx-auto px-4 md:px-12 md:space-y-12 space-y-8 text-white relative">
+        <div className="max-w-7xl w-full mx-auto px-4 md:px-12 md:space-y-12 space-y-8 text-white">
           <Breadcrumb>
             <BreadcrumbList className="text-white font-semibold md:text-base text-sm leading-[18px]">
               <BreadcrumbItem>
@@ -91,19 +91,24 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
             </BreadcrumbList>
           </Breadcrumb>
 
-          <div className="space-y-2">
-            <h1 className="font-[Playfair_Display] text-[22px] md:text-[32px] md:leading-12 leading-[30px] font-semibold">
-              {caseStudy.title}
-            </h1>
-            <div className="flex items-center gap-1 md:text-lg text-[10px] md:font-bold leading-4 md:leading-[26px]">
-              <MapPin className="w-4 h-4 md:w-6 md:h-6" />
-              <span className="md:text-xl md:leading-[30px] text-base md:font-bold">
-                {caseStudy.address}
-              </span>
+          <div className="relative">
+            <div className="space-y-2">
+              <h1 className="font-[Playfair_Display] text-[22px] md:text-[32px] md:leading-12 leading-[30px] font-semibold">
+                {caseStudy.title}
+              </h1>
+              <div className="flex items-center gap-1 md:text-lg text-[10px] md:font-bold leading-4 md:leading-[26px]">
+                <MapPin className="w-4 h-4 md:w-6 md:h-6" />
+                <span className="md:text-xl md:leading-[30px] text-base md:font-bold">
+                  {caseStudy.address}
+                </span>
+              </div>
             </div>
+            <ShareButton
+              className="bottom-0 right-0"
+              popClass="right-12 md:right-14 bottom-0"
+            />
           </div>
         </div>
-        <ShareButton className="md:bottom-17 bottom-13 right-4 md:right-43" />
       </section>
 
       <div className="max-w-7xl mx-auto md:space-y-12 space-y-8">
@@ -111,10 +116,7 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
           <h1 className="text-center font-[Playfair_Display] text-2xl md:text-[32px] md:leading-12 leading-[30px] font-semibold">
             Overview
           </h1>
-          <p className="max-md:hidden text-[#454950]">
-            {caseStudy.description}
-          </p>
-          <p className="md:hidden text-[#454950] text-sm">
+          <p className="text-[#454950] leading-4.5 md:leading-6 max-md:text-sm">
             {caseStudy.description}
           </p>
         </div>
@@ -123,7 +125,11 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
           <h1 className="text-center font-[Playfair_Display] text-[22px] md:text-[32px] md:leading-12 leading-[30px] font-semibold">
             Gallery
           </h1>
-          <Gallery className="lg:h-[573px]" />
+          <Gallery
+            itemClass="basis-1/6"
+            className="lg:h-[573px]"
+            images={caseStudy.images.map((img) => img.url)}
+          />
         </div>
       </div>
     </main>

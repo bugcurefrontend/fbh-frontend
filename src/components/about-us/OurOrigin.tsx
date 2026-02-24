@@ -1,11 +1,16 @@
 import Image from "next/image";
 
-const OurOrigin = () => {
+interface Props {
+  imageOne?: { url: string; width?: number; height?: number } | null;
+  imageTwo?: { url: string; width?: number; height?: number } | null;
+}
+
+const OurOrigin: React.FC<Props> = ({ imageOne, imageTwo }) => {
   return (
     <main className="md:space-y-16 space-y-8">
-      <div className="flex max-md:flex-col md:gap-8 gap-6 items-center justify-center">
-        <div className="px-4 space-y-6 w-full h-auto md:w-[46%] xl:w-[588px]">
-          <h2 className="text-[22px] sm:text-[32px] font-[Playfair_Display] font-semibold text-black md:text-[32px] md:font-semibold md:leading-[48px] max-md:text-center md:text-[#090C0F]">
+      <div className="flex max-md:flex-col md:gap-8 gap-6 items-center justify-center max-md:px-4">
+        <div className="md:px-4 space-y-6 w-full h-auto md:w-[46%] xl:w-[588px]">
+          <h2 className="text-[22px] sm:text-[32px] font-[Playfair_Display] font-semibold text-black md:text-[32px] md:font-semibold md:leading-[48px] md:text-[#090C0F]">
             Our Origin
           </h2>
           <p className="text-[#454950] leading-6 max-md:text-sm">
@@ -24,23 +29,43 @@ const OurOrigin = () => {
             the sustainability and reforestation of different parts of India.
           </p>
         </div>
-        <Image
-          src="/images/origin.png"
-          alt="Our Origin"
-          width={588}
-          height={404}
-          className="rounded-xl object-cover w-full h-auto md:w-[46%] xl:w-[588px] max-md:px-4"
-        />
+        {imageOne && imageOne.url ? (
+          <Image
+            src={imageOne.url}
+            alt="Our Origin"
+            width={imageOne.width ?? 588}
+            height={imageOne.height ?? 404}
+            className="rounded-[9.34px] md:rounded-[16px] object-cover w-full md:w-[46%] xl:w-[588px] max-h-[236px] md:max-h-[404px]"
+          />
+        ) : (
+          <Image
+            src="/images/origin.png"
+            alt="Our Origin"
+            width={588}
+            height={404}
+            className="rounded-[9.34px] md:rounded-[16px] object-cover w-full max-h-[236px] md:max-h-[404px] md:w-[46%] xl:w-[588px]"
+          />
+        )}
       </div>
-      <div className="flex max-md:flex-col-reverse md:gap-8 gap-6 items-center justify-center">
-        <Image
-          src="/images/origin.png"
-          alt="Our Origin"
-          width={588}
-          height={404}
-          className="rounded-xl object-cover w-full h-auto md:w-[46%] xl:w-[588px] max-md:px-4"
-        />
-        <div className="px-4 space-y-6 w-full h-auto md:w-[46%] xl:w-[588px]">
+      <div className="flex max-md:flex-col-reverse md:gap-8 gap-6 items-center justify-center max-md:px-4">
+        {imageTwo && imageTwo.url ? (
+          <Image
+            src={imageTwo.url}
+            alt="Our Origin"
+            width={imageTwo.width ?? 588}
+            height={imageTwo.height ?? 404}
+            className="rounded-[9.34px] md:rounded-[16px] object-cover w-full max-h-[236px] md:max-h-[404px] md:w-[46%] xl:w-[588px]"
+          />
+        ) : (
+          <Image
+            src="/images/origin.png"
+            alt="Our Origin"
+            width={588}
+            height={404}
+            className="rounded-[9.34px] md:rounded-[16px] object-cover w-full max-h-[236px] md:max-h-[404px] md:w-[46%] xl:w-[588px]"
+          />
+        )}
+        <div className="md:px-4 space-y-6 w-full h-auto md:w-[46%] xl:w-[588px]">
           <p className="text-[#454950] leading-6 max-md:text-sm">
             Since then, FBH has diversified its impact beyond reforestation to
             include water conservation, agritecture, and more.

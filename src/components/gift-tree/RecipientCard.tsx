@@ -14,7 +14,7 @@ const RecipientCard: React.FC<RecipientCardProps> = ({
   onDelete,
 }) => {
   return (
-    <div className="bg-white border border-gray-200 rounded-md">
+    <div className="bg-white border border-gray-200 rounded-[8px]">
       <div className="flex justify-between items-start p-4 border-b">
         <h3 className="text-lg font-bold text-gray-900">
           {recipient.firstName} {recipient.lastName}

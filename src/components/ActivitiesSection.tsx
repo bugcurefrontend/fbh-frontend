@@ -38,6 +38,14 @@ const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({
 
   const totalSlides = activities.length;
   const visibleSlides = 3;
+  const cleanTitle = (title: string) => {
+    if (!title) return "";
+
+    return title
+      .trim() // remove extra spaces
+      .replace(/^["'“”]+/, "") // remove quotes from start
+      .replace(/["'“”]+$/, ""); // remove quotes from end
+  };
   const progress =
     ((currentIndex + visibleSlides) / totalSlides) * 100 > 100
       ? 100
@@ -70,7 +78,7 @@ const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({
               className="basis-1/1 sm:basis-1/2 lg:basis-1/3 pl-8"
             >
               <a href={activity.url} target="_blank" rel="noopener noreferrer">
-                <div className="flex-1 h-full min-w-0 border border-gray-200 rounded-xl flex-shrink-0 overflow-hidden cursor-pointer hover:shadow-lg transition-shadow">
+                <div className="flex-1 h-full min-w-0 rounded-t-[16px] flex-shrink-0 overflow-hidden cursor-pointer">
                   <Image
                     src={activity.image}
                     alt={activity.title}
@@ -78,7 +86,7 @@ const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({
                     height={194}
                     className="w-full max-h-48 object-cover"
                   />
-                  <div className="p-6 flex flex-col gap-2">
+                  <div className="p-6 flex flex-col gap-2 border-x border-b border-gray-200 rounded-b-[16px]">
                     <div className="flex items-center gap-2">
                       <Calendar className="w-5 h-5" />
                       <span className="text-sm font-bold text-black md:text-sm md:font-bold md:leading-[22px] md:text-center md:align-middle md:text-[#090C0F]">
@@ -86,7 +94,7 @@ const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({
                       </span>
                     </div>
                     <h3 className="text-lg font-bold text-[#333333] md:text-lg md:font-bold md:leading-[26px] md:align-middle md:text-[#333333] truncate">
-                      {activity.title}
+                      {cleanTitle(activity.title)}
                     </h3>
                     <p className="text-sm font-normal text-gray-600 md:text-sm md:font-normal md:leading-[21px] md:align-middle md:text-[#595959]">
                       {activity.description.length > 80
@@ -104,7 +112,7 @@ const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({
         </CarouselContent>
 
         {/* Controls + Progress Bar */}
-        <div className="flex justify-between items-center mt-6 gap-6 relative">
+        <div className="flex justify-between items-center mt-8 gap-12 relative">
           <div className="w-full h-1 md:h-[4px] bg-[#d1d1d1] rounded-[2px] overflow-hidden">
             <div
               className="h-1 md:h-[4px] bg-[#003399] rounded-[2px] transition-all duration-300"
@@ -114,7 +122,7 @@ const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({
 
           {/* Navigation */}
           <div className="flex gap-2">
-            <CarouselPrevious className="border border-[#9CA3AF] md:w-[42px] md:h-[42px] rounded-full flex items-center justify-center text-[#9CA3AF] cursor-pointer" />
+            <CarouselPrevious className="border border-gray-700 md:w-[42px] md:h-[42px] rounded-full flex items-center justify-center text-gray-700 cursor-pointer" />
             <CarouselNext className="border border-black md:w-[42px] md:h-[42px] rounded-full flex items-center justify-center cursor-pointer" />
           </div>
         </div>
@@ -129,7 +137,7 @@ const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({
             target="_blank"
             rel="noopener noreferrer"
           >
-            <div className="flex-1 min-w-0 border border-[#E4E4E4] rounded-xl flex-shrink-0 overflow-hidden">
+            <div className="flex-1 min-w-0 border border-[#E4E4E4] rounded-[16px] flex-shrink-0 overflow-hidden">
               <Image
                 src={activity.image}
                 alt={activity.title}
@@ -144,8 +152,8 @@ const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({
                     {formatDate(activity.date)}
                   </span>
                 </div>
-                <h3 className="text-lg font-bold text-[#333333] md:text-lg md:font-bold md:leading-[26px] md:align-middle md:text-[#333333] truncate">
-                  {activity.title}
+                <h3 className="text-lg font-semibold text-[#333333] md:text-lg md:font-bold md:leading-[24px] md:align-middle md:text-[#333333] truncate">
+                  {cleanTitle(activity.title)}
                 </h3>
                 <p className="text-sm font-normal text-gray-600 md:text-sm md:font-normal md:leading-[21px] md:align-middle md:text-[#595959]">
                   {activity.description.length > 80

@@ -1,12 +1,12 @@
-import HeroSection from "../src/components/HeroSection";
-import StatisticsSection from "../src/components/StatisticsSection";
-import AboutSection from "../src/components/AboutSection";
-import PartnersSection from "../src/components/PartnersSection";
-import SpeciesSection from "../src/components/SpeciesSection";
-import ProjectsSection from "../src/components/ProjectsSection";
-import ActivitiesSection from "../src/components/ActivitiesSection";
-import TestimonialsSection from "../src/components/TestimonialsSection";
-import CaseStudiesSection from "../src/components/CaseStudiesSection";
+import HeroSection from "@/components/HeroSection";
+import StatisticsSection from "@/components/StatisticsSection";
+import AboutSection from "@/components/AboutSection";
+import PartnersSection from "@/components/PartnersSection";
+import SpeciesSection from "@/components/SpeciesSection";
+import ProjectsSection from "@/components/ProjectsSection";
+import ActivitiesSection from "@/components/ActivitiesSection";
+import TestimonialsSection from "@/components/TestimonialsSection";
+import CaseStudiesSection from "@/components/CaseStudiesSection";
 import { fetchAllPartners } from "@/services/partners";
 import { fetchAllCaseStudies } from "@/services/case-studies";
 import { fetchAllHeroContents } from "@/services/hero-content";
@@ -17,6 +17,7 @@ import { fetchPopularSpecies } from "@/services/species";
 import { fetchAllArticles } from "@/services/articles";
 import PlantForCause from "@/components/PlantForCause";
 import { fetchAllAttributes } from "@/services/attributes";
+import { fetchHomeIntroSection } from "@/services/home-intro-section";
 
 export default async function Home() {
   const [
@@ -29,6 +30,7 @@ export default async function Home() {
     species,
     articles,
     attributes,
+    homeIntro,
   ] = await Promise.all([
     fetchAllPartners(),
     fetchAllCaseStudies(),
@@ -39,13 +41,14 @@ export default async function Home() {
     fetchPopularSpecies(),
     fetchAllArticles(),
     fetchAllAttributes(),
+    fetchHomeIntroSection(),
   ]);
 
   return (
     <main className="min-h-screen">
       <HeroSection heroContents={heroContents} />
       <StatisticsSection metrics={metrics} />
-      <AboutSection />
+      <AboutSection content={homeIntro} />
       <PartnersSection partners={partners} />
       <SpeciesSection species={species} />
       <ProjectsSection projects={projects} />

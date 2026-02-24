@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { Suspense, useRef, useState } from "react";
 import Image from "next/image";
 
 import {
@@ -12,6 +12,7 @@ import {
 } from "./ui/carousel";
 
 import { Attribute } from "@/types/attribute";
+import LightBox from "./light-box/LightBox";
 
 interface PlantForCauseProps {
   attributes: Attribute[];
@@ -19,12 +20,16 @@ interface PlantForCauseProps {
 
 const PlantForCause: React.FC<PlantForCauseProps> = ({ attributes }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [selectedAttribute, setSelectedAttribute] = useState<Attribute | null>(
+    null,
+  );
+  const [isLightBoxOpen, setIsLightBoxOpen] = useState(false);
+  const lightBoxRef = useRef<any>(null);
 
-  // If no attributes are provided, render nothing or fallback? 
-  // User asked not to change UI, but empty carousel is bad. 
+  // If no attributes are provided, render nothing or fallback?
+  // User asked not to change UI, but empty carousel is bad.
   // Assuming attributes will be passed. If array is empty, it just won't render items.
   const imagesArray = attributes;
-
   const totalSlides = imagesArray.length;
   const visibleSlides = 5;
   const progress =
@@ -33,6 +38,11 @@ const PlantForCause: React.FC<PlantForCauseProps> = ({ attributes }) => {
         ? 100
         : ((currentIndex + visibleSlides) / totalSlides) * 100
       : 0;
+
+  const handleCardClick = (attribute: Attribute) => {
+    setSelectedAttribute(attribute);
+    setIsLightBoxOpen(true);
+  };
 
   return (
     <section className="max-w-7xl mx-auto px-4 md:px-8 relative mt-8 md:mt-16">
@@ -60,13 +70,16 @@ const PlantForCause: React.FC<PlantForCauseProps> = ({ attributes }) => {
               key={image.id}
               className="basis-1/1 sm:basis-1/4 lg:basis-1/5 md:pl-14 pl-8 space-y-2"
             >
-              <div className="border-[0.7px] overflow-hidden border-[#B7B9BB] rounded-xl cursor-pointer hover:shadow-lg transition-shadow">
+              <div
+                onClick={() => handleCardClick(image)}
+                className="border-[0.76px] overflow-hidden border-[#B7B9BB] rounded-[16px] cursor-pointer"
+              >
                 <Image
                   src={image.image}
                   alt={image.name}
                   width={200}
                   height={200}
-                  className="w-full"
+                  className="h-50 w-50"
                 />
               </div>
               <h3 className="text-center font-bold md:text-lg md:font-bold md:leading-[26px] text-[#090C0F] truncate">
@@ -77,7 +90,7 @@ const PlantForCause: React.FC<PlantForCauseProps> = ({ attributes }) => {
         </CarouselContent>
 
         {/* Controls + Progress Bar */}
-        <div className="flex justify-between items-center mt-6 gap-6 relative">
+        <div className="flex justify-between items-center mt-8 gap-12 relative">
           <div className="w-full h-1 md:h-[4px] bg-[#d1d1d1] rounded-[2px] overflow-hidden">
             <div
               className="h-1 md:h-[4px] bg-[#003399] rounded-[2px] transition-all duration-300"
@@ -87,7 +100,7 @@ const PlantForCause: React.FC<PlantForCauseProps> = ({ attributes }) => {
 
           {/* Navigation */}
           <div className="flex gap-2">
-            <CarouselPrevious className="border border-[#9CA3AF] md:w-[42px] md:h-[42px] rounded-full flex items-center justify-center text-[#9CA3AF] cursor-pointer" />
+            <CarouselPrevious className="border border-gray-700 md:w-[42px] md:h-[42px] rounded-full flex items-center justify-center text-gray-700 cursor-pointer" />
             <CarouselNext className="border border-black md:w-[42px] md:h-[42px] rounded-full flex items-center justify-center cursor-pointer" />
           </div>
         </div>
@@ -96,19 +109,40 @@ const PlantForCause: React.FC<PlantForCauseProps> = ({ attributes }) => {
       {/*Mobile Carousel */}
       <div className="flex gap-4 sm:hidden overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         {imagesArray.map((image) => (
-          <div key={image.id} className="space-y-2">
+          <div
+            key={image.id}
+            className="space-y-2 cursor-pointer"
+            onClick={() => handleCardClick(image)}
+          >
             <Image
               src={image.image}
               alt={image.name}
               width={150}
               height={150}
-              className="min-w-[150px] object-cover border-[0.7px] overflow-hidden border-[#B7B9BB] rounded-xl"
+              className="min-w-[150px] object-cover border-[0.7px] overflow-hidden border-[#B7B9BB] rounded-[12px] transition-all hover:shadow-lg hover:scale-105 hover:border-[#003399]"
             />
             <h3 className="text-center text-base font-semibold leading-[26px] text-[#090C0F] truncate">
               {image.name}
             </h3>
           </div>
         ))}
+      </div>
+
+      {/* LightBox Component - Hidden Trigger Button */}
+      <div className="hidden">
+        <Suspense fallback={null}>
+          <LightBox
+            attributes={attributes}
+            preSelectedAttribute={selectedAttribute}
+            isOpen={isLightBoxOpen}
+            onOpenChange={setIsLightBoxOpen}
+            triggerLabel={
+              selectedAttribute
+                ? `Plant for ${selectedAttribute.name}`
+                : "Plant For A Cause"
+            }
+          />
+        </Suspense>
       </div>
     </section>
   );

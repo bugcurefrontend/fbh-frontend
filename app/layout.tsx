@@ -12,6 +12,12 @@ import AuthWrapper from "@/components/AuthWrapper";
 import { fetchFooterMenu } from "@/services/footer-menu";
 import { fetchSocialLinks } from "@/services/social-link";
 import { fetchUsefulLinks } from "@/services/useful-link";
+import { fetchGlobal } from "@/services/global";
+import type { FooterMenuSimplified } from "@/types/footer-menu";
+import type { SocialLinkSimplified } from "@/types/social-link";
+import type { UsefulLinkSimplified } from "@/types/useful-link";
+import type { GlobalContent } from "@/types/global";
+import { logger } from "@/lib/logger";
 
 export const metadata = {
   title: "Forests by Heartfulness",
@@ -42,24 +48,49 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [footerMenu, socialLinks, usefulLinks] = await Promise.all([
-    fetchFooterMenu(),
-    fetchSocialLinks(),
-    fetchUsefulLinks(),
-  ]);
+  let footerMenu: FooterMenuSimplified = { items: [] };
+  let socialLinks: SocialLinkSimplified | undefined = undefined;
+  let usefulLinks: UsefulLinkSimplified = { items: [] };
+  let globalData: GlobalContent | null = null;
+
+  try {
+    [footerMenu, socialLinks, usefulLinks, globalData] = await Promise.all([
+      fetchFooterMenu(),
+      fetchSocialLinks(),
+      fetchUsefulLinks(),
+      fetchGlobal(),
+    ]);
+  } catch (err) {
+    logger.error("Error fetching layout data", err);
+  }
+
+  // Convert simple Markdown links [text](url) to HTML anchor tags for rendering
+  const convertMarkdownLinksToHtml = (md: string) => {
+    if (!md) return md;
+    // don't convert if already contains HTML
+    if (md.includes("<a ") || md.includes("<p>")) return md;
+    return md.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+  };
+
+  const copyrightHtml = globalData?.copyright ? convertMarkdownLinksToHtml(globalData.copyright) : null;
 
   return (
     <html lang="en" className={publicSans.className}>
       <body>
         <AuthProvider>
           <AuthWrapper>
-            <Header />
-            {children}
-            <Footer
-              menuItems={footerMenu.items}
-              socialLinks={socialLinks}
-              usefulLinks={usefulLinks.items}
-            />
+            <div className="flex flex-col min-h-screen">
+              <Header />
+              <div className="flex-1">
+                {children}
+              </div>
+              <Footer
+                menuItems={footerMenu.items}
+                socialLinks={socialLinks}
+                usefulLinks={usefulLinks.items}
+                copyright={copyrightHtml}
+              />
+            </div>
           </AuthWrapper>
         </AuthProvider>
       </body>

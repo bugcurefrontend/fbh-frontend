@@ -8,14 +8,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { City, Country } from "@/lib/location-utils";
 import { PersonalDetails } from "./types";
-import { ComboBox } from "../ui/combobox";
+import CityAutocomplete from "@/components/ui/CityAutocomplete";
+import CountryAutocomplete from "@/components/ui/CountryAutocomplete";
+import { PhoneInput } from "@/components/ui/PhoneInput";
+import countriesData from "@/assets/data/countries.json";
 
 interface PersonalDetailsSectionProps {
   personalDetails: PersonalDetails;
   onPersonalDetailsChange: (
     field: keyof PersonalDetails,
-    value: string | boolean
+    value: string | boolean | City | Country | null
   ) => void;
   emailError?: string;
   phoneError?: string;
@@ -29,32 +33,82 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
   phoneError,
   pincodeError,
 }) => {
+  // Helper function to find country by code
+  const findCountryByCode = (code: string): Country | null => {
+    const countryData = countriesData.find(
+      (c: any) => c.countryCode === code.toUpperCase()
+    );
+    if (countryData) {
+      return {
+        id: countryData.numeric,
+        name: countryData.englishShortName,
+        code: countryData.countryCode,
+        active: true,
+        numeric: countryData.numeric,
+      };
+    }
+    return null;
+  };
+
+  const countryValue =
+    typeof personalDetails.country === "object" && personalDetails.country !== null
+      ? personalDetails.country
+      : personalDetails.country
+        ? findCountryByCode(personalDetails.country) || {
+          id: personalDetails.country,
+          name: personalDetails.country,
+          code: personalDetails.country,
+          active: true,
+        }
+        : null;
+
+  const cityValue =
+    typeof personalDetails.city === "object" && personalDetails.city !== null
+      ? personalDetails.city
+      : personalDetails.city
+        ? ({ id: "", name: personalDetails.city } as City)
+        : null;
+
+  // Pass country code (ISO2) for city filtering when available. If only a country name is present, prefer `region` or leave undefined to avoid invalid API path like `/cities/India/...` which can return 403.
+  const cityDefaultCountry =
+    // If `country` is an object with a `code`, use that
+    (typeof personalDetails.country === "object" && personalDetails.country?.code)
+      ? personalDetails.country.code
+      // If `country` is a 2-letter string, assume it's an ISO2 code
+      : (typeof personalDetails.country === "string" && personalDetails.country.length === 2)
+        ? personalDetails.country
+        // Fallback to explicit `region` (if it's an ISO2 code)
+        : (typeof personalDetails.region === "string" && personalDetails.region.length === 2)
+          ? personalDetails.region
+          : undefined;
+
   return (
-    <div className="bg-white border border-[#E8E8E9] rounded-2xl mb-8">
-      <h2 className="border-b border-[#E8E8E9] text-lg font-bold py-4 px-6">
+    <div className="bg-white border border-[#E8E8E9] rounded-[16px] md:rounded-[8px] mb-8">
+      <h2 className="border-b border-[#E8E8E9] md:text-lg font-semibold md:font-bold py-4 px-4 md:px-6">
         Personal Details
       </h2>
 
       <div className="p-4 space-y-6">
         <div className="space-y-4">
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 gap-6 md:gap-8">
             <div>
               <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
                 First Name <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
+                maxLength={15}
                 value={personalDetails.firstName}
                 onChange={(e) => {
                   const value = e.target.value
                     .replace(/[^A-Za-z\s'-]/g, "")
-                    .slice(0, 40);
+                    .slice(0, 15);
                   if (/^[A-Za-z\s'-]*$/.test(value)) {
                     onPersonalDetailsChange("firstName", value);
                   }
                 }}
                 placeholder="jason"
-                className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-lg text-[#090C0F]"
+                className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F] shadow-xs"
               />
             </div>
             <div>
@@ -63,22 +117,23 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
               </label>
               <input
                 type="text"
+                maxLength={15}
                 value={personalDetails.lastName}
                 onChange={(e) => {
                   const value = e.target.value
                     .replace(/[^A-Za-z\s'-]/g, "")
-                    .slice(0, 40);
+                    .slice(0, 15);
                   if (/^[A-Za-z\s'-]*$/.test(value)) {
                     onPersonalDetailsChange("lastName", value);
                   }
                 }}
-                className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-lg text-[#090C0F]"
+                className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F] shadow-xs"
                 placeholder="Manson"
               />
             </div>
           </div>
 
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between max-sm:gap-10">
             <span className="text-[#212529]">
               I want my name to be displayed on the donors list
             </span>
@@ -107,12 +162,13 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
             <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-[#63676C] w-5 h-5" />
             <input
               type="text"
+              maxLength={50}
               value={personalDetails.email}
               onChange={(e) =>
                 onPersonalDetailsChange("email", e.target.value.trimStart())
               }
               placeholder="olivia@heartfulness.com"
-              className="w-full pl-10 px-3.5 py-2.5 border border-[#D0D5DD] rounded-lg text-[#090C0F]"
+              className="w-full pl-10 px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F] shadow-xs"
             />
           </div>
           {emailError && (
@@ -122,111 +178,41 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
           )}
         </div>
 
-        <div className="">
-          <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-            Door no, Street Address <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="text"
-            value={personalDetails.doorNo}
-            onChange={(e) =>
-              onPersonalDetailsChange(
-                "doorNo",
-                e.target.value.replace(/[^A-Za-z0-9\s,./#-]/g, "").slice(0, 120)
-              )
-            }
-            className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-lg text-[#090C0F]"
-            placeholder="Enter address"
-          />
-          <p className="text-[10px] text-black leading-[16px] mt-2">
-            <span className=" font-bold">Note:</span> Please provide the address
-            in full, without which the organization needs to pay 30% tax on
-            these donations.
-          </p>
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-8">
-          <div>
-            <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-              Pincode <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              value={personalDetails.pincode}
-              onChange={(e) =>
-                onPersonalDetailsChange(
-                  "pincode",
-                  e.target.value.replace(/[^0-9]/g, "").slice(0, 10)
-                )
-              }
-              className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-lg text-[#090C0F]"
-              placeholder="Enter Pincode"
-            />
-            {pincodeError && (
-              <p className="text-xs text-red-500 font-medium mt-1">
-                {pincodeError}
-              </p>
-            )}
-          </div>
+        <div className="grid md:grid-cols-2 gap-6 md:gap-8">
           <div>
             <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
               Phone number <span className="text-red-500">*</span>
             </label>
 
-            <div className="flex relative w-full">
-              {/* Region Select */}
-              <Select
-                value={personalDetails.region}
-                onValueChange={(value) =>
-                  onPersonalDetailsChange("region", value)
+            <PhoneInput
+              name="phoneNumber"
+              value={personalDetails.phoneNumber}
+              country={
+                personalDetails.region && personalDetails.region.length === 2
+                  ? (personalDetails.region as any)
+                  : typeof personalDetails.country === 'object' && personalDetails.country?.code
+                    ? (personalDetails.country.code as any)
+                    : typeof personalDetails.country === 'string' && personalDetails.country.length === 2
+                      ? (personalDetails.country as any)
+                      : "IN"
+              }
+              onChange={({ countryCode, phoneNumber }) => {
+                // always keep digits-only phone and let the hook sanitize
+                onPersonalDetailsChange("phoneNumber", phoneNumber);
+                if (countryCode) {
+                  // Sync both region (ISO2) and country so other components stay consistent
+                  onPersonalDetailsChange("region", countryCode);
+                  onPersonalDetailsChange("country", countryCode);
                 }
-              >
-                <SelectTrigger className="absolute left-3 top-1/2 -translate-y-1/2 w-auto border-none bg-transparent p-0 h-auto shadow-none focus:ring-0 focus:outline-none hover:bg-transparent">
-                  <SelectValue placeholder="+91" />
-                </SelectTrigger>
-
-                <SelectContent>
-                  <SelectItem value="+91">
-                    <span className="text-sm flex items-center gap-1">
-                      🇮🇳 +91
-                    </span>
-                  </SelectItem>
-                  <SelectItem value="+1">
-                    <span className="text-sm flex items-center gap-1">
-                      🇺🇸 +1
-                    </span>
-                  </SelectItem>
-                  <SelectItem value="+44">
-                    <span className="text-sm flex items-center gap-1">
-                      🇬🇧 +44
-                    </span>
-                  </SelectItem>
-                </SelectContent>
-              </Select>
-
-              {/* Phone Number Input */}
-              <input
-                type="tel"
-                value={personalDetails.phoneNumber}
-                onChange={(e) =>
-                  onPersonalDetailsChange(
-                    "phoneNumber",
-                    e.target.value.replace(/[^0-9]/g, "").slice(0, 15)
-                  )
-                }
-                placeholder="Enter phone number"
-                className="pl-20 w-full px-3.5 py-2.5 border border-[#D0D5DD] min-h-fit rounded-lg text-[#090C0F] text-base"
-              />
-            </div>
+              }}
+              className="w-full"
+            />
             {phoneError && (
               <p className="text-xs text-red-500 font-medium mt-1">
                 {phoneError}
               </p>
             )}
           </div>
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-8">
           <div>
             <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
               Currency <span className="text-red-500">*</span>
@@ -237,11 +223,11 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
                 onPersonalDetailsChange("currency", value)
               }
             >
-              <SelectTrigger className="w-full px-3.5 py-2.5 border border-[#D0D5DD] min-h-fit rounded-lg text-[#090C0F] text-base">
+              <SelectTrigger className="w-full px-3.5 py-2.5 border border-[#D0D5DD] min-h-fit rounded-[8px] text-[#090C0F] shadow-xs text-base">
                 <SelectValue placeholder="Currency" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="india">
+                <SelectItem value="INR">
                   <Image
                     src="/images/flag.png"
                     alt="ind"
@@ -253,7 +239,7 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
                     INR
                   </span>
                 </SelectItem>
-                <SelectItem value="us">
+                {/* <SelectItem value="USD">
                   <Image
                     src="/images/us.png"
                     alt="usa"
@@ -264,53 +250,125 @@ const PersonalDetailsSection: React.FC<PersonalDetailsSectionProps> = ({
                   <span className="ml-1 text-sm font-normal leading-5 text-center align-middle">
                     USD
                   </span>
-                </SelectItem>
+                </SelectItem> */}
               </SelectContent>
             </Select>
           </div>
-          <div>
-            <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-              Country <span className="text-red-500">*</span>
-            </label>
-            <ComboBox
-              value={personalDetails.country}
-              onChange={(value) => onPersonalDetailsChange("country", value)}
-              options={["India", "USA", "Canada", "UK"]}
-              placeholder="Select Country"
-            />
-          </div>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="">
+          <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
+            Door no, Street Address <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            maxLength={100}
+            value={personalDetails.doorNo}
+            onChange={(e) =>
+              onPersonalDetailsChange(
+                "doorNo",
+                e.target.value.replace(/[^A-Za-z0-9\s,./#-]/g, "").slice(0, 100)
+              )
+            }
+            className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F] shadow-xs"
+            placeholder="Enter address"
+          />
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-6 md:gap-8 overflow-hidden">
+          <div>
+            <CityAutocomplete
+              value={cityValue}
+              defaultCountry={cityDefaultCountry}
+              onChange={(city) => {
+                onPersonalDetailsChange("city", city || null);
+                if (!city?.id) {
+                  onPersonalDetailsChange("state", "");
+                  return;
+                }
+                if (city?.state) onPersonalDetailsChange("state", city.state);
+                // Sync country if available in city object
+                if (city?.country) {
+                  const countryName = city.country.trim();
+                  const foundCountry = countriesData.find(
+                    (c: any) =>
+                      c.englishShortName.toLowerCase() ===
+                      countryName.toLowerCase()
+                  );
+
+                  if (foundCountry) {
+                    const countryObj: Country = {
+                      id: foundCountry.numeric,
+                      name: foundCountry.englishShortName,
+                      code: foundCountry.countryCode,
+                      active: true,
+                      numeric: foundCountry.numeric,
+                    };
+                    onPersonalDetailsChange("country", countryObj);
+                    onPersonalDetailsChange("region", foundCountry.countryCode);
+                  }
+                }
+              }}
+              label="City"
+              placeholder="Select City"
+            />
+          </div>
           <div>
             <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
               State <span className="text-red-500">*</span>
             </label>
-            <ComboBox
+            <input
+              type="text"
               value={personalDetails.state}
-              onChange={(value) => onPersonalDetailsChange("state", value)}
-              options={[
-                "Maharashtra",
-                "Madhya Pradesh",
-                "Gujarat",
-                "Karnataka",
-              ]}
+              onChange={(e) => onPersonalDetailsChange("state", e.target.value)}
+              className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F] shadow-xs"
               placeholder="Select State"
+            />
+          </div>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-6 md:gap-8">
+          <div>
+            <CountryAutocomplete
+              value={countryValue}
+              onChange={(country) => {
+                onPersonalDetailsChange("country", country);
+                if (country?.code) onPersonalDetailsChange("region", country.code);
+              }}
+              label="Country"
+              placeholder="Select Country"
             />
           </div>
 
           <div>
-            <label className="mb-1.5 block text-xs text-[#344054] font-semibold">
-              City <span className="text-red-500">*</span>
+            <label className="mb-1.5 md:mb-2 block text-xs text-[#344054] font-semibold">
+              Pin / Zip Code <span className="text-red-500">*</span>
             </label>
-            <ComboBox
-              value={personalDetails.city}
-              onChange={(value) => onPersonalDetailsChange("city", value)}
-              options={["Nagpur", "Pune", "Mumbai", "Kolhapur", "Thane"]}
-              placeholder="Select City"
+            <input
+              type="text"
+              maxLength={10}
+              value={personalDetails.pincode}
+              onChange={(e) =>
+                onPersonalDetailsChange(
+                  "pincode",
+                  e.target.value.replace(/[^0-9]/g, "").slice(0, 10)
+                )
+              }
+              className="w-full px-3.5 py-2.5 border border-[#D0D5DD] rounded-[8px] text-[#090C0F] shadow-xs"
+              placeholder="Enter Pincode"
             />
+            {pincodeError && (
+              <p className="text-xs text-red-500 font-medium mt-1">
+                {pincodeError}
+              </p>
+            )}
           </div>
         </div>
+        <p className="text-[10px] text-black leading-[16px] mt-2">
+          <span className=" font-bold">Note:</span> Please provide the address
+          in full, without which the organization needs to pay 30% tax on these
+          donations.
+        </p>
       </div>
     </div>
   );

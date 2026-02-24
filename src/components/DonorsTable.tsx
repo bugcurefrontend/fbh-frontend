@@ -1,7 +1,9 @@
 import { User } from "lucide-react";
 import ProjectsPagination from "./ProjectsPagination";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import { fetchProjectDonors, ProjectDonor } from "@/services/allocations";
+import { logger } from "@/lib/logger";
 
 interface Donor {
   id: string;
@@ -12,97 +14,6 @@ interface Donor {
   treesPlanted: number;
   avatar?: string;
 }
-
-const donorsData: Donor[] = [
-  {
-    id: "1",
-    name: "Olivia Rhye",
-    location: "Prakasam",
-    date: "Jan 6, 2024",
-    donationType: "Self",
-    treesPlanted: 177,
-    avatar: "/images/profile.png",
-  },
-  {
-    id: "2",
-    name: "Phoenix Baker",
-    location: "Anantapur",
-    date: "Jan 6, 2024",
-    donationType: "Gifting",
-    treesPlanted: 994,
-  },
-  {
-    id: "3",
-    name: "Lana Steiner",
-    location: "Chittoor",
-    date: "Jan 6, 2024",
-    donationType: "Self",
-    treesPlanted: 492,
-    avatar: "/images/profile.png",
-  },
-  {
-    id: "4",
-    name: "Anonymous",
-    location: "Anonymous",
-    date: "Jan 5, 2024",
-    donationType: "Gifting",
-    treesPlanted: 447,
-  },
-  {
-    id: "5",
-    name: "Candice Wu",
-    location: "Srikakulam",
-    date: "Jan 5, 2024",
-    donationType: "Self",
-    treesPlanted: 583,
-    avatar: "/images/profile.png",
-  },
-  {
-    id: "6",
-    name: "Natali Craig",
-    location: "Vizianagaram",
-    date: "Jan 5, 2024",
-    donationType: "Gifting",
-    treesPlanted: 357,
-    avatar: "/images/profile.png",
-  },
-  {
-    id: "7",
-    name: "Drew Cano",
-    location: "Sri Potti Sriramulu Nellore",
-    date: "Jan 4, 2024",
-    donationType: "Self",
-    treesPlanted: 196,
-    avatar: "/images/profile.png",
-  },
-  {
-    id: "8",
-    name: "Orlando Diggs",
-    location: "YSR Kadapa",
-    date: "Jan 3, 2024",
-    donationType: "Self",
-    treesPlanted: 540,
-    avatar: "/images/profile.png",
-  },
-  {
-    id: "9",
-    name: "Andi Lane",
-    location: "Krishna",
-    date: "Jan 3, 2024",
-    donationType: "Self",
-    treesPlanted: 738,
-    avatar: "/images/profile.png",
-  },
-  {
-    id: "10",
-    name: "Kate Morrison",
-    location: "West Godavari",
-    date: "Jan 3, 2024",
-    donationType: "Self",
-    treesPlanted: 561,
-    avatar: "/images/profile.png",
-  },
-];
 
 const UserAvatar: React.FC<{
   name: string;
@@ -126,14 +37,96 @@ const UserAvatar: React.FC<{
   );
 };
 
-const DonorsTable = () => {
+const DonorsTable = ({ projectId }: { projectId?: string | number }) => {
   const [currentPage, setCurrentPage] = React.useState(1);
-  const donorsPerPage = 1;
-  const totalPages = Math.ceil(donorsData.length / donorsPerPage);
+  const [donors, setDonors] = useState<Donor[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const donorsPerPage = 10;
+  // const totalItems = donors.length; // Or use count from API if pagination is server-side
+  // Note: The previous logic relied on client-side pagination of the *fetched* list? 
+  // Wait, fetchProjectDonors takes page parameters. 
+  // If API returns paged results, `response.results` is just that page. 
+  // So `donors.length` would be just 10 (or less).
+  // We need `totalItems` state to calculate `totalPages`.
+
+  // Let me check the API response interface again.
+  // interface ProjectDonorsResponse { count: number; ... }
+  // So we need to store `count` in state.
+
+  const [totalCount, setTotalCount] = useState(0);
+
+  // Calculate total pages based on TOTAL count from API
+  const totalPages = Math.ceil(totalCount / donorsPerPage);
+
+  // Fetch donors data from API when projectId changes
+  useEffect(() => {
+    if (!projectId) {
+      setDonors([]);
+      setLoading(false);
+      return;
+    }
+
+    const fetchDonors = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await fetchProjectDonors(projectId, currentPage, donorsPerPage);
+        if (response && response.results) {
+          // Map API response to Donor interface
+          const mappedDonors: Donor[] = response.results.map((donor: ProjectDonor, index: number) => ({
+            id: `${projectId}-${index}`,
+            name: donor.donor_name,
+            location: donor.city,
+            date: new Date(donor.donation_date).toLocaleDateString('en-US', {
+              month: 'short',
+              day: 'numeric',
+              year: 'numeric'
+            }),
+            donationType: donor.donation_for,
+            treesPlanted: donor.trees_planted,
+          }));
+          setDonors(mappedDonors);
+          setTotalCount(response.count); // Update total count from API
+        }
+      } catch (err) {
+        logger.error("Error fetching donors", err);
+        setError("Failed to load donors data");
+        setDonors([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDonors();
+  }, [projectId, currentPage, donorsPerPage]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
+
+  // Show fallback data if no projectId or error
+  if (!projectId || error) {
+    return (
+      <main className="flex">
+        <div className="w-full text-center py-8 text-gray-500">
+          {error ? "Failed to load donors data" : "No donors data available"}
+        </div>
+      </main>
+    );
+  }
+
+  // Show loading state
+  if (loading) {
+    return (
+      <main className="flex">
+        <div className="w-full text-center py-8 text-gray-500">
+          Loading donors...
+        </div>
+      </main>
+    );
+  }
   return (
     <main className="flex">
       {/* Donors Table */}
@@ -205,110 +198,116 @@ const DonorsTable = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              {donorsData.map((donor, index) => (
-                <tr
-                  key={donor.id}
-                  className={`hover:bg-[#F9FAFB] ${
-                    (index + 1) % 2 === 1 ? "bg-[#F9FAFB]" : "bg-white"
-                  }`}
-                >
-                  <td
-                    className="text-center py-3.5 px-3.5"
-                    style={{
-                      fontFamily: "'Public Sans', sans-serif",
-                      fontWeight: 600,
-                      fontSize: "14px",
-                      lineHeight: "22px",
-                      color: "#090C0F",
-                    }}
-                  >
-                    {index + 1}
-                  </td>
-                  <td className="py-3.5 pl-3.5 overflow-hidden">
-                    <div className="flex items-center space-x-3">
-                      <UserAvatar
-                        name={donor.name}
-                        avatar={donor.avatar ?? ""}
-                        isAnonymous={donor.name === "Anonymous"}
-                      />
-
-                      <div>
-                        <div
-                          style={{
-                            fontFamily: "'Public Sans', sans-serif",
-                            fontWeight: 600,
-                            fontSize: "14px",
-                            lineHeight: "22px",
-                            color: "#090C0F",
-                          }}
-                        >
-                          {donor.name}
-                        </div>
-                        <div
-                          className="truncate"
-                          style={{
-                            fontFamily: "'Public Sans', sans-serif",
-                            fontWeight: 400,
-                            fontSize: "14px",
-                            lineHeight: "22px",
-                            color: "#454950",
-                            maxWidth: "160px",
-                          }}
-                        >
-                          {donor.location}
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="py-3.5 px-3.5">
-                    <div
-                      style={{
-                        fontFamily: "'Public Sans', sans-serif",
-                        fontWeight: 600,
-                        fontSize: "14px",
-                        lineHeight: "22px",
-                        color: "#454950",
-                      }}
-                    >
-                      {donor.date}
-                    </div>
-                  </td>
-                  <td className="py-3.5 px-3.5">
-                    <span
-                      className={`inline-flex uppercase px-2 py-1 rounded-full ${
-                        donor.donationType === "Self"
-                          ? "bg-green-100"
-                          : "bg-orange-100"
-                      }`}
-                      style={{
-                        fontFamily: "'Public Sans', sans-serif",
-                        fontWeight: 600,
-                        fontSize: "12px",
-                        lineHeight: "18px",
-                        letterSpacing: "0px",
-                        color:
-                          donor.donationType === "Self" ? "#12B569" : "#F78F08",
-                        textAlign: "center",
-                      }}
-                    >
-                      {donor.donationType}
-                    </span>
-                  </td>
-                  <td className="text-center py-3.5 px-3.5">
-                    <div
-                      style={{
-                        fontFamily: "'Public Sans', sans-serif",
-                        fontWeight: 600,
-                        fontSize: "14px",
-                        lineHeight: "22px",
-                        color: "#454950",
-                      }}
-                    >
-                      {donor.treesPlanted}
-                    </div>
+              {donors.length === 0 ? (
+                <tr>
+                  <td colSpan={5} className="py-10 text-center text-gray-500 font-medium italic">
+                    No donors found for this project.
                   </td>
                 </tr>
-              ))}
+              ) : (
+                donors.map((donor, index) => (
+                  <tr
+                    key={donor.id}
+                    className={`hover:bg-[#F9FAFB] ${(index + 1) % 2 === 1 ? "bg-[#F9FAFB]" : "bg-white"
+                      }`}
+                  >
+                    <td
+                      className="text-center py-3.5 px-3.5"
+                      style={{
+                        fontFamily: "'Public Sans', sans-serif",
+                        fontWeight: 600,
+                        fontSize: "14px",
+                        lineHeight: "22px",
+                        color: "#090C0F",
+                      }}
+                    >
+                      {(currentPage - 1) * donorsPerPage + index + 1}
+                    </td>
+                    <td className="py-3.5 pl-3.5 overflow-hidden">
+                      <div className="flex items-center space-x-3">
+                        <UserAvatar
+                          name={donor.name}
+                          avatar={donor.avatar ?? ""}
+                          isAnonymous={donor.name === "Anonymous"}
+                        />
+
+                        <div>
+                          <div
+                            style={{
+                              fontFamily: "'Public Sans', sans-serif",
+                              fontWeight: 600,
+                              fontSize: "14px",
+                              lineHeight: "22px",
+                              color: "#090C0F",
+                            }}
+                          >
+                            {donor.name}
+                          </div>
+                          <div
+                            className="truncate"
+                            style={{
+                              fontFamily: "'Public Sans', sans-serif",
+                              fontWeight: 400,
+                              fontSize: "14px",
+                              lineHeight: "22px",
+                              color: "#454950",
+                              maxWidth: "160px",
+                            }}
+                          >
+                            {donor.location}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="py-3.5 px-3.5">
+                      <div
+                        style={{
+                          fontFamily: "'Public Sans', sans-serif",
+                          fontWeight: 600,
+                          fontSize: "14px",
+                          lineHeight: "22px",
+                          color: "#454950",
+                        }}
+                      >
+                        {donor.date}
+                      </div>
+                    </td>
+                    <td className="py-3.5 px-3.5">
+                      <span
+                        className={`inline-flex uppercase px-2 py-1 rounded-full ${donor.donationType === "Self"
+                          ? "bg-green-100"
+                          : "bg-orange-100"
+                          }`}
+                        style={{
+                          fontFamily: "'Public Sans', sans-serif",
+                          fontWeight: 600,
+                          fontSize: "12px",
+                          lineHeight: "18px",
+                          letterSpacing: "0px",
+                          color:
+                            donor.donationType === "Self" ? "#12B569" : "#F78F08",
+                          textAlign: "center",
+                        }}
+                      >
+                        {donor.donationType}
+                      </span>
+                    </td>
+                    <td className="text-center py-3.5 px-3.5">
+                      <div
+                        style={{
+                          fontFamily: "'Public Sans', sans-serif",
+                          fontWeight: 600,
+                          fontSize: "14px",
+                          lineHeight: "22px",
+                          color: "#454950",
+                        }}
+                      >
+                        {donor.treesPlanted}
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
@@ -326,10 +325,10 @@ const DonorsTable = () => {
 
       {/* Mobile View */}
       <div className="space-y-4 md:hidden w-full">
-        {donorsData.slice(0, 8).map((donor) => (
+        {donors.map((donor) => (
           <div
             key={donor.id}
-            className="p-2 border rounded-lg hover:bg-gray-50 h-16"
+            className="p-2 border rounded-[8px] hover:bg-gray-50 h-16"
           >
             <div className="flex items-center space-x-3">
               <UserAvatar

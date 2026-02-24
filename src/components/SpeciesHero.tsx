@@ -4,7 +4,82 @@ import React, { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import { Trees, ChevronLeft, ChevronRight } from "lucide-react";
 import GeoTagToggleAndActions from "./GeoTagToggleAndActions";
-import ShareButton from "../../app/case-studies/[slug]/ShareButton";
+import ShareButton from "./icons/ShareButton";
+import LifeSpan from "./icons/LifeSpan";
+import Height from "./icons/Height";
+import Oxygen from "./icons/Oxygen";
+import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
+
+// Hook for counting animation
+const useCountUp = (
+  end: number,
+  duration: number = 2000,
+  shouldStart: boolean = false,
+) => {
+  const [count, setCount] = useState(0);
+  const startTimeRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (!shouldStart || end === 0) return;
+
+    const animate = (timestamp: number) => {
+      if (!startTimeRef.current) startTimeRef.current = timestamp;
+      const progress = Math.min(
+        (timestamp - startTimeRef.current) / duration,
+        1,
+      );
+
+      const easeOutQuad = (t: number) => t * (2 - t);
+      const easedProgress = easeOutQuad(progress);
+
+      setCount(Math.floor(easedProgress * end));
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        setCount(end);
+      }
+    };
+
+    requestAnimationFrame(animate);
+  }, [end, duration, shouldStart]);
+
+  return count;
+};
+
+// Animated characteristic component that parses and animates numeric values from strings
+const AnimatedCharacteristic: React.FC<{
+  value: string;
+  suffix?: string;
+  isVisible: boolean;
+}> = ({ value, suffix = "", isVisible }) => {
+  // Extract the first number from the string (handles "50", "100 Kg", "10-15", etc.)
+  const numericMatch = value.match(/^\d+/);
+  const numericValue = numericMatch ? parseInt(numericMatch[0], 10) : 0;
+  const restOfString = numericMatch
+    ? value.slice(numericMatch[0].length)
+    : value;
+
+  const animatedValue = useCountUp(numericValue, 2000, isVisible);
+
+  if (numericValue === 0) {
+    return (
+      <>
+        {value}
+        {suffix}
+      </>
+    );
+  }
+
+  return (
+    <>
+      {animatedValue}
+      {restOfString}
+      {suffix}
+    </>
+  );
+};
 
 interface SpeciesHeroProps {
   name: string;
@@ -68,14 +143,43 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
 
   const [items, setItems] = useState(buildItems());
   const [activeIndex, setActiveIndex] = useState(0);
-  const [activeImage, setActiveImage] = useState(
-    treeSpecies.length > 0 ? treeSpecies[0].imageUrl : ""
-  );
   const [videoPlaying, setVideoPlaying] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+  const [isHovered, setIsHovered] = useState(false);
+  const [statsVisible, setStatsVisible] = useState(false);
+  const statsRef = useRef<HTMLDivElement>(null);
+  const hasAnimatedStats = useRef(false);
+
+  // Initialize Embla Carousel with Autoplay
+  const autoplay = useRef(
+    Autoplay({ delay: 5000, stopOnInteraction: true, stopOnMouseEnter: true }),
+  );
+
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [
+    autoplay.current,
+  ]);
+
+  // Intersection Observer for stats count animation
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasAnimatedStats.current) {
+          setStatsVisible(true);
+          hasAnimatedStats.current = true;
+        }
+      },
+      { threshold: 0.3 },
+    );
+
+    if (statsRef.current) {
+      observer.observe(statsRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   const checkScrollButtons = () => {
     if (sliderRef.current) {
@@ -97,33 +201,43 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
     }
   };
 
-  // Auto-rotate only when video is not playing
+  // Update items when props change
   useEffect(() => {
-    if (videoPlaying) return; // Don't auto-rotate when video is playing
-    if (items.length === 0) return; // Prevent division by zero if items is empty
+    setItems(buildItems());
+  }, [treeSpecies, videoThumbnail, videoUrl]);
 
-    const interval = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % items.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [items.length, videoPlaying]);
-
-  // Update active image when index changes
+  // Sync external state (video playing) with autoplay
   useEffect(() => {
-    if (items.length > 0 && activeIndex < items.length) {
-      if (items[activeIndex].id === "video") {
-        setActiveImage(items[activeIndex].imageUrl);
-        // Don't reset videoPlaying here - let the click handler control it
-      } else {
-        setActiveImage(items[activeIndex].imageUrl);
-        setVideoPlaying(false); // Reset video playing only when switching to non-video items
-      }
+    if (!emblaApi) return;
+    const autoplayPlugin = emblaApi.plugins().autoplay;
+    if (!autoplayPlugin) return;
+
+    // Only autoplay if we have more than 1 item and not interacting
+    if (items.length <= 1 || videoPlaying || isHovered) {
+      autoplayPlugin.stop();
     } else {
-      setActiveImage(""); // No images or invalid index
+      autoplayPlugin.play();
     }
-    // Reset activeIndex if it goes out of bounds after items change
-    if (activeIndex >= items.length && items.length > 0) setActiveIndex(0);
-  }, [activeIndex, items]);
+  }, [videoPlaying, isHovered, emblaApi, items.length]);
+
+  // Handle slide change
+  useEffect(() => {
+    if (!emblaApi) return;
+
+    const onSelect = () => {
+      setActiveIndex(emblaApi.selectedScrollSnap());
+      setVideoPlaying(false);
+    };
+
+    emblaApi.on("select", onSelect);
+
+    // Initial sync
+    setActiveIndex(emblaApi.selectedScrollSnap());
+
+    return () => {
+      emblaApi.off("select", onSelect);
+    };
+  }, [emblaApi]);
 
   // Intersection observer to stop video when scrolling away
   useEffect(() => {
@@ -134,7 +248,7 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
           setVideoPlaying(false); // Stop video when out of view
         }
       },
-      { threshold: 0.3 }
+      { threshold: 0.3 },
     );
 
     if (heroSection) {
@@ -169,66 +283,117 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
     <div className="bg-white md:rounded-[16px] overflow-hidden" ref={heroRef}>
       <div className="flex flex-col lg:flex-row space-x-6 space-y-6 lg:space-y-0">
         {/* Left side - Hero Image / Video */}
-        <div className="lg:w-[546px] w-full relative flex-shrink-0 group/container">
-          <div
-            className="min-h-[360px] h-full w-full relative overflow-hidden md:rounded-[16px] rounded-[8px] cursor-pointer"
-            onClick={() => {
-              // Only trigger video play when clicking on video item
-              if (
-                items[activeIndex]?.id === "video" &&
-                videoUrl &&
-                !videoPlaying
-              ) {
-                setVideoPlaying(true);
-              }
-            }}
-          >
-            {/* Show video player when video is selected and playing */}
-            {items[activeIndex]?.id === "video" && videoPlaying && videoUrl ? (
-              videoUrl.includes("youtube.com") ||
-              videoUrl.includes("youtu.be") ? (
-                <iframe
-                  src={`${
-                    videoUrl.includes("embed")
-                      ? videoUrl
-                      : videoUrl
-                          .replace("watch?v=", "embed/")
-                          .replace("youtu.be/", "youtube.com/embed/")
-                  }?autoplay=1`}
-                  className="w-full h-full min-h-[360px]"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
-                />
-              ) : (
-                <video
-                  src={videoUrl}
-                  className="w-full h-full object-cover min-h-[360px]"
-                  controls
-                  autoPlay
-                  playsInline
-                  preload="auto"
-                >
-                  Your browser does not support the video tag.
-                </video>
-              )
-            ) : activeImage && items.length > 0 ? (
-              <Image
-                src={activeImage}
-                alt={items[activeIndex]?.imageAlt || "Species image"}
-                fill
-                className="object-cover transition-all duration-500"
-              />
-            ) : (
-              // Placeholder if no image is available
-              <div className="w-full h-full flex items-center justify-center bg-gray-100 text-gray-400 min-h-[360px]">
-                <Trees className="w-16 h-16 text-gray-300" />
+        <div
+          className="lg:w-[546px] w-full relative flex-shrink-0 group/container"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          <div className="min-h-[360px] h-full w-full relative overflow-hidden md:rounded-[16px] rounded-[8px]">
+            {/* Embla Carousel Viewport */}
+            <div className="overflow-hidden h-full" ref={emblaRef}>
+              <div className="flex h-full">
+                {items.map((item, index) => (
+                  <div
+                    key={`slide-${item.id}-${index}`}
+                    className="flex-[0_0_100%] min-w-0 relative h-full min-h-[360px]"
+                    onClick={() => {
+                      if (
+                        item.id === "video" &&
+                        videoUrl &&
+                        !videoPlaying &&
+                        activeIndex === index
+                      ) {
+                        setVideoPlaying(true);
+                      }
+                    }}
+                  >
+                    <div
+                      className={`relative w-full h-full min-h-[360px] ${
+                        item.id === "video" && !videoPlaying
+                          ? "cursor-pointer"
+                          : ""
+                      }`}
+                    >
+                      {/* Video Item */}
+                      {item.id === "video" ? (
+                        videoPlaying && videoUrl && activeIndex === index ? (
+                          videoUrl.includes("youtube.com") ||
+                          videoUrl.includes("youtu.be") ? (
+                            <iframe
+                              src={`${
+                                videoUrl.includes("embed")
+                                  ? videoUrl
+                                  : videoUrl
+                                      .replace("watch?v=", "embed/")
+                                      .replace(
+                                        "youtu.be/",
+                                        "youtube.com/embed/",
+                                      )
+                              }?autoplay=1`}
+                              className="w-full h-full min-h-[360px]"
+                              frameBorder="0"
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                              allowFullScreen
+                            />
+                          ) : (
+                            <video
+                              src={videoUrl}
+                              className="w-full h-full object-cover min-h-[360px]"
+                              controls
+                              autoPlay
+                              playsInline
+                              preload="auto"
+                            >
+                              Your browser does not support the video tag.
+                            </video>
+                          )
+                        ) : (
+                          // Video Thumbnail
+                          <div className="absolute inset-0 w-full h-full">
+                            <Image
+                              src={item.imageUrl}
+                              alt={item.imageAlt}
+                              fill
+                              className="object-cover"
+                            />
+                            <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-all">
+                              <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center shadow-lg">
+                                <svg
+                                  className="w-7 h-7 text-[#003399] ml-1"
+                                  fill="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path d="M8 5v14l11-7z" />
+                                </svg>
+                              </div>
+                            </div>
+                          </div>
+                        )
+                      ) : (
+                        // Regular Image Item
+                        <div className="absolute inset-0 w-full h-full">
+                          <Image
+                            src={item.imageUrl}
+                            alt={item.imageAlt || "Species image"}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+                {items.length === 0 && (
+                  <div className="flex-[0_0_100%] min-w-0 relative h-full min-h-[360px] flex items-center justify-center bg-gray-100">
+                    <Trees className="w-16 h-16 text-gray-300" />
+                  </div>
+                )}
               </div>
-            )}
+            </div>
           </div>
 
           {/* Mobile dots (shows on hover) */}
-          <div className="flex md:hidden justify-center mt-4 gap-2 transition-all duration-300 opacity-0 group-hover/container:opacity-100">
+          <div className="flex md:hidden justify-center mt-4 gap-2 transition-all duration-300">
             {items.map((_, i) => (
               <div
                 key={i}
@@ -265,10 +430,10 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
                   <div
                     key={item.id}
                     onClick={() => {
-                      setActiveIndex(i);
-                      setVideoPlaying(false); // Always reset - user must click main view to play
+                      // Select the item
+                      emblaApi?.scrollTo(i);
                     }}
-                    className={`w-[112px] h-[112px] flex-shrink-0 md:rounded-[16px] rounded-[8px] overflow-hidden border-2 cursor-pointer ${
+                    className={`w-[112px] h-[112px] flex-shrink-0 rounded-[8px] overflow-hidden border-[0.75px] cursor-pointer ${
                       activeIndex === i ? "border-[#003399]" : "border-white"
                     }`}
                   >
@@ -302,7 +467,10 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
             </div>
           </div>
 
-          <ShareButton className="max-md:hidden right-4 top-4" />
+          <ShareButton
+            className="max-md:hidden right-4 top-4"
+            popClass="md:top-4 md:right-18"
+          />
         </div>
 
         {/* Right side - Species Details */}
@@ -319,80 +487,87 @@ const SpeciesHero: React.FC<SpeciesHeroProps> = ({
                   <Image
                     src="/images/Frame.png"
                     alt="tree"
-                    width={20}
-                    height={20}
+                    width={16}
+                    height={16}
                   />
                   <span className="md:text-base text-sm md:font-semibold">
                     {scientificName}
                   </span>
                 </div>
               </div>
-              <ShareButton className="md:hidden right-0" />
+              <ShareButton
+                className="md:hidden right-0 top-2"
+                popClass="right-12 top-2"
+              />
             </div>
-            <p className="text-gray-700 md:text-base text-sm leading-6 line-clamp-5">
+            <p className="text-gray-700 md:text-base text-sm leading-6 line-clamp-4">
               {description}
             </p>
           </div>
 
           {/* Species Characteristics */}
-          <div className="border border-[#E4E4E4] rounded-[8px] md:rounded-2xl flex items-center justify-between md:p-6 p-4 max-lg:mt-6">
-            <div className="text-center space-y-2 xl:space-y-4 flex-1">
+          <div
+            ref={statsRef}
+            className="border border-[#E4E4E4] rounded-[8px] md:rounded-2xl flex items-center justify-between md:p-6 p-4 max-lg:mt-6"
+          >
+            <div className="text-center space-y-2 md:space-y-4 flex-1">
               <div className="md:w-10 w-8 md:h-10 h-8 mx-auto">
-                <Image
-                  src="/images/lifespan.png"
-                  alt="tree"
-                  width={40}
-                  height={40}
-                  className="md:w-10 w-8 h-8 md:h-10 mx-auto"
-                />
+                <LifeSpan className="md:w-10 w-8 h-8 md:h-10 mx-auto" />
               </div>
               <div className="md:text-2xl text-lg font-bold md:font-semibold text-black">
-                {characteristics.lifespan} yrs
+                <AnimatedCharacteristic
+                  value={characteristics.lifespan}
+                  suffix=" yrs"
+                  isVisible={statsVisible}
+                />
               </div>
-              <div className="md:text-base text-xs text-[#4C4748]">
+              <div className="md:text-base max-md:font-semibold text-xs text-[#4C4748]">
                 Lifespan
               </div>
             </div>
 
             <div className="w-px md:h-[140px] h-[96px] bg-gray-300 md:mx-6 mx-1"></div>
 
-            <div className="text-center space-y-2 xl:space-y-4 flex-1">
+            <div className="text-center space-y-2 md:space-y-4 flex-1">
               <div className="md:w-10 w-8 md:h-10 h-8 mx-auto">
-                <Image
-                  src="/images/oxygen.png"
-                  alt="tree"
-                  width={40}
-                  height={40}
-                  className="md:w-10 w-8 h-8 md:h-10 mx-auto"
-                />
+                <Oxygen className="md:w-10 w-8 h-8 md:h-10 mx-auto" />
               </div>
               <div className="md:text-2xl text-lg font-bold md:font-semibold text-black">
-                {characteristics.oxygenReleased}
+                <AnimatedCharacteristic
+                  value={characteristics.oxygenReleased}
+                  isVisible={statsVisible}
+                />
               </div>
-              <div className="md:text-base text-xs text-[#4C4748]">
+              <div className="md:text-base max-md:font-semibold text-xs text-[#4C4748]">
                 Oxygen <span className="max-md:hidden">Released</span>
               </div>
             </div>
 
             <div className="w-px md:h-[140px] h-[96px] bg-gray-300 md:mx-6 mx-1"></div>
 
-            <div className="text-center space-y-2 xl:space-y-4 flex-1">
-              <div className="md:w-10 w-8 md:h-10 h-8 mx-auto">
-                <Image
-                  src="/images/height.png"
-                  alt="tree"
-                  width={40}
-                  height={40}
-                  className="md:w-10 w-8 h-8 md:h-10 mx-auto"
-                />
+            <div className="text-center space-y-2 md:space-y-4 flex-1">
+              <div className="md:w-10 w-8 md:h-10 h-8 mx-auto flex items-center justify-center">
+                <Height className="md:w-10 w-8 h-8 md:h-10 mx-auto" />
               </div>
               <div className="md:text-2xl text-lg font-bold md:font-semibold text-black">
                 <span className="max-md:hidden">
-                  {characteristics.mdHeight}
+                  <AnimatedCharacteristic
+                    value={characteristics.mdHeight || ""}
+                    suffix="m"
+                    isVisible={statsVisible}
+                  />
                 </span>
-                <span className="md:hidden">{characteristics.height}</span>m
+                <span className="md:hidden">
+                  <AnimatedCharacteristic
+                    value={characteristics.height}
+                    suffix="m"
+                    isVisible={statsVisible}
+                  />
+                </span>
               </div>
-              <div className="md:text-base text-xs text-[#4C4748]">Height</div>
+              <div className="md:text-base max-md:font-semibold text-xs text-[#4C4748]">
+                Height
+              </div>
             </div>
           </div>
 

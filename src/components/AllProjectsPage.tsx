@@ -14,11 +14,12 @@ import {
 import Link from "next/link";
 import { generateProjectSlug } from "@/services/projects";
 
-interface Project {
-  id: string;
+export interface Project {
+  id: string | number;
   title: string;
   location: string;
   plantedCount: number;
+  availableCount: number;
   category: string;
   imageUrl: string;
   imageAlt: string;
@@ -35,12 +36,14 @@ interface AllProjectsPageProps {
   initialProjects: Project[];
   initialPagination: PaginationData;
   initialSearchQuery?: string;
+  headerImageUrl?: string | null;
 }
 
 const AllProjectsPage: React.FC<AllProjectsPageProps> = ({
   initialProjects,
   initialPagination,
   initialSearchQuery = "",
+  headerImageUrl = null,
 }) => {
   // Keep original list for reference
   const [allProjects] = useState<Project[]>(initialProjects);
@@ -59,9 +62,7 @@ const AllProjectsPage: React.FC<AllProjectsPageProps> = ({
     );
   }, [searchQuery, allProjects]);
 
-  const handlePlantTree = (projectId: string) => {
-    console.log(`Plant tree for project: ${projectId}`);
-  };
+  const handlePlantTree = (_projectId: string | number) => {};
 
   const handlePageChange = (page: number) => {
     setPagination((prev) => ({
@@ -81,7 +82,7 @@ const AllProjectsPage: React.FC<AllProjectsPageProps> = ({
       <section
         className="relative h-[213px] md:h-[288px] flex items-center justify-center"
         style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1655985313952-4a182841d6e3?crop=entropy&cs=srgb&fm=jpg&q=85')`,
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('${headerImageUrl ?? "https://images.unsplash.com/photo-1655985313952-4a182841d6e3?crop=entropy&cs=srgb&fm=jpg&q=85"}')`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
@@ -99,15 +100,9 @@ const AllProjectsPage: React.FC<AllProjectsPageProps> = ({
             </BreadcrumbList>
           </Breadcrumb>
 
-          <div className="space-y-4">
-            <h1 className="font-[Playfair_Display] text-[22px] md:text-[32px] font-semibold">
-              All Projects
-            </h1>
-            <p className="md:text-lg text-[10px] md:font-bold font-semibold leading-4 md:leading-[26px] w-[85%] md:w-[70%]">
-              Our projects create healthier ecosystems while fostering a culture
-              of care, sustainability, and humanity for future generations.
-            </p>
-          </div>
+          <h1 className="font-[Playfair_Display] text-[22px] md:text-[32px] font-semibold">
+            All Projects
+          </h1>
         </div>
       </section>
 
@@ -116,7 +111,7 @@ const AllProjectsPage: React.FC<AllProjectsPageProps> = ({
         <SearchBar
           value={searchQuery}
           onChange={handleSearchChange}
-          placeholder="Search a project..."
+          placeholder="Search by Project name..."
         />
 
         {/* Projects Grid */}
@@ -135,6 +130,7 @@ const AllProjectsPage: React.FC<AllProjectsPageProps> = ({
                   category={project.category}
                   imageUrl={project.imageUrl}
                   imageAlt={project.imageAlt}
+                  availableCount={project.availableCount}
                   onPlantTree={handlePlantTree}
                 />
               </Link>

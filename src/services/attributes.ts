@@ -1,52 +1,71 @@
-/**
- * Attributes API Service
- * Direct Strapi API calls at build time
- * Uses React cache() to deduplicate requests during a single render pass
- */
-
 import { cache } from "react";
-import { fetchAPI } from "./api";
+import { fetchAPI, getStrapiURL } from "./api";
 import { Attribute } from "@/types/attribute";
+import { serviceErrorFallback } from "./service-utils";
+
+interface AttributeRecord {
+  id: number;
+  name?: string;
+  type?: string;
+  image?: { data?: { attributes?: { url?: string } }; url?: string };
+  icon?: { data?: { attributes?: { url?: string } }; url?: string };
+  attributes?: {
+    name?: string;
+    type?: string;
+    image?: { data?: { attributes?: { url?: string } }; url?: string };
+    icon?: { data?: { attributes?: { url?: string } }; url?: string };
+  };
+}
 
 /**
- * Fetch all attributes from Strapi API
- * Wrapped with cache() to deduplicate calls during a single render pass
+ * Fetch all attributes from Strapi
+ * Wrapped with React cache() to deduplicate requests during a single render pass
  */
 export const fetchAllAttributes = cache(async (): Promise<Attribute[]> => {
-    try {
-        const allAttributes: any[] = [];
-        let currentPage = 1;
-        let totalPages = 1;
+  const path = "/attributes";
+  const urlParamsObject = {
+    populate: ["image", "icon"],
+    sort: { id: "asc" },
+    pagination: {
+      pageSize: 100,
+    },
+  };
 
-        // Fetch all pages to handle large datasets
-        do {
-            const data = await fetchAPI("/attributes", {
-                populate: "*",
-                pagination: {
-                    page: currentPage,
-                    pageSize: 100,
-                },
-            });
+  try {
+    const response = await fetchAPI<
+      { data?: AttributeRecord[] } | AttributeRecord[]
+    >(path, urlParamsObject);
 
-            if (data.meta?.pagination) {
-                totalPages = data.meta.pagination.pageCount;
-            }
+    if (!response) return [];
 
-            if (data.data && Array.isArray(data.data)) {
-                allAttributes.push(...data.data);
-            }
+    // The fetchAPI utility typically unpacks the response.
+    // If response is the array of items:
+    const items = Array.isArray(response) ? response : response.data || [];
 
-            currentPage++;
-        } while (currentPage <= totalPages);
+    return items.map((item: AttributeRecord) => {
+      // Handle Strapi v4 structure (attributes) vs flattened
+      const attrs = item.attributes || item;
 
-        return allAttributes.map((item: any) => ({
-            id: item.id,
-            name: item.name || item.attributes?.name || "",
-            type: item.type || item.attributes?.type || "",
-            image: item.image?.url || item.attributes?.image?.data?.attributes?.url || "",
-        }));
-    } catch (error) {
-        console.error("Error fetching attributes:", error);
-        return [];
-    }
+      const imageUrlRaw =
+        attrs.image?.data?.attributes?.url || attrs.image?.url || "";
+      const iconUrlRaw =
+        attrs.icon?.data?.attributes?.url || attrs.icon?.url || "";
+
+      const getFullUrl = (url: string) => {
+        if (!url) return "";
+        if (url.startsWith("http") || url.startsWith("//")) return url;
+        return getStrapiURL(url);
+      };
+
+      return {
+        id: item.id,
+        name: attrs.name || "",
+        type: attrs.type || "",
+        image: getFullUrl(imageUrlRaw),
+        icon: getFullUrl(iconUrlRaw),
+      };
+    });
+  } catch (error) {
+    return serviceErrorFallback("Error fetching attributes:", error, []);
+  }
 });

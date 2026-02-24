@@ -9,38 +9,53 @@ import {
 } from "@/components/ui/dialog";
 import Image from "next/image";
 
-const CertificatePreview: React.FC = () => {
+type Props = {
+  imageUrl?: string | null;
+  blurImageUrl?: string | null;
+};
+
+const CertificatePreview: React.FC<Props> = ({ imageUrl, blurImageUrl }) => {
+  const triggerBg = blurImageUrl ?? "/images/blur-certificate.png";
+  const dialogImage = imageUrl ?? "/images/certificate.png";
+
   return (
     <Dialog>
       <DialogTrigger asChild>
         <div
-          className="h-[109px] border border-[#94979A] bg-gray-100 rounded-xl mb-8 flex items-center justify-center bg-cover bg-center relative overflow-hidden cursor-pointer"
+          className="h-[109px] border border-[#94979A] rounded-[8px] mb-8 flex items-center justify-center bg-cover bg-center relative overflow-hidden cursor-pointer"
           style={{
-            backgroundImage: "url('/images/blur-certificate.png')",
+            backgroundImage: `url('${triggerBg}')`,
           }}
+          role="button"
+          aria-label="View Sample Certificate"
         >
-          <button className="flex items-center gap-1.5 text-sm font-bold">
+          <div className="absolute inset-0 backdrop-blur-[5.29px] bg-white/20" />
+
+          <button className="relative z-10 flex items-center gap-1.5 text-sm font-semibold md:font-bold">
             View Sample Certificate
             <Eye className="w-4 h-4" />
           </button>
         </div>
       </DialogTrigger>
 
-      <DialogContent showCloseButton={false} className="max-w-4xl px-0 ">
-        <DialogTitle className="uppercase font-bold text-2xl px-6">
+      <DialogContent
+        showCloseButton={false}
+        className="md:w-[671px] md:h-[533px] p-4 md:p-6 rounded-[8px] md:rounded-[16px]"
+      >
+        <DialogTitle className="uppercase font-bold text-base md:text-2xl">
           Sample Certificate
         </DialogTitle>
         <DialogClose asChild>
-          <button className="absolute right-5 top-5 p-2 rounded-full hover:bg-gray-100 transition">
-            <X size={20} className="text-black" />
+          <button className="absolute right-2.5 md:right-5 top-2.5 md:top-5 p-2 rounded-full hover:bg-gray-100 transition">
+            <X size={24} className="text-black max-md:w-4.5 max-md:h-4.5" />
           </button>
         </DialogClose>
         <Image
-          src="/images/certificate.jpg"
+          src={dialogImage}
           alt="Certificate"
-          width={671}
-          height={465}
-          className="w-full h-auto object-contain px-4"
+          width={623}
+          height={442}
+          className="w-full h-auto object-contain border border-[#E4E4E4]"
         />
       </DialogContent>
     </Dialog>

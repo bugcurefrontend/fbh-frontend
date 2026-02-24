@@ -1,0 +1,199 @@
+"use client";
+
+import { ChevronDown, ChevronUp } from "lucide-react";
+import Image from "next/image";
+import { useState } from "react";
+
+const JourneyTimeline: React.FC<{
+  journeyImages?: ({ url: string; width?: number; height?: number } | null)[];
+}> = ({ journeyImages }) => {
+  const [showAll, setShowAll] = useState(false);
+  const timelineData = [
+    {
+      year: "2015–2019",
+      title: "Kanha Shanti Vanam Transformation",
+      description:
+        "Under the guidance of expert forestry, agro-forestry and climate change experts, FBH helped Kanha Shanti Vanam evolve into the green oasis that it is today.",
+      position: "left",
+      image: journeyImages?.[0],
+    },
+    {
+      year: "2019",
+      title: "The Beginning",
+      description:
+        "Recognizing the urgent need to scale up tree-driven forestry work for a reforestation initiative, AI At the time, FBH pledged to plant 30 million native and endemic trees across India by 2025.",
+      position: "right",
+      image: journeyImages?.[1],
+    },
+    {
+      year: "2020–2022",
+      title: "Scaling Across India",
+      description:
+        "FBH has been at the forefront of large-scale afforestation efforts across India. The FBH team and countless volunteers undertook afforestation work on 10,000 acres across multiple regions.",
+      position: "left",
+      image: journeyImages?.[2],
+    },
+    {
+      year: "2022–2023",
+      title: "Beyond Reforestation",
+      description:
+        "Since then, FBH diversified its impact beyond reforestation to include water conservation, agriculture, and more. This work continues to grow in scale, spreading to new regions.",
+      position: "right",
+      image: journeyImages?.[3],
+    },
+    {
+      year: "2023–2024",
+      title: "Conservation and Innovation",
+      description:
+        "The FBH team studied understudied and vital linkages and successfully translocated mature trees. These efforts demonstrate a holistic approach to ecological restoration combining scale.",
+      position: "left",
+      image: journeyImages?.[4],
+    },
+    {
+      year: "2024",
+      title: "National Impact Milestone",
+      description:
+        "Over 30 million trees were planted through 40 projects across 12 states in India. This included lakes restored, naruralist nurturing, hatchings, and native and endemic species conservation.",
+      position: "right",
+      image: journeyImages?.[5],
+    },
+    {
+      year: "2024–Present",
+      title: "Global Collaboration",
+      description:
+        "Today, FBH is a Government partner with IUCN and the United Nations Convention to Combat Desertification.",
+      position: "left",
+      image: journeyImages?.[6],
+    },
+  ];
+
+  return (
+    <div className="w-full text-center bg-white md:px-8 px-4">
+      <h1 className="text-[22px] sm:text-[32px] font-[Playfair_Display] font-semibold text-black md:text-[32px] md:font-semibold md:leading-[48px] md:align-middle md:text-[#090C0F] md:mb-8 mb-6 max-sm:text-start">
+        Our Journey
+      </h1>
+
+      <div className="relative">
+        {/* Center line */}
+        <div className="absolute left-3 md:left-1/2 transform md:-translate-x-1/2 h-full md:w-1 w-[3px] bg-[#9DE1C2] rounded-full"></div>
+
+        {/* Timeline items */}
+        <div className="flex flex-col max-md:gap-6">
+          {timelineData.map((item, index) => (
+            <div
+              key={index}
+              className={`relative ${
+                index >= 2 && !showAll ? "max-md:hidden -mt-20" : ""
+              } ${index >= 1 && "md:-mt-12"}`}
+            >
+              {/* Desktop layout */}
+              <div className="">
+                {item.position === "left" ? (
+                  <div className="flex items-center">
+                    {/* Left content */}
+                    <div className="md:w-1/2 max-md:pl-10 md:pr-8 max-md:text-left md:text-right">
+                      <div className="inline-block">
+                        {item.image && item.image.url ? (
+                          <Image
+                            src={item.image.url}
+                            alt={item.title}
+                            width={item.image.width ?? 297}
+                            height={item.image.height ?? 144}
+                            className="sm:w-[297px] sm:max-h-[144px] w-[198px] max-h-[96px] rounded-[5.38px] sm:rounded-[8.7px] object-cover md:mb-6 mb-4 md:ml-auto"
+                          />
+                        ) : (
+                          <Image
+                            src="/images/journey.png"
+                            alt={item.title}
+                            width={296}
+                            height={144}
+                            className="sm:w-[297px] sm:max-h-[144px] w-[198px] max-h-[96px] rounded-[5.38px] sm:rounded-[8.7px] object-cover md:mb-6 mb-4 md:ml-auto"
+                          />
+                        )}
+                        <h3 className="sm:text-xl leading-6 font-bold md:mb-4 mb-2">
+                          {item.year} — {item.title}
+                        </h3>
+                        <p className="md:text-lg text-sm font-medium text-[#454950] md:leading-6">
+                          {item.description}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Center dot */}
+                    <div className="absolute flex items-center justify-center md:top-[60%] md:left-1/2 left-1 transform md:-translate-x-1/2 md:w-8 md:h-8 w-[18px] h-[18px] border-[#9DE1C2] rounded-full border-[0.4px] bg-[#E7F8F0] z-10">
+                      <div className="bg-[#007A3F] rounded-full md:h-[18.5px] md:w-[18.5px] h-[10.5px] w-[10.5px]"></div>
+                    </div>
+
+                    {/* Right empty space */}
+                    <div className="md:w-1/2 md:pl-8"></div>
+                  </div>
+                ) : (
+                  <div className="flex items-center">
+                    {/* Left empty space */}
+                    <div className="md:w-1/2 md:pr-8"></div>
+
+                    {/* Center dot */}
+                    <div className="absolute flex items-center justify-center md:top-[60%] md:left-1/2 left-1 transform md:-translate-x-1/2 md:w-8 md:h-8 w-[18px] h-[18px] border-[#9DE1C2] rounded-full border-[0.4px] bg-[#E7F8F0] z-10">
+                      <div className="bg-[#007A3F] rounded-full md:h-[18.5px] md:w-[18.5px] h-[10.5px] w-[10.5px]"></div>
+                    </div>
+
+                    {/* Right content */}
+                    <div className="md:w-1/2 md:pl-8 pl-10">
+                      <div className="inline-block text-left">
+                        {item.image && item.image.url ? (
+                          <Image
+                            src={item.image.url}
+                            alt={item.title}
+                            width={item.image.width ?? 297}
+                            height={item.image.height ?? 144}
+                            className="sm:w-[297px] sm:max-h-[144px] w-[198px] max-h-[96px] rounded-[5.38px] sm:rounded-[8.7px] object-cover md:mb-6 mb-4"
+                          />
+                        ) : (
+                          <Image
+                            src="/images/journey.png"
+                            alt={item.title}
+                            width={296}
+                            height={144}
+                            className="sm:w-[297px] sm:max-h-[144px] w-[198px] max-h-[96px] rounded-[5.38px] sm:rounded-[8.7px] object-cover md:mb-6 mb-4"
+                          />
+                        )}
+                        <h3 className="sm:text-xl leading-6 font-bold md:mb-4 mb-2">
+                          {item.year} — {item.title}
+                        </h3>
+                        <p className="md:text-lg text-sm font-medium text-[#454950] md:leading-6">
+                          {item.description}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="md:hidden flex justify-center mt-4">
+        {!showAll ? (
+          <button
+            onClick={() => setShowAll(true)}
+            className="leading-4.5 h-[42px] px-3 py-[11px] text-[#003399] font-bold text-sm text:bg-[#00339990] transition-colors flex items-center gap-2 uppercase"
+          >
+            View More
+            <ChevronUp />
+          </button>
+        ) : (
+          <button
+            onClick={() => setShowAll(false)}
+            className="leading-4.5 h-[42px] px-3 py-[11px] text-[#003399] font-bold text-xs text:bg-[#00339990] transition-colors flex items-center gap-2 uppercase"
+          >
+            View Less
+            <ChevronDown />
+          </button>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default JourneyTimeline;

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { getCountryCallingCode } from "libphonenumber-js/max";
 import { Plus } from "lucide-react";
 import RecipientCard from "./gift-tree/RecipientCard";
 import RecipientForm from "./gift-tree/RecipientForm";
@@ -7,13 +8,18 @@ import { Recipient, RecipientFormData } from "./gift-tree/types";
 interface AddRecipientProps {
   onQuantityChange?: (totalTrees: number) => void;
   onNextStep?: () => void;
+  recipients: Recipient[];
+  onRecipientsChange: (recipients: Recipient[]) => void;
+  onEditStateChange?: (id: number | null) => void;
 }
 
 const AddRecipient: React.FC<AddRecipientProps> = ({
   onQuantityChange,
   onNextStep,
+  recipients,
+  onRecipientsChange,
+  onEditStateChange,
 }) => {
-  const [recipients, setRecipients] = useState<Recipient[]>([]);
   const [showForm, setShowForm] = useState<boolean>(true);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [errors, setErrors] = useState<
@@ -28,46 +34,18 @@ const AddRecipient: React.FC<AddRecipientProps> = ({
     firstName: "",
     lastName: "",
     email: "",
-    region: "in",
+    region: "IN",
     phoneNumber: "",
   });
 
-  // Load from localStorage on mount
-  useEffect(() => {
-    const stored = localStorage.getItem("recipients");
-    if (stored) {
-      try {
-        const parsed = JSON.parse(stored);
-        setRecipients(parsed);
-        if (parsed.length > 0) {
-          setShowForm(false);
-          updateOrderSummary(parsed);
-        }
-      } catch (e) {
-        console.error("Failed to parse stored recipients:", e);
-      }
-    }
-  }, []);
-
-  // Save to localStorage whenever recipients change
+  // Update form visibility whenever recipients change
   useEffect(() => {
     if (recipients.length > 0) {
-      localStorage.setItem("recipients", JSON.stringify(recipients));
-      updateOrderSummary(recipients);
+      setShowForm(false);
     } else {
-      localStorage.removeItem("recipients");
-      if (onQuantityChange) {
-        onQuantityChange(0);
-      }
+      setShowForm(true);
     }
   }, [recipients]);
-
-  const updateOrderSummary = (recipientsList: Recipient[]) => {
-    const totalTrees = recipientsList.reduce((sum, r) => sum + r.trees, 0);
-    if (onQuantityChange) {
-      onQuantityChange(totalTrees);
-    }
-  };
 
   const resetForm = (): void => {
     setFormData({
@@ -76,7 +54,7 @@ const AddRecipient: React.FC<AddRecipientProps> = ({
       firstName: "",
       lastName: "",
       email: "",
-      region: "in",
+      region: "IN",
       phoneNumber: "",
     });
     setErrors({});
@@ -129,12 +107,12 @@ const AddRecipient: React.FC<AddRecipientProps> = ({
     field: keyof RecipientFormData,
     value: string
   ): void => {
-    setFormData({
-      ...formData,
+    setFormData((prev) => ({
+      ...prev,
       [field]: value,
-    });
+    }));
     // Clear error for this field when user starts typing
-    setErrors({ ...errors, [field]: undefined });
+    setErrors((prevErrors) => ({ ...prevErrors, [field]: undefined }));
   };
 
   const getTreeCount = (): number => {
@@ -142,8 +120,11 @@ const AddRecipient: React.FC<AddRecipientProps> = ({
   };
 
   const getRegionCode = (): string => {
-    const codes: Record<string, string> = { in: "+91", us: "+1", uk: "+44" };
-    return codes[formData.region] || "+91";
+    try {
+      return `+${getCountryCallingCode((formData.region?.toUpperCase() || "IN") as any)}`;
+    } catch (error) {
+      return "+91";
+    }
   };
 
   const validateEmail = (email: string): boolean => {
@@ -152,7 +133,6 @@ const AddRecipient: React.FC<AddRecipientProps> = ({
   };
 
   const validatePhoneNumber = (phone: string): boolean => {
-    // Remove spaces and check if it's a valid number (at least 6 digits)
     const cleaned = phone.replace(/\s/g, "");
     return /^\d{6,15}$/.test(cleaned);
   };
@@ -161,26 +141,22 @@ const AddRecipient: React.FC<AddRecipientProps> = ({
     const newErrors: Partial<Record<keyof RecipientFormData, string>> = {};
     let isValid = true;
 
-    // Validate tree count
     const treeCount = getTreeCount();
     if (treeCount <= 0) {
       newErrors.selectedQuantity = "Please select or enter number of trees";
       isValid = false;
     }
 
-    // Validate first name
     if (formData.firstName.trim() === "") {
       newErrors.firstName = "First name is required";
       isValid = false;
     }
 
-    // Validate last name
     if (formData.lastName.trim() === "") {
       newErrors.lastName = "Last name is required";
       isValid = false;
     }
 
-    // Validate email
     if (formData.email.trim() === "") {
       newErrors.email = "Email is required";
       isValid = false;
@@ -189,7 +165,6 @@ const AddRecipient: React.FC<AddRecipientProps> = ({
       isValid = false;
     }
 
-    // Validate phone number
     if (formData.phoneNumber.trim() === "") {
       newErrors.phoneNumber = "Phone number is required";
       isValid = false;
@@ -229,23 +204,25 @@ const AddRecipient: React.FC<AddRecipientProps> = ({
     };
 
     if (editingId) {
-      setRecipients(
+      onRecipientsChange(
         recipients.map((r) => (r.id === editingId ? recipientData : r))
       );
     } else {
-      setRecipients([...recipients, recipientData]);
+      onRecipientsChange([...recipients, recipientData]);
     }
 
+    if (onQuantityChange) onQuantityChange(0);
+    if (onEditStateChange) onEditStateChange(null);
     resetForm();
     setShowForm(false);
   };
 
   const handleDelete = (id: number): void => {
     if (window.confirm("Are you sure you want to delete this recipient?")) {
-      setRecipients(recipients.filter((r) => r.id !== id));
-
-      // If we're editing this recipient, close the form
+      onRecipientsChange(recipients.filter((r) => r.id !== id));
       if (editingId === id) {
+        if (onQuantityChange) onQuantityChange(0);
+        if (onEditStateChange) onEditStateChange(null);
         resetForm();
         setShowForm(false);
       }
@@ -258,9 +235,7 @@ const AddRecipient: React.FC<AddRecipientProps> = ({
 
     setFormData({
       selectedQuantity: quantities.includes(treeCount) ? treeCount : null,
-      manualQuantity: quantities.includes(treeCount)
-        ? ""
-        : treeCount.toString(),
+      manualQuantity: quantities.includes(treeCount) ? "" : treeCount.toString(),
       firstName: recipient.firstName,
       lastName: recipient.lastName,
       email: recipient.email,
@@ -268,6 +243,8 @@ const AddRecipient: React.FC<AddRecipientProps> = ({
       phoneNumber: phoneNumber,
     });
     setEditingId(recipient.id);
+    if (onEditStateChange) onEditStateChange(recipient.id);
+    if (onQuantityChange) onQuantityChange(treeCount);
     setShowForm(true);
   };
 
@@ -283,15 +260,15 @@ const AddRecipient: React.FC<AddRecipientProps> = ({
         typeof val === "string" ? val.trim() !== "" : val !== null
       )
     ) {
-      if (
-        window.confirm(
-          "Are you sure you want to cancel? Your changes will be lost."
-        )
-      ) {
+      if (window.confirm("Are you sure you want to cancel? Your changes will be lost.")) {
+        if (onQuantityChange) onQuantityChange(0);
+        if (onEditStateChange) onEditStateChange(null);
         resetForm();
         setShowForm(false);
       }
     } else {
+      if (onQuantityChange) onQuantityChange(0);
+      if (onEditStateChange) onEditStateChange(null);
       resetForm();
       setShowForm(false);
     }
@@ -300,9 +277,6 @@ const AddRecipient: React.FC<AddRecipientProps> = ({
   const handleNextStep = (): void => {
     if (onNextStep) {
       onNextStep();
-    } else {
-      console.log("Proceeding to next step with recipients:", recipients);
-      alert(`Proceeding with ${recipients.length} recipient(s) to next step!`);
     }
   };
 
@@ -346,11 +320,11 @@ const AddRecipient: React.FC<AddRecipientProps> = ({
         />
       )}
 
-      {/* Next Button - Only show when there are recipients and form is hidden */}
+      {/* Next Button */}
       {recipients.length > 0 && !showForm && (
         <button
           onClick={handleNextStep}
-          className="w-full h-12 bg-[#003399] text-white rounded-lg text-base font-bold hover:bg-[#002266] transition-colors shadow-sm hover:shadow-md"
+          className="w-full h-12 bg-[#003399] text-white rounded-[8px] text-base font-bold hover:bg-[#002266] transition-colors shadow-sm hover:shadow-md"
         >
           Next
         </button>
@@ -362,7 +336,7 @@ const AddRecipient: React.FC<AddRecipientProps> = ({
           <p className="text-gray-500 mb-4">No recipients added yet</p>
           <button
             onClick={handleAddMore}
-            className="px-6 py-3 bg-[#003399] text-white rounded-lg font-semibold hover:bg-[#002266] transition-colors"
+            className="px-6 py-3 bg-[#003399] text-white rounded-[8px] font-semibold hover:bg-[#002266] transition-colors"
           >
             Add First Recipient
           </button>

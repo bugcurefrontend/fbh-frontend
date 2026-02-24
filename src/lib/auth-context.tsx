@@ -9,12 +9,15 @@ import React, {
 } from "react";
 import { queryHFNElement, getAuthParams } from "./hfnauth";
 import { actions } from "@/store/userStore";
+import { logger } from "@/lib/logger";
 
 interface UserProfile {
   firstName?: string;
   lastName?: string;
+  name?: string;
   email?: string;
-  [key: string]: any;
+  picture?: string;
+  [key: string]: unknown;
 }
 
 interface AuthContextType {
@@ -49,6 +52,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isHydrated, setIsHydrated] = useState(false);
 
   const refreshAuthStatus = () => {
     const authStatus = localStorage.getItem("isAuthenticated");
@@ -68,6 +72,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   useEffect(() => {
+    setIsHydrated(true);
     refreshAuthStatus();
 
     const handleStorageChange = () => {
@@ -101,7 +106,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         }
       }
     } catch (error) {
-      // Silent error handling
+      logger.error("Authentication error", error);
+      // Note: triggerAuth() handles its own UI, so we only log the error here
+      // If auth element is not available, user will need to reload the page
     }
   };
 
@@ -155,7 +162,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           logout();
         });
 
-        if (tokenData?.access_token) {
+        if (
+          typeof tokenData === "object" &&
+          tokenData !== null &&
+          "access_token" in tokenData &&
+          typeof tokenData.access_token === "string"
+        ) {
           localStorage.setItem("accessToken", tokenData.access_token);
         }
       }

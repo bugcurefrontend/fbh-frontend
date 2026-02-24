@@ -10,20 +10,23 @@ import {
   CarouselPrevious,
   type CarouselApi,
 } from "./ui/carousel";
+import { FALLBACK_GALLERY_IMAGES } from "@/constants";
 
 interface GalleryProps {
   className?: string;
+  images?: string[];
+  itemClass: string;
+  dotClass?: string;
 }
 
-const Gallery: React.FC<GalleryProps> = ({ className }) => {
-  const images = [
-    "/images/gallery/1.png",
-    "/images/gallery/2.png",
-    "/images/gallery/3.png",
-    "/images/gallery/4.png",
-    "/images/gallery/5.png",
-    "/images/gallery/6.png",
-  ];
+const Gallery: React.FC<GalleryProps> = ({
+  className,
+  itemClass,
+  dotClass,
+  images: propImages,
+}) => {
+  const images =
+    propImages && propImages.length > 0 ? propImages : FALLBACK_GALLERY_IMAGES;
 
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [carouselApi, setCarouselApi] = useState<CarouselApi | null>(null);
@@ -53,7 +56,7 @@ const Gallery: React.FC<GalleryProps> = ({ className }) => {
     <section className="relative">
       {/* Large Image */}
       <div
-        className={`w-full h-[361px] md:h-[400px] relative rounded-[8px] overflow-hidden ${className}`}
+        className={`w-full h-[361px] md:h-[400px] relative rounded-[8px] overflow-hidden flex items-center justify-center bg-[#F6F7F9] ${className}`}
       >
         <Image
           src={images[selectedIndex]}
@@ -79,7 +82,7 @@ const Gallery: React.FC<GalleryProps> = ({ className }) => {
             {images.map((img, idx) => (
               <CarouselItem
                 key={idx}
-                className="basis-1/3 md:basis-1/6 pl-2 md:pl-4 cursor-pointer"
+                className={`basis-1/3 pl-2 md:pl-4 cursor-pointer ${itemClass}`}
                 onClick={() => {
                   setSelectedIndex(idx);
                   carouselApi?.scrollTo(idx);
@@ -102,7 +105,7 @@ const Gallery: React.FC<GalleryProps> = ({ className }) => {
           </CarouselContent>
 
           {/* Controls + Progress Bar */}
-          <div className="flex justify-between items-center mt-8 gap-6 relative">
+          <div className="flex justify-between items-center mt-8 gap-12 relative">
             <div className="w-full h-1 md:h-[4px] bg-[#d1d1d1] rounded-[2px] overflow-hidden">
               <div
                 className="h-1 md:h-[4px] bg-[#003399] rounded-[2px] transition-all duration-300"
@@ -118,13 +121,13 @@ const Gallery: React.FC<GalleryProps> = ({ className }) => {
                 onClick={handlePrev}
                 className="border border-[#9CA3AF] md:w-[42px] md:h-[42px] rounded-full flex items-center justify-center text-[#9CA3AF] cursor-pointer"
               >
-                <CarouselPrevious className="w-4 h-4" />
+                <CarouselPrevious className="w-4 border-none h-4" />
               </div>
               <div
                 onClick={handleNext}
                 className="border border-black md:w-[42px] md:h-[42px] rounded-full flex items-center justify-center cursor-pointer"
               >
-                <CarouselNext className="w-4 h-4" />
+                <CarouselNext className="w-4 h-4 border-none" />
               </div>
             </div>
           </div>
@@ -132,7 +135,9 @@ const Gallery: React.FC<GalleryProps> = ({ className }) => {
       </div>
 
       {/* Mobile Dots */}
-      <div className="md:hidden mt-4 flex gap-3 items-center justify-center">
+      <div
+        className={`md:hidden mt-4 flex gap-3 items-center justify-center ${dotClass}`}
+      >
         {images.map((_, i) => (
           <div
             key={i}

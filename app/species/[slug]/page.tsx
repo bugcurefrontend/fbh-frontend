@@ -1,10 +1,12 @@
 import { Metadata } from "next";
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
-import SpeciesDetailPage from "../../../src/components/SpeciesDetailPage";
+import SpeciesDetailPage from "@/components/SpeciesDetailPage";
 import { fetchAllSpecies, fetchSpeciesBySlug, generateSlug } from "@/services/species";
-import { fetchAllPlantRates } from "@/services/plant-rate";
+import { fetchAllPlantRates } from "@/services/plant-rates";
 import { SpeciesSimplified } from "@/types/species";
+import { PageLoader } from "@/components/ui/page-loader";
+import { logger } from "@/lib/logger";
 
 type Params = { slug: string };
 
@@ -19,7 +21,7 @@ export async function generateStaticParams(): Promise<Params[]> {
       slug: generateSlug(s.name),
     }));
   } catch (error) {
-    console.error("Error generating static params:", error);
+    logger.error("Error generating static params", error);
     return [];
   }
 }
@@ -125,10 +127,11 @@ export default async function SpeciesSlugPage({
 }) {
   const { slug } = await params;
 
-  // Fetch species and plant rates (both INR and USD) from Strapi API
-  const [species, plantRates] = await Promise.all([
+  // Fetch species, plant rates, and all species for related section
+  const [species, plantRates, allSpecies] = await Promise.all([
     fetchSpeciesBySlug(slug),
     fetchAllPlantRates(),
+    fetchAllSpecies(),
   ]);
 
   if (!species) {
@@ -137,10 +140,12 @@ export default async function SpeciesSlugPage({
 
   const transformedData = transformToDetailData(species);
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<PageLoader message="Loading species details..." fullScreen={false} />}>
       <SpeciesDetailPage
         speciesData={transformedData}
         plantRates={plantRates}
+        allSpecies={allSpecies}
+        currentSpeciesId={species.documentId}
       />
     </Suspense>
   );

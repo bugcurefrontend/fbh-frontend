@@ -7,6 +7,7 @@
 import { cache } from "react";
 import { fetchAPI } from "./api";
 import { SocialLink, SocialLinkSimplified } from "@/types/social-link";
+import { serviceErrorFallback } from "./service-utils";
 
 /**
  * Transform raw Strapi SocialLink data to simplified format
@@ -45,8 +46,7 @@ export const fetchSocialLinks = cache(async (): Promise<SocialLinkSimplified> =>
       playstore: "",
     };
   } catch (error) {
-    console.error("Error fetching social links:", error);
-    return {
+    return serviceErrorFallback("Error fetching social links:", error, {
       youtube: "",
       linkedin: "",
       instagram: "",
@@ -54,6 +54,6 @@ export const fetchSocialLinks = cache(async (): Promise<SocialLinkSimplified> =>
       x: "",
       appstore: "",
       playstore: "",
-    };
+    });
   }
 });

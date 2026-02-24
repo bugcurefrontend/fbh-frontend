@@ -1,63 +1,43 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import ArrowRightIcon from "./icons/ArrowRightIcon";
 import Link from "next/link";
 import Image from "next/image";
 import { SpeciesSimplified } from "@/types/species";
 import { generateSlug } from "@/services/species";
+import MobileSpeciesCarousel from "./MobileSpeciesCarousel";
 
 interface RelatedSpeciesProps {
-  currentSpeciesId?: string;
+  currentSpeciesId: string;
+  allSpecies: SpeciesSimplified[];
   limit?: number;
 }
 
 const RelatedSpecies: React.FC<RelatedSpeciesProps> = ({
   currentSpeciesId,
+  allSpecies,
   limit = 3,
 }) => {
-  const [species, setSpecies] = useState<SpeciesSimplified[]>([]);
-  const [loading, setLoading] = useState(true);
+  // Filter out current species
+  const filtered = allSpecies.filter((s) => s.documentId !== currentSpeciesId);
 
-  useEffect(() => {
-    const loadRelatedSpecies = async () => {
-      try {
-        const { fetchAllSpecies } = await import("@/services/species");
-        const allSpecies = await fetchAllSpecies();
+  // Separate popular and non-popular
+  const popular = filtered.filter((s) => s.popular);
+  const nonPopular = filtered.filter((s) => !s.popular);
 
-        // Filter out current species
-        const filtered = allSpecies.filter(
-          (s) => s.documentId !== currentSpeciesId
-        );
+  // Take popular first, fill remaining with non-popular
+  const result: SpeciesSimplified[] = [];
 
-        // Separate popular and non-popular
-        const popular = filtered.filter((s) => s.popular);
-        const nonPopular = filtered.filter((s) => !s.popular);
+  // Add popular species (up to limit)
+  result.push(...popular.slice(0, limit));
 
-        // Take popular first, fill remaining with non-popular
-        const result: SpeciesSimplified[] = [];
+  // If not enough popular, fill with non-popular
+  if (result.length < limit) {
+    const remaining = limit - result.length;
+    result.push(...nonPopular.slice(0, remaining));
+  }
 
-        // Add popular species (up to limit)
-        result.push(...popular.slice(0, limit));
+  const species = result;
 
-        // If not enough popular, fill with non-popular
-        if (result.length < limit) {
-          const remaining = limit - result.length;
-          result.push(...nonPopular.slice(0, remaining));
-        }
-
-        setSpecies(result);
-      } catch (error) {
-        console.error("Failed to load related species:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadRelatedSpecies();
-  }, [currentSpeciesId, limit]);
-
-  if (loading || species.length === 0) {
+  if (species.length === 0) {
     return null;
   }
   return (
@@ -80,14 +60,14 @@ const RelatedSpecies: React.FC<RelatedSpeciesProps> = ({
             key={item.documentId}
             href={`/species/${generateSlug(item.name)}`}
           >
-            <div className="flex-1 min-w-0 border border-gray-200 rounded-xl flex-shrink-0 hover:shadow-md transition-all duration-200">
+            <div className="flex-1 min-w-0 border border-gray-200 rounded-[16px] flex-shrink-0 hover:shadow-[0_1px_8px_rgba(0,0,0,0.1)] transition-all duration-200">
               <div className="overflow-hidden w-full md:p-4 p-2">
                 <Image
                   src={item.image}
                   alt={item.name}
                   width={350}
                   height={194}
-                  className="w-full object-cover rounded-lg max-h-[194px]"
+                  className="w-full object-cover rounded-[8px] max-h-[194px]"
                 />
               </div>
               <div className="p-4 pt-2 flex justify-between items-center">
@@ -104,42 +84,8 @@ const RelatedSpecies: React.FC<RelatedSpeciesProps> = ({
         ))}
       </div>
 
-      <div className="sm:hidden mb-6 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-        <div className="flex gap-6 w-max">
-          {species.map((item) => (
-            <Link
-              key={item.documentId}
-              href={`/species/${generateSlug(item.name)}`}
-            >
-              <div className="flex-1 border border-gray-200 rounded-[16px] flex-shrink-0 overflow-hidden">
-                <div className="pt-3 px-3">
-                  <Image
-                    src={item.image}
-                    alt={item.name}
-                    width={280}
-                    height={194}
-                    className="rounded-[8px] object-cover max-h-[160px]"
-                  />
-                </div>
-                <div className="p-4 flex sm:flex-root flex-col justify-between sm:items-center max-sm:gap-2">
-                  <p className="font-semibold truncate md:text-lg md:font-bold md:leading-[26px] md:align-middle text-[#19212C]">
-                    {item.name}
-                  </p>
-                  <button className="py-[11px] pr-[12px] flex items-center gap-2 text-[#003399] font-bold text-xs uppercase min-w-[0] cursor-pointer">
-                    Know More{" "}
-                    <ArrowRightIcon
-                      width={24}
-                      height={24}
-                      color="#003399"
-                      className="max-sm:w-6"
-                    />
-                  </button>
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </div>
+      {/* Mobile Carousel */}
+      <MobileSpeciesCarousel species={species} />
     </div>
   );
 };

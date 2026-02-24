@@ -10,8 +10,9 @@ export interface SRCMProfileResponse {
       firstName?: string;
       lastName?: string;
       email?: string;
-      [key: string]: any;
+      [key: string]: unknown;
     }>;
+    [key: string]: unknown;
   };
 }
 
@@ -22,11 +23,18 @@ export interface AuthParams {
 }
 
 export interface LogoutResponse {
-  error?: any;
+  error?: unknown;
+}
+
+export interface AuthCallbackResponse {
+  data?: {
+    access_token?: string;
+    [key: string]: unknown;
+  };
 }
 
 export interface HFNAuthElement {
-  loginCallback?: (res: any) => void;
+  loginCallback?: (res: AuthCallbackResponse) => Promise<boolean> | boolean;
   handleProfileAuthentication: (success: boolean) => void;
   handleErrorMessage: (
     message: string,
@@ -39,15 +47,16 @@ export interface HFNAuthElement {
     }
   ) => void;
   triggerAuth: () => void;
-  addEventListener: (event: string, handler: (event: any) => void) => void;
-  removeEventListener: (event: string, handler: (event: any) => void) => void;
+  checkAuthStatus?: () => void;
+  addEventListener: (event: string, handler: (event: Event) => void) => void;
+  removeEventListener: (event: string, handler: (event: Event) => void) => void;
 }
 
 declare global {
   namespace JSX {
     interface IntrinsicElements {
       'hfn-auth': {
-        ref?: React.Ref<any>;
+        ref?: React.Ref<HFNAuthElement>;
         config?: string;
         showCancel?: string;
         authType?: string;
@@ -56,5 +65,3 @@ declare global {
     }
   }
 }
-
-export * from './hfnauth-types';

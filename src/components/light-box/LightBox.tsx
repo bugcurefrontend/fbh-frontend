@@ -1,13 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
-import {
-  OrderSummary as OrderSummaryType,
-  PersonalDetails,
-  TaxDetails,
-} from "@/components/plant-tree/types";
-import { useAuth } from "@/lib/auth-context";
-import LoginDialog from "@/components/LoginDialog";
+import React, { useEffect, useState } from "react";
 import {
   AlertDialog,
   AlertDialogContent,
@@ -16,263 +9,96 @@ import {
 } from "@/components/ui/alert-dialog";
 import Image from "next/image";
 import { ChevronLeft, X } from "lucide-react";
-import { useCurrency } from "@/components/CurrencySelect";
 import TaxDetail from "@/components/light-box/TaxDetail";
 import Step1 from "@/components/light-box/Step1";
 import Step2 from "@/components/light-box/Step2";
 import NewOrderSummary from "@/components/light-box/NewOrderSummary";
+import { Attribute } from "@/types/attribute";
+import { useLightBoxState } from "./useLightBoxState";
 
-const LightBox: React.FC = () => {
-  const [step, setStep] = useState(1);
-  const [selectedQuantity, setSelectedQuantity] = useState<number | null>(null);
-  const [manualQuantity, setManualQuantity] = useState("");
-  const [showBox, setShowBox] = React.useState(false);
+interface LightBoxProps {
+  attributes?: Attribute[];
+  preSelectedAttribute?: Attribute | null;
+  isOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  triggerLabel?: string;
+  co2Sequestration?: number;
+}
 
-  const { currency, currencySymbol } = useCurrency();
+const LightBox: React.FC<LightBoxProps> = ({
+  attributes = [],
+  preSelectedAttribute = null,
+  isOpen: controlledIsOpen,
+  onOpenChange,
+  triggerLabel = "Plant For A Cause",
+  co2Sequestration = 16.67,
+}) => {
+  const [showBox, setShowBox] = useState(false);
+  const isOpen = controlledIsOpen !== undefined ? controlledIsOpen : showBox;
 
-  const [orderSummary, setOrderSummary] = useState<OrderSummaryType>({
-    numberOfTrees: 0,
-    totalCo2Offset: "--",
-    totalAmount: "--",
+  const state = useLightBoxState({
+    attributes,
+    preSelectedAttribute,
+    co2Sequestration,
   });
+  const { resetState } = state;
 
-  const [personalDetails, setPersonalDetails] = useState<PersonalDetails>({
-    firstName: "",
-    lastName: "",
-    displayOnDonorsList: false,
-    email: "",
-    doorNo: "",
-    pincode: "",
-    region: "",
-    phoneNumber: "",
-    currency: currency,
-    country: "",
-    state: "",
-    city: "",
-  });
-
-  const [taxDetails, setTaxDetails] = useState<TaxDetails>({
-    citizenship: "",
-    idType: "PAN CARD",
-    idNumber: "",
-    abhyashiNumber: "",
-  });
-
-  const [isGeoTagged, setIsGeoTagged] = useState(true);
-  const [isLoginDialogOpen, setIsLoginDialogOpen] = useState(false);
-  const [hasChosenGuest, setHasChosenGuest] = useState(false);
-  const { isAuthenticated, isLoading, login } = useAuth();
-
-  const [occasion, setOccasion] = useState("");
-
-  const BASE_GEOTAGGED_RATE_INR = 175;
-  const BASE_NON_GEOTAGGED_RATE_INR = 150;
-  const INR_TO_USD_RATE = 80;
-
-  const geotaggedRate =
-    currency === "USD"
-      ? BASE_GEOTAGGED_RATE_INR / INR_TO_USD_RATE
-      : BASE_GEOTAGGED_RATE_INR;
-  const nonGeotaggedRate =
-    currency === "USD"
-      ? BASE_NON_GEOTAGGED_RATE_INR / INR_TO_USD_RATE
-      : BASE_NON_GEOTAGGED_RATE_INR;
-
-  const quantities = [10, 25, 50, 100];
-
-  const handleQuantitySelect = (qty: number) => {
-    const normalizedQty = Math.max(1, qty);
-    setSelectedQuantity(normalizedQty);
-    setManualQuantity("");
-    updateOrderSummary(normalizedQty);
-  };
-
-  const handleManualQuantityChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const digitsOnly = e.target.value.replace(/\D/g, "");
-    if (!digitsOnly) {
-      setManualQuantity("");
-      setSelectedQuantity(null);
-      updateOrderSummary(0);
-      return;
+  const handleOpenChange = (open: boolean) => {
+    if (controlledIsOpen === undefined) {
+      setShowBox(open);
     }
-
-    const parsed = Math.max(1, parseInt(digitsOnly, 10));
-    setManualQuantity(parsed.toString());
-    setSelectedQuantity(null);
-    updateOrderSummary(parsed);
-  };
-
-  const updateOrderSummary = (qty: number) => {
-    const rate = isGeoTagged ? geotaggedRate : nonGeotaggedRate;
-    const amount = qty * rate;
-    setOrderSummary({
-      numberOfTrees: qty,
-      totalCo2Offset: `${Math.round(qty * 16.67)}Kg`,
-      totalAmount: `${currencySymbol} ${amount.toFixed(2)}`,
-    });
+    onOpenChange?.(open);
   };
 
   useEffect(() => {
-    updateOrderSummary(
-      (selectedQuantity || parseInt(manualQuantity, 10) || 0) as number
-    );
-  }, [isGeoTagged, currency]);
-
-  const handleSaveAndNext = () => {
-    if (
-      step === 1 &&
-      (selectedQuantity || manualQuantity) &&
-      occasion.trim() !== ""
-    ) {
-      setStep(2);
-    } else if (step === 2 && isStep2Valid) {
-      setStep(3);
+    if (!isOpen) {
+      resetState();
     }
-  };
-
-  const handleBack = () => {
-    setStep((prev) => Math.max(prev - 1, 1));
-  };
-
-  const handlePersonalDetailsChange = (
-    field: keyof PersonalDetails,
-    value: string | boolean
-  ) => {
-    setPersonalDetails((prev) => ({ ...prev, [field]: value }));
-  };
-
-  const handleTaxDetailsChange = (field: keyof TaxDetails, value: string) => {
-    setTaxDetails((prev) => ({ ...prev, [field]: value }));
-  };
-
-  const handleGeoTaggedChange = (value: boolean) => {
-    setIsGeoTagged(value);
-  };
-
-  const handleProceed = () => {
-    console.log("Final Data:", {
-      occasion,
-      quantity: selectedQuantity || manualQuantity,
-      isGeoTagged,
-      personalDetails,
-      taxDetails,
-      orderSummary,
-    });
-    // Further processing logic here
-  };
-
-  const emailValid = useMemo(
-    () => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(personalDetails.email),
-    [personalDetails.email]
-  );
-  const phoneValid = useMemo(
-    () => /^[0-9]{6,15}$/.test(personalDetails.phoneNumber),
-    [personalDetails.phoneNumber]
-  );
-  const pincodeValid = useMemo(
-    () => /^[0-9]{4,10}$/.test(personalDetails.pincode),
-    [personalDetails.pincode]
-  );
-
-  const isStep2Valid = useMemo(() => {
-    return (
-      personalDetails.firstName.trim() !== "" &&
-      personalDetails.lastName.trim() !== "" &&
-      personalDetails.email.trim() !== "" &&
-      emailValid &&
-      personalDetails.doorNo.trim() !== "" &&
-      personalDetails.pincode.trim() !== "" &&
-      pincodeValid &&
-      personalDetails.phoneNumber.trim() !== "" &&
-      phoneValid &&
-      personalDetails.country.trim() !== "" &&
-      personalDetails.state.trim() !== "" &&
-      personalDetails.city.trim() !== ""
-    );
-  }, [personalDetails, emailValid, phoneValid, pincodeValid]);
-
-  const idNumberValid = useMemo(() => {
-    if (!taxDetails.idNumber) return false;
-    if (taxDetails.idType === "PAN CARD") {
-      return /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/i.test(taxDetails.idNumber);
-    }
-    // Add other ID validations if necessary
-    return true;
-  }, [taxDetails.idNumber, taxDetails.idType]);
-
-  const isStep3Valid = useMemo(() => {
-    return taxDetails.citizenship.trim() !== "" && idNumberValid;
-  }, [taxDetails, idNumberValid]);
-
-  // Login dialog logic...
-  useEffect(() => {
-    if (!isLoading && !isAuthenticated && !hasChosenGuest) {
-      setIsLoginDialogOpen(true);
-    } else if (isAuthenticated) {
-      setIsLoginDialogOpen(false);
-    }
-  }, [isLoading, isAuthenticated, hasChosenGuest]);
-
-  const handleContinueAsGuest = () => {
-    setHasChosenGuest(true);
-    setIsLoginDialogOpen(false);
-  };
-
-  const handleSignIn = () => {
-    login();
-    setIsLoginDialogOpen(false);
-  };
+  }, [isOpen, resetState]);
 
   return (
     <main>
-      <AlertDialog onOpenChange={setShowBox} open={showBox}>
-        <AlertDialogTrigger className="w-fit relative rounded-full p-[1px] bg-gradient-to-r to-[#128748] from-[#7EE212]">
-          <span
-            className="block rounded-full px-5 py-2 text-white text-xs leading-4.5 font-bold bg-gradient-to-r from-[#0D824B] to-[#A1FF00] transition-all duration-300 hover:brightness-110 active:scale-95
-        "
-          >
-            Plant For A Cause
+      <AlertDialog onOpenChange={handleOpenChange} open={isOpen}>
+        <AlertDialogTrigger className="w-fit relative rounded-full p-[1px] bg-gradient-to-r to-[#128748] from-[#80CB00] h-[37px]">
+          <span className="block rounded-full px-5 py-2 text-white text-xs leading-4.5 font-bold bg-gradient-to-r from-[#0D824B] to-[#80CB00] transition-all duration-300 hover:brightness-110 active:scale-95">
+            {triggerLabel}
           </span>
         </AlertDialogTrigger>
-        <AlertDialogContent
-          className="lg:max-w-[944px] lg:min-w-[944px] lg:h-[640px] h-fit max-md:max-h-[90%] flex border border-[#BED4FF] md:rounded-4xl dialog-pop gap-6 max-md:p-4
-        "
-        >
+        <AlertDialogContent className="lg:max-w-[944px] lg:min-w-[944px] lg:h-[640px] h-fit max-md:max-h-[90%] flex border border-[#BED4FF] shadow-[0_24px_48px_0_rgba(133,133,133,0.2)] md:rounded-4xl dialog-pop gap-6 max-md:pl-2 max-md:pr-[5px] max-md:py-4">
           <AlertDialogTitle className="hidden" />
           <div
-            onClick={() => setShowBox(false)}
-            className="cursor-pointer absolute md:right-0 right-5
-             top-3
-             md:-top-10 flex items-center justify-center h-8 w-8 rounded-full bg-[#E4E4E4] hover:bg-gray-100 transition"
+            onClick={() => handleOpenChange(false)}
+            className="cursor-pointer absolute md:right-0 right-4 top-4 md:-top-10 flex items-center justify-center md:h-8 md:w-8 rounded-full md:bg-[#E4E4E4] md:hover:bg-gray-100 transition"
           >
-            <X size={18} className="text-black" />
+            <X size={18} className="text-black max-md:stroke-[1.3]" />
           </div>
-          <div className="max-lg:hidden w-full h-full">
+          <div className="max-lg:hidden max-w-100 w-full h-full">
             <Image
-              src="/images/gallery/5.png"
+              src={state.selectedAttribute?.image || "/images/gallery/5.png"}
               alt="lightbox"
               height={592}
               width={400}
-              className="rounded-2xl w-full min-h-[592px] object-cover"
+              className="rounded-2xl max-w-100 min-h-full object-cover"
             />
           </div>
-          {step > 1 && (
+
+          {state.step > 1 && (
             <button
-              onClick={handleBack}
-              className="bg-white hover:bg-gray-100 flex rounded-md items-center justify-self-center absolute gap-1 md:top-10 top-3 left-3 md:left-10 md:px-4 md:py-2 text-lg leading-6.5 font-medium"
+              type="button"
+              onClick={state.handleBack}
+              className="bg-white hover:bg-gray-100 flex rounded-[8px] items-center justify-self-center absolute gap-1 md:top-10 top-3 left-3 md:left-10 md:px-4 md:py-2 md:text-lg leading-4.5 md:leading-6.5 font-bold md:font-medium max-md:text-[#003399] z-[60] cursor-pointer"
             >
-              <ChevronLeft size={24} className="w-6 h-6" /> Back
+              <ChevronLeft size={24} className="w-4.5 h4.5 md:w-6 md:h-6 md:text-[#090C0F]" />
+              Back
             </button>
           )}
 
-          <div className="w-full space-y-4 max-md:mt-8 md:px-2 overflow-hidden max-md:overflow-y-scroll">
+          <div className="w-full space-y-4 max-md:mt-8 max-md:pl-2 max-md:pr-[5px] md:px-2 overflow-hidden max-md:overflow-y-scroll">
             <div className="flex items-center justify-center w-full gap-2">
               <div className="h-3 w-full bg-[#E7F8F0] rounded-full overflow-hidden">
                 <div
                   className="h-full bg-[#12B569] rounded-full transition-all duration-500"
-                  style={{ width: `${((step - 1) / 2) * 100}%` }}
+                  style={{ width: `${((state.step - 1) / 2) * 100}%` }}
                 />
               </div>
               <Image
@@ -280,67 +106,70 @@ const LightBox: React.FC = () => {
                 alt="tree-progress"
                 height={32}
                 width={32}
+                className="max-md:w-6"
               />
             </div>
 
-            {step === 1 && (
+            {state.step === 1 && (
               <Step1
-                occasion={occasion}
-                setOccasion={setOccasion}
-                quantities={quantities}
-                selectedQuantity={selectedQuantity}
-                handleQuantitySelect={handleQuantitySelect}
-                manualQuantity={manualQuantity}
-                handleManualQuantityChange={handleManualQuantityChange}
-                isGeoTagged={isGeoTagged}
-                handleGeoTaggedChange={handleGeoTaggedChange}
-                currencySymbol={currencySymbol}
-                geotaggedRate={geotaggedRate}
-                nonGeotaggedRate={nonGeotaggedRate}
-                handleSaveAndNext={handleSaveAndNext}
+                occasion={state.occasion}
+                setOccasion={state.setOccasion}
+                quantities={state.quantities}
+                selectedQuantity={state.selectedQuantity}
+                handleQuantitySelect={state.handleQuantitySelect}
+                manualQuantity={state.manualQuantity}
+                handleManualQuantityChange={state.handleManualQuantityChange}
+                isGeoTagged={state.isGeoTagged}
+                handleGeoTaggedChange={state.handleGeoTaggedChange}
+                currencySymbol={state.currencySymbol}
+                geotaggedRate={state.geotaggedRate}
+                nonGeotaggedRate={state.nonGeotaggedRate}
+                handleSaveAndNext={state.handleSaveAndNext}
+                attributes={state.localAttributes}
+                preSelectedAttribute={preSelectedAttribute}
               />
             )}
 
-            {step === 2 && (
+            {state.step === 2 && (
               <Step2
-                personalDetails={personalDetails}
-                handlePersonalDetailsChange={handlePersonalDetailsChange}
-                isStep2Valid={isStep2Valid}
-                handleSaveAndNext={handleSaveAndNext}
-                emailValid={emailValid}
-                phoneValid={phoneValid}
-                pincodeValid={pincodeValid}
+                personalDetails={state.personalDetails}
+                handlePersonalDetailsChange={state.handlePersonalDetailsChange}
+                isStep2Valid={state.isStep2Valid}
+                handleSaveAndNext={state.handleSaveAndNext}
+                emailValid={state.emailValid}
+                phoneValid={state.phoneValid}
+                pincodeValid={state.pincodeValid}
               />
             )}
 
-            {step === 3 && (
-              <div className="w-full space-y-5.5">
+            {state.step === 3 && (
+              <div className="w-full space-y-4 md:space-y-2">
                 <TaxDetail
-                  taxDetails={taxDetails}
-                  onTaxDetailsChange={handleTaxDetailsChange}
+                  taxDetails={state.taxDetails}
+                  onTaxDetailsChange={state.handleTaxDetailsChange}
                   idNumberError={
-                    !idNumberValid && taxDetails.idNumber
-                      ? "Enter a valid ID number."
-                      : ""
+                    !state.idNumberValid && state.taxDetails.idNumber ? "Enter a valid ID number." : ""
                   }
                 />
                 <NewOrderSummary
-                  orderSummary={orderSummary}
-                  currentStep={step}
-                  isFormValid={isStep3Valid}
-                  handleProceed={handleProceed}
+                  orderSummary={state.orderSummary}
+                  currentStep={state.step}
+                  isFormValid={state.isStep3Valid}
+                  onClose={() => handleOpenChange(false)}
+                  userName={`${state.personalDetails.firstName} ${state.personalDetails.lastName}`.trim()}
+                  userEmail={state.personalDetails.email}
+                  occasion={state.occasion}
+                  occasionImage={state.selectedAttribute?.icon || state.selectedAttribute?.image}
+                  rate={state.isGeoTagged ? state.geotaggedRate : state.nonGeotaggedRate}
+                  currencyCode={state.currency}
+                  personalDetails={state.personalDetails}
+                  taxDetails={state.taxDetails}
                 />
               </div>
             )}
           </div>
         </AlertDialogContent>
       </AlertDialog>
-      {/* <LoginDialog
-        isOpen={isLoginDialogOpen}
-        onClose={handleContinueAsGuest}
-        onContinueAsGuest={handleContinueAsGuest}
-        onSignIn={handleSignIn}
-      /> */}
     </main>
   );
 };

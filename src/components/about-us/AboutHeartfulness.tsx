@@ -1,19 +1,48 @@
 import Image from "next/image";
 
-const AboutHeartfulness = () => {
-  const stats = [
-    { url: "/images/countries.png", value: "160+", label: "Countries" },
-    { url: "/images/team.png", value: "5M+", label: "Practitioners" },
-    { url: "/images/trainer.png", value: "16,000+", label: "Trainers" },
-    { url: "/images/tent.png", value: "280+", label: "Retreat Centres" },
+interface Props {
+  stats?: Partial<{
+    total_trees_planted: string;
+    total_planting_sites: string;
+    total_volunteers_engaged: string;
+    total_partner_organisations: string;
+    total_countries: string;
+    total_practitioners: string;
+    total_trainers: string;
+    total_meditation_centres: string;
+  }>;
+}
+
+const AboutHeartfulness: React.FC<Props> = ({ stats }) => {
+  const primaryStats = [
+    {
+      url: "/images/countries.png",
+      value: stats?.total_countries || "160+",
+      label: "Countries",
+    },
+    {
+      url: "/images/team.png",
+      value: stats?.total_practitioners || "5M+",
+      label: "Practitioners",
+    },
+    {
+      url: "/images/trainer.png",
+      value: stats?.total_trainers || "16,000+",
+      label: "Trainers",
+    },
+    {
+      url: "/images/tent.png",
+      value: stats?.total_meditation_centres || "280+",
+      label: "Retreat Centres",
+    },
   ];
 
   return (
-    <main className="w-full md:space-y-8 space-y-6 md:px-8 px-4">
+    <main className="w-full md:space-y-8 space-y-4 md:px-8 px-4">
       <div className="grid md:grid-cols-2 items-start md:gap-10 gap-4">
         {/* Left Content */}
-        <div className="flex flex-col justify-between h-full md:px-4 md:py-2 max-md:space-y-2">
-          <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold text-black md:text-[32px] md:font-semibold md:leading-[48px] max-md:text-center md:text-[#090C0F]">
+        <div className="flex flex-col justify-between h-full md:px-4 md:py-2 max-md:space-y-6">
+          <h2 className="text-2xl sm:text-[32px] font-[Playfair_Display] font-semibold text-black md:text-[32px] md:font-semibold md:leading-[48px] md:text-[#090C0F]">
             About Heartfulness
           </h2>
           <p className="text-[#454950] leading-6 max-md:text-sm">
@@ -34,7 +63,7 @@ const AboutHeartfulness = () => {
 
         {/* Right Stats Grid */}
         <div className="grid grid-cols-2 gap-6">
-          {stats.map((stat, index) => {
+          {primaryStats.map((stat, index) => {
             return (
               <div
                 key={index}
@@ -42,9 +71,15 @@ const AboutHeartfulness = () => {
                   index === 1 || index === 2
                     ? "border-[#9DE1C2]"
                     : "border-[#12B569]"
-                } rounded-xl p-4 flex flex-col items-center justify-center text-center hover:shadow-md transition-shadow md:space-y-4 space-y-2`}
+                } rounded-[16px] p-4 flex flex-col items-center justify-center text-center hover:shadow-md transition-shadow md:space-y-4 space-y-2`}
               >
-                <Image src={stat.url} alt={stat.label} width={40} height={40} />
+                <Image
+                  src={stat.url}
+                  alt={stat.label}
+                  width={40}
+                  height={40}
+                  className="max-sm:w-8"
+                />
                 <div className="text-2xl font-semibold">{stat.value}</div>
                 <div className="max-md:text-sm text-[#4C4748]">
                   {stat.label}
@@ -54,7 +89,7 @@ const AboutHeartfulness = () => {
           })}
         </div>
       </div>
-      <div className="md:space-y-6 md:px-4 space-y-2 text-[#454950] leading-6 max-md:text-sm">
+      <div className="space-y-6 md:px-4 text-[#454950] leading-6 max-md:text-sm">
         <p>
           Numerous books and other publications have been translated into over
           twenty languages. The contributions of Heartfulness Meditation in the
