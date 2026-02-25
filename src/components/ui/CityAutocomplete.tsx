@@ -10,7 +10,11 @@ import {
   CommandList,
   CommandInput,
 } from "@/components/ui/command";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { ChevronsUpDown, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import useDebounce from "@/hooks/useDebounce";
@@ -98,7 +102,7 @@ export default function CityAutocomplete({
       setSearchTerm(displayCity(city));
       setOpen(false);
     },
-    [onChange]
+    [onChange],
   );
 
   React.useEffect(() => {
@@ -116,17 +120,27 @@ export default function CityAutocomplete({
       try {
         if (searchTerm && searchTerm.length > 2 && API_URL) {
           const searchkey = searchTerm.slice(0, 3).toLowerCase();
-          const countryFilter = defaultCountry ? `${String(defaultCountry).toLowerCase()}/` : "";
+          const countryFilter = defaultCountry
+            ? `${String(defaultCountry).toLowerCase()}/`
+            : "";
           const url = `${API_URL}/cities/${countryFilter}${searchkey}.json`;
 
-          logger.debug("Searching cities source", { url, term: searchTerm, key: searchkey });
+          logger.debug("Searching cities source", {
+            url,
+            term: searchTerm,
+            key: searchkey,
+          });
 
           let response = await fetch(url);
 
           if (!response.ok) {
-            logger.warn("Primary city source failed; trying fallback", { status: response.status });
+            logger.warn("Primary city source failed; trying fallback", {
+              status: response.status,
+            });
             const fallbackUrl = `${API_URL}/cities/${searchkey}.json`;
-            logger.debug("Searching cities fallback source", { url: fallbackUrl });
+            logger.debug("Searching cities fallback source", {
+              url: fallbackUrl,
+            });
             response = await fetch(fallbackUrl);
           }
 
@@ -142,7 +156,8 @@ export default function CityAutocomplete({
 
             if (value?.name && !value?.id && data.length > 0) {
               const exactMatch = data.find(
-                (city: City) => city.name.toLowerCase() === value.name.toLowerCase()
+                (city: City) =>
+                  city.name.toLowerCase() === value.name.toLowerCase(),
               );
               if (exactMatch && onChange) {
                 onChange(exactMatch);
@@ -162,7 +177,7 @@ export default function CityAutocomplete({
       }
     },
     500,
-    [searchTerm, defaultCountry, value]
+    [searchTerm, defaultCountry, value],
   );
 
   const filteredCities = React.useMemo(() => {
@@ -172,18 +187,25 @@ export default function CityAutocomplete({
     return cities.filter((city) => {
       const cityName = city.name.toLowerCase();
       const completeName = city.complete_name?.toLowerCase() || "";
-      return cityName.includes(searchLower) || completeName.includes(searchLower);
+      return (
+        cityName.includes(searchLower) || completeName.includes(searchLower)
+      );
     });
   }, [cities, searchTerm]);
 
   const formattedOption = ({ name, complete_name }: City) => {
-    const completeName = complete_name ? complete_name.split("/").reverse().slice(1) : [];
-    const completeNameString = completeName.length > 0 ? completeName.join(", ") : "";
+    const completeName = complete_name
+      ? complete_name.split("/").reverse().slice(1)
+      : [];
+    const completeNameString =
+      completeName.length > 0 ? completeName.join(", ") : "";
     return (
       <div className="block !text-base" data-testid="option-name">
         <div className="block font-medium text-primary">{name}</div>
         <div>
-          <span className="block !text-base text-gray-600">{formatCityName(completeNameString)}</span>
+          <span className="block !text-base text-gray-600">
+            {formatCityName(completeNameString)}
+          </span>
         </div>
       </div>
     );
@@ -193,11 +215,17 @@ export default function CityAutocomplete({
     <div className={className}>
       <div className="h-6">
         {label && (
-          <label htmlFor={name} className="block text-xs text-[#344054] font-semibold mb-1.5">
+          <label
+            htmlFor={name}
+            className="block text-xs text-[#344054] font-semibold mb-1.5"
+          >
             {label}
             {required && <span className="text-red-500"> *</span>}
             {help_text && (
-              <span className="text-muted-foreground ml-1 cursor-help" title={help_text}>
+              <span
+                className="text-muted-foreground ml-1 cursor-help"
+                title={help_text}
+              >
                 i
               </span>
             )}
@@ -216,27 +244,17 @@ export default function CityAutocomplete({
                 "font-base-size placeholder-styles h-[44px] w-full justify-between rounded-[8px] bg-white px-3 py-2 !text-base !text-[#4C4748]",
                 !searchTerm && "text-muted-foreground",
                 `${error ? "border-red-500" : "border border-[#D1D1D1]"}`,
-                open && "rounded-b-none"
+                open && "rounded-b-none",
               )}
               onClick={() => setOpen(!open)}
             >
               <span
-                className={`flex-grow overflow-hidden text-ellipsis whitespace-nowrap text-left ${!value?.id ? "text-gray-400" : "text-[#090C0F]"}`}
+                className={`flex-grow overflow-hidden text-ellipsis whitespace-nowrap max-w-[250px] text-left ${!value?.id ? "text-gray-400" : "text-[#090C0F]"}`}
               >
                 {value?.id ? displayCity(value) : placeholder}
               </span>
               <ChevronsUpDown className="mr-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
-            {value?.id && (
-              <Button
-                type="button"
-                variant="ghost"
-                onClick={clearSearch}
-                className="absolute right-2 top-0 ml-5 h-full p-0 opacity-50 hover:bg-transparent"
-              >
-                <X className="h-4 w-4" />
-              </Button>
-            )}
           </div>
         </PopoverTrigger>
         <PopoverContent
@@ -255,7 +273,9 @@ export default function CityAutocomplete({
             </div>
             <CommandList className="h-[150px]">
               <CommandEmpty className="text-center py-2 text-gray-500">
-                {searchTerm.length < 3 ? "Type at least 3 characters to search cities" : "No cities found"}
+                {searchTerm.length < 3
+                  ? "Type at least 3 characters to search cities"
+                  : "No cities found"}
               </CommandEmpty>
               <CommandGroup>
                 {filteredCities.map((city) => (
@@ -274,8 +294,9 @@ export default function CityAutocomplete({
         </PopoverContent>
       </Popover>
       {hint && <p className="text-muted-foreground text-sm">{hint}</p>}
-      {error && <p className="text-xs text-red-500 font-medium mt-1">{error}</p>}
+      {error && (
+        <p className="text-xs text-red-500 font-medium mt-1">{error}</p>
+      )}
     </div>
   );
 }
-
